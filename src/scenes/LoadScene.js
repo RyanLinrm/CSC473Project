@@ -23,6 +23,23 @@ export class LoadScene extends Phaser.Scene{
         this.load.audio("menuMusic", "./assets/music/Rise of spirit.mp3");
 
         this.load.audio("beginsound", "./assets/soundeffect/metal-clash.wav");
+
+        //add loading bar
+        let loadingBar = this.add.graphics({
+            fillStyle: {
+                color: 0xffffff
+            }
+        })
+
+        //add Loading event
+        this.load.on("progress", (percent)=>{
+            loadingBar.fillRect(0, this.game.renderer.height / 2, 
+                                this.game.renderer.width * percent, 50);
+            
+        })
+
+
+
    
     }
 
