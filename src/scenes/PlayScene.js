@@ -69,6 +69,40 @@ export class PlayScene extends Phaser.Scene{
             repeat: -1
         });
 
+        //input and phyics
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
+
+    }
+
+    update(time,delta) {
+        
+        //key control
+        
+        if(this.keyboard.W.isDown){
+            magic.setVelocityY(-64);
+            magic.play("up", true);
+        }
+        if(this.keyboard.S.isDown){
+            magic.setVelocityY(64);
+            magic.play("down", true);
+        }
+        if(this.keyboard.A.isDown){
+            magic.setVelocityX(-64);
+            magic.play("left", true);
+        }
+        if(this.keyboard.D.isDown){
+            magic.setVelocityX(64);
+            magic.play("right", true);
+        }
+        if(this.keyboard.W.isUp && this.keyboard.S.isUp){
+            magic.setVelocityY(0);
+
+        }
+        if(this.keyboard.A.isUp && this.keyboard.D.isUp){
+            magic.setVelocityX(0);
+
+        }
+    
     }
 
 }
