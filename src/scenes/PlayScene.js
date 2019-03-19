@@ -4,13 +4,8 @@
 //Use scene list to generate keyword
 import { CST } from "../CST";
 export class PlayScene extends Phaser.Scene{
-    
     constructor(){
         super({key:CST.SCENES.PLAY});
-    }
-
-    init(){
-
     }
 
     preload(){ 
@@ -18,11 +13,10 @@ export class PlayScene extends Phaser.Scene{
 
     create(){
         //create phaser game object, and add in sprite
-        let magic = Phaser.GameObjects.sprite = this.physics.add.sprite(400, 400, "magic", "Magic_01.png");
+        this.player = this.physics.add.sprite(400, 400, "magic", "Magic_01.png" );
 
-        let wolf = Phaser.GameObjects.sprite = this.physics.add.sprite(300, 300, "wolf", "Wolf_01.png" );
+        this.wolf = this.physics.add.sprite(300, 300, "wolf", "Wolf_01.png" );
 
-        
         //create animations for different directions 
         
         this.anims.create({
@@ -72,37 +66,40 @@ export class PlayScene extends Phaser.Scene{
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
 
+
     }
 
     update(time,delta) {
         
         //key control
-        
-        if(this.keyboard.W.isDown){
-            magic.setVelocityY(-64);
-            magic.play("up", true);
-        }
-        if(this.keyboard.S.isDown){
-            magic.setVelocityY(64);
-            magic.play("down", true);
-        }
-        if(this.keyboard.A.isDown){
-            magic.setVelocityX(-64);
-            magic.play("left", true);
-        }
-        if(this.keyboard.D.isDown){
-            magic.setVelocityX(64);
-            magic.play("right", true);
-        }
-        if(this.keyboard.W.isUp && this.keyboard.S.isUp){
-            magic.setVelocityY(0);
+        //movement note: we should only be able to move our character when it is alive
 
-        }
-        if(this.keyboard.A.isUp && this.keyboard.D.isUp){
-            magic.setVelocityX(0);
+        if(this.player.active === true){
+            if(this.keyboard.W.isDown){
+                this.player.setVelocityY(-64);
+                this.player.play("up", true);
+            }
+            if(this.keyboard.S.isDown){
+                this.player.setVelocityY(64);
+                this.player.play("down", true);
+            }
+            if(this.keyboard.A.isDown){
+                this.player.setVelocityX(-64);
+                this.player.play("left", true);
+            }
+            if(this.keyboard.D.isDown){
+                this.player.setVelocityX(64);
+                this.player.play("right", true);
+            }
+            if(this.keyboard.W.isUp && this.keyboard.S.isUp){
+                this.player.setVelocityY(0);
 
+            }
+            if(this.keyboard.A.isUp && this.keyboard.D.isUp){
+                this.player.setVelocityX(0);
+
+            }
         }
-    
     }
 
 }
