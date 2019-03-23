@@ -3,6 +3,7 @@
 //just for demo
 //Use scene list to generate keyword
 import { CST } from "../CST";
+import { Units } from "../Units";
 export class PlayScene extends Phaser.Scene{
     constructor(){
         super({key:CST.SCENES.PLAY});
@@ -14,7 +15,7 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //create phaser game object, and add in sprite
         this.player = this.physics.add.sprite(400, 400, "magic", "Magic_01.png" );
-
+        this.angle=new Units(this,200,150,"angle","angle_01.png");
         this.wolf = this.physics.add.sprite(300, 300, "wolf", "Wolf_01.png" );
 
         //create animations for different directions 
