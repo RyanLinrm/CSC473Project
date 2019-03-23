@@ -19,7 +19,8 @@ export class PlayScene extends Phaser.Scene{
         this.wolf = this.physics.add.sprite(300, 300, "wolf", "Wolf_01.png" );
 
         //create animations for different directions 
-        
+    
+
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -30,6 +31,7 @@ export class PlayScene extends Phaser.Scene{
             }),
             repeat: -1
         });
+        
 
         this.anims.create({
             key:'left', 
@@ -66,7 +68,12 @@ export class PlayScene extends Phaser.Scene{
 
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
-
+     
+        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+            overlaped.body.stop();
+            this.player.destroy();
+            this.physics.world.removeCollider(collider);
+        }, null, this);
 
     }
 
@@ -74,6 +81,8 @@ export class PlayScene extends Phaser.Scene{
         
         //key control
         //movement note: we should only be able to move our character when it is alive
+        this.physics.moveToObject(this.wolf, this.player);
+        this.physics.moveToObject(this.angle, this.player);
 
         if(this.player.active === true){
             if(this.keyboard.W.isDown){
