@@ -87,6 +87,14 @@ export class PlayScene extends Phaser.Scene{
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
 
 
+        //Camera
+        // set bounds to avoid camera goes outside the map
+        this.physics.world.setBounds(0, 0, Mymap.widthInPixels, Mymap.heightInPixels);
+
+        //camera follows the player
+        this.cameras.main.startFollow(this.player);
+
+
     }
 
     update(time,delta) {
