@@ -95,6 +95,14 @@ export class PlayScene extends Phaser.Scene{
         this.cameras.main.startFollow(this.player);
 
 
+        //If it gets the character, character dies
+        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+            //stop when they overplay, kill the player(test)
+            overlaped.body.stop();
+            this.player.destroy();
+            this.physics.world.removeCollider(collider);
+        }, null, this);
+
     }
 
     update(time,delta) {
@@ -102,7 +110,7 @@ export class PlayScene extends Phaser.Scene{
         //key control
         //movement note: we should only be able to move our character when it is alive
 
-        if(this.player.active === true){
+        if(this.player.active){
             if(this.keyboard.W.isDown){
                 this.player.setVelocityY(-64);
                 this.player.play("up", true);
@@ -128,6 +136,10 @@ export class PlayScene extends Phaser.Scene{
 
             }
         }
+
+        //TEST!!!---let the monster chases our character
+        this.physics.moveToObject(this.wolf, this.player);
+
     }
 
 }
