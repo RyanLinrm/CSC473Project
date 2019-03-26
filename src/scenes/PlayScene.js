@@ -3,6 +3,7 @@
 //just for demo
 //Use scene list to generate keyword
 import { CST } from "../CST";
+import { Bullet } from "../gameObjects/Projectiles";
 export class PlayScene extends Phaser.Scene{
     constructor(){
         super({key:CST.SCENES.PLAY});
@@ -18,6 +19,16 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //create phaser game object, and add in sprite
         this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
+        
+        //Temporary attack function. The real one I believe should be inside the player class. 
+        
+        this.player.bullets = this.physics.add.group({classType: Bullet, runChildUpdate: true});
+        this.player.attack = ()=>{
+          let bullet = this.player.bullets.get();
+          this.children.add(bullet);
+            bullet.shoot(this.player);
+        };
+
 
         this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
 
@@ -136,6 +147,12 @@ export class PlayScene extends Phaser.Scene{
 
             }
         }
+
+        //Click Control
+        if(this.input.activePointer.isDown){
+            this.player.attack();
+        }
+
 
         //TEST!!!---let the monster chases our character
         this.physics.moveToObject(this.wolf, this.player);
