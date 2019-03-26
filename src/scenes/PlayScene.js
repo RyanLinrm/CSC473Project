@@ -20,7 +20,13 @@ export class PlayScene extends Phaser.Scene{
 
     create(){
         //create phaser game object, and add in sprite
-        this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
+        this.player = this.physics.add.sprite(300, 300, "p1", "p1_0.png" );
+        //create a sample minimap ---needs to change to dynamic
+        this.minimap = this.cameras.add(590, 5, 250, 150).setZoom(0.2).setName('mini');
+        this.minimap.setBackgroundColor(0x002244);
+        this.minimap.scrollX = 600;
+        this.minimap.scrollY = 600;
+
 
       
         //Temporary attack function. The real one I believe should be inside the player class. 
@@ -38,8 +44,8 @@ export class PlayScene extends Phaser.Scene{
             this.player.attack();
         });
 
-        this.angle=new Units(this,200,150,"angle","angle_01.png");
-
+      //this.angle=new Units(this,200,150,"angle","angle_01.png");
+        this.ninjabot=new Units(this,250,150,"ninjabot","ninjabot_1.png");
         this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
         //adding buildings for each player
         this.building=new Units(this,1200,1200,"building1");
@@ -62,9 +68,9 @@ export class PlayScene extends Phaser.Scene{
             key: "down",
             frameRate: 8,
             //walking downward animation frames
-            frames: this.anims.generateFrameNames('magic', {
-            start:1, end:4, zeroPad:2,
-            prefix:'Magic_', suffix: '.png'
+            frames: this.anims.generateFrameNames('p1', {
+            start:0, end:2, zeroPad:1,
+            prefix:'p1_', suffix: '.png'
             }),
             repeat: -1
         });
@@ -74,9 +80,9 @@ export class PlayScene extends Phaser.Scene{
             key:'left', 
             frameRate: 8,
             //walking left animation frames
-            frames: this.anims.generateFrameNames('magic', {
-            start:5, end:8, zeroPad:2,
-            prefix:'Magic_', suffix: '.png'
+            frames: this.anims.generateFrameNames('p1', {
+            start:3, end:5, zeroPad:1,
+            prefix:'p1_', suffix: '.png'
             }),
             repeat: -1
         });
@@ -85,9 +91,9 @@ export class PlayScene extends Phaser.Scene{
             key:'right', 
             frameRate: 8,
             //walking left animation frames
-            frames: this.anims.generateFrameNames('magic', {
-            start:9, end:12, zeroPad:2,
-            prefix:'Magic_', suffix: '.png'
+            frames: this.anims.generateFrameNames('p1', {
+            start:6, end:8, zeroPad:1,
+            prefix:'p1_', suffix: '.png'
             }),
             repeat: -1
         });
@@ -96,9 +102,9 @@ export class PlayScene extends Phaser.Scene{
             key:'up',
             frameRate: 8,
             //walking left animation frames
-            frames: this.anims.generateFrameNames('magic', {
-            start:13, end:16, zeroPad:2,
-            prefix:'Magic_', suffix: '.png'
+            frames: this.anims.generateFrameNames('p1', {
+            start:9, end:11, zeroPad:1,
+            prefix:'p1_', suffix: '.png'
             }),
             repeat: -1
         });
@@ -179,7 +185,7 @@ export class PlayScene extends Phaser.Scene{
 
         //TEST!!!---let the monster chases our character
         this.physics.moveToObject(this.wolf, this.player);
-        this.physics.moveToObject(this.angle, this.player);
+        this.physics.moveToObject(this.ninjabot, this.player);
     }
 
 }
