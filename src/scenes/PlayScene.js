@@ -3,6 +3,7 @@
 //just for demo
 //Use scene list to generate keyword
 import { CST } from "../CST";
+import { Units } from "../Units";
 export class PlayScene extends Phaser.Scene{
     constructor(){
         super({key:CST.SCENES.PLAY});
@@ -18,13 +19,25 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //create phaser game object, and add in sprite
         this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
-
+        this.angle=new Units(this,200,150,"angle","angle_01.png");
         this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
-
+        //adding buildings for each player
+        this.building=new Units(this,1200,1200,"building1");
+        this.building.setScale(0.15);
+        this.University=new Units(this,1200,0,"University");
+        this.University.setScale(1.5);
+        this.pyramid=new Units(this,0,0,"pyramid");
+        this.pyramid.setScale(1.5);
+        this.magicstone=new Units(this,0,1200,"magicstone");
+        this.magicstone.setScale(1.5);
+        //adding resrouces to the middle 
+        this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
+        this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
 
         //create animations for different directions 
-        
+    
+
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -35,6 +48,7 @@ export class PlayScene extends Phaser.Scene{
             }),
             repeat: -1
         });
+        
 
         this.anims.create({
             key:'left', 
@@ -109,7 +123,7 @@ export class PlayScene extends Phaser.Scene{
         
         //key control
         //movement note: we should only be able to move our character when it is alive
-
+     
         if(this.player.active){
             if(this.keyboard.W.isDown){
                 this.player.setVelocityY(-64);
@@ -139,7 +153,7 @@ export class PlayScene extends Phaser.Scene{
 
         //TEST!!!---let the monster chases our character
         this.physics.moveToObject(this.wolf, this.player);
-
+        this.physics.moveToObject(this.angle, this.player);
     }
 
 }

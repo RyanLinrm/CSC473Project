@@ -16,12 +16,15 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("StartButton", "./assets/StartButton.png");
         this.load.image("cursor", "./assets/fight.png");
         this.load.image("fire","./assets/SkillEffect1.png");
-
+        this.load.atlas("angle", "./assets/sprite/angle.png", "./assets/sprite/angle.json");
         this.load.atlas("magic", "./assets/sprite/magic.png", "./assets/sprite/magic.json");
         this.load.atlas("wolf", "./assets/sprite/wolf.png", "./assets/sprite/wolf.json");
-
+        this.load.atlas("building1", "./assets/sprite/buildings/building1.png", "./assets/sprite/buildings/building1_atlas.json");
+        this.load.atlas("University", "./assets/sprite/buildings/University.png", "./assets/sprite/buildings/University.json");
+        this.load.atlas("pyramid", "./assets/sprite/buildings/pyramid.png", "./assets/sprite/buildings/pyramid.json");
+        this.load.atlas("magicstone", "./assets/sprite/buildings/magicstone.png", "./assets/sprite/buildings/magicstone.json");
         this.load.audio("menuMusic", "./assets/music/Rise of spirit.mp3");
-
+        this.load.atlas("sword_in_the_stone", "./assets/sprite/sword_in_the_stone.png", "./assets/sprite/sword_in_the_stone.json");
         this.load.audio("beginsound", "./assets/soundeffect/metal-clash.wav");
 
         //add loading bar
