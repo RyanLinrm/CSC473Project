@@ -28,6 +28,8 @@ export class PlayScene extends Phaser.Scene{
         this.University.setScale(1.5);
         this.pyramid=new Units(this,0,0,"pyramid");
         this.pyramid.setScale(1.5);
+        this.magicstone=new Units(this,0,1200,"magicstone");
+        this.magicstone.setScale(1.5);
 
 
         this.player.setCollideWorldBounds(true);
