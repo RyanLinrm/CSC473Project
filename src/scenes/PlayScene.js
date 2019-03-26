@@ -21,8 +21,10 @@ export class PlayScene extends Phaser.Scene{
         this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
         this.angle=new Units(this,200,150,"angle","angle_01.png");
         this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
-        this.building=new Units(this,0,0,"building1");
+        this.building=new Units(this,1200,1200,"building1");
         this.building.setScale(0.15);
+        this.University=new Units(this,1200,0,"University");
+        this.University.setScale(1.5);
         this.player.setCollideWorldBounds(true);
 
         //create animations for different directions 
