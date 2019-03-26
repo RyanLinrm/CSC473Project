@@ -19,6 +19,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas("angle", "./assets/sprite/angle.png", "./assets/sprite/angle.json");
         this.load.atlas("magic", "./assets/sprite/magic.png", "./assets/sprite/magic.json");
         this.load.atlas("wolf", "./assets/sprite/wolf.png", "./assets/sprite/wolf.json");
+        this.load.atlas("building1", "./assets/sprite/building1.png", "./assets/sprite/building1_atlas.json");
 
         this.load.audio("menuMusic", "./assets/music/Rise of spirit.mp3");
 
