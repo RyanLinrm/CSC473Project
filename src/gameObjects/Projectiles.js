@@ -1,35 +1,43 @@
-
-
 export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene){
-        
         super(scene,0,0);
 
-        this.setTexture('Magic_01.png');
-        this.speed = 10;
+        this.setTexture('Magic_01.png'); //Need to change to actual bullet
+        this.speed = 1;
+        this.angle = 0;
         this.xSpeed = 1;
         this.ySpeed = 1;
         this.timeAlive = 0;
         
     }
 
-    shoot(shooter){
+    shoot(shooter,mouseX,mouseY){
+        this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
-        
+
         this.setPosition(shooter.x,shooter.y);
         this.setAngle(shooter.body.rotation);
+        
+        //Shoots in the direciton the player is facing. 
+            this.xSpeed = this.speed * Math.sign(shooter.nonZeroVelocity.x); 
+            this.ySpeed = this.speed * Math.sign(shooter.nonZeroVelocity.y);
+       
+        if(this.timeAlive > 2000){
+            this.setActive(false);
+            this.setVisible(false);
+        }
+    
     }
 
     update(time,delta){
         this.timeAlive += delta;
-        console.log("Hello");
         this.x += this.xSpeed * delta;
-        this.y += this.ySpeed * delta; 
-
+        this.y += this.ySpeed * delta;
+        
         if(this.timeAlive > 2000){
             this.setActive(false);
-            this.setVisible(false);
+            //this.setVisible(false);
         }
     }
 

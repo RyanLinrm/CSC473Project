@@ -332,9 +332,11 @@ function (_Phaser$GameObjects$I) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Bullet).call(this, scene, 0, 0));
 
-    _this.setTexture('Magic_01.png');
+    _this.setTexture('Magic_01.png'); //Need to change to actual bullet
 
-    _this.speed = 10;
+
+    _this.speed = 1;
+    _this.angle = 0;
     _this.xSpeed = 1;
     _this.ySpeed = 1;
     _this.timeAlive = 0;
@@ -343,23 +345,30 @@ function (_Phaser$GameObjects$I) {
 
   _createClass(Bullet, [{
     key: "shoot",
-    value: function shoot(shooter) {
+    value: function shoot(shooter, mouseX, mouseY) {
+      this.timeAlive = 0;
       this.setActive(true);
       this.setVisible(true);
       this.setPosition(shooter.x, shooter.y);
-      this.setAngle(shooter.body.rotation);
+      this.setAngle(shooter.body.rotation); //Shoots in the direciton the player is facing. 
+
+      this.xSpeed = this.speed * Math.sign(shooter.nonZeroVelocity.x);
+      this.ySpeed = this.speed * Math.sign(shooter.nonZeroVelocity.y);
+
+      if (this.timeAlive > 2000) {
+        this.setActive(false);
+        this.setVisible(false);
+      }
     }
   }, {
     key: "update",
     value: function update(time, delta) {
       this.timeAlive += delta;
-      console.log("Hello");
       this.x += this.xSpeed * delta;
       this.y += this.ySpeed * delta;
 
       if (this.timeAlive > 2000) {
-        this.setActive(false);
-        this.setVisible(false);
+        this.setActive(false); //this.setVisible(false);
       }
     }
   }]);
@@ -426,6 +435,10 @@ function (_Phaser$Scene) {
       //create phaser game object, and add in sprite
       this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png"); //Temporary attack function. The real one I believe should be inside the player class. 
 
+      this.player.nonZeroVelocity = {
+        x: 0,
+        y: 1
+      };
       this.player.bullets = this.physics.add.group({
         classType: _Projectiles.Bullet,
         runChildUpdate: true
@@ -436,9 +449,13 @@ function (_Phaser$Scene) {
 
         _this.children.add(bullet);
 
-        bullet.shoot(_this.player);
+        bullet.shoot(_this.player, _this.input.x, _this.input.y);
       };
 
+      this.input.on('pointerdown', function () {
+        //pointerdown event handler
+        _this.player.attack();
+      });
       this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png");
       this.player.setCollideWorldBounds(true); //create animations for different directions 
 
@@ -526,6 +543,8 @@ function (_Phaser$Scene) {
     value: function update(time, delta) {
       //key control
       //movement note: we should only be able to move our character when it is alive
+      console.log(this.children.length);
+
       if (this.player.active) {
         if (this.keyboard.W.isDown) {
           this.player.setVelocityY(-64);
@@ -554,11 +573,14 @@ function (_Phaser$Scene) {
         if (this.keyboard.A.isUp && this.keyboard.D.isUp) {
           this.player.setVelocityX(0);
         }
-      } //Click Control
 
-
-      if (this.input.activePointer.isDown) {
-        this.player.attack();
+        if (this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0) {
+          this.player.nonZeroVelocity = {
+            x: this.player.body.velocity.x,
+            y: this.player.body.velocity.y
+          }; //velocity unless the actual velocity is zero then it stores previous nonzero velocity
+          //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
+        }
       } //TEST!!!---let the monster chases our character
 
 
