@@ -3,7 +3,9 @@
 //just for demo
 //Use scene list to generate keyword
 import { CST } from "../CST";
+import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../Units";
+
 export class PlayScene extends Phaser.Scene{
     constructor(){
         super({key:CST.SCENES.PLAY});
@@ -19,7 +21,25 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //create phaser game object, and add in sprite
         this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
+
+      
+        //Temporary attack function. The real one I believe should be inside the player class. 
+        this.player.nonZeroVelocity = {x:0,y:1};
+
+        this.player.bullets = this.physics.add.group({classType: Bullet, runChildUpdate: true});
+
+        this.player.attack = ()=>{
+          let bullet = this.player.bullets.get();
+          this.children.add(bullet);
+            bullet.shoot(this.player,this.input.x,this.input.y);
+        };
+
+        this.input.on('pointerdown',()=>{ //pointerdown event handler
+            this.player.attack();
+        });
+
         this.angle=new Units(this,200,150,"angle","angle_01.png");
+
         this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
         //adding buildings for each player
         this.building=new Units(this,1200,1200,"building1");
@@ -123,7 +143,7 @@ export class PlayScene extends Phaser.Scene{
         
         //key control
         //movement note: we should only be able to move our character when it is alive
-     
+
         if(this.player.active){
             if(this.keyboard.W.isDown){
                 this.player.setVelocityY(-64);
@@ -148,6 +168,12 @@ export class PlayScene extends Phaser.Scene{
             if(this.keyboard.A.isUp && this.keyboard.D.isUp){
                 this.player.setVelocityX(0);
 
+            }
+
+            if(this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0){
+                this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
+                //velocity unless the actual velocity is zero then it stores previous nonzero velocity
+                //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
         }
 
