@@ -24,7 +24,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas("pyramid", "./assets/sprite/buildings/pyramid.png", "./assets/sprite/buildings/pyramid.json");
         this.load.atlas("magicstone", "./assets/sprite/buildings/magicstone.png", "./assets/sprite/buildings/magicstone.json");
         this.load.audio("menuMusic", "./assets/music/Rise of spirit.mp3");
-
+        this.load.atlas("sword_in_the_stone", "./assets/sprite/sword_in_the_stone.png", "./assets/sprite/sword_in_the_stone.json");
         this.load.audio("beginsound", "./assets/soundeffect/metal-clash.wav");
 
         //add loading bar

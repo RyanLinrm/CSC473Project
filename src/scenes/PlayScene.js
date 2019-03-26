@@ -30,8 +30,9 @@ export class PlayScene extends Phaser.Scene{
         this.pyramid.setScale(1.5);
         this.magicstone=new Units(this,0,1200,"magicstone");
         this.magicstone.setScale(1.5);
-
-
+        //adding resrouces to the middle 
+        this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
+        this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
 
         //create animations for different directions 
