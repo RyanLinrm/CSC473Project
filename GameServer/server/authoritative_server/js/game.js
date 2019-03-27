@@ -1,7 +1,10 @@
+
+
 /** @type {import { "../typing/phaser" };} */
 
 let game = new Phaser.Game({
-    type: Phaser.AUTO,
+    type: Phaser.HEADLESS,
+    parent: 'phaser-example',
     width:800,
     height:600,
     physics: {
@@ -17,17 +20,28 @@ let game = new Phaser.Game({
     },
     render:{
         pixelArt: true
-    }
+    },
+    autoFocus: false
 });
 
 function preload(){
-
-};
+   
+}
 
 function create(){
-    this.socket = io();
-};
+    //socket.io connection 
+   io.on('connection',(socket)=>{
+       console.log("User connect");
+
+       socket.on('disconnect',()=>{
+            console.log("user disconnect");
+       });
+   });
+
+}
 
 function update(){
+  
+}
 
-};
+window.gameLoaded();

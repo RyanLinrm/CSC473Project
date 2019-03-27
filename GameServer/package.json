@@ -10,6 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.4"
+    "canvas": "^2.4.1",
+    "express": "^4.16.4",
+    "jsdom": "^14.0.0",
+    "path": "^0.12.7",
+    "socket.io": "^2.2.0"
   }
 }
