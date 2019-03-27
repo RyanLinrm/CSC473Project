@@ -1,7 +1,7 @@
 import { Bullet } from "../gameObjects/Projectiles";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName){
+    constructor(scene,x,y,key,textureName,healthPoints = 100){
         super(scene,x,y,key,textureName);
 
         //adds to the scenes update and display list
@@ -14,6 +14,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
         this.createWeapon(scene);
+
+        //Create intial Healthpoints for the player
+        this.healthPoints = healthPoints;
 
         scene.input.on('pointerdown',()=>{ //pointerdown event handler
             this.attack();

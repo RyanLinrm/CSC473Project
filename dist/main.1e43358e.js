@@ -383,7 +383,7 @@ function (_Phaser$GameObjects$I) {
 }(Phaser.GameObjects.Image);
 
 exports.Bullet = Bullet;
-},{}],"src/Units.js":[function(require,module,exports) {
+},{}],"src/gameObjects/Units.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -414,7 +414,7 @@ function (_Phaser$Physics$Arcad) {
   function Units(scene, x, y, name, frame) {
     var _this;
 
-    var hp = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 10;
+    var healthPoints = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 10;
     var speed = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 1;
     var range = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : null;
 
@@ -429,7 +429,7 @@ function (_Phaser$Physics$Arcad) {
     _this.setCollideWorldBounds(true); //this.setImmovable(true);
 
 
-    _this.hp = hp;
+    _this.healthPoints = healthPoints;
     _this.speed = speed;
     _this.range = range;
     return _this;
@@ -439,7 +439,94 @@ function (_Phaser$Physics$Arcad) {
 }(Phaser.Physics.Arcade.Sprite);
 
 exports.Units = Units;
-},{}],"src/scenes/PlayScene.js":[function(require,module,exports) {
+},{}],"src/gameObjects/Player.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Player = void 0;
+
+var _Projectiles = require("../gameObjects/Projectiles");
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Player =
+/*#__PURE__*/
+function (_Phaser$Physics$Arcad) {
+  _inherits(Player, _Phaser$Physics$Arcad);
+
+  function Player(scene, x, y, key, textureName) {
+    var _this;
+
+    var healthPoints = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 100;
+
+    _classCallCheck(this, Player);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Player).call(this, scene, x, y, key, textureName)); //adds to the scenes update and display list
+
+    scene.sys.updateList.add(_assertThisInitialized(_this));
+    scene.sys.displayList.add(_assertThisInitialized(_this));
+
+    _this.setOrigin(0, 0);
+
+    _this.nonZeroVelocity = {
+      x: 0,
+      y: 1
+    }; //enables body in the phsyics world in the game
+
+    scene.physics.world.enableBody(_assertThisInitialized(_this));
+
+    _this.createWeapon(scene); //Create intial Healthpoints for the player
+
+
+    _this.healthPoints = healthPoints;
+    scene.input.on('pointerdown', function () {
+      //pointerdown event handler
+      _this.attack();
+    });
+    return _this;
+  }
+
+  _createClass(Player, [{
+    key: "createWeapon",
+    value: function createWeapon(scene) {
+      var _this2 = this;
+
+      var bullets = scene.physics.add.group({
+        classType: _Projectiles.Bullet,
+        runChildUpdate: true
+      });
+
+      this.attack = function () {
+        var bullet = bullets.get();
+        scene.children.add(bullet);
+        bullet.shoot(_this2, scene.input.x, scene.input.y);
+      };
+    }
+  }]);
+
+  return Player;
+}(Phaser.Physics.Arcade.Sprite);
+
+exports.Player = Player;
+},{"../gameObjects/Projectiles":"src/gameObjects/Projectiles.js"}],"src/scenes/PlayScene.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -451,7 +538,9 @@ var _CST = require("../CST");
 
 var _Projectiles = require("../gameObjects/Projectiles");
 
-var _Units = require("../Units");
+var _Units = require("../gameObjects/Units");
+
+var _Player = require("../gameObjects/Player");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -497,29 +586,7 @@ function (_Phaser$Scene) {
       var _this = this;
 
       //create phaser game object, and add in sprite
-      this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png"); //Temporary attack function. The real one I believe should be inside the player class. 
-
-      this.player.nonZeroVelocity = {
-        x: 0,
-        y: 1
-      };
-      this.player.bullets = this.physics.add.group({
-        classType: _Projectiles.Bullet,
-        runChildUpdate: true
-      });
-
-      this.player.attack = function () {
-        var bullet = _this.player.bullets.get();
-
-        _this.children.add(bullet);
-
-        bullet.shoot(_this.player, _this.input.x, _this.input.y);
-      };
-
-      this.input.on('pointerdown', function () {
-        //pointerdown event handler
-        _this.player.attack();
-      });
+      this.player = new _Player.Player(this, 300, 300, "magic", "Magic_01.png");
       this.angle = new _Units.Units(this, 200, 150, "angle", "angle_01.png");
       this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png"); //adding buildings for each player
 
@@ -668,7 +735,7 @@ function (_Phaser$Scene) {
 }(Phaser.Scene);
 
 exports.PlayScene = PlayScene;
-},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js","../Units":"src/Units.js"}],"src/main.js":[function(require,module,exports) {
+},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js","../gameObjects/Units":"src/gameObjects/Units.js","../gameObjects/Player":"src/gameObjects/Player.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _LoadScene = require("./scenes/LoadScene");
@@ -721,7 +788,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53193" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60121" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

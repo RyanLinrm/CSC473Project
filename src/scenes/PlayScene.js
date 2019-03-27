@@ -4,7 +4,7 @@
 //Use scene list to generate keyword
 import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
-import { Units } from "../Units";
+import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
 
 export class PlayScene extends Phaser.Scene{
