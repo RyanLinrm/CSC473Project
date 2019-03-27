@@ -186,9 +186,15 @@ function (_Phaser$Scene) {
       this.load.image("StartButton", "./assets/StartButton.png");
       this.load.image("cursor", "./assets/fight.png");
       this.load.image("fire", "./assets/SkillEffect1.png");
+      this.load.atlas("angle", "./assets/sprite/angle.png", "./assets/sprite/angle.json");
       this.load.atlas("magic", "./assets/sprite/magic.png", "./assets/sprite/magic.json");
       this.load.atlas("wolf", "./assets/sprite/wolf.png", "./assets/sprite/wolf.json");
+      this.load.atlas("building1", "./assets/sprite/buildings/building1.png", "./assets/sprite/buildings/building1_atlas.json");
+      this.load.atlas("University", "./assets/sprite/buildings/University.png", "./assets/sprite/buildings/University.json");
+      this.load.atlas("pyramid", "./assets/sprite/buildings/pyramid.png", "./assets/sprite/buildings/pyramid.json");
+      this.load.atlas("magicstone", "./assets/sprite/buildings/magicstone.png", "./assets/sprite/buildings/magicstone.json");
       this.load.audio("menuMusic", "./assets/music/Rise of spirit.mp3");
+      this.load.atlas("sword_in_the_stone", "./assets/sprite/sword_in_the_stone.png", "./assets/sprite/sword_in_the_stone.json");
       this.load.audio("beginsound", "./assets/soundeffect/metal-clash.wav"); //add loading bar
 
       var loadingBar = this.add.graphics({
@@ -377,6 +383,62 @@ function (_Phaser$GameObjects$I) {
 }(Phaser.GameObjects.Image);
 
 exports.Bullet = Bullet;
+},{}],"src/Units.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Units = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Units =
+/*#__PURE__*/
+function (_Phaser$Physics$Arcad) {
+  _inherits(Units, _Phaser$Physics$Arcad);
+
+  // init the units properties
+  function Units(scene, x, y, name, frame) {
+    var _this;
+
+    var hp = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 10;
+    var speed = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 1;
+    var range = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : null;
+
+    _classCallCheck(this, Units);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Units).call(this, scene, x, y, name, frame));
+    scene.sys.updateList.add(_assertThisInitialized(_this));
+    scene.sys.displayList.add(_assertThisInitialized(_this)); //this.setScale(1);
+
+    scene.physics.world.enable(_assertThisInitialized(_this));
+
+    _this.setCollideWorldBounds(true); //this.setImmovable(true);
+
+
+    _this.hp = hp;
+    _this.speed = speed;
+    _this.range = range;
+    return _this;
+  }
+
+  return Units;
+}(Phaser.Physics.Arcade.Sprite);
+
+exports.Units = Units;
 },{}],"src/scenes/PlayScene.js":[function(require,module,exports) {
 "use strict";
 
@@ -388,6 +450,8 @@ exports.PlayScene = void 0;
 var _CST = require("../CST");
 
 var _Projectiles = require("../gameObjects/Projectiles");
+
+var _Units = require("../Units");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -456,7 +520,20 @@ function (_Phaser$Scene) {
         //pointerdown event handler
         _this.player.attack();
       });
-      this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png");
+      this.angle = new _Units.Units(this, 200, 150, "angle", "angle_01.png");
+      this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png"); //adding buildings for each player
+
+      this.building = new _Units.Units(this, 1200, 1200, "building1");
+      this.building.setScale(0.15);
+      this.University = new _Units.Units(this, 1200, 0, "University");
+      this.University.setScale(1.5);
+      this.pyramid = new _Units.Units(this, 0, 0, "pyramid");
+      this.pyramid.setScale(1.5);
+      this.magicstone = new _Units.Units(this, 0, 1200, "magicstone");
+      this.magicstone.setScale(1.5); //adding resrouces to the middle 
+
+      this.sword_in_the_stone = new _Units.Units(this, 645, 645, "sword_in_the_stone");
+      this.sword_in_the_stone.setScale(0.5);
       this.player.setCollideWorldBounds(true); //create animations for different directions 
 
       this.anims.create({
@@ -543,8 +620,6 @@ function (_Phaser$Scene) {
     value: function update(time, delta) {
       //key control
       //movement note: we should only be able to move our character when it is alive
-      console.log(this.children.length);
-
       if (this.player.active) {
         if (this.keyboard.W.isDown) {
           this.player.setVelocityY(-64);
@@ -585,6 +660,7 @@ function (_Phaser$Scene) {
 
 
       this.physics.moveToObject(this.wolf, this.player);
+      this.physics.moveToObject(this.angle, this.player);
     }
   }]);
 
@@ -592,7 +668,7 @@ function (_Phaser$Scene) {
 }(Phaser.Scene);
 
 exports.PlayScene = PlayScene;
-},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js"}],"src/main.js":[function(require,module,exports) {
+},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js","../Units":"src/Units.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _LoadScene = require("./scenes/LoadScene");
@@ -645,7 +721,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51148" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53193" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
