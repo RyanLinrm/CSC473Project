@@ -16,6 +16,7 @@ export class LoadScene extends Phaser.Scene{
         this.load.image("StartButton", "./assets/StartButton.png");
         this.load.image("cursor", "./assets/fight.png");
         this.load.image("fire","./assets/SkillEffect1.png");
+        this.load.image("shoot1","./assets/shoot1.png");
         this.load.atlas("angle", "./assets/sprite/angle.png", "./assets/sprite/angle.json");
         this.load.atlas("ninjabot", "./assets/sprite/units/ninjabot.png", "./assets/sprite/units/ninjabot.json");
         this.load.atlas("magic", "./assets/sprite/magic.png", "./assets/sprite/magic.json");
