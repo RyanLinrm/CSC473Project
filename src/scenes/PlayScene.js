@@ -5,6 +5,7 @@
 import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../Units";
+import {Player} from "../gameObjects/Player";
 
 export class PlayScene extends Phaser.Scene{
     constructor(){
@@ -20,23 +21,8 @@ export class PlayScene extends Phaser.Scene{
 
     create(){
         //create phaser game object, and add in sprite
-        this.player = this.physics.add.sprite(300, 300, "magic", "Magic_01.png" );
-
-      
-        //Temporary attack function. The real one I believe should be inside the player class. 
-        this.player.nonZeroVelocity = {x:0,y:1};
-
-        this.player.bullets = this.physics.add.group({classType: Bullet, runChildUpdate: true});
-
-        this.player.attack = ()=>{
-          let bullet = this.player.bullets.get();
-          this.children.add(bullet);
-            bullet.shoot(this.player,this.input.x,this.input.y);
-        };
-
-        this.input.on('pointerdown',()=>{ //pointerdown event handler
-            this.player.attack();
-        });
+        this.player = new Player(this,300,300, "magic", "Magic_01.png");
+ 
 
         this.angle=new Units(this,200,150,"angle","angle_01.png");
 
