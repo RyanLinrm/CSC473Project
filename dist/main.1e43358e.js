@@ -499,7 +499,7 @@ function (_Phaser$Physics$Arcad) {
     _this.healthPoints = healthPoints;
     scene.input.on('pointerdown', function () {
       //pointerdown event handler
-      _this.attack();
+      if (_this.attack) _this.attack();
     });
     return _this;
   }
@@ -519,6 +519,19 @@ function (_Phaser$Physics$Arcad) {
         scene.children.add(bullet);
         bullet.shoot(_this2, scene.input.x, scene.input.y);
       };
+
+      this.removeWeapon = function () {
+        //destroys the weapon used
+        bullets.destroy();
+        _this2.attack = null;
+      };
+    }
+  }, {
+    key: "kill",
+    value: function kill() {
+      //Remove a player so we can handle other things related to the death such as removing the wepopn
+      this.removeWeapon();
+      this.destroy();
     }
   }]);
 
@@ -526,7 +539,88 @@ function (_Phaser$Physics$Arcad) {
 }(Phaser.Physics.Arcade.Sprite);
 
 exports.Player = Player;
-},{"../gameObjects/Projectiles":"src/gameObjects/Projectiles.js"}],"src/scenes/PlayScene.js":[function(require,module,exports) {
+},{"../gameObjects/Projectiles":"src/gameObjects/Projectiles.js"}],"src/gameObjects/Enemy.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Enemy = void 0;
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Enemy =
+/*#__PURE__*/
+function (_Phaser$Physics$Arcad) {
+  _inherits(Enemy, _Phaser$Physics$Arcad);
+
+  function Enemy(scene, x, y, key, textureName, target) {
+    var _this;
+
+    var healthPoints = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 50;
+
+    _classCallCheck(this, Enemy);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Enemy).call(this, scene, x, y, key, textureName, target)); //adds to the scenes update and display list
+
+    scene.sys.updateList.add(_assertThisInitialized(_this));
+    scene.sys.displayList.add(_assertThisInitialized(_this));
+
+    _this.setOrigin(0, 0); //enable body in physics game
+
+
+    scene.physics.world.enableBody(_assertThisInitialized(_this)); //Health
+
+    _this.healthPoints = healthPoints; //setup the movement of the enemy
+
+    _this.setupMovement(scene, target);
+
+    return _this;
+  }
+
+  _createClass(Enemy, [{
+    key: "setupMovement",
+    value: function setupMovement(scene, target) {
+      var _this2 = this;
+
+      //sets up the movement funciton that is called by the update method.
+      this.moveEnemy = function () {
+        scene.physics.moveToObject(_this2, target);
+      };
+    }
+  }, {
+    key: "attack",
+    value: function attack() {//Add an attack ability.
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
+      this.moveEnemy();
+    }
+  }]);
+
+  return Enemy;
+}(Phaser.Physics.Arcade.Sprite);
+
+exports.Enemy = Enemy;
+},{}],"src/scenes/PlayScene.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -541,6 +635,8 @@ var _Projectiles = require("../gameObjects/Projectiles");
 var _Units = require("../gameObjects/Units");
 
 var _Player = require("../gameObjects/Player");
+
+var _Enemy = require("../gameObjects/Enemy");
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -585,10 +681,18 @@ function (_Phaser$Scene) {
     value: function create() {
       var _this = this;
 
-      //create phaser game object, and add in sprite
-      this.player = new _Player.Player(this, 300, 300, "magic", "Magic_01.png");
-      this.angle = new _Units.Units(this, 200, 150, "angle", "angle_01.png");
-      this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png"); //adding buildings for each player
+      //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
+      //Without this groupt the update funciton would not be called for the enemies
+      this.enemyGroup = this.add.group({
+        runChildUpdate: true
+      }); //create phaser game object, and add in sprite
+
+      this.player = new _Player.Player(this, 300, 300, "magic", "Magic_01.png"); //The enemies wolf and angel. 
+
+      this.wolf = new _Enemy.Enemy(this, 100, 100, "wolf", "Wolf_01.png", this.player);
+      this.angel = new _Enemy.Enemy(this, 200, 150, "angle", "angle_01.png", this.player);
+      this.enemyGroup.add(this.wolf);
+      this.enemyGroup.add(this.angel); //adding buildings for each player
 
       this.building = new _Units.Units(this, 1200, 1200, "building1");
       this.building.setScale(0.15);
@@ -677,7 +781,7 @@ function (_Phaser$Scene) {
         //stop when they overplay, kill the player(test)
         overlaped.body.stop();
 
-        _this.player.destroy();
+        _this.player.kill();
 
         _this.physics.world.removeCollider(collider);
       }, null, this);
@@ -723,11 +827,7 @@ function (_Phaser$Scene) {
           }; //velocity unless the actual velocity is zero then it stores previous nonzero velocity
           //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
         }
-      } //TEST!!!---let the monster chases our character
-
-
-      this.physics.moveToObject(this.wolf, this.player);
-      this.physics.moveToObject(this.angle, this.player);
+      }
     }
   }]);
 
@@ -735,7 +835,7 @@ function (_Phaser$Scene) {
 }(Phaser.Scene);
 
 exports.PlayScene = PlayScene;
-},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js","../gameObjects/Units":"src/gameObjects/Units.js","../gameObjects/Player":"src/gameObjects/Player.js"}],"src/main.js":[function(require,module,exports) {
+},{"../CST":"src/CST.js","../gameObjects/Projectiles":"src/gameObjects/Projectiles.js","../gameObjects/Units":"src/gameObjects/Units.js","../gameObjects/Player":"src/gameObjects/Player.js","../gameObjects/Enemy":"src/gameObjects/Enemy.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _LoadScene = require("./scenes/LoadScene");
@@ -788,7 +888,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60121" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61318" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

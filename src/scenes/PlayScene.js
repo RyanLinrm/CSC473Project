@@ -6,6 +6,7 @@ import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
+import {Enemy} from "../gameObjects/Enemy";
 
 export class PlayScene extends Phaser.Scene{
     constructor(){
@@ -20,14 +21,21 @@ export class PlayScene extends Phaser.Scene{
     }
 
     create(){
+        //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
+        //Without this groupt the update funciton would not be called for the enemies
+        this.enemyGroup = this.add.group({runChildUpdate: true}); 
+
         //create phaser game object, and add in sprite
         this.player = new Player(this,300,300, "magic", "Magic_01.png");
- 
 
-        this.angle=new Units(this,200,150,"angle","angle_01.png");
+        //The enemies wolf and angel. 
+        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
+        this.angel= new Enemy(this,200,150,"angle","angle_01.png",this.player);
+        this.enemyGroup.add(this.wolf);
+        this.enemyGroup.add(this.angel);
 
-        this.wolf = this.physics.add.sprite(100, 100, "wolf", "Wolf_01.png" );
         //adding buildings for each player
+        
         this.building=new Units(this,1200,1200,"building1");
         this.building.setScale(0.15);
         this.University=new Units(this,1200,0,"University");
@@ -119,7 +127,7 @@ export class PlayScene extends Phaser.Scene{
         let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
             //stop when they overplay, kill the player(test)
             overlaped.body.stop();
-            this.player.destroy();
+            this.player.kill();
             this.physics.world.removeCollider(collider);
         }, null, this);
 
@@ -163,9 +171,6 @@ export class PlayScene extends Phaser.Scene{
             }
         }
 
-        //TEST!!!---let the monster chases our character
-        this.physics.moveToObject(this.wolf, this.player);
-        this.physics.moveToObject(this.angle, this.player);
     }
 
 }

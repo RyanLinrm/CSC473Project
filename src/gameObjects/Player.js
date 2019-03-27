@@ -19,7 +19,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.healthPoints = healthPoints;
 
         scene.input.on('pointerdown',()=>{ //pointerdown event handler
-            this.attack();
+            if(this.attack)
+                this.attack();
         });
     }
 
@@ -29,9 +30,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.attack = ()=>{
             let bullet = bullets.get();
             scene.children.add(bullet);
-            bullet.shoot(this,scene.input.x,scene.input.y);
-          };
+            bullet.shoot(this, scene.input.x, scene.input.y);
+        };
 
+        this.removeWeapon = ()=>{ //destroys the weapon used
+            bullets.destroy();
+            this.attack = null;
+        };    
+
+    }
+
+    kill(){
+        //Remove a player so we can handle other things related to the death such as removing the wepopn
+        this.removeWeapon();
+        this.destroy();
     }
 
 }
