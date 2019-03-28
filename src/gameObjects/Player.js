@@ -1,7 +1,7 @@
 import { Bullet } from "../gameObjects/Projectiles";
 
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName){
+    constructor(scene,x,y,key,textureName,healthPoints = 100){
         super(scene,x,y,key,textureName);
 
         //adds to the scenes update and display list
@@ -15,8 +15,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         scene.physics.world.enableBody(this);
         this.createWeapon(scene);
 
+        //Create intial Healthpoints for the player
+        this.healthPoints = healthPoints;
+
         scene.input.on('pointerdown',()=>{ //pointerdown event handler
-            this.attack();
+            if(this.attack)
+                this.attack();
         });
     }
 
@@ -26,9 +30,20 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.attack = ()=>{
             let bullet = bullets.get();
             scene.children.add(bullet);
-            bullet.shoot(this,scene.input.x,scene.input.y);
-          };
+            bullet.shoot(this, scene.input.x, scene.input.y);
+        };
 
+        this.removeWeapon = ()=>{ //destroys the weapon used
+            bullets.destroy();
+            this.attack = null;
+        };    
+
+    }
+
+    kill(){
+        //Remove a player so we can handle other things related to the death such as removing the wepopn
+        this.removeWeapon();
+        this.destroy();
     }
 
 }
