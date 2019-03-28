@@ -2,7 +2,7 @@ export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
 
-        this.setTexture('Magic_01.png'); //Need to change to actual bullet
+        this.setTexture('shoot1').setScale(0.2);
         this.speed = 1;
         this.angle = 0;
         this.xSpeed = 1;
