@@ -25,6 +25,10 @@ export class PlayScene extends Phaser.Scene{
         //Without this groupt the update funciton would not be called for the enemies
         this.enemyGroup = this.add.group({runChildUpdate: true}); 
 
+        //create bullet and unit groups
+        this.bullets = this.add.group({classType: Bullet, runChildUpdate: true});
+        this.units = this.add.group({classType: Units, runChildUpdate: true});
+
         //create phaser game object, and add in sprite
 
         this.player = new Player(this,300,300, "magic", "Magic_01.png");
@@ -137,6 +141,12 @@ export class PlayScene extends Phaser.Scene{
             overlaped.body.stop();
             this.player.kill();
             this.physics.world.removeCollider(collider);
+        }, null, this);
+
+        //If unit is hit by bullet, unit takes damage and bullet disappears
+        this.physics.world.addCollider(this.bullets, this.units, (bullet, unit) =>{
+            unit.healthPoints--;
+            bullet.destroy();
         }, null, this);
 
     }
