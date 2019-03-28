@@ -52,7 +52,7 @@ function create(){
        socket.on('disconnect',()=>{
             console.log("user disconnect");
             delete this.players[socket.id];
-            io.emit("playerDisconnect",socket.id);
+            io.emit("playerDisconnet");
        });
    });
 
