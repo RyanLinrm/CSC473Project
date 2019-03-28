@@ -61,7 +61,7 @@ export class PlayScene extends Phaser.Scene{
     
 
         this.anims.create({
-            key: "down",
+            key: "up",
             frameRate: 8,
             //walking downward animation frames
             frames: this.anims.generateFrameNames('p1', {
@@ -95,7 +95,7 @@ export class PlayScene extends Phaser.Scene{
         });
 
         this.anims.create({
-            key:'up',
+            key:'down',
             frameRate: 8,
             //walking left animation frames
             frames: this.anims.generateFrameNames('p1', {
@@ -149,19 +149,15 @@ export class PlayScene extends Phaser.Scene{
         if(this.player.active){
             if(this.keyboard.W.isDown){
                 this.player.setVelocityY(-64);
-                this.player.play("up", true);
             }
             if(this.keyboard.S.isDown){
                 this.player.setVelocityY(64);
-                this.player.play("down", true);
             }
             if(this.keyboard.A.isDown){
                 this.player.setVelocityX(-64);
-                this.player.play("left", true);
             }
             if(this.keyboard.D.isDown){
                 this.player.setVelocityX(64);
-                this.player.play("right", true);
             }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
@@ -171,6 +167,16 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
+            if(this.player.body.velocity.x > 0){
+                this.player.play("right", true);
+            } else if(this.player.body.velocity.x < 0){
+                this.player.play("left",true);
+            }else if(this.player.body.velocity.y > 0){
+                this.player.play("up",true);
+            }else if(this.player.body.velocity.y < 0){
+                this.player.play("down",true);
+            }
+
 
             if(this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
