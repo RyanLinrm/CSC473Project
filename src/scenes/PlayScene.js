@@ -5,6 +5,7 @@
 import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../Units";
+import {Player} from "../gameObjects/Player";
 
 export class PlayScene extends Phaser.Scene{
     constructor(){
@@ -20,6 +21,7 @@ export class PlayScene extends Phaser.Scene{
 
     create(){
         //create phaser game object, and add in sprite
+<<<<<<< HEAD
         this.player = this.physics.add.sprite(300, 300, "p1", "p1_0.png" );
         //create a sample minimap ---needs to change to dynamic
         this.minimap = this.cameras.add(590, 5, 250, 150).setZoom(0.2).setName('mini');
@@ -43,6 +45,9 @@ export class PlayScene extends Phaser.Scene{
         this.input.on('pointerdown',()=>{ //pointerdown event handler
             this.player.attack();
         });
+=======
+ 
+>>>>>>> bc0b92d5e84829057c443b7b19b721962945af1c
 
       //this.angle=new Units(this,200,150,"angle","angle_01.png");
         this.ninjabot=new Units(this,250,150,"ninjabot","ninjabot_1.png");

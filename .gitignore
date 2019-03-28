@@ -1,0 +1,7 @@
+dist/*.js
+dist/*.map
+dist/*.html
+
+.cache
+
+node_modules/
