@@ -31,11 +31,12 @@ export class PlayScene extends Phaser.Scene{
 
         //create phaser game object, and add in sprite
 
-        this.player = new Player(this,300,300, "magic", "Magic_01.png");
+        this.player = new Player(this,300,300, "p1", "p1_1.png");
 
-        //The enemies wolf and angel. 
+        //Generated enemies
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
+        this.demon1=new Enemy(this,400,300,'demon1','demon1_01');
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
@@ -61,9 +62,20 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
 
-        //create animations for different directions 
-    
+        //set up attacking animation 
+        this.anims.create({
+            key: "ability2",
+            frameRate: 8,
+            //walking downward animation frames
+            frames: this.anims.generateFrameNames('a2', {
+            start:1, end:10, zeroPad:1,
+            prefix:'a2_', suffix: '.png'
+            }),
+            repeat: -1
+        });
+        //this.add.sprite(400, 300, 'a2_01').play('ability2');
 
+       //create animations for different directions 
         this.anims.create({
             key: "up",
             frameRate: 8,

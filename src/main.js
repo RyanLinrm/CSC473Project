@@ -6,9 +6,9 @@ import { PlayScene } from "./scenes/PlayScene";
 
 let game = new Phaser.Game({
     type: Phaser.AUTO,
-    width:800,
-    height:600,
-    
+    width:1280,
+    height:720,
+    autoCenter:Phaser.Scale.CENTER_BOTH,
     physics: {
         default: 'arcade',
         
@@ -23,4 +23,5 @@ let game = new Phaser.Game({
         pixelArt: true
     }
 });
+scene.scene.add(unitscene, sceneConfig, autoStart);
 
