@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "University.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 130,
+				"h": 110
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "university.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 13,
+						"w": 128,
+						"h": 108
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 128,
+						"h": 108
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:3c5d6cd04c4918b7fbc654284acfb683:3a89d46b861c70f422e07cac0c81b7fc:9b57763ef526846df353cd1ecfa8fbc0$"
+	}
+}
