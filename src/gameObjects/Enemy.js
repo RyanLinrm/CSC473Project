@@ -27,11 +27,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     attack(){
         //Add an attack ability.
+    
+        
     }
 
     update(){
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
 
         this.moveEnemy();
+    }
+
+    die(){
+        this.destroy();
     }
 }

@@ -33,10 +33,10 @@ export class PlayScene extends Phaser.Scene{
 
         this.player = new Player(this,300,300, "p1", "p1_1.png");
 
-        //Generated enemies
-        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
-        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
-        this.demon1=new Enemy(this,400,300,'demon1','demon1_01');
+        //The enemies wolf and angel. 
+        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player,3);
+        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player,3);
+        this.demon1=new Enemy(this,400,300,"demon1","demon1_01").setScale(1.5)
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
@@ -62,18 +62,34 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
 
-        //set up attacking animation 
+        //set up attacking animation check
         this.anims.create({
-            key: "ability2",
+            key: "shoot",
             frameRate: 8,
             //walking downward animation frames
-            frames: this.anims.generateFrameNames('a2', {
+            frames: this.anims.generateFrameNames('ability2', {
             start:1, end:10, zeroPad:1,
             prefix:'a2_', suffix: '.png'
             }),
             repeat: -1
         });
-        //this.add.sprite(400, 300, 'a2_01').play('ability2');
+        this.add.sprite(425, 300, 'a2_01').play('shoot');
+
+
+        this.anims.create({
+            key: "shoot1",
+            frameRate: 8,
+            //walking downward animation frames
+            frames: this.anims.generateFrameNames('s1', {
+            start:1, end:10, zeroPad:2,
+            prefix:'s1_', suffix: '.png'
+            }),
+            repeat: -1
+        });
+        this.add.sprite(500,500,'s1_01').play('shoot1');
+
+
+
 
        //create animations for different directions 
         this.anims.create({
@@ -155,13 +171,26 @@ export class PlayScene extends Phaser.Scene{
             this.physics.world.removeCollider(collider);
         }, null, this);
 
-        //If unit is hit by bullet, unit takes damage and bullet disappears
-        this.physics.world.addCollider(this.bullets, this.units, (bullet, unit) =>{
-            unit.healthPoints--;
+        //If enemey is hit by bullet, enemey takes damage and bullet disappears
+        this.physics.world.addCollider(this.bullets, this.Enemy, (bullet, Enemy) =>{
+            Enemy.healthPoints--;
             bullet.destroy();
+            if(this.Enemy.healthPoints<=10){
+                this.Enemy.die();
+            }
         }, null, this);
 
+        //try to add a drag function
+        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+
+            gameObject.x = dragX;
+            gameObject.y = dragY;
+    
+        });
+    
+
     }
+        
 
     update(time,delta) {
         
