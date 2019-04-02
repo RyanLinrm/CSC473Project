@@ -29,11 +29,12 @@ export class PlayScene extends Phaser.Scene{
 
         //create phaser game object, and add in sprite
 
-        this.player = new Player(this,300,300, "magic", "Magic_01.png");
+        this.player = new Player(this,300,300, "p1", "p1_01.png");
 
         //The enemies wolf and angel. 
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
+        this.demon1=new Enemy(this,400,300,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
@@ -58,6 +59,25 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
+    
+       //set up attacking animation check
+       this.anims.create({
+        key: "ab2",
+        frameRate: 8,
+        //walking downward animation frames
+        frames: this.anims.generateFrameNames('ability2', {
+        start:1, end:10, zeroPad:1,
+        prefix:'a2_', suffix: '.png'
+        }),
+        repeat: -1
+     });
+        this.add.sprite(425, 300, 'a2_01').play('ab2');
+
+
+ 
+
+
+
 
         //create animations for different directions 
     
@@ -109,6 +129,7 @@ export class PlayScene extends Phaser.Scene{
 
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         
         //add in our map
@@ -151,19 +172,22 @@ export class PlayScene extends Phaser.Scene{
         if(this.player.active){
             if(this.keyboard.W.isDown){
                 this.player.setVelocityY(-64);
-                this.player.play("up", true);
             }
             if(this.keyboard.S.isDown){
                 this.player.setVelocityY(64);
-                this.player.play("down", true);
+     
             }
             if(this.keyboard.A.isDown){
                 this.player.setVelocityX(-64);
-                this.player.play("left", true);
+
             }
             if(this.keyboard.D.isDown){
                 this.player.setVelocityX(64);
-                this.player.play("right", true);
+ 
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+            {
+                this.player.attack();
             }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
@@ -173,6 +197,16 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
+            if(this.player.body.velocity.x > 0){
+                this.player.play("right", true);
+            } else if(this.player.body.velocity.x < 0){
+                this.player.play("left",true);
+            }else if(this.player.body.velocity.y > 0){
+                this.player.play("down",true);
+            }else if(this.player.body.velocity.y < 0){
+                this.player.play("up",true);
+            }
+
 
             if(this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 

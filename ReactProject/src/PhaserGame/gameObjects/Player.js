@@ -18,10 +18,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //Create intial Healthpoints for the player
         this.healthPoints = healthPoints;
 
-        scene.input.on('pointerdown',()=>{ //pointerdown event handler
-            if(this.attack)
-                this.attack();
-        });
     }
 
     createWeapon(scene){

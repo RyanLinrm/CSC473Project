@@ -1,0 +1,351 @@
+{
+	"frames": [
+		{
+			"filename": "demon1_01.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 39,
+				"h": 36
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 36
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 36
+			}
+		},
+		{
+			"filename": "demon1_02.png",
+			"frame": {
+				"x": 42,
+				"y": 1,
+				"w": 39,
+				"h": 36
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 36
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 36
+			}
+		},
+		{
+			"filename": "demon1_03.png",
+			"frame": {
+				"x": 83,
+				"y": 1,
+				"w": 39,
+				"h": 36
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 36
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 36
+			}
+		},
+		{
+			"filename": "demon1_04.png",
+			"frame": {
+				"x": 124,
+				"y": 1,
+				"w": 39,
+				"h": 38
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 38
+			}
+		},
+		{
+			"filename": "demon1_05.png",
+			"frame": {
+				"x": 165,
+				"y": 1,
+				"w": 35,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 35,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 35,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_06.png",
+			"frame": {
+				"x": 202,
+				"y": 1,
+				"w": 37,
+				"h": 38
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 37,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 37,
+				"h": 38
+			}
+		},
+		{
+			"filename": "demon1_07.png",
+			"frame": {
+				"x": 241,
+				"y": 1,
+				"w": 35,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 35,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 35,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_08.png",
+			"frame": {
+				"x": 278,
+				"y": 1,
+				"w": 33,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 33,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_09.png",
+			"frame": {
+				"x": 313,
+				"y": 1,
+				"w": 35,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 35,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 35,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_10.png",
+			"frame": {
+				"x": 350,
+				"y": 1,
+				"w": 37,
+				"h": 38
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 37,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 37,
+				"h": 38
+			}
+		},
+		{
+			"filename": "demon1_11.png",
+			"frame": {
+				"x": 389,
+				"y": 1,
+				"w": 35,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 35,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 35,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_12.png",
+			"frame": {
+				"x": 426,
+				"y": 1,
+				"w": 33,
+				"h": 35
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 33,
+				"h": 35
+			},
+			"sourceSize": {
+				"w": 33,
+				"h": 35
+			}
+		},
+		{
+			"filename": "demon1_13.png",
+			"frame": {
+				"x": 461,
+				"y": 1,
+				"w": 39,
+				"h": 36
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 36
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 36
+			}
+		},
+		{
+			"filename": "demon1_14.png",
+			"frame": {
+				"x": 502,
+				"y": 1,
+				"w": 39,
+				"h": 38
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 38
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 38
+			}
+		},
+		{
+			"filename": "demon1_15.png",
+			"frame": {
+				"x": 543,
+				"y": 1,
+				"w": 39,
+				"h": 36
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 36
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 36
+			}
+		},
+		{
+			"filename": "demon1_16.png",
+			"frame": {
+				"x": 584,
+				"y": 1,
+				"w": 39,
+				"h": 37
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 39,
+				"h": 37
+			},
+			"sourceSize": {
+				"w": 39,
+				"h": 37
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 624,
+			"h": 40
+		},
+		"scale": "1"
+	}
+}

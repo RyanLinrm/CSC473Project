@@ -12,8 +12,9 @@ export default class Game extends React.Component{
 
         let game = new Phaser.Game({
             type: Phaser.AUTO,
-            width:800,
-            height:600,
+            width:1080,
+            height:680,
+            autoCenter:Phaser.Scale.CENTER_BOTH,
             
             physics: {
                 default: 'arcade',
