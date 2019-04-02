@@ -1,0 +1,356 @@
+{
+	"textures": [
+		{
+			"image": "angle.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 496,
+				"h": 106
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "angle_01.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 49
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 79,
+						"h": 49
+					}
+				},
+				{
+					"filename": "angle_02.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 67,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 67,
+						"h": 50
+					},
+					"frame": {
+						"x": 82,
+						"y": 1,
+						"w": 67,
+						"h": 50
+					}
+				},
+				{
+					"filename": "angle_03.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 49
+					},
+					"frame": {
+						"x": 151,
+						"y": 1,
+						"w": 79,
+						"h": 49
+					}
+				},
+				{
+					"filename": "angle_04.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 67,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 67,
+						"h": 50
+					},
+					"frame": {
+						"x": 232,
+						"y": 1,
+						"w": 67,
+						"h": 50
+					}
+				},
+				{
+					"filename": "angle_05.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 44
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 44
+					},
+					"frame": {
+						"x": 301,
+						"y": 1,
+						"w": 45,
+						"h": 44
+					}
+				},
+				{
+					"filename": "angle_06.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 49,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 49,
+						"h": 42
+					},
+					"frame": {
+						"x": 348,
+						"y": 1,
+						"w": 49,
+						"h": 42
+					}
+				},
+				{
+					"filename": "angle_07.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 44
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 44
+					},
+					"frame": {
+						"x": 399,
+						"y": 1,
+						"w": 45,
+						"h": 44
+					}
+				},
+				{
+					"filename": "angle_08.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 49,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 49,
+						"h": 42
+					},
+					"frame": {
+						"x": 446,
+						"y": 1,
+						"w": 49,
+						"h": 42
+					}
+				},
+				{
+					"filename": "angle_09.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 44
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 44
+					},
+					"frame": {
+						"x": 1,
+						"y": 53,
+						"w": 45,
+						"h": 44
+					}
+				},
+				{
+					"filename": "angle_10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 49,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 49,
+						"h": 42
+					},
+					"frame": {
+						"x": 48,
+						"y": 53,
+						"w": 49,
+						"h": 42
+					}
+				},
+				{
+					"filename": "angle_11.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 45,
+						"h": 44
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 45,
+						"h": 44
+					},
+					"frame": {
+						"x": 99,
+						"y": 53,
+						"w": 45,
+						"h": 44
+					}
+				},
+				{
+					"filename": "angle_12.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 49,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 49,
+						"h": 42
+					},
+					"frame": {
+						"x": 146,
+						"y": 53,
+						"w": 49,
+						"h": 42
+					}
+				},
+				{
+					"filename": "angle_13.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 49
+					},
+					"frame": {
+						"x": 197,
+						"y": 53,
+						"w": 79,
+						"h": 49
+					}
+				},
+				{
+					"filename": "angle_14.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 65,
+						"h": 52
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 65,
+						"h": 52
+					},
+					"frame": {
+						"x": 278,
+						"y": 53,
+						"w": 65,
+						"h": 52
+					}
+				},
+				{
+					"filename": "angle_15.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 79,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 79,
+						"h": 49
+					},
+					"frame": {
+						"x": 345,
+						"y": 53,
+						"w": 79,
+						"h": 49
+					}
+				},
+				{
+					"filename": "angle_16.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 65,
+						"h": 52
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 65,
+						"h": 52
+					},
+					"frame": {
+						"x": 426,
+						"y": 53,
+						"w": 65,
+						"h": 52
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:1b4337a29b816178b816faee44a86a74:49268c17c80c337362b182776fe964a8:c61a48fc214d1a3b646dac1242d6b32d$"
+	}
+}
