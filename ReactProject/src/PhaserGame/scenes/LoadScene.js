@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import {CST} from "../CST";
-import  StartButton from "../assets/StartButton.png";
+
 
 
 export class LoadScene extends Phaser.Scene{
