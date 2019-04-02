@@ -6,6 +6,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+      <h1>React Phaser Game</h1>
       <Game />
       </div>
     );
