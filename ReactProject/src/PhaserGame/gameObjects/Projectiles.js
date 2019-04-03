@@ -5,12 +5,13 @@ export class Bullet extends Phaser.GameObjects.Image {
 
         this.setTexture('shoot1').setScale(0.2);
         this.speed = 1;
-        this.angle = 0;
+        this.angle = 20;
         this.xSpeed = 1;
         this.ySpeed = 1;
         this.timeAlive = 0;
         
     }
+    //111
 
     shoot(shooter,mouseX,mouseY){
         this.timeAlive = 0;

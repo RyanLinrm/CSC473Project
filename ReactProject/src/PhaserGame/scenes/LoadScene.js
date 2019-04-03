@@ -21,10 +21,14 @@ export class LoadScene extends Phaser.Scene{
     this.load.image("cursor", `${process.env.PUBLIC_URL}/assets/fight.png`);
     this.load.image("fire", `${process.env.PUBLIC_URL}/assets/SkillEffect1.png`);
     this.load.image("shoot1", `${process.env.PUBLIC_URL}/assets/shoot1.png`);
-    this.load.atlas("angle", `${process.env.PUBLIC_URL}/assets/sprite/angle.png`, `${process.env.PUBLIC_URL}/assets/sprite/angle.json`);
+    this.load.atlas("angel", `${process.env.PUBLIC_URL}/assets/sprite/angel.png`, `${process.env.PUBLIC_URL}/assets/sprite/angel.json`);
     this.load.atlas("ninjabot", `${process.env.PUBLIC_URL}assets/sprite/units/ninjabot.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/ninjabot.json`);
+    this.load.atlas("demon1", `${process.env.PUBLIC_URL}assets/sprite/units/demon1.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/demon1.json`);
     this.load.atlas("magic", `${process.env.PUBLIC_URL}/assets/sprite/magic.png`, `${process.env.PUBLIC_URL}/assets/sprite/magic.json`);
+    this.load.atlas("s1", `${process.env.PUBLIC_URL}/assets/ability/s1.png`, `${process.env.PUBLIC_URL}/assets/ability/s1.json`);
+    this.load.atlas("ability2", `${process.env.PUBLIC_URL}/assets/ability/ability2.png`, `${process.env.PUBLIC_URL}/assets/ability/ability2.json`);
     this.load.atlas("p1", `${process.env.PUBLIC_URL}/assets/sprite/p1.png`, `${process.env.PUBLIC_URL}/assets/sprite/p1.json`);
+    
     this.load.atlas("wolf", `${process.env.PUBLIC_URL}/assets/sprite/wolf.png`, `${process.env.PUBLIC_URL}/assets/sprite/wolf.json`);
     this.load.atlas("building1",`${process.env.PUBLIC_URL}/assets/sprite/buildings/building1.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/building1_atlas.json`);
     this.load.atlas("University", `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.json`);

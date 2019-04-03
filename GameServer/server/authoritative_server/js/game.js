@@ -7,8 +7,9 @@
 let game = new Phaser.Game({
     type: Phaser.HEADLESS,
     parent: 'phaser-example',
-    width:800,
-    height:600,
+    width:1280,
+    height:720,
+    autoCenter:Phaser.Scale.CENTER_BOTH,
     physics: {
         default: 'arcade',
         arcade: {
