@@ -131,7 +131,8 @@ export class PlayScene extends Phaser.Scene{
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        
+        //Map
+
         //add in our map
         let Mymap = this.add.tilemap("Mymap");
 
@@ -139,14 +140,24 @@ export class PlayScene extends Phaser.Scene{
         let tiles2 = Mymap.addTilesetImage("map_atlas2", "tiles2");
 
        // display layers
-        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-1);
+        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
         let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
-        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-1);
+        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
+        let CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
+
+        //Collision layer handler
+        CollisionLayer.setCollisionByProperty({collides:true});
+        waterLayer.setCollisionByProperty({collides:true});
+
+        //Assign collider objects
+        this.physics.add.collider(this.player, CollisionLayer);
+        this.physics.add.collider(this.player, waterLayer);
 
 
         //Camera
+
         // set bounds to avoid camera goes outside the map
         this.physics.world.setBounds(0, 0, Mymap.widthInPixels, Mymap.heightInPixels);
 
@@ -155,12 +166,12 @@ export class PlayScene extends Phaser.Scene{
 
 
         //If it gets the character, character dies
-        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+        /*let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
             //stop when they overplay, kill the player(test)
             overlaped.body.stop();
             this.player.kill();
             this.physics.world.removeCollider(collider);
-        }, null, this);
+        }, null, this);*/
 
     }
 
