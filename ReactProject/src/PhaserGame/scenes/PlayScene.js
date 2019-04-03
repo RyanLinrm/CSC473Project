@@ -31,13 +31,10 @@ export class PlayScene extends Phaser.Scene{
 
         this.player = new Player(this,300,300, "p1", "p1_01.png");
 
-        //adjust player hit box
-        this.player.setSize( 24, 28).setOffset(5,5);
-
         //The enemies wolf and angel. 
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
-        this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
+        this.demon1=new Enemy(this,400,300,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
@@ -74,7 +71,7 @@ export class PlayScene extends Phaser.Scene{
         }),
         repeat: -1
      });
-        this.add.sprite(600, 500, 'a2_01').play('ab2');
+        this.add.sprite(425, 300, 'a2_01').play('ab2');
 
 
  
@@ -134,8 +131,7 @@ export class PlayScene extends Phaser.Scene{
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-        //Map
-
+        
         //add in our map
         let Mymap = this.add.tilemap("Mymap");
 
@@ -143,38 +139,14 @@ export class PlayScene extends Phaser.Scene{
         let tiles2 = Mymap.addTilesetImage("map_atlas2", "tiles2");
 
        // display layers
-        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
+        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-1);
         let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
-        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
+        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-1);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
-        let CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
-
-        //Collision layer handler
-        CollisionLayer.setCollisionByProperty({collides:true});
-        waterLayer.setCollisionByProperty({collides:true});
-
-        //Assign collider objects
-        this.physics.add.collider(this.player, CollisionLayer);
-        this.physics.add.collider(this.player, waterLayer);
-        this.physics.add.collider(this.wolf, waterLayer);
-        this.physics.add.collider(this.wolf, CollisionLayer);
-        this.physics.add.collider(this.ninjabot, waterLayer);
-        this.physics.add.collider(this.ninjabot, CollisionLayer);
-
-        //Map collision debug mode
-        this.debugGraphics = this.add.graphics();
- 
-        Mymap.renderDebug(this.debugGraphics, {
-            tileColor: null,
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 128), 
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) 
-          });
-
 
 
         //Camera
-
         // set bounds to avoid camera goes outside the map
         this.physics.world.setBounds(0, 0, Mymap.widthInPixels, Mymap.heightInPixels);
 
@@ -183,12 +155,12 @@ export class PlayScene extends Phaser.Scene{
 
 
         //If it gets the character, character dies
-        /*let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
             //stop when they overplay, kill the player(test)
             overlaped.body.stop();
             this.player.kill();
             this.physics.world.removeCollider(collider);
-        }, null, this);*/
+        }, null, this);
 
     }
 
@@ -236,7 +208,7 @@ export class PlayScene extends Phaser.Scene{
             }
 
 
-            if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
+            if(this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
