@@ -31,10 +31,13 @@ export class PlayScene extends Phaser.Scene{
 
         this.player = new Player(this,300,300, "p1", "p1_01.png");
 
+        //adjust player hit box
+        this.player.setSize( 24, 28).setOffset(5,5);
+
         //The enemies wolf and angel. 
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
-        this.demon1=new Enemy(this,400,300,"demon1","demon1_01").setScale(1.5);
+        this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
@@ -71,7 +74,7 @@ export class PlayScene extends Phaser.Scene{
         }),
         repeat: -1
      });
-        this.add.sprite(425, 300, 'a2_01').play('ab2');
+        this.add.sprite(600, 500, 'a2_01').play('ab2');
 
 
  
@@ -154,6 +157,20 @@ export class PlayScene extends Phaser.Scene{
         //Assign collider objects
         this.physics.add.collider(this.player, CollisionLayer);
         this.physics.add.collider(this.player, waterLayer);
+        this.physics.add.collider(this.wolf, waterLayer);
+        this.physics.add.collider(this.wolf, CollisionLayer);
+        this.physics.add.collider(this.ninjabot, waterLayer);
+        this.physics.add.collider(this.ninjabot, CollisionLayer);
+
+        //Map collision debug mode
+        this.debugGraphics = this.add.graphics();
+ 
+        Mymap.renderDebug(this.debugGraphics, {
+            tileColor: null,
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 128), 
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) 
+          });
+
 
 
         //Camera
@@ -219,7 +236,7 @@ export class PlayScene extends Phaser.Scene{
             }
 
 
-            if(this.player.body.velocity.x != 0 || this.player.body.velocity.y != 0){
+            if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
