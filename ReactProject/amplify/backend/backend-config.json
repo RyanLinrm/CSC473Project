@@ -1,0 +1,8 @@
+{
+	"auth": {
+		"cognito90ed6030": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation"
+		}
+	}
+}
