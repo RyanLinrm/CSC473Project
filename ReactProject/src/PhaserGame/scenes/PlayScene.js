@@ -27,22 +27,23 @@ export class PlayScene extends Phaser.Scene{
         //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
         this.enemyGroup = this.add.group({runChildUpdate: true}); 
-
+        this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
+  
+        //this.player = new Player(this,300,300, "p1", "p1_01.png",10);
 
         this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
-
-        //The enemies wolf and angel. 
-        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
-        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
+        //The enemies  
+        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player,10);
+        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player,10);
         this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
-
+       
         //create a sample minimap ---needs to change to dynamic
         this.minimap = this.cameras.add(590, 5, 250, 150).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
@@ -63,7 +64,9 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
-    
+        this.physics.add.collider(this.enemyGroup, this.enemyGroup);
+        this.physics.add.collider(this.player, this.enemyGroup);
+       
        //set up attacking animation check
        this.anims.create({
         key: "ab2",
@@ -76,9 +79,6 @@ export class PlayScene extends Phaser.Scene{
         repeat: -1
      });
         this.add.sprite(600, 500, 'a2_01').play('ab2');
-
-
- 
 
 
 
@@ -132,8 +132,11 @@ export class PlayScene extends Phaser.Scene{
         });
 
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, Q");
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT, Q");
+      
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
 
         //Map
 
@@ -158,11 +161,9 @@ export class PlayScene extends Phaser.Scene{
         //Assign collider objects
         this.physics.add.collider(this.player, CollisionLayer);
         this.physics.add.collider(this.player, waterLayer);
-        this.physics.add.collider(this.wolf, waterLayer);
-        this.physics.add.collider(this.wolf, CollisionLayer);
-        this.physics.add.collider(this.ninjabot, waterLayer);
-        this.physics.add.collider(this.ninjabot, CollisionLayer);
-
+        this.physics.add.collider(this.enemyGroup, waterLayer);
+        this.physics.add.collider(this.enemyGroup, CollisionLayer);
+  
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
  
@@ -183,18 +184,20 @@ export class PlayScene extends Phaser.Scene{
         this.cameras.main.startFollow(this.player);
 
 
-        //If it gets the character, character dies
-        /*let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+
+       /* //If it gets the character, character decreases healthpoint until he is dead
+        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
             //stop when they overplay, kill the player(test)
             overlaped.body.stop();
-            this.player.kill();
+            this.player.healthPoints--;
+            if(this.player.healthPoints<=0){
+            this.player.kill();}
             this.physics.world.removeCollider(collider);
         }, null, this);*/
-
     }
 
     update(time,delta) {
-        
+        console.log( this.player_scale)
         //key control
         //movement note: we should only be able to move our character when it is alive
 
@@ -245,9 +248,39 @@ export class PlayScene extends Phaser.Scene{
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
-        }
+            //Generate player ability and skills
+            /*if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+            {
+                this.player.attack();
+            }*/
+            //speed up the movement 
+            if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
+            {
+                this.player.setVelocityY(-192);
+            }
+            if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
+            {
+                this.player.setVelocityX(-192);
+            }
+            if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
+            {
+                this.player.setVelocityY(192);
+            }
+            if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
+            {
+                this.player.setVelocityX(192);
+            }
+            //still need to work on how to combine the two using only one key
+            if (Phaser.Input.Keyboard.JustDown(this.Rbar))
+            {
+                this.player.setScale(2);
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.Tbar))
+            {
+                this.player.setScale(1);
+            }
+    
 
 
-    }
+    }}}
 
-}
