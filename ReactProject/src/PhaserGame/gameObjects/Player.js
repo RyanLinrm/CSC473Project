@@ -58,16 +58,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     createWeapon(scene){
-        let bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            let bullet = bullets.get();
+            let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);
         };
 
         this.removeWeapon = ()=>{ //destroys the weapon used
-            bullets.destroy();
+            this.bullets.destroy();
             this.attack = null;
         };    
 
