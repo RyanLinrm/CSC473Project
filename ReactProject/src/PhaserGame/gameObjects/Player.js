@@ -21,16 +21,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     createWeapon(scene){
-        let bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            let bullet = bullets.get();
+            let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this, scene.input.x, scene.input.y);
         };
 
         this.removeWeapon = ()=>{ //destroys the weapon used
-            bullets.destroy();
+            this.bullets.destroy();
             this.attack = null;
         };    
 
@@ -40,6 +40,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //Remove a player so we can handle other things related to the death such as removing the wepopn
         this.removeWeapon();
         this.destroy();
+    }
+
+    takeDamage(damage){
+        this.healthPoints = this.healthPoints - damage;
+
+        if( this.healthPoints <= 0 ){
+            this.kill();
+        }
     }
 
 }

@@ -190,6 +190,26 @@ export class PlayScene extends Phaser.Scene{
             this.physics.world.removeCollider(collider);
         }, null, this);*/
 
+        /*let collider2 = this.physics.add.overlap(this.bullets, this.wolf, (overlaped) =>{
+            //stop when they overplay, kill the player(test)
+            overlaped.body.stop();
+            this.player.kill();
+            this.physics.world.removeCollider(collider2);
+        }, null, this);*/
+
+        this.physics.world.addCollider(this.wolf, this.ninjabot, ()=>{} );
+        this.physics.world.addCollider(this.player, this.ninjabot, ()=>{} );
+
+        this.physics.add.overlap(this.wolf,this.player.bullets,overlapHandler);
+
+        function overlapHandler(enemy, bullet){
+            console.log('hit!');
+                if (enemy.active && bullet.active ){
+                    bullet.setActive(false);
+                    bullet.setVisible(false);
+                }
+                enemy.takeDamage(10);
+        }
     }
 
     update(time,delta) {
@@ -242,6 +262,13 @@ export class PlayScene extends Phaser.Scene{
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
         }
+
+
+        /*this.physics.world.addCollider(this.player, this.wolf, (collider)=>{
+            this.wolf.attackEnemy();
+            this.damessage = this.add.text(this.player.x, this.player.y - 10, '', { font: '16px Courier', fill: '#FF0000' });
+            this.damessage.setText('- ' + this.wolf.ATK);
+        })*/
 
 
     }
