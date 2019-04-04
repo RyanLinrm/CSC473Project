@@ -8,6 +8,7 @@ import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
+import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 
 export class PlayScene extends Phaser.Scene{
@@ -29,7 +30,7 @@ export class PlayScene extends Phaser.Scene{
 
         //create phaser game object, and add in sprite
 
-        this.player = new Player(this,300,300, "p1", "p1_01.png");
+        this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
