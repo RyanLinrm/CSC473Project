@@ -8,6 +8,7 @@ import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
+import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 
 export class PlayScene extends Phaser.Scene{
@@ -29,7 +30,9 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Player(this,300,300, "p1", "p1_01.png",10);
+        //this.player = new Player(this,300,300, "p1", "p1_01.png",10);
+
+        this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
@@ -129,7 +132,8 @@ export class PlayScene extends Phaser.Scene{
         });
 
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D,SHIFT");
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT, Q");
+      
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
@@ -213,7 +217,13 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(64);
  
             }
-          
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+            {
+                this.player.attack();
+            }
+            if(this.keyboard.Q.isDown){
+                this.player.specialAttack();
+            }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
 
@@ -239,10 +249,10 @@ export class PlayScene extends Phaser.Scene{
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
             //Generate player ability and skills
-            if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+            /*if (Phaser.Input.Keyboard.JustDown(this.spacebar))
             {
                 this.player.attack();
-            }
+            }*/
             //speed up the movement 
             if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
             {

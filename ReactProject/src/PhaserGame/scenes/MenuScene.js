@@ -13,8 +13,12 @@ export class MenuScene extends Phaser.Scene{
 
     create(){
         //add Main menu image
-        this.add.image(0, 0, "key1").setOrigin(0, 0).setDepth(0);
-
+      
+        let a = this.add.image(0, 0, "key1").setOrigin(0.5, 0.5).setDepth(0);
+        a.setScale(2,2);
+        a.x = window.innerWidth/2 ;
+        a.y = window.innerHeight/2 ;
+        console.log(a);
         //add Start Button image
         
         let startButton = 
