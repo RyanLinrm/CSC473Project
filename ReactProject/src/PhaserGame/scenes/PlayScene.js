@@ -8,6 +8,7 @@ import { CST } from "../CST";
 import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
+import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 
 export class PlayScene extends Phaser.Scene{
@@ -29,7 +30,7 @@ export class PlayScene extends Phaser.Scene{
 
         //create phaser game object, and add in sprite
 
-        this.player = new Player(this,300,300, "p1", "p1_01.png");
+        this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
@@ -131,7 +132,7 @@ export class PlayScene extends Phaser.Scene{
         });
 
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D");
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, Q");
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         //Map
@@ -216,6 +217,9 @@ export class PlayScene extends Phaser.Scene{
             if (Phaser.Input.Keyboard.JustDown(this.spacebar))
             {
                 this.player.attack();
+            }
+            if(this.keyboard.Q.isDown){
+                this.player.specialAttack();
             }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
