@@ -93,8 +93,7 @@ export class PlayScene extends Phaser.Scene{
             frames: this.anims.generateFrameNames('p1', {
             start:0, end:2, zeroPad:1,
             prefix:'p1_', suffix: '.png'
-            }),
-            repeat: -1
+            })
         });
         
 
@@ -105,8 +104,7 @@ export class PlayScene extends Phaser.Scene{
             frames: this.anims.generateFrameNames('p1', {
             start:3, end:5, zeroPad:1,
             prefix:'p1_', suffix: '.png'
-            }),
-            repeat: -1
+            })
         });
 
         this.anims.create({
@@ -116,8 +114,7 @@ export class PlayScene extends Phaser.Scene{
             frames: this.anims.generateFrameNames('p1', {
             start:6, end:8, zeroPad:1,
             prefix:'p1_', suffix: '.png'
-            }),
-            repeat: -1
+            })
         });
 
         this.anims.create({
@@ -127,8 +124,7 @@ export class PlayScene extends Phaser.Scene{
             frames: this.anims.generateFrameNames('p1', {
             start:9, end:11, zeroPad:1,
             prefix:'p1_', suffix: '.png'
-            }),
-            repeat: -1
+            })
         });
 
         //input and phyics
