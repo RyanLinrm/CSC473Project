@@ -4,3 +4,14 @@
 
 .hidden { display:none; }
 
+.Top{
+  display: flex;
+  justify-content: center;
+
+}
+
+.TopBarArrangement{
+  display:inline-flex;
+  
+}
+

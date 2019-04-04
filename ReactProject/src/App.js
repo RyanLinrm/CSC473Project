@@ -24,10 +24,12 @@ class App extends Component {
 
     return (
       <div className="App">
-      <h1>React Phaser Game</h1>
-
-      <button onClick={this.signInHandler}>{buttonText}</button>
-
+      <div className='Top'>
+        <div className ='TopBarArrangement'>
+          <h1>React Phaser Game</h1>
+          <button onClick={this.signInHandler}>{buttonText}</button>
+        </div>
+      </div>
       <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler}/>
 
       <div className={gameClass}>
