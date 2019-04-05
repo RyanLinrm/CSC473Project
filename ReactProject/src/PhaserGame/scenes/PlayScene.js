@@ -30,15 +30,15 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        //this.player = new Player(this,300,300, "p1", "p1_01.png",10);
+        this.player = new Player(this,300,300, "p1", "p1_01.png");
 
-        this.player = new Bomber(this,300,300, "p1", "p1_01.png");
+        //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
         //The enemies  
-        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player,10);
-        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player,10);
+        this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
+        this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
         this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
@@ -64,8 +64,8 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.enemyGroup, this.enemyGroup);
-        this.physics.add.collider(this.player, this.enemyGroup);
+        /*this.physics.add.collider(this.enemyGroup, this.enemyGroup);
+        this.physics.add.collider(this.player, this.enemyGroup);*/
        
        //set up attacking animation check
        this.anims.create({
@@ -180,41 +180,47 @@ export class PlayScene extends Phaser.Scene{
         this.cameras.main.startFollow(this.player);
 
 
+        // Useful states to manage handlers in update function
 
-       /* //If it gets the character, character decreases healthpoint until he is dead
-        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
-            //stop when they overplay, kill the player(test)
-            overlaped.body.stop();
-            this.player.healthPoints--;
-            if(this.player.healthPoints<=0){
-            this.player.kill();}
-            this.physics.world.removeCollider(collider);
-        }, null, this);*/
+        this.canBeAttacked = 0; //If our character can be attacked
+        this.canAttack = 0; //If the enemy can be attacked
 
-        /*let collider2 = this.physics.add.overlap(this.bullets, this.wolf, (overlaped) =>{
-            //stop when they overplay, kill the player(test)
-            overlaped.body.stop();
-            this.player.kill();
-            this.physics.world.removeCollider(collider2);
-        }, null, this);*/
-
-        this.physics.world.addCollider(this.wolf, this.ninjabot, ()=>{} );
-        this.physics.world.addCollider(this.player, this.ninjabot, ()=>{} );
-
-        this.physics.add.overlap(this.wolf,this.player.bullets,overlapHandler);
-
-        function overlapHandler(enemy, bullet){
-            console.log('hit!');
-                if (enemy.active && bullet.active ){
-                    bullet.setActive(false);
-                    bullet.setVisible(false);
-                }
-                enemy.takeDamage(10);
-        }
+        this.player_scale = 2;
     }
 
     update(time,delta) {
-        console.log( this.player_scale)
+        
+        //Handler enemy getting attacked by character, cooldown 2s
+
+        this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
+            if(this.canAttack < time){
+                console.log('hit!');
+                if (enemy.active && bullet.active ){
+                    bullet.setActive(false);
+                    bullet.destroy();
+                    bullet.setVisible(false);
+                }
+                enemy.takeDamage(20);
+                console.log(enemy.healthPoints);
+                this.canAttack = time + 2000;
+            }
+        },null,this);
+
+
+        //Handler character getting attacked by enemy, cooldown 3s
+
+        this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
+            if(this.canBeAttacked < time){
+                console.log('got hit!');
+                if (enemy.active && player.active ){
+                    player.takeDamage(20);
+                    console.log(player.healthPoints);
+                }
+                this.canBeAttacked = time + 3000;
+            }
+        },null,this);
+
+
         //key control
         //movement note: we should only be able to move our character when it is alive
 
@@ -287,26 +293,20 @@ export class PlayScene extends Phaser.Scene{
             {
                 this.player.setVelocityX(192);
             }
-            //still need to work on how to combine the two using only one key
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))
-            {
-                this.player.setScale(2);
+            {   
+                if(this.player_scale === 2){
+                    this.player.setScale(this.player_scale);
+                    this.player_scale --;
+                }
+                else{
+                    this.player.setScale(this.player_scale);
+                    this.player_scale ++;
+                }
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Tbar))
-            {
-                this.player.setScale(1);
-            }
-    
+        }
+        
 
-
-        /*this.physics.world.addCollider(this.player, this.wolf, (collider)=>{
-            this.wolf.attackEnemy();
-            this.damessage = this.add.text(this.player.x, this.player.y - 10, '', { font: '16px Courier', fill: '#FF0000' });
-            this.damessage.setText('- ' + this.wolf.ATK);
-        })*/
-
-
-    }
     }
 }
 
