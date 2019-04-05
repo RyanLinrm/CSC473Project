@@ -1,8 +1,10 @@
 import {Player} from "../gameObjects/Player";
 import { Bomb } from "../gameObjects/Projectiles";
 export class Bomber extends Player{
-    constructor(scene,x,y,key,textureName,healthPoints = 100){
+    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64){
         super(scene,x,y,key,textureName,healthPoints = 500);
+        this.movementSpeed=movementSpeed;
+
     }
 
     createWeapon(scene) {

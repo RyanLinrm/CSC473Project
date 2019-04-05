@@ -1,0 +1,351 @@
+{
+	"frames": [
+		{
+			"filename": "dragonrider_01.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 94,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_02.png",
+			"frame": {
+				"x": 97,
+				"y": 1,
+				"w": 87,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 87,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 87,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_03.png",
+			"frame": {
+				"x": 186,
+				"y": 1,
+				"w": 94,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_04.png",
+			"frame": {
+				"x": 282,
+				"y": 1,
+				"w": 87,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 87,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 87,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_05.png",
+			"frame": {
+				"x": 371,
+				"y": 1,
+				"w": 94,
+				"h": 95
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 95
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 95
+			}
+		},
+		{
+			"filename": "dragonrider_06.png",
+			"frame": {
+				"x": 467,
+				"y": 1,
+				"w": 94,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_07.png",
+			"frame": {
+				"x": 563,
+				"y": 1,
+				"w": 94,
+				"h": 95
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 95
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 95
+			}
+		},
+		{
+			"filename": "dragonrider_08.png",
+			"frame": {
+				"x": 659,
+				"y": 1,
+				"w": 93,
+				"h": 93
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 93
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 93
+			}
+		},
+		{
+			"filename": "dragonrider_09.png",
+			"frame": {
+				"x": 754,
+				"y": 1,
+				"w": 94,
+				"h": 91
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 91
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 91
+			}
+		},
+		{
+			"filename": "dragonrider_10.png",
+			"frame": {
+				"x": 850,
+				"y": 1,
+				"w": 94,
+				"h": 91
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 91
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 91
+			}
+		},
+		{
+			"filename": "dragonrider_11.png",
+			"frame": {
+				"x": 946,
+				"y": 1,
+				"w": 94,
+				"h": 90
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 94,
+				"h": 90
+			},
+			"sourceSize": {
+				"w": 94,
+				"h": 90
+			}
+		},
+		{
+			"filename": "dragonrider_12.png",
+			"frame": {
+				"x": 1042,
+				"y": 1,
+				"w": 93,
+				"h": 89
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 93,
+				"h": 89
+			},
+			"sourceSize": {
+				"w": 93,
+				"h": 89
+			}
+		},
+		{
+			"filename": "dragonrider_13.png",
+			"frame": {
+				"x": 1137,
+				"y": 1,
+				"w": 91,
+				"h": 95
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 91,
+				"h": 95
+			},
+			"sourceSize": {
+				"w": 91,
+				"h": 95
+			}
+		},
+		{
+			"filename": "dragonrider_14.png",
+			"frame": {
+				"x": 1230,
+				"y": 1,
+				"w": 79,
+				"h": 94
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 94
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 94
+			}
+		},
+		{
+			"filename": "dragonrider_15.png",
+			"frame": {
+				"x": 1311,
+				"y": 1,
+				"w": 91,
+				"h": 95
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 91,
+				"h": 95
+			},
+			"sourceSize": {
+				"w": 91,
+				"h": 95
+			}
+		},
+		{
+			"filename": "dragonrider_16.png",
+			"frame": {
+				"x": 1404,
+				"y": 1,
+				"w": 79,
+				"h": 94
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 79,
+				"h": 94
+			},
+			"sourceSize": {
+				"w": 79,
+				"h": 94
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 1484,
+			"h": 97
+		},
+		"scale": "1"
+	}
+}

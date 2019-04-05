@@ -32,8 +32,7 @@ export class PlayScene extends Phaser.Scene{
   
         //this.player = new Player(this,300,300, "p1", "p1_01.png",10);
 
-        this.player = new Bomber(this,300,300, "p1", "p1_01.png");
-
+        this.player = new Bomber(this,300,300, "p1", "p1_01.png",100);
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
         //The enemies  
@@ -214,24 +213,23 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-        console.log( this.player_scale)
         //key control
         //movement note: we should only be able to move our character when it is alive
 
         if(this.player.active){
             if(this.keyboard.W.isDown){
-                this.player.setVelocityY(-64);
+                this.player.setVelocityY(-this.player.movementSpeed);
             }
             if(this.keyboard.S.isDown){
-                this.player.setVelocityY(64);
+                this.player.setVelocityY(this.player.movementSpeed);
      
             }
             if(this.keyboard.A.isDown){
-                this.player.setVelocityX(-64);
+                this.player.setVelocityX(-this.player.movementSpeed);
 
             }
             if(this.keyboard.D.isDown){
-                this.player.setVelocityX(64);
+                this.player.setVelocityX(this.player.movementSpeed);
  
             }
             if (Phaser.Input.Keyboard.JustDown(this.spacebar))
@@ -273,19 +271,19 @@ export class PlayScene extends Phaser.Scene{
             //speed up the movement 
             if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
             {
-                this.player.setVelocityY(-192);
+                this.player.setVelocityY(-(3*this.player.movementSpeed));
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
             {
-                this.player.setVelocityX(-192);
+                this.player.setVelocityX(-(3*this.player.movementSpeed));
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
             {
-                this.player.setVelocityY(192);
+                this.player.setVelocityY(3*this.player.movementSpeed);
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
             {
-                this.player.setVelocityX(192);
+                this.player.setVelocityX(3*this.player.movementSpeed);
             }
             //still need to work on how to combine the two using only one key
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))

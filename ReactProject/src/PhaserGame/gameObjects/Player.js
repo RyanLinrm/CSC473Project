@@ -1,8 +1,8 @@
 import { Bullet } from "../gameObjects/Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,healthPoints = 100){
-        super(scene,x,y,key,textureName);
+    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64){
+        super(scene,x,y,key,textureName,movementSpeed);
 
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
@@ -18,7 +18,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //Create intial Healthpoints for the player
         this.mana = 100;
         this.healthPoints = healthPoints;
-
+        this.movementSpeed=movementSpeed;
     }
 
     createSpecialWeapon(scene){ //Need to limit range of attack
