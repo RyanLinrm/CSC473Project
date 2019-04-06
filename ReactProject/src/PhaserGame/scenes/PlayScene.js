@@ -50,10 +50,12 @@ export class PlayScene extends Phaser.Scene{
         this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
 
         this.hpbar = new HpBar(this, 0, 0, 'hp', this.player.healthPoints);
+        this.hpcutWith = this.hpbar.width; //use to crop the hp bar
 
         //Mana bar
         this.emptybar2 = new emptyBar(this, 0, 32).setDepth(-1);
         this.manabar = new ManaBar(this, 0, 31);
+        this.manacutWith = this.manabar.width; //use to crop the mana bar
        
         
         //Mini Map
@@ -229,6 +231,8 @@ export class PlayScene extends Phaser.Scene{
                 if (enemy.active && player.active ){
                     player.takeDamage(20);
                     console.log(player.healthPoints);
+                    this.hpcutWith = this.hpcutWith-(this.hpbar.width / 5);
+                    this.hpbar.setCrop(0,0,this.hpcutWith,this.hpbar.height);
                 }
                 this.canBeAttacked = time + 3000;
             }
@@ -257,6 +261,12 @@ export class PlayScene extends Phaser.Scene{
             if (Phaser.Input.Keyboard.JustDown(this.spacebar))
             {
                 this.player.attack();
+
+                //Testing: everytime we attack, decreases some mana
+                if(this.manacutWith > 1){
+                    this.manacutWith = this.manacutWith-(this.manabar.width / 10);
+                    this.manabar.setCrop(0,0,this.manacutWith,this.manabar.height);
+                }
             }
             if(this.keyboard.Q.isDown){
                 this.player.specialAttack();
