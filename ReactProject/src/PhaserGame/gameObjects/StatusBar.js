@@ -37,7 +37,7 @@ export class HpBar extends Phaser.GameObjects.Image{
         this.cutWith = this.cutWith-(this.cutWith * ratio);
         this.setCrop(0,0,this.cutWith,this.height);
 
-        this.currentHP = this.value - damage;
+        this.currentHP = this.currentHP - damage;
 
     }
 }
@@ -70,7 +70,7 @@ export class ManaBar extends Phaser.GameObjects.Image{
             this.cutWith = this.cutWith-(this.cutWith * ratio);
             this.setCrop(0,0,this.cutWith,this.height);
 
-            this.currentMana = this.value - cost;
+            this.currentMana = this.currentMana - cost;
         }
 
     }
