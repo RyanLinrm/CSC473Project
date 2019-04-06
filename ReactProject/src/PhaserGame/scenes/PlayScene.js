@@ -10,6 +10,7 @@ import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
+import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
     constructor(){
@@ -36,6 +37,7 @@ export class PlayScene extends Phaser.Scene{
 
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
+
         //The enemies  
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
@@ -43,9 +45,21 @@ export class PlayScene extends Phaser.Scene{
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
+
+        //Stauts bars : hp with a front bar and backing bar
+        this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
+
+        this.hpbar = new HpBar(this, 0, 0, 'hp', this.player.healthPoints);
+
+        //Mana bar
+        this.emptybar2 = new emptyBar(this, 0, 32).setDepth(-1);
+        this.manabar = new ManaBar(this, 0, 31);
        
+        
+        //Mini Map
+
         //create a sample minimap ---needs to change to dynamic
-        this.minimap = this.cameras.add(590, 5, 250, 150).setZoom(0.2).setName('mini');
+        this.minimap = this.cameras.add(this.game.renderer.width - 250, 0, 250, 150).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 600;
