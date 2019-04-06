@@ -3,7 +3,8 @@ export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
 
-        this.setTexture('shoot1').setScale(0.15).setSize(32,30);
+        //this.setTexture('shoot1').setScale(0.15).setSize(32,30);
+        this.setTexture('shoot3').setScale(0.7).setSize(45,40);
         this.speed = 1;
         this.angle = 20;
         this.xSpeed = 1;
@@ -49,7 +50,7 @@ export class Bomb extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
 
-        this.setTexture('shoot1').setScale(0.15).setSize(32,30);
+        this.setTexture('shoot2').setSize(32,30);
         this.timeAlive = -1;
 
         this.scene = scene;

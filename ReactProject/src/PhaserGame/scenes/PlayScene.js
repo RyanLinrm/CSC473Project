@@ -32,28 +32,24 @@ export class PlayScene extends Phaser.Scene{
   
         this.player = new Player(this,300,300, "p1", "p1_01.png");
 
-<<<<<<< HEAD
-        this.player = new Bomber(this,300,300, "p1", "p1_01.png",100);
-=======
-        //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
-
->>>>>>> 2906cefb6da0c42cdd1fd719725d99f91e5cf64c
+       // this.player = new Bomber(this,300,300, "p1", "p1_01.png");
+   
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
         //The enemies  
         this.wolf = new Enemy(this,100,100, "wolf", "Wolf_01.png",this.player);
         this.ninjabot= new Enemy(this,200,150,"ninjabot","ninjabot_1.png",this.player);
-        this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
+        this.demon1=new Units(this,575,500,"demon1","demon1_01").setScale(1.5);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
 
        
-        //create a sample minimap ---needs to change to dynamic
-        this.minimap = this.cameras.add(590, 5, 250, 150).setZoom(0.2).setName('mini');
+        //create a sample minimap and timer
+        this.minimap = this.cameras.add(0, 5, 250, 150).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 600;
-
+        this.timer = this.add.text(600,0,'Timer:'+this.time);
         //adding buildings for each player
         
         this.building=new Units(this,1200,1200,"building1");
@@ -132,12 +128,12 @@ export class PlayScene extends Phaser.Scene{
         });
 
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT, Q");
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
-
+        this.Qbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         //Map
 
         //add in our map
@@ -193,7 +189,8 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-        
+
+        this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
@@ -225,10 +222,6 @@ export class PlayScene extends Phaser.Scene{
         },null,this);
 
 
-<<<<<<< HEAD
-    update(time,delta) {
-=======
->>>>>>> 2906cefb6da0c42cdd1fd719725d99f91e5cf64c
         //key control
         //movement note: we should only be able to move our character when it is alive
 
@@ -252,7 +245,7 @@ export class PlayScene extends Phaser.Scene{
             {
                 this.player.attack();
             }
-            if(this.keyboard.Q.isDown){
+            if (Phaser.Input.Keyboard.JustDown(this.Qbar))
                 this.player.specialAttack();
             }
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
@@ -316,5 +309,5 @@ export class PlayScene extends Phaser.Scene{
         
 
     }
-}
+
 
