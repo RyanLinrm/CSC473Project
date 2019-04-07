@@ -10,6 +10,7 @@ import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
+import {Rider} from "../gameObjects/Rider";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
@@ -31,7 +32,7 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Rider(this,300,300, "p1", "p1_01.png");
+        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.7);
 
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
@@ -98,8 +99,8 @@ export class PlayScene extends Phaser.Scene{
 
 
         //create animations for different directions 
-    
-
+    /*
+        //=================animations for p1=================
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -138,6 +139,47 @@ export class PlayScene extends Phaser.Scene{
             frames: this.anims.generateFrameNames('p1', {
             start:9, end:11, zeroPad:1,
             prefix:'p1_', suffix: '.png'
+            })
+        });*/
+        //================animations for rider=================
+        this.anims.create({
+            key: "down",
+            frameRate: 8,
+            //walking downward animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:0, end:3, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+        
+
+        this.anims.create({
+            key:'left', 
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:4, end:7, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+
+        this.anims.create({
+            key:'up', 
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:8, end:11, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+
+        this.anims.create({
+            key:'right',
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:12, end:15, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
             })
         });
 
