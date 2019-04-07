@@ -10,6 +10,7 @@ import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
+import { Rider } from '../gameObjects/Rider';
 
 export class PlayScene extends Phaser.Scene{
     constructor(){
@@ -30,9 +31,9 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Player(this,300,300, "p1", "p1_01.png");
+        this.player = new Rider(this,300,300, "p1", "p1_01.png");
 
-       // this.player = new Bomber(this,300,300, "p1", "p1_01.png");
+        //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
         //adjust player hit box
         this.player.setSize( 24, 28).setOffset(5,5);
@@ -189,7 +190,8 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-
+        this.player.mana+=(delta/2000);
+        console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 
@@ -210,16 +212,16 @@ export class PlayScene extends Phaser.Scene{
 
         //Handler character getting attacked by enemy, cooldown 3s
 
-        this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
+    /*    this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
             if(this.canBeAttacked < time){
-                console.log('got hit!');
+               // console.log('got hit!');
                 if (enemy.active && player.active ){
                     player.takeDamage(20);
-                    console.log(player.healthPoints);
+                // console.log(player.healthPoints);
                 }
                 this.canBeAttacked = time + 3000;
             }
-        },null,this);
+        },null,this);*/
 
 
         //key control
@@ -245,9 +247,7 @@ export class PlayScene extends Phaser.Scene{
             {
                 this.player.attack();
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Qbar))
-                this.player.specialAttack();
-            }
+
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
 
@@ -278,21 +278,33 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
             }*/
             //speed up the movement 
+            if(this.player.mana>0){
+
+            if (Phaser.Input.Keyboard.JustDown(this.Qbar))
+                this.player.specialAttack();
+            }
+
             if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
             {
                 this.player.setVelocityY(-(3*this.player.movementSpeed));
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
             {
                 this.player.setVelocityX(-(3*this.player.movementSpeed));
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
             {
                 this.player.setVelocityY(3*this.player.movementSpeed);
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
             {
                 this.player.setVelocityX(3*this.player.movementSpeed);
+                this.player.mana-=0.1;
+            }
+            
             }
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))
             {   
