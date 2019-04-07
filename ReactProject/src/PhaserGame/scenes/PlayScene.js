@@ -161,17 +161,17 @@ export class PlayScene extends Phaser.Scene{
         let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
-        let CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
+         this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
-        CollisionLayer.setCollisionByProperty({collides:true});
+        this.CollisionLayer.setCollisionByProperty({collides:true});
         waterLayer.setCollisionByProperty({collides:true});
 
         //Assign collider objects
-        this.physics.add.collider(this.player, CollisionLayer);
+        this.physics.add.collider(this.player, this.CollisionLayer);
         this.physics.add.collider(this.player, waterLayer);
         this.physics.add.collider(this.enemyGroup, waterLayer);
-        this.physics.add.collider(this.enemyGroup, CollisionLayer);
+        this.physics.add.collider(this.enemyGroup, this.CollisionLayer);
   
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();

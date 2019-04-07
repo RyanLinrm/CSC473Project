@@ -74,9 +74,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     kill(){
-        //Remove a player so we can handle other things related to the death such as removing the wepopn
-        this.removeWeapon();
-        this.removeSpecialWeapon();
+        //Remove a player so we can handle other things related to the death such as removing the wepopn    
         this.destroy();
     }
 
