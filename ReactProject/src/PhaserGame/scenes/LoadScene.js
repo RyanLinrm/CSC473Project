@@ -41,6 +41,11 @@ export class LoadScene extends Phaser.Scene{
     this.load.atlas("sword_in_the_stone", `${process.env.PUBLIC_URL}/assets/sprite/sword_in_the_stone.png`, `${process.env.PUBLIC_URL}/assets/sprite/sword_in_the_stone.json`);
     this.load.audio("beginsound", `${process.env.PUBLIC_URL}/assets/soundeffect/metal-clash.wav`);
 
+    this.load.image("bar",`${process.env.PUBLIC_URL}/assets/statusbar/barempty.png`);
+    this.load.image("playerhpbar",`${process.env.PUBLIC_URL}/assets/statusbar/hpbar.png`);
+    this.load.image("playermanabar",`${process.env.PUBLIC_URL}/assets/statusbar/manabar.png`);
+    this.load.image("enemyhpbar",`${process.env.PUBLIC_URL}/assets/statusbar/hpbar2.png`);
+
     //add loading bar
     let loadingBar = this.add.graphics({
         fillStyle: {
