@@ -2,19 +2,24 @@ import React, { Component } from 'react';
 import Game from './PhaserGame/Game'
 import './App.css';
 
-import Amplify  from 'aws-amplify';
-import aws_exports from './aws-exports';
-import {Authenticator ,withAuthenticator} from 'aws-amplify-react';
-Amplify.configure(aws_exports);
+import {Auth} from 'aws-amplify';
+import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
+
+import * as firebase from 'firebase';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {showGame:false, hideButton:true};
+
+    
   }
 
-  signInHandler = ()=>{
-    this.setState({showGame:!this.state.showGame});
+  signInHandler = (signInState) => {
+    if (signInState === 'signedIn') {
+   
+    }
+    this.setState({ showGame: !this.state.showGame });
   }
 
 
