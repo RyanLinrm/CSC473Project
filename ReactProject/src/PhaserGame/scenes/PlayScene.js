@@ -32,20 +32,22 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.7);
-
+        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
+        this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
         //adjust player hit box
-        this.player.setSize( 24, 28).setOffset(5,5);
-
+        //this.player.setSize( 24, 28).setOffset(5,5);
+        this.player.setSize(36, 40);
         //The enemies  
         this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png", this.player, 60, 1000, 10);
         this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png", this.player, 80, 1000, 20);
-        this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
+        this.container= this.add.container(575,500);
+        this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);
+        this.container.add(this.demon1);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
-
+        //this.enemyGroup.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
         this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
@@ -93,7 +95,9 @@ export class PlayScene extends Phaser.Scene{
         }),
         repeat: -1
      });
-        this.add.sprite(600, 500, 'a2_01').play('ab2');
+         this.skill=this.add.sprite(30, 0, 'a2_01');
+         this.container.add(this.skill);
+         this.skill.play('ab2');
 
 
 

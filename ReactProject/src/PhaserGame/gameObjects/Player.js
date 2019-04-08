@@ -87,12 +87,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
     }
-    recall(){
-        if(this.id===3){
-            
 
-        }
-    }
     
   
 

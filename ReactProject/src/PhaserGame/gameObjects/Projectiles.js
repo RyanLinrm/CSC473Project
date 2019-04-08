@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene,speed=1){
-        super(scene,0,0);
+        super(scene,0,0,speed=1);
 
-        //this.setTexture('shoot1').setScale(0.15).setSize(32,30);
-        this.setTexture('shoot3').setScale(0.7).setSize(45,40);
+        this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
         this.xSpeed = 1;
@@ -73,6 +72,7 @@ export class Bomb extends Phaser.GameObjects.Image {
         velocityArray.forEach((v)=>{
             let bullet = bullets.get();
             bullet.speed=1;
+            bullet.setTexture('shoot3').setScale(0.7).setSize(45,40);
             scene.children.add(bullet);
             bullet.shoot(this,v);
         });
@@ -97,22 +97,17 @@ export class Bomb extends Phaser.GameObjects.Image {
 export class Posion extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
-
-        this.setTexture('shoot2').setSize(32,30);
         this.timeAlive = -1;
-
-        this.scene = scene;
-        
+        this.scene = scene;      
     }
 
     place(shooter){
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
-
         this.setPosition(shooter.x,shooter.y);
         this.setAngle(shooter.body.rotation);
-    
+        this.explode(this.scene);
     }
 
     explode(scene){
@@ -120,22 +115,21 @@ export class Posion extends Phaser.GameObjects.Image {
         let velocityArray = [{x:0,y:-1},{x:1,y:-1},{x:-1,y:-1}];
         velocityArray.forEach((v)=>{
             let bullet = this.bullets.get();
-            bullet.speed=0.05;
+            bullet.speed=0.03;
+            bullet.setTexture('shoot4').setScale(0.3).setSize(45,40);
             scene.children.add(bullet);
             bullet.shoot(this,v);
         });
 
-            this.setActive(false);
+
             this.setVisible(false);
     }
 
     update(time,delta){
         this.timeAlive += delta;
-        this.explode(this.scene);
-        if(this.timeAlive > 2000){
-            this.bullets.setActive(false);
-            this.bullets.destroy();
-            this.bullets.setVisible(false);
+        if(this.timeAlive > 4000){
+          this.bullets.clear(true);
+
         };
     }
 }

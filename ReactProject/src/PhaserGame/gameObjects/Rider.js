@@ -7,6 +7,8 @@ export class Rider extends Player{
 
     }
 
+
+
     createWeapon(scene) {
         this.posions = scene.physics.add.group({ classType: Posion, runChildUpdate: true });
         this.attack = () => {
@@ -15,19 +17,12 @@ export class Rider extends Player{
             posion.place(this);
         };
 
-        this.removeWeapon = () => { //destroys the weapon used
-            this.posions.destroy();
-            this.attack = null;
+    this.removeWeapon = () => { //destroys the weapon used
+        this.posions.destroy();
+        this.attack = null;
         };
 
     }
-    update(time,delta){
-        this.timeAlive += delta;
-        this.explode(this.scene);
-        if(this.timeAlive > 2000){
-            this.posions.setActive(false);
-            this.posions.destroy();
-             this.posions.setVisible(false);
-        };
-}
+ 
+
 }
