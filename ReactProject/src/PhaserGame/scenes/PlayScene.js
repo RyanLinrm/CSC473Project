@@ -10,6 +10,7 @@ import { Units } from "../gameObjects/Units";
 import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
+import {Rider} from "../gameObjects/Rider";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
@@ -31,20 +32,22 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Player(this,300,300, "p1", "p1_01.png");
-
-        //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
-
+        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
+        this.add.sprite(this,600,600,"shoot4");
+        //this.player = new Player(this,300,300, "p1", "p1_01.png");
+   
         //adjust player hit box
-        this.player.setSize( 24, 28).setOffset(5,5);
-
+        //this.player.setSize( 24, 28).setOffset(5,5);
+        this.player.setSize(36, 40);
         //The enemies  
         this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png", this.player, 60, 1000, 10);
         this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png", this.player, 80, 1000, 20);
-        this.demon1=new Enemy(this,575,500,"demon1","demon1_01").setScale(1.5);
+        this.container= this.add.container(575,500);
+        this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);
+        this.container.add(this.demon1);
         this.enemyGroup.add(this.wolf);
         this.enemyGroup.add(this.ninjabot);
-
+        //this.enemyGroup.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
         this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
@@ -62,7 +65,8 @@ export class PlayScene extends Phaser.Scene{
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 500;
-
+        this.timer = this.add.text(600,0,'Timer:'+this.time);
+     
         //adding buildings for each player
         
         this.building=new Units(this,1200,1200,"building1");
@@ -91,14 +95,16 @@ export class PlayScene extends Phaser.Scene{
         }),
         repeat: -1
      });
-        this.add.sprite(600, 500, 'a2_01').play('ab2');
+         this.skill=this.add.sprite(30, 0, 'a2_01');
+         this.container.add(this.skill);
+         this.skill.play('ab2');
 
 
 
 
         //create animations for different directions 
-    
-
+    /*
+        //=================animations for p1=================
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -138,15 +144,56 @@ export class PlayScene extends Phaser.Scene{
             start:9, end:11, zeroPad:1,
             prefix:'p1_', suffix: '.png'
             })
+        });*/
+        //================animations for rider=================
+        this.anims.create({
+            key: "down",
+            frameRate: 8,
+            //walking downward animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:0, end:3, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+        
+
+        this.anims.create({
+            key:'left', 
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:4, end:7, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+
+        this.anims.create({
+            key:'up', 
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:8, end:11, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
+        });
+
+        this.anims.create({
+            key:'right',
+            frameRate: 8,
+            //walking left animation frames
+            frames: this.anims.generateFrameNames('rider', {
+            start:12, end:15, zeroPad:1,
+            prefix:'rider_', suffix: '.png'
+            })
         });
 
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT, Q");
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
-
+        this.Qbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         //Map
 
         //add in our map
@@ -202,7 +249,9 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-        
+        this.player.mana+=(delta/2000);
+        console.log(this.player.mana);
+        this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
@@ -222,9 +271,9 @@ export class PlayScene extends Phaser.Scene{
 
         //Handler character getting attacked by enemy, cooldown 3s
 
-        this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
+    /*    this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
             if(this.canBeAttacked < time){
-                console.log('got hit!');
+               // console.log('got hit!');
                 if (enemy.active && player.active ){
                     player.takeDamage(enemy.ATK);
                     console.log(player.healthPoints);
@@ -232,7 +281,7 @@ export class PlayScene extends Phaser.Scene{
                 }
                 this.canBeAttacked = time + 3000;
             }
-        },null,this);
+        },null,this);*/
 
 
         //key control
@@ -240,18 +289,18 @@ export class PlayScene extends Phaser.Scene{
 
         if(this.player.active){
             if(this.keyboard.W.isDown){
-                this.player.setVelocityY(-64);
+                this.player.setVelocityY(-this.player.movementSpeed);
             }
             if(this.keyboard.S.isDown){
-                this.player.setVelocityY(64);
+                this.player.setVelocityY(this.player.movementSpeed);
      
             }
             if(this.keyboard.A.isDown){
-                this.player.setVelocityX(-64);
+                this.player.setVelocityX(-this.player.movementSpeed);
 
             }
             if(this.keyboard.D.isDown){
-                this.player.setVelocityX(64);
+                this.player.setVelocityX(this.player.movementSpeed);
  
             }
             if (Phaser.Input.Keyboard.JustDown(this.spacebar))
@@ -261,9 +310,7 @@ export class PlayScene extends Phaser.Scene{
                 //Testing: everytime we attack, decreases some mana
                 this.manabar.cutManaBar(5);
             }
-            if(this.keyboard.Q.isDown){
-                this.player.specialAttack();
-            }
+
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
 
@@ -294,21 +341,33 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
             }*/
             //speed up the movement 
+            if(this.player.mana>0){
+
+            if (Phaser.Input.Keyboard.JustDown(this.Qbar))
+                this.player.specialAttack();
+            }
+
             if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
             {
-                this.player.setVelocityY(-192);
+                this.player.setVelocityY(-(3*this.player.movementSpeed));
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
             {
-                this.player.setVelocityX(-192);
+                this.player.setVelocityX(-(3*this.player.movementSpeed));
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
             {
-                this.player.setVelocityY(192);
+                this.player.setVelocityY(3*this.player.movementSpeed);
+                this.player.mana-=0.1;
             }
             if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
             {
-                this.player.setVelocityX(192);
+                this.player.setVelocityX(3*this.player.movementSpeed);
+                this.player.mana-=0.1;
+            }
+            
             }
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))
             {   
@@ -329,5 +388,5 @@ export class PlayScene extends Phaser.Scene{
         this.manabar.update(time,delta);
 
     }
-}
+
 

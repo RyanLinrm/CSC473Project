@@ -1,13 +1,12 @@
 import { Bullet } from "../gameObjects/Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,healthPoints = 100){
-        super(scene,x,y,key,textureName);
-
+    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
+        super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-
+        this.id=id;
         this.setOrigin(0,0);
         this.nonZeroVelocity = {x:0,y:1};
 
@@ -18,7 +17,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //Create intial Healthpoints for the player
         this.mana = 100;
         this.healthPoints = healthPoints;
-
+        this.movementSpeed=movementSpeed;
     }
 
     createSpecialWeapon(scene){ //Need to limit range of attack
@@ -28,7 +27,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.specialAttack = () => {
             
-            if (this.mana >= 100) {
+            if (this.mana >= 10) {
                 canAttack = true;
             }
 
@@ -41,10 +40,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                     bullet.shoot(this,v);
                 });
                     
-                this.mana--;
+                this.mana-=10;
             }
 
-            if (this.mana === 80) {
+            if (this.mana <10) {
                 canAttack = false;
             }
 
@@ -86,6 +85,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         if( this.healthPoints <= 0 ){
             this.kill();
         }
+
     }
+
+    
+  
+
 
 }
