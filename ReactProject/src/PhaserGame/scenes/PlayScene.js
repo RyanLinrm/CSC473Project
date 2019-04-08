@@ -312,6 +312,9 @@ export class PlayScene extends Phaser.Scene{
             }
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))
             {   
+                //test on regenerate hp function
+                this.hpbar.regenHPBar(10);
+
                 if(this.player_scale === 2){
                     this.player.setScale(this.player_scale);
                     this.player_scale --;
@@ -323,6 +326,7 @@ export class PlayScene extends Phaser.Scene{
             }
         }
         
+        this.manabar.update(time,delta);
 
     }
 }

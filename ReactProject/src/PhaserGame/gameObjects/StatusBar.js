@@ -12,7 +12,7 @@ export class emptyBar extends Phaser.GameObjects.Image{
 }
 
 export class HpBar extends Phaser.GameObjects.Image{
-    constructor(scene,x,y, type='HP', value='100'){
+    constructor(scene,x,y, type='HP', value=100){
         super(scene,x,y, 'playerhpbar');
 
         //add the hp bar to the display list
@@ -40,11 +40,27 @@ export class HpBar extends Phaser.GameObjects.Image{
         this.currentHP = this.currentHP - damage;
 
     }
+
+    regenHPBar(regenAmount){
+        // regenrate HP bar to display HP regenration effect
+
+        if(this.currentHP !== this.value){
+            let recoverate = regenAmount / this.value;
+
+            this.cutWith = this.cutWith + (this.width * recoverate);
+            this.setCrop(0,0,this.cutWith,this.height);
+
+            this.currentHP = this.currentHP + regenAmount;
+        }
+        else{
+            console.log('Full HP!');
+        }
+    }
 }
 
 
 export class ManaBar extends Phaser.GameObjects.Image{
-    constructor(scene,x,y, type='Mana', value='100'){
+    constructor(scene,x,y, type='Mana', value=100){
         super(scene,x,y, 'playermanabar');
 
         //add the hp bar to the display list
@@ -59,6 +75,9 @@ export class ManaBar extends Phaser.GameObjects.Image{
         //this.setPosition(0,0);
 
         this.cutWith = this.width;
+
+        this.ManaSTDrecovertime = 0;
+        this.manarate = 1000;
     }
 
     cutManaBar(cost){
@@ -73,5 +92,32 @@ export class ManaBar extends Phaser.GameObjects.Image{
             this.currentMana = this.currentMana - cost;
         }
 
+    }
+
+    regenManaBar(regenAmount){
+        // regenrate HP bar to display HP regenration effect
+
+        if(this.currentMana !== this.value){
+            let recoverate = regenAmount / this.value;
+
+            this.cutWith = this.cutWith + (this.width * recoverate);
+            this.setCrop(0,0,this.cutWith,this.height);
+
+            this.currentMana = this.currentMana + regenAmount;
+        }
+        else{
+            console.log('Full Mana!');
+        }
+    }
+
+    update(time, delta){
+        if(this.currentMana !== this.value){
+            
+            if(this.ManaSTDrecovertime < time){
+                this.regenManaBar(1);
+                this.ManaSTDrecovertime = time + this.manarate;
+                console.log('mana regen 1 !');
+            }
+       }
     }
 }
