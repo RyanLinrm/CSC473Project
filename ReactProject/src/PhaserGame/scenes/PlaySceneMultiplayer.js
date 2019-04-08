@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
 
@@ -29,6 +30,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
             
         });
+
+        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/attack`).on("child_changed", (snapShot) => {      
+            let dataChanged = snapShot.val();  
+            this.otherPlayers[id].attack();
+
+            let changedKey = snapShot.key;
+
+            if(changedKey === 'pos'){
+                this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
+            }else if(changedKey === 'velocity'){
+                this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+            }
+
+        });
     }
 
     removePlayer = (id)=>{
@@ -51,6 +66,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 pos: { x: 300, y: 300 },
                 velocity: {x:0,y:0}
             },
+            attack: {
+                time:firebase.database.ServerValue.TIMESTAMP,
+                pos: {x:300,y:300},
+                velocity: {x: 0, y:0}
+            },    
             playerType: "Bomber"
         });
 
@@ -75,6 +95,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 this.player.setVelocity(dataChanged.x,dataChanged.y); 
             }
         });
+
+        database.ref(`Games/${this.gameRoom}/Players/${this.playerID}/attack`).on("child_changed", (snapShot) => {        
+            this.player.attack();
+
+        });
+
 
         firebase.database().ref(`Games/${this.gameRoom}/Players/`).on("child_removed", (snapShot) => {
             this.removePlayer(snapShot.key);
@@ -106,6 +132,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         if(this.keyboard.D.isDown){
             inputVelocity.x = 64;
         }
+
+        if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+        {
+            let newAttack = {
+                time: Date.now(),
+                pos:{x:Math.round(this.player1.x), y:Math.round(this.player1.y)},
+                velocity: inputVelocity
+            };
+           
+            updates[`Games/${this.gameRoom}/Players/${this.playerID}/attack/`] = newAttack;
+
+        }
         
         if(this.keyboard.W.isUp && this.keyboard.S.isUp){
             inputVelocity.y = 0;
@@ -114,7 +152,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             inputVelocity.x = 0;
         }
 
-        
         if(inputVelocity.x !== this.lastVelocity.x || inputVelocity.y !== this.lastVelocity.y){ //Don't want to update database if we don't have to 
             this.lastVelocity = {...inputVelocity};
             this.player1.setVelocity(inputVelocity.x,inputVelocity.y);

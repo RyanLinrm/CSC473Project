@@ -27,12 +27,15 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
+        this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
+        this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
+
         this.enemyGroup = this.add.group({runChildUpdate: true}); 
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
         this.player = new Player(this,300,300, "p1", "p1_01.png");
-
+        
         //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
         //adjust player hit box
@@ -139,7 +142,7 @@ export class PlayScene extends Phaser.Scene{
             prefix:'p1_', suffix: '.png'
             })
         });
-
+        
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT, Q");
       
@@ -272,15 +275,7 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
-            if(this.player.body.velocity.x > 0){
-                this.player.play("right", true);
-            } else if(this.player.body.velocity.x < 0){
-                this.player.play("left",true);
-            }else if(this.player.body.velocity.y > 0){
-                this.player.play("down",true);
-            }else if(this.player.body.velocity.y < 0){
-                this.player.play("up",true);
-            }
+            
 
 
             if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
