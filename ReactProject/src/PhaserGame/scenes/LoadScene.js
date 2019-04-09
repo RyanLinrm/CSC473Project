@@ -18,6 +18,8 @@ export class LoadScene extends Phaser.Scene{
     
     this.load.image('key1', `${process.env.PUBLIC_URL}/assets/title_bg.jpg`);
     this.load.image("StartButton", `${process.env.PUBLIC_URL}/assets/StartButton.png`);
+    this.load.image("PlayButton", `${process.env.PUBLIC_URL}/assets/PlayButton.png`);
+    this.load.image("MultiplayerButton", `${process.env.PUBLIC_URL}/assets/MultiplayerButton.png`);
     this.load.image("cursor", `${process.env.PUBLIC_URL}/assets/fight.png`);
     this.load.image("fire", `${process.env.PUBLIC_URL}/assets/SkillEffect1.png`);
     this.load.image("shoot1", `${process.env.PUBLIC_URL}/assets/ability/shoot1.png`);

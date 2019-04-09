@@ -37,9 +37,10 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.x += this.xSpeed * delta;
         this.y += this.ySpeed * delta;
         
-        if(this.timeAlive > 2000){
+        if(this.timeAlive > 160){
+           // this.destroy();
             this.setActive(false);
-            //this.setVisible(false);
+            this.setVisible(false);
         }
     }
 

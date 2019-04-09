@@ -6,6 +6,7 @@ import Phaser from 'phaser';
 import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
+import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 
 export default class Game extends React.Component{
     componentDidMount(){
@@ -23,7 +24,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlayScene
+               LoadScene,MenuScene,PlayScene,PlaySceneMultiplayer
             ],
             render:{
                 pixelArt: true

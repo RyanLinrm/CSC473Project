@@ -20,12 +20,16 @@ export class MenuScene extends Phaser.Scene{
         a.y = window.innerHeight/2 ;
         console.log(a);
         //add Start Button image
-        
-        let startButton = 
-        this.add.image(this.game.renderer.width/2, 
-            this.game.renderer.height/2+100, "StartButton").setDepth(1);
-        
-        
+
+        let startButton =
+            this.add.image(this.game.renderer.width / 2,
+                this.game.renderer.height / 2 + 225, "PlayButton").setDepth(1);
+
+        let multiplayerStartButton =
+            this.add.image(this.game.renderer.width / 2,
+                this.game.renderer.height / 2 + 300, "MultiplayerButton").setDepth(1);
+
+
         //add background music
         //let bgmusic = this.sound.add("menuMusic");
       //  bgmusic.play();
@@ -37,16 +41,27 @@ export class MenuScene extends Phaser.Scene{
 
         
         startButton.setInteractive();
+        multiplayerStartButton.setInteractive();
 
         startButton.on("pointerover", ()=>{
             buttonCursor.setVisible(true);
-            buttonCursor.x = startButton.x - 90;
+            buttonCursor.x = startButton.x - 60;
             buttonCursor.y = startButton.y;
-        })
+        });
+
+        multiplayerStartButton.on("pointerover", ()=>{
+            buttonCursor.setVisible(true);
+            buttonCursor.x = multiplayerStartButton.x - 180;
+            buttonCursor.y = multiplayerStartButton.y;
+        });
 
         startButton.on("pointerout", ()=>{
             buttonCursor.setVisible(false);
-        })
+        });
+
+        multiplayerStartButton.on("pointerout", ()=>{
+            buttonCursor.setVisible(false);
+        });
 
 
         startButton.on("pointerup", ()=>{
@@ -55,6 +70,11 @@ export class MenuScene extends Phaser.Scene{
         //    bgmusic.stop();
 
             this.scene.start(CST.SCENES.PLAY);
-        })
+        });
+
+        multiplayerStartButton.on("pointerup", ()=>{
+            this.scene.start(CST.SCENES.PLAYMULTIPLAYER);
+          });
+
     }
 }
