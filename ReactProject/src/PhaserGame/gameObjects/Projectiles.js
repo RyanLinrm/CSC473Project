@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 export class Bullet extends Phaser.GameObjects.Image {
-    constructor(scene){
-        super(scene,0,0);
+    constructor(scene,speed=1){
+        super(scene,0,0,speed=1);
 
         this.setTexture('shoot1').setScale(0.15).setSize(32,30);
-        this.speed = 1;
+        this.speed=speed;
         this.angle = 20;
         this.xSpeed = 1;
         this.ySpeed = 1;
@@ -50,7 +50,7 @@ export class Bomb extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
 
-        this.setTexture('shoot1').setScale(0.15).setSize(32,30);
+        this.setTexture('shoot2').setSize(32,30);
         this.timeAlive = -1;
 
         this.scene = scene;
@@ -72,6 +72,8 @@ export class Bomb extends Phaser.GameObjects.Image {
         let velocityArray = [{x:1,y:1},{x:-1,y:1},{x:1,y:-1},{x:-1,y:-1},{x:0,y:1},{x:1,y:0},{x:-1,y:0},{x:0,y:-1}];
         velocityArray.forEach((v)=>{
             let bullet = bullets.get();
+            bullet.speed=1;
+            bullet.setTexture('shoot3').setScale(0.7).setSize(45,40);
             scene.children.add(bullet);
             bullet.shoot(this,v);
         });
@@ -85,10 +87,51 @@ export class Bomb extends Phaser.GameObjects.Image {
             this.timeAlive += delta;
   
         
-        if(this.timeAlive > 2000){
+        if(this.timeAlive > 3000){
             this.explode(this.scene);
             this.timeAlive = -1;
         }
     }
 
 }
+
+export class Posion extends Phaser.GameObjects.Image {
+    constructor(scene){
+        super(scene,0,0);
+        this.timeAlive = -1;
+        this.scene = scene;      
+    }
+
+    place(shooter){
+        this.timeAlive = 0;
+        this.setActive(true);
+        this.setVisible(true);
+        this.setPosition(shooter.x,shooter.y);
+        this.setAngle(shooter.body.rotation);
+        this.explode(this.scene);
+    }
+
+    explode(scene){
+        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+        let velocityArray = [{x:0,y:-1},{x:1,y:-1},{x:-1,y:-1}];
+        velocityArray.forEach((v)=>{
+            let bullet = this.bullets.get();
+            bullet.speed=0.03;
+            bullet.setTexture('shoot4').setScale(0.3).setSize(45,40);
+            scene.children.add(bullet);
+            bullet.shoot(this,v);
+        });
+
+
+            this.setVisible(false);
+    }
+
+    update(time,delta){
+        this.timeAlive += delta;
+        if(this.timeAlive > 4000){
+          this.bullets.clear(true);
+
+        };
+    }
+}
+
