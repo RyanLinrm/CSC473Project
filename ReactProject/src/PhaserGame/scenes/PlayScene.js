@@ -384,9 +384,10 @@ export class PlayScene extends Phaser.Scene{
                     this.player_scale ++;
                 }
             }
+            this.manabar.update(time,delta);
         }
         
-        this.manabar.update(time,delta);
+        
 
     }
 
