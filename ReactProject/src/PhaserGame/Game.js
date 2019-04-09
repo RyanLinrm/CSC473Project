@@ -24,7 +24,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlaySceneMultiplayer
+               LoadScene,MenuScene,PlayScene,PlaySceneMultiplayer
             ],
             render:{
                 pixelArt: true

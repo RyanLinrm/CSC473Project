@@ -13,8 +13,9 @@ import {Enemy} from "../gameObjects/Enemy";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
-    constructor(){
-        super({key:CST.SCENES.PLAY});
+
+    constructor(sceneKey = CST.SCENES.PLAY){
+        super({key:sceneKey});
     }
 
     preload(){ 
@@ -25,7 +26,7 @@ export class PlayScene extends Phaser.Scene{
     }
 
     create(){
-        //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
+        //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
         this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
         this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
@@ -161,19 +162,19 @@ export class PlayScene extends Phaser.Scene{
        // display layers
         let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
         let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
-        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
+        this.waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
          this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
         this.CollisionLayer.setCollisionByProperty({collides:true});
-        waterLayer.setCollisionByProperty({collides:true});
+        this.waterLayer.setCollisionByProperty({collides:true});
 
         //Assign collider objects
         this.physics.add.collider(this.player, this.CollisionLayer);
-        this.physics.add.collider(this.player, waterLayer);
-        this.physics.add.collider(this.enemyGroup, waterLayer);
+        this.physics.add.collider(this.player, this.waterLayer);
+        this.physics.add.collider(this.enemyGroup, this.waterLayer);
         this.physics.add.collider(this.enemyGroup, this.CollisionLayer);
   
         //Map collision debug mode
@@ -275,8 +276,6 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
-            
-
 
             if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 

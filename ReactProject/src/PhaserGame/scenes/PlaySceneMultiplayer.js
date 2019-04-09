@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
-
+import { CST } from "../CST";
 import {generate} from 'randomstring';
 import * as firebase from 'firebase';
 
-export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database
+export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
-        super();
+        super(CST.SCENES.PLAYMULTIPLAYER);
         let update = {};
         this.otherPlayers = {};
         this.playerID = generate(10);
@@ -33,14 +33,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/attack`).on("child_changed", (snapShot) => {      
             let dataChanged = snapShot.val();  
-            this.otherPlayers[id].attack();
-
             let changedKey = snapShot.key;
 
             if(changedKey === 'pos'){
                 this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
             }else if(changedKey === 'velocity'){
                 this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+            }
+            else{
+                this.otherPlayers[id].attack();
             }
 
         });
@@ -61,13 +62,16 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.player1 = new Player(this,300,300, "p1", "p1_01.png");
         this.player1.setVisible();
 
+        this.physics.add.collider(this.player1, this.CollisionLayer);
+        this.physics.add.collider(this.player1, this.waterLayer);
+
         database.ref(`Games/${this.gameRoom}/Players/${this.playerID}`).set({
             movementData: {
                 pos: { x: 300, y: 300 },
                 velocity: {x:0,y:0}
             },
             attack: {
-                time:firebase.database.ServerValue.TIMESTAMP,
+                time:0,
                 pos: {x:300,y:300},
                 velocity: {x: 0, y:0}
             },    
@@ -96,8 +100,9 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
         });
 
-        database.ref(`Games/${this.gameRoom}/Players/${this.playerID}/attack`).on("child_changed", (snapShot) => {        
-            this.player.attack();
+        database.ref(`Games/${this.gameRoom}/Players/${this.playerID}/attack/time`).on("value", (snapShot) => { 
+            if (snapShot.val() != 0)       
+                this.player.attack();
 
         });
 
@@ -116,21 +121,23 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     update(){
         let updates = {};
-
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
-
+        let speed = 64;
+        if(this.keyboard.SHIFT.isDown){
+            speed = 192;
+        }
 
         if(this.keyboard.W.isDown){
-            inputVelocity.y = -64;
+            inputVelocity.y = -speed;
         }
         if(this.keyboard.S.isDown){
-            inputVelocity.y = 64;
+            inputVelocity.y = speed;
         }
         if(this.keyboard.A.isDown){
-            inputVelocity.x = -64;
+            inputVelocity.x = -speed;
         }
         if(this.keyboard.D.isDown){
-            inputVelocity.x = 64;
+            inputVelocity.x = speed;
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.spacebar))
@@ -162,7 +169,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         }
 
         if(Object.keys(updates).length !== 0){ //If updates contains something then send it to the database. This is for future updates
-            console.log("updating");
             firebase.database().ref().update(updates);
         }
 

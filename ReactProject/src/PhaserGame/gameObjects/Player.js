@@ -8,7 +8,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
-        this.setOrigin(0,0);
+       // this.setOrigin(0,0);
         this.nonZeroVelocity = {x:0,y:1};
 
         //enables body in the phsyics world in the game
@@ -62,7 +62,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            console.log(this);
+            console.log("this");
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);
