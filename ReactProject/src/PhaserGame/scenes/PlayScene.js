@@ -11,6 +11,7 @@ import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
+import {Melee} from "../gameObjects/Melee";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
@@ -32,7 +33,7 @@ export class PlayScene extends Phaser.Scene{
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
+        this.player = new Melee(this,300,300, "rider", "rider_01.png",100,200).setScale(0.8);
         this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
@@ -249,6 +250,7 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
+        this.manabar.update(time,delta);
         this.player.mana+=(delta/2000);
         console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + time/1000)
@@ -341,7 +343,7 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
             }*/
             //speed up the movement 
-            if(this.player.mana>0){
+            if(this.player.mana>0.0){
 
             if (Phaser.Input.Keyboard.JustDown(this.Qbar))
                 this.player.specialAttack();
@@ -385,7 +387,7 @@ export class PlayScene extends Phaser.Scene{
             }
         }
         
-        this.manabar.update(time,delta);
+
 
     }
 
