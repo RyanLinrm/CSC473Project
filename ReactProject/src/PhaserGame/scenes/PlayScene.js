@@ -61,15 +61,20 @@ export class PlayScene extends Phaser.Scene{
         //this.enemyGroup.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
-        this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
-        this.hpbar = new HpBar(this, 0, 0, 'hp', this.player.healthPoints);
+        this.emptybar = new emptyBar(this, 150, 21).setDepth(2);
+        this.emptybar.setScrollFactor(0);
+        this.hpbar = new HpBar(this, 150, 20, 'hp', this.player.healthPoints).setDepth(3);
+        this.hpbar.setScrollFactor(0);
 
         //Mana bar
-        this.emptybar2 = new emptyBar(this, 0, 32).setDepth(-1);
-        this.manabar = new ManaBar(this, 0, 31, 'mana', this.player.mana);
+        this.emptybar2 = new emptyBar(this, 150, 52).setDepth(2);
+        this.emptybar2.setScrollFactor(0);
+        this.manabar = new ManaBar(this, 150, 51, 'mana', this.player.mana).setDepth(3);
+        this.manabar.setScrollFactor(0);
+    
        
         //warning when manabar is too low for a special attack
-        this.manawarning = this.add.text(150,73,'low mana');
+        this.manawarning = this.add.text(150,73,'low mana').setDepth(3);
         this.manawarning.setScrollFactor(0);
         this.manawarning.setVisible(false)
         //Mini Map
@@ -79,8 +84,8 @@ export class PlayScene extends Phaser.Scene{
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 500;
-        this.timer = this.add.text(600,0,'Timer:'+this.time);
-
+        this.timer = this.add.text(600,0,'Timer:'+ Math.trunc(this.time));
+        this.timer.setScrollFactor(0);
         //adding buildings for each player
         
         this.building=new Units(this,1200,1200,"building1");
@@ -263,9 +268,11 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-        this.player.mana+=(delta/1000);
+        if(this.player.mana <= 100){
+            this.player.mana+=(delta/1000);
+            }
         console.log(this.player.mana);
-        this.timer.setText( 'Timer: ' + time/1000)
+        this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
         //Handler enemy getting attacked by character, cooldown 2s
 
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
