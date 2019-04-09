@@ -14,8 +14,9 @@ import {Rider} from "../gameObjects/Rider";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
-    constructor(){
-        super({key:CST.SCENES.PLAY});
+
+    constructor(sceneKey = CST.SCENES.PLAY){
+        super({key:sceneKey});
     }
 
     preload(){ 
@@ -26,16 +27,26 @@ export class PlayScene extends Phaser.Scene{
     }
 
     create(){
-        //Create an enemygroup with runChildUpdate set to true. Every enemy added to this group will have its update function then called. 
+        //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
+        this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
+        this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
+
         this.enemyGroup = this.add.group({runChildUpdate: true}); 
         this.bullets = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
+
+        this.player = new Player(this,300,300, "p1", "p1_01.png");
+        
+        //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
+
+
+  //      this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
         this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
+
         //adjust player hit box
         //this.player.setSize( 24, 28).setOffset(5,5);
         this.player.setSize(36, 40);
@@ -186,7 +197,7 @@ export class PlayScene extends Phaser.Scene{
             prefix:'rider_', suffix: '.png'
             })
         });
-
+        
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
@@ -205,20 +216,20 @@ export class PlayScene extends Phaser.Scene{
        // display layers
         let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
         let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
-        let waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
+        this.waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
-        let CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
+         this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
-        CollisionLayer.setCollisionByProperty({collides:true});
-        waterLayer.setCollisionByProperty({collides:true});
+        this.CollisionLayer.setCollisionByProperty({collides:true});
+        this.waterLayer.setCollisionByProperty({collides:true});
 
         //Assign collider objects
-        this.physics.add.collider(this.player, CollisionLayer);
-        this.physics.add.collider(this.player, waterLayer);
-        this.physics.add.collider(this.enemyGroup, waterLayer);
-        this.physics.add.collider(this.enemyGroup, CollisionLayer);
+        this.physics.add.collider(this.player, this.CollisionLayer);
+        this.physics.add.collider(this.player, this.waterLayer);
+        this.physics.add.collider(this.enemyGroup, this.waterLayer);
+        this.physics.add.collider(this.enemyGroup, this.CollisionLayer);
   
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
@@ -319,16 +330,6 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
-            if(this.player.body.velocity.x > 0){
-                this.player.play("right", true);
-            } else if(this.player.body.velocity.x < 0){
-                this.player.play("left",true);
-            }else if(this.player.body.velocity.y > 0){
-                this.player.play("down",true);
-            }else if(this.player.body.velocity.y < 0){
-                this.player.play("up",true);
-            }
-
 
             if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
@@ -383,9 +384,10 @@ export class PlayScene extends Phaser.Scene{
                     this.player_scale ++;
                 }
             }
+            this.manabar.update(time,delta);
         }
         
-        this.manabar.update(time,delta);
+        
 
     }
 

@@ -9,4 +9,5 @@ build/
 dist/
 node_modules/
 aws-exports.js
+firebase-config.js
 awsconfiguration.json

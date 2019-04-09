@@ -6,12 +6,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
+
         this.id=id;
-        this.setOrigin(0,0);
+      //  this.setOrigin(0,0);
+
         this.nonZeroVelocity = {x:0,y:1};
 
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
+        scene.updateSprite(this); 
         this.createWeapon(scene);
         this.createSpecialWeapon(scene);
         //Create intial Healthpoints for the player
@@ -60,6 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
+            console.log("this");
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);
@@ -73,9 +77,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     kill(){
-        //Remove a player so we can handle other things related to the death such as removing the wepopn
-        this.removeWeapon();
-        this.removeSpecialWeapon();
+        //Remove a player so we can handle other things related to the death such as removing the wepopn    
         this.destroy();
     }
 
@@ -88,8 +90,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     }
 
-    
-  
+
+    setVelocity(x,y){ //overriding setVelocity so that we caan set nonZeroVelocity
+        super.setVelocity(x,y);
+
+        if (x != 0 || y != 0){
+            this.nonZeroVelocity = {'x':x, 'y':y};
+        }
+    }
+
+    update(){
+        //Player Update Function
+        if(this.body.velocity.x > 0){
+            this.play("right", true);
+        } else if(this.body.velocity.x < 0){
+            this.play("left",true);
+        }else if(this.body.velocity.y > 0){
+            this.play("down",true);
+        }else if(this.body.velocity.y < 0){
+            this.play("up",true);
+        }
+    }
 
 
 }
