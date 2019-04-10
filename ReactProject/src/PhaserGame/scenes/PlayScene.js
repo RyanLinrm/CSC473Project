@@ -35,9 +35,10 @@ export class PlayScene extends Phaser.Scene{
 
         this.enemyGroup = this.add.group({runChildUpdate: true}); 
         this.bullets = this.add.group({runChildUpdate: true}); 
+        this.towers = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Melee(this,300,300, "rider", "rider_01.png",100,200).setScale(0.8);
+        this.player = new Player(this,300,300, "rider", "rider_01.png",100,200).setScale(0.8);
         this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
@@ -56,14 +57,13 @@ export class PlayScene extends Phaser.Scene{
         //this.enemyGroup.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
-        this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
-        this.hpbar = new HpBar(this, 0, 0, 'hp', this.player.healthPoints);
+        this.emptybar = new emptyBar(this, 600, 1).setDepth(-1);
+        this.hpbar = new HpBar(this, 600, 0, 'hp', this.player.healthPoints);
 
         //Mana bar
-        this.emptybar2 = new emptyBar(this, 0, 32).setDepth(-1);
-        this.manabar = new ManaBar(this, 0, 31, 'mana', this.player.mana);
-       
-        
+        this.emptybar2 = new emptyBar(this, 600, 32).setDepth(-1);
+        this.manabar = new ManaBar(this, 600, 31, 'mana', this.player.mana);
+     
         //Mini Map
 
         //create a sample minimap ---needs to change to dynamic
@@ -71,18 +71,32 @@ export class PlayScene extends Phaser.Scene{
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 500;
-        this.timer = this.add.text(600,0,'Timer:'+this.time);
+        //this.timer = this.add.text(600,0,'Timer:'+this.time);
      
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,"building1");
+        this.building=new Units(this,1200,1200,"building1",1,4,100);
         this.building.setScale(0.15);
-        this.University=new Units(this,1200,0,"University");
+        this.University=new Units(this,1200,0,"University",1,2,100);
         this.University.setScale(1.5);
-        this.pyramid=new Units(this,0,0,"pyramid");
+        this.pyramid=new Units(this,0,0,"pyramid",1,1,100);
         this.pyramid.setScale(1.5);
-        this.magicstone=new Units(this,0,1200,"magicstone");
+        this.magicstone=new Units(this,0,1200,"magicstone",1,3,100);
         this.magicstone.setScale(1.5);
+        this.towers.add(this.building);
+        this.towers.add(this.University);
+        this.towers.add(this.pyramid);
+        this.towers.add(this.magicstone);
+        //health bar for towers
+        this.emptybar3 = new emptyBar(this,1150,1100).setDepth(-1);
+        this.building_bar = new HpBar(this,1150,1099,'hp',this.building.healthPoints);
+        this.emptybar4 = new emptyBar(this,1150,0).setDepth(-1);
+        this.University_bar = new HpBar(this,1150,-1,'hp',this.University.healthPoints);
+        this.emptybar5 = new emptyBar(this,100,0).setDepth(-1);
+        this.pyramid_bar = new HpBar(this,100,-1,'hp',this.pyramid.healthPoints);
+        this.emptybar6 = new emptyBar(this,100,1090).setDepth(-1);
+        this.magicstone_bar = new HpBar(this,100,1089,'hp',this.magicstone.healthPoints);
+                
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
@@ -257,8 +271,8 @@ export class PlayScene extends Phaser.Scene{
     update(time,delta) {
         this.manabar.update(time,delta);
         this.player.mana+=(delta/2000);
-        console.log(this.player.mana);
-        this.timer.setText( 'Timer: ' + time/1000)
+        //console.log(this.player.mana);
+        //this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
@@ -271,6 +285,36 @@ export class PlayScene extends Phaser.Scene{
                 }
                 enemy.takeDamage(20);
                 console.log(enemy.healthPoints);
+                this.canAttack = time + 2000;
+            }
+        },null,this);
+        
+        this.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
+            if(this.canAttack < time){
+                console.log('hit!');
+                if (tower.active && bullet.active ){
+                    bullet.setActive(false);
+                    bullet.destroy();
+                    bullet.setVisible(false);
+                }
+                
+                if(tower.tower_ID==1){
+                    this.pyramid_bar.cutHPBar(10)
+                    this.pyramid.takeDamage(10);
+                }
+                if(tower.tower_ID==2){
+                    this.University_bar.cutHPBar(5)
+                    this.University.takeDamage(5);
+                }
+                if(tower.tower_ID==3){
+                    this.magicstone_bar.cutHPBar(5)
+                    this.magicstone.takeDamage(5);
+                }
+                if(tower.tower_ID==4){
+                    this.building_bar.cutHPBar(5)
+                    this.building.takeDamage(5);
+                }
+                console.log(tower.healthPoints);
                 this.canAttack = time + 2000;
             }
         },null,this);

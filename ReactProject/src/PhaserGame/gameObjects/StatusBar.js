@@ -116,7 +116,7 @@ export class ManaBar extends Phaser.GameObjects.Image{
             if(this.ManaSTDrecovertime < time){
                 this.regenManaBar(1);
                 this.ManaSTDrecovertime = time + this.manarate;
-                console.log('mana regen 1 !');
+               // console.log('mana regen 1 !');
             }
        }
     }
