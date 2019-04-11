@@ -86,6 +86,7 @@ export class PlayScene extends Phaser.Scene{
         this.University.setScale(1.5);
         this.pyramid=new Units(this,0,0,"pyramid");
         this.pyramid.setScale(1.5);
+        this.updateSprite(this.pyramid);
         this.magicstone=new Units(this,0,1200,"magicstone");
         this.magicstone.setScale(1.5);
         //adding resrouces to the middle 
@@ -114,7 +115,7 @@ export class PlayScene extends Phaser.Scene{
 
 
         //create animations for different directions 
-    /*
+    
         //=================animations for p1=================
         this.anims.create({
             key: "down",
@@ -155,8 +156,9 @@ export class PlayScene extends Phaser.Scene{
             start:9, end:11, zeroPad:1,
             prefix:'p1_', suffix: '.png'
             })
-        });*/
+        });
         //================animations for rider=================
+        /*
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -197,7 +199,7 @@ export class PlayScene extends Phaser.Scene{
             prefix:'rider_', suffix: '.png'
             })
         });
-        
+        */
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
@@ -261,7 +263,7 @@ export class PlayScene extends Phaser.Scene{
 
     update(time,delta) {
         this.player.mana+=(delta/2000);
-        console.log(this.player.mana);
+       // console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 

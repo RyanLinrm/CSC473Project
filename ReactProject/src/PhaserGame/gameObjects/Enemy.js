@@ -37,6 +37,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //sets up the movement funciton that is called by the update method.
         this.moveEnemy = () =>{
             scene.physics.moveToObject(this, target);
+            console.log(this);
             
         };
     }

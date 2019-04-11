@@ -35,9 +35,4 @@ const phaserMock = {
     }
 }
 
-
-
-
-
-
 export default phaserMock;

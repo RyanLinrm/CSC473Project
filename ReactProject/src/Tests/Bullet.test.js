@@ -16,9 +16,9 @@ test('Testing Bullet Constructor and default values', () => {
     expect(bullet.xSpeed).toBe(bulletSpeed);
     expect(bullet.ySpeed).toBe(bulletSpeed);
     expect(bullet.timeAlive).toBe(0);
-  });
+});
 
-  test('Testing speed Changes in shoot function for bullet class', () => {
+test('Testing speed Changes in shoot function for bullet class', () => {
     const speed = 10;
     const shooter = {
       x:100,
@@ -45,4 +45,4 @@ test('Testing Bullet Constructor and default values', () => {
     });
 
   
-  });
+});
