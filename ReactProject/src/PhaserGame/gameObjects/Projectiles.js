@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene,speed=1){
-        super(scene,0,0,speed=1);
+        super(scene,0,0,speed);
 
         this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
-        this.xSpeed = 1;
-        this.ySpeed = 1;
+        this.xSpeed = speed;
+        this.ySpeed = speed;
         this.timeAlive = 0;
         
     }
