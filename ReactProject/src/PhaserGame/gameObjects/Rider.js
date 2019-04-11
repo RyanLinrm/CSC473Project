@@ -10,15 +10,15 @@ export class Rider extends Player{
 
 
     createWeapon(scene) {
-        this.posions = scene.physics.add.group({ classType: Posion, runChildUpdate: true });
+        this.bullets = scene.physics.add.group({ classType: Posion, runChildUpdate: true });
         this.attack = () => {
-            let posion = this.posions.get();
-            scene.children.add(posion);
-            posion.place(this);
+            let bullet = this.bullets.get();
+            scene.children.add(bullet);
+            bullet.place(this);
         };
 
     this.removeWeapon = () => { //destroys the weapon used
-        this.posions.destroy();
+        this.bullets.destroy();
         this.attack = null;
         };
 
