@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Game from './PhaserGame/Game'
+import Game from './PhaserGame/Game';
 import './App.css';
 
 import {Auth} from 'aws-amplify';

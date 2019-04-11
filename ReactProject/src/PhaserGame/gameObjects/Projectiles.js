@@ -1,19 +1,21 @@
 import Phaser from 'phaser';
 export class Bullet extends Phaser.GameObjects.Image {
     constructor(scene,speed=1){
-        super(scene,0,0,speed=1);
+        if(speed === 0)
+            speed = 1;
+        super(scene,0,0,speed);
 
         this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
-        this.xSpeed = 1;
-        this.ySpeed = 1;
+        this.xSpeed = speed;
+        this.ySpeed = speed;
         this.timeAlive = 0;
         
     }
     //111
 
-    shoot(shooter,velocity){
+    shoot(shooter,velocity,exactDirection = false){
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
@@ -22,8 +24,14 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.setAngle(shooter.body.rotation);
         
         //Shoots in the direciton the player is facing. 
+        if(!exactDirection){
             this.xSpeed = this.speed * Math.sign(velocity.x); 
             this.ySpeed = this.speed * Math.sign(velocity.y);
+        }
+        else{
+            this.xSpeed = this.speed * velocity.x; 
+            this.ySpeed = this.speed * velocity.y;   
+        } 
        
         if(this.timeAlive > 2000){
             this.setActive(false);
@@ -31,6 +39,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         }
     
     }
+    
 
     update(time,delta){
         this.timeAlive += delta;

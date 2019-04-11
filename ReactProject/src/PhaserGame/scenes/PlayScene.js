@@ -94,6 +94,9 @@ export class PlayScene extends Phaser.Scene{
         this.University.setScale(1.5);
         this.pyramid=new Units(this,0,0,"pyramid",1,1,100);
         this.pyramid.setScale(1.5);
+        // Got a merge conflict here, if run into issue, check here
+        this.updateSprite(this.pyramid);
+        //this.magicstone=new Units(this,0,1200,"magicstone");
         this.magicstone=new Units(this,0,1200,"magicstone",1,3,100);
         this.magicstone.setScale(1.5);
         this.towers.add(this.building);
@@ -179,6 +182,7 @@ export class PlayScene extends Phaser.Scene{
             })
         });
         //================animations for rider=================
+
         /*this.anims.create({
             key: "down",
             frameRate: 8,
