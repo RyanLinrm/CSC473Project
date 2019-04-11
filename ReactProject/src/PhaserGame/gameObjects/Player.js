@@ -4,6 +4,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
+        
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 

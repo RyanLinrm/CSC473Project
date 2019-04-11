@@ -46,3 +46,10 @@ test('Testing speed Changes in shoot function for bullet class', () => {
 
   
 });
+
+test('Testing the update class for the bullet',()=>{
+  const speed = 10;
+  const bullet = new Bullet(new PlayScene(),speed);
+  bullet.update(1,100);
+  expect(bullet.timeAlive).toBe(100);
+});

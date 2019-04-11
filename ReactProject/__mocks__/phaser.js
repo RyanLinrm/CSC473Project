@@ -31,7 +31,21 @@ const phaserMock = {
     },
 
     Scene: function(){
+        this.sys = {
+            updateList:{add:()=>{}},
+            displayList:{add:()=>{}}
+        };
 
+        this.physics = {
+            world:{
+                enableBody: ()=>{}
+            },
+            add:{
+                group: ()=>{}
+            }
+        };
+
+        this.updateSprite = ()=>{};
     }
 }
 
