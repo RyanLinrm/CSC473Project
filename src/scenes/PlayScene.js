@@ -35,6 +35,33 @@ export class PlayScene extends Phaser.Scene{
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
 
+        this.hud = this.add.rectangle(this.game.renderer.width/2, this.game.renderer.height, 
+                                      this.game.renderer.width*2/3, 140, 0x000000).setInteractive();
+        this.hud.setScrollFactor(0);
+
+        this.unit1 = this.add.sprite(this.game.renderer.width/3, this.game.renderer.height-35, "magic").setScrollFactor(0).setInteractive();
+        this.unit2 = this.add.sprite(this.game.renderer.width/2, this.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
+        this.unit3 = this.add.sprite(this.game.renderer.width*2/3, this.game.renderer.height-35, "angel").setScrollFactor(0).setInteractive();
+
+        this.input.setDraggable([this.unit1, this.unit2, this.unit3]);
+        var originalX;
+        var originalY;
+        this.input.on('dragstart', (pointer, unit) => {
+            originalX = unit.x;
+            originalY = unit.y;
+        });
+        this.input.on('drag', (pointer, unit, dragX, dragY) => {
+            unit.x = dragX;
+            unit.y = dragY;
+        }); 
+        this.input.on('dragend', (pointer, unit) => {
+            this.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
+            unit.x = originalX;
+            unit.y = originalY;
+        }); 
+    
+        
+
         //create animations for different directions 
     
 
@@ -110,12 +137,12 @@ export class PlayScene extends Phaser.Scene{
 
 
         //If it gets the character, character dies
-        let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
+        /*let collider = this.physics.add.overlap(this.wolf, this.player, (overlaped) =>{
             //stop when they overplay, kill the player(test)
             overlaped.body.stop();
             this.player.destroy();
             this.physics.world.removeCollider(collider);
-        }, null, this);
+        }, null, this);*/
 
     }
 
