@@ -1,0 +1,335 @@
+{
+	"frames": {
+		"skull_01.png": {
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 28,
+				"h": 47
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 28,
+				"h": 47
+			},
+			"sourceSize": {
+				"w": 28,
+				"h": 47
+			}
+		},
+		"skull_02.png": {
+			"frame": {
+				"x": 31,
+				"y": 1,
+				"w": 28,
+				"h": 46
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 28,
+				"h": 46
+			},
+			"sourceSize": {
+				"w": 28,
+				"h": 46
+			}
+		},
+		"skull_03.png": {
+			"frame": {
+				"x": 61,
+				"y": 1,
+				"w": 28,
+				"h": 47
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 28,
+				"h": 47
+			},
+			"sourceSize": {
+				"w": 28,
+				"h": 47
+			}
+		},
+		"skull_04.png": {
+			"frame": {
+				"x": 91,
+				"y": 1,
+				"w": 28,
+				"h": 46
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 28,
+				"h": 46
+			},
+			"sourceSize": {
+				"w": 28,
+				"h": 46
+			}
+		},
+		"skull_05.png": {
+			"frame": {
+				"x": 121,
+				"y": 1,
+				"w": 21,
+				"h": 44
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 44
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 44
+			}
+		},
+		"skull_06.png": {
+			"frame": {
+				"x": 144,
+				"y": 1,
+				"w": 21,
+				"h": 42
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 42
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 42
+			}
+		},
+		"skull_07.png": {
+			"frame": {
+				"x": 167,
+				"y": 1,
+				"w": 21,
+				"h": 44
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 44
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 44
+			}
+		},
+		"skull_08.png": {
+			"frame": {
+				"x": 190,
+				"y": 1,
+				"w": 22,
+				"h": 42
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 22,
+				"h": 42
+			},
+			"sourceSize": {
+				"w": 22,
+				"h": 42
+			}
+		},
+		"skull_09.png": {
+			"frame": {
+				"x": 214,
+				"y": 1,
+				"w": 30,
+				"h": 47
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 47
+			},
+			"sourceSize": {
+				"w": 30,
+				"h": 47
+			}
+		},
+		"skull_10.png": {
+			"frame": {
+				"x": 246,
+				"y": 1,
+				"w": 30,
+				"h": 46
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 46
+			},
+			"sourceSize": {
+				"w": 30,
+				"h": 46
+			}
+		},
+		"skull_11.png": {
+			"frame": {
+				"x": 278,
+				"y": 1,
+				"w": 30,
+				"h": 47
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 47
+			},
+			"sourceSize": {
+				"w": 30,
+				"h": 47
+			}
+		},
+		"skull_12.png": {
+			"frame": {
+				"x": 310,
+				"y": 1,
+				"w": 30,
+				"h": 46
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 30,
+				"h": 46
+			},
+			"sourceSize": {
+				"w": 30,
+				"h": 46
+			}
+		},
+		"skull_13.png": {
+			"frame": {
+				"x": 342,
+				"y": 1,
+				"w": 21,
+				"h": 44
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 44
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 44
+			}
+		},
+		"skull_14.png": {
+			"frame": {
+				"x": 365,
+				"y": 1,
+				"w": 21,
+				"h": 42
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 42
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 42
+			}
+		},
+		"skull_15.png": {
+			"frame": {
+				"x": 388,
+				"y": 1,
+				"w": 21,
+				"h": 44
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 21,
+				"h": 44
+			},
+			"sourceSize": {
+				"w": 21,
+				"h": 44
+			}
+		},
+		"skull_16.png": {
+			"frame": {
+				"x": 411,
+				"y": 1,
+				"w": 22,
+				"h": 42
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 22,
+				"h": 42
+			},
+			"sourceSize": {
+				"w": 22,
+				"h": 42
+			}
+		}
+	},
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 434,
+			"h": 49
+		},
+		"scale": "1"
+	}
+}

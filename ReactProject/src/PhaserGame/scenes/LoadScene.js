@@ -26,7 +26,9 @@ export class LoadScene extends Phaser.Scene{
     this.load.image("shoot2", `${process.env.PUBLIC_URL}/assets/ability/shoot2.png`);
     this.load.image("shoot3", `${process.env.PUBLIC_URL}/assets/ability/shoot3.png`);
     this.load.image("shoot4", `${process.env.PUBLIC_URL}/assets/ability/shoot4.png`);
+    this.load.image("shoot5", `${process.env.PUBLIC_URL}/assets/ability/shoot5.png`);
     this.load.atlas("angel", `${process.env.PUBLIC_URL}/assets/sprite/angel.png`, `${process.env.PUBLIC_URL}/assets/sprite/angel.json`);
+    this.load.atlas("skull", `${process.env.PUBLIC_URL}assets/sprite/units/skull.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/skull.json`);
     this.load.atlas("ninjabot", `${process.env.PUBLIC_URL}assets/sprite/units/ninjabot.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/ninjabot.json`);
     this.load.atlas("dragonrider", `${process.env.PUBLIC_URL}assets/sprite/units/dragonrider.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/dragonrider.json`);
     this.load.atlas("demon1", `${process.env.PUBLIC_URL}assets/sprite/units/demon1.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/demon1.json`);
