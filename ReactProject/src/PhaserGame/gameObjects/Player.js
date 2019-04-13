@@ -63,7 +63,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            console.log("this");
+           // console.log("this");
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);

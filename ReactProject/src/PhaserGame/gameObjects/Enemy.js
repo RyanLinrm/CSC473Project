@@ -7,9 +7,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-        this.addbBullet(this.scene);
         this.setOrigin(0,0);
-
+        this.scene=scene;
+        this.createBasicAtk(scene);
         //enable body in physics game
         scene.physics.world.enableBody(this);
 
@@ -46,21 +46,22 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.destroy();
         
     }
-    addbBullet(scene){
+
+    createBasicAtk(scene){
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
-        this.attack = ()=>{
+
+        this.BasicAtk = (target)=>{
+            //console.log("this");
             let bullet = this.bullets.get();
             scene.children.add(bullet);
-            bullet.shoot(this,this.nonZeroVelocity);
-    }
-}
+            bullet.shoot(this,target,false);
+        };
 
-    basicAttack(){
-        //Add an attack ability.  
-         //    if(this.distance<=this.attackRange){
-            this.attack();
+        this.removeATk = ()=>{ //destroys the weapon used
+            this.bullets.destroy();
+            this.attack = null;
+        };    
 
-        
     }
 
     
@@ -73,10 +74,18 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
-    update(time, delta){
+    update(){
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
         this.moveEnemy();
+        if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
+            let speed = 10;
+            let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
+            let angle = Math.atan((this.scene.player.y - this.y)/(this.scene.player.x - this.x));
+            let vX = (this.scene.player.x - this.x)/distance;
+            let vY = (this.scene.player.y - this.y)/distance;
+            this.BasicAtk({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});
 
-    //    this.basicAttack();
+ 
     }
+}
 }
