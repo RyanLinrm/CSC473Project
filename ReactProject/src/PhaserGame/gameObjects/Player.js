@@ -4,7 +4,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
-        
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
@@ -60,13 +59,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         
     }
 
+    
     createWeapon(scene){
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            console.log("this");
             let bullet = this.bullets.get();
-            scene.children.add(bullet);
+          //  scene.children.add(bullet);
+            scene.damageItems.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);
         };
 
@@ -89,6 +89,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.kill();
         }
 
+    }
+
+    collision(){
+        console.log("Hit");
     }
 
 

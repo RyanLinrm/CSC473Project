@@ -22,6 +22,15 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      
     }
 
+    collision(){
+        this.takeDamage();
+    }
+
+    takeDamage(){
+        this.healthPoints--;
+        this.tower_destory();
+    }
+
     kill(){
         this.destroy();
     }

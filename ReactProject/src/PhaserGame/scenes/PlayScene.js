@@ -32,10 +32,22 @@ export class PlayScene extends Phaser.Scene{
         this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
         this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
 
-        this.enemyGroup = this.add.group({runChildUpdate: true}); 
-        this.bullets = this.add.group({runChildUpdate: true}); 
-        //create phaser game object, and add in sprite
-  
+        //Create Groups for updating andn collision detection;  
+        this.enemies = this.add.group(); 
+        this.enemyPlayers = this.add.group();
+        this.enemyTowers = this.add.group();
+        this.damageItems = this.add.group(); 
+
+        //Collision Functions
+        //Funciton to run collision funciton of both objects
+        let bothCollisions = (objectA,objectB)=>{
+            if(objectA.active && objectB.active){
+                objectA.collision();
+                objectB.collision();
+            }
+        };
+        this.physics.add.overlap(this.damageItems, this.enemyTowers,bothCollisions);
+        this.physics.add.overlap(this.enemies, this.damageItems,bothCollisions);
 
         this.player = new Player(this,300,300, "p1", "p1_01.png");
         
@@ -56,9 +68,9 @@ export class PlayScene extends Phaser.Scene{
         this.container= this.add.container(575,500);
         this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);
         this.container.add(this.demon1);
-        this.enemyGroup.add(this.wolf);
-        this.enemyGroup.add(this.ninjabot);
-        //this.enemyGroup.add(this.demon1);
+        this.enemies.add(this.wolf); ///Need to move this into the enemy class
+        this.enemies.add(this.ninjabot);
+        //this.enemies.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
         this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
@@ -84,17 +96,21 @@ export class PlayScene extends Phaser.Scene{
         this.building.setScale(0.15);
         this.University=new Units(this,1200,0,"University");
         this.University.setScale(1.5);
+
         this.pyramid=new Units(this,0,0,"pyramid");
         this.pyramid.setScale(1.5);
         this.updateSprite(this.pyramid);
+        this.enemyTowers.add(this.pyramid);
+
+
         this.magicstone=new Units(this,0,1200,"magicstone");
         this.magicstone.setScale(1.5);
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
         this.player.setCollideWorldBounds(true);
-        /*this.physics.add.collider(this.enemyGroup, this.enemyGroup);
-        this.physics.add.collider(this.player, this.enemyGroup);*/
+        /*this.physics.add.collider(this.enemies, this.enemies);
+        this.physics.add.collider(this.player, this.enemies);*/
        
        //set up attacking animation check
        this.anims.create({
@@ -230,8 +246,8 @@ export class PlayScene extends Phaser.Scene{
         //Assign collider objects
         this.physics.add.collider(this.player, this.CollisionLayer);
         this.physics.add.collider(this.player, this.waterLayer);
-        this.physics.add.collider(this.enemyGroup, this.waterLayer);
-        this.physics.add.collider(this.enemyGroup, this.CollisionLayer);
+        this.physics.add.collider(this.enemies, this.waterLayer);
+        this.physics.add.collider(this.enemies, this.CollisionLayer);
   
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
@@ -267,24 +283,11 @@ export class PlayScene extends Phaser.Scene{
         this.timer.setText( 'Timer: ' + time/1000)
         //Handler enemy getting attacked by character, cooldown 2s
 
-        this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
-            if(this.canAttack < time){
-                console.log('hit!');
-                if (enemy.active && bullet.active ){
-                    bullet.setActive(false);
-                    bullet.destroy();
-                    bullet.setVisible(false);
-                }
-                enemy.takeDamage(20);
-                console.log(enemy.healthPoints);
-                this.canAttack = time + 2000;
-            }
-        },null,this);
-
+  
 
         //Handler character getting attacked by enemy, cooldown 3s
 
-    /*    this.physics.world.collide(this.enemyGroup, this.player, (enemy,player)=>{
+    /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
             if(this.canBeAttacked < time){
                // console.log('got hit!');
                 if (enemy.active && player.active ){

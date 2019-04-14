@@ -29,6 +29,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
         //setup the movement of the enemy
         this.setupMovement(scene,target);
+        this.setVisible = false;
 
         
     }
@@ -84,7 +85,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     update(time, delta){
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
-        this.moveEnemy();
+      //  this.moveEnemy();
         //this.basicAttack();
+    }
+
+    collision(){
+        this.takeDamage(20);
     }
 }

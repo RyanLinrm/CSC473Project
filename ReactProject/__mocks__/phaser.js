@@ -25,7 +25,7 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
-
+                this.setVelocity = ()=>{};
             }
         }
     },
