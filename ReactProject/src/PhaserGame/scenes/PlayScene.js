@@ -322,21 +322,21 @@ export class PlayScene extends Phaser.Scene{
 
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
             if(this.canAttack < time){
-                console.log('hit!');
+                //console.log('hit!');
                 if (enemy.active && bullet.active ){
                     bullet.setActive(false);
                     bullet.destroy();
                     bullet.setVisible(false);
                 }
                 enemy.takeDamage(20);
-                console.log(enemy.healthPoints);
+                //console.log(enemy.healthPoints);
                 this.canAttack = time + 2000;
             }
         },null,this);
         
         this.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
             if(this.canAttack < time){
-                console.log('hit!');
+                //console.log('hit!');
                 if (tower.active && bullet.active ){
                     bullet.setActive(false);
                     bullet.destroy();
@@ -359,7 +359,7 @@ export class PlayScene extends Phaser.Scene{
                     this.building_bar.cutHPBar(5)
                     this.building.takeDamage(5);
                 }
-                console.log(tower.healthPoints);
+                //console.log(tower.healthPoints);
                 this.canAttack = time + 2000;
             }
         },null,this);
