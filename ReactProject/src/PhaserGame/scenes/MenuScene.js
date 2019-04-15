@@ -73,7 +73,7 @@ export class MenuScene extends Phaser.Scene{
         });
 
         multiplayerStartButton.on("pointerup", ()=>{
-            this.scene.start(CST.SCENES.PLAYMULTIPLAYER);
+            this.scene.start(CST.SCENES.WAIT);
           });
 
     }

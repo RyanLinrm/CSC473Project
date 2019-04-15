@@ -13,8 +13,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.otherPlayers = {};
         this.playerID = generate(10);
         this.gameRoom = 'Game1';
-    
     }
+
+    init(data){
+        this.playerID = data.playerID;
+        this.gameRoom = data.roomkey;
+    }
+
 
     createPlayer = (id,position,velocity) =>{
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png");

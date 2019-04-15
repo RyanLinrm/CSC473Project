@@ -9,11 +9,12 @@ export class GameLobby extends Phaser.Scene {
         this.ref = firebase.database().ref("Games");
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
         this.playerID = generate(10);
-
+        this.checkCycle = 0;
     }
 
     createGame = () =>{
         console.log('creating a game!');
+        this.yesorno = false;
 
         let currentGame = {
             creator: {
@@ -57,6 +58,9 @@ export class GameLobby extends Phaser.Scene {
                         console.log('a player sits down');
                     }
                 });
+            }
+            else{
+                alert('Full Room!');
             }
             /*
         this.ref.child(key).transaction( (game) =>{
@@ -108,6 +112,9 @@ export class GameLobby extends Phaser.Scene {
             if( !gamerooms ){
                 this.createGame();
             }
+            /*else if( this.CanCreateGame() ){
+                this.createGame();
+            }*/
             else {
                 this.roomkeys = Object.keys(gamerooms)[0];
                 this.joinGame(this.roomkeys);
@@ -115,15 +122,18 @@ export class GameLobby extends Phaser.Scene {
         });
     }
 
-}
-/*let gameLobby = () =>{
-
-    let create;
-
-
-    CanCreateGame = (enabler) =>{
-        create.disabled = !enabler;
+    update(time, delta){
+        if( this.checkCycle < time && this.roomkeys !== undefined ){
+            this.ref.child(this.roomkeys).once('value', snapShot =>{
+                console.log( snapShot.val().seat );
+                if( snapShot.val().seat === this.GameState.FULL){
+                    this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
+                        playerID : this.playerID,
+                        roomkey : this.roomkeys
+                    });
+                }
+            });
+            this.checkCycle = 5000 + time;
+        }
     }
-
-
-}*/
+}
