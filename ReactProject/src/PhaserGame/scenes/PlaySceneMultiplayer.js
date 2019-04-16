@@ -9,10 +9,16 @@ import * as firebase from 'firebase';
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
         super(CST.SCENES.PLAYMULTIPLAYER);
-        let update = {};
+        this.updates = {};
         this.otherPlayers = {};
         this.playerID = generate(10);
         this.gameRoom = 'Game1';
+
+        this.GameIsGoing = false; 
+
+        //Checking who is the HostID
+
+        
     
     }
 
@@ -65,6 +71,47 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
+
+       let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
+       countDownText.setOrigin(0.5,0.5); 
+       firebase.database().ref(`Games/${this.gameRoom}/HostID`).once("value", (snapShot) => {
+            let value = snapShot.val();
+
+            if(value === "default"){
+                this.updates[`Games/${this.gameRoom}/HostID`] = this.playerID;
+                let count = 5;
+                let updateCountDown = ()=>{
+                    
+                    if(count > -2){
+                        this.updates[`Games/${this.gameRoom}/countDown`] = count;
+                        setTimeout(updateCountDown, 1000);
+                    }
+                    count--;
+                };
+                updateCountDown();
+            }
+        });
+
+        
+        database.ref(`Games/${this.gameRoom}/countDown`).on('value',(snapShot)=>{
+            let countDown = snapShot.val();
+            if(countDown > 0){
+                countDownText.setText(countDown);
+            }
+            if(countDown === 0){
+                countDownText.setText("Go");
+                let poop = this.countDownText;
+                let tween = this.tweens.add({
+                    targets: countDownText,
+                    alpha: 0,
+                    ease: 'Power1',
+                    duration: 2000
+                });
+                this.GameIsGoing = true;
+            }
+
+
+        });
 
         database.ref(`Games/${this.gameRoom}/Players/${this.playerID}`).set({
             movementData: {
@@ -121,56 +168,64 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     update(){
-        let updates = {};
+        
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
-        if(this.keyboard.SHIFT.isDown){
-            speed = 192;
+
+        if (this.GameIsGoing) {
+
+            if (this.keyboard.SHIFT.isDown) {
+                speed = 192;
+            }
+
+            if (this.keyboard.W.isDown) {
+                inputVelocity.y = -speed;
+            }
+            if (this.keyboard.S.isDown) {
+                inputVelocity.y = speed;
+            }
+            if (this.keyboard.A.isDown) {
+                inputVelocity.x = -speed;
+            }
+            if (this.keyboard.D.isDown) {
+                inputVelocity.x = speed;
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+                let newAttack = {
+                    time: Date.now(),
+                    pos: { x: Math.round(this.player1.x), y: Math.round(this.player1.y) },
+                    velocity: inputVelocity
+                };
+
+                this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/attack/`] = newAttack;
+
+            }
+
+            if (this.keyboard.W.isUp && this.keyboard.S.isUp) {
+                inputVelocity.y = 0;
+            }
+            if (this.keyboard.A.isUp && this.keyboard.D.isUp) {
+                inputVelocity.x = 0;
+            }
+
+            if (inputVelocity.x !== this.lastVelocity.x || inputVelocity.y !== this.lastVelocity.y) { //Don't want to update database if we don't have to 
+                this.lastVelocity = { ...inputVelocity };
+                this.player1.setVelocity(inputVelocity.x, inputVelocity.y);
+
+                this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/movementData/velocity`] = inputVelocity;
+                this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/movementData/pos`] = { x: Math.round(this.player1.x), y: Math.round(this.player1.y) };
+
+            }
+
+
         }
 
-        if(this.keyboard.W.isDown){
-            inputVelocity.y = -speed;
-        }
-        if(this.keyboard.S.isDown){
-            inputVelocity.y = speed;
-        }
-        if(this.keyboard.A.isDown){
-            inputVelocity.x = -speed;
-        }
-        if(this.keyboard.D.isDown){
-            inputVelocity.x = speed;
-        }
 
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar))
-        {
-            let newAttack = {
-                time: Date.now(),
-                pos:{x:Math.round(this.player1.x), y:Math.round(this.player1.y)},
-                velocity: inputVelocity
-            };
-           
-            updates[`Games/${this.gameRoom}/Players/${this.playerID}/attack/`] = newAttack;
 
-        }
-        
-        if(this.keyboard.W.isUp && this.keyboard.S.isUp){
-            inputVelocity.y = 0;
-        }
-        if(this.keyboard.A.isUp && this.keyboard.D.isUp){
-            inputVelocity.x = 0;
-        }
 
-        if(inputVelocity.x !== this.lastVelocity.x || inputVelocity.y !== this.lastVelocity.y){ //Don't want to update database if we don't have to 
-            this.lastVelocity = {...inputVelocity};
-            this.player1.setVelocity(inputVelocity.x,inputVelocity.y);
-         
-            updates[`Games/${this.gameRoom}/Players/${this.playerID}/movementData/velocity`] = inputVelocity ;
-            updates[`Games/${this.gameRoom}/Players/${this.playerID}/movementData/pos`] = {x:Math.round(this.player1.x), y:Math.round(this.player1.y)};
-            
-        }
-
-        if(Object.keys(updates).length !== 0){ //If updates contains something then send it to the database. This is for future updates
-            firebase.database().ref().update(updates);
+        if(Object.keys(this.updates).length !== 0){ //If updates contains something then send it to the database. This is for future updates
+            firebase.database().ref().update(this.updates);
         }
 
 
