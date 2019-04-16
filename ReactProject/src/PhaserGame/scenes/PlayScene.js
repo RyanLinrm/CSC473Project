@@ -11,6 +11,7 @@ import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
+import {Melee} from "../gameObjects/Melee";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class PlayScene extends Phaser.Scene{
@@ -31,6 +32,7 @@ export class PlayScene extends Phaser.Scene{
         //Without this groupt the update funciton would not be called for the enemies
         this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
         this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
+
 
         //Create Groups for updating andn collision detection;  
         this.enemies = this.add.group(); 
@@ -55,6 +57,13 @@ export class PlayScene extends Phaser.Scene{
 
 
   //      this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
+
+ 
+        this.towers = this.add.group({runChildUpdate: true}); 
+        //create phaser game object, and add in sprite
+  
+       
+
         this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
@@ -73,14 +82,24 @@ export class PlayScene extends Phaser.Scene{
         //this.enemies.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
-        this.emptybar = new emptyBar(this, 0, 1).setDepth(-1);
-        this.hpbar = new HpBar(this, 0, 0, 'hp', this.player.healthPoints);
+        this.emptybar = new emptyBar(this, 600, 21).setDepth(2);
+        this.emptybar.setScrollFactor(0);
+        this.hpbar = new HpBar(this, 600, 20, 'hp', this.player.healthPoints).setDepth(3);
+        this.hpbar.setScrollFactor(0);
 
         //Mana bar
-        this.emptybar2 = new emptyBar(this, 0, 32).setDepth(-1);
-        this.manabar = new ManaBar(this, 0, 31, 'mana', this.player.mana);
+        this.emptybar2 = new emptyBar(this, 600, 51).setDepth(2);
+        this.emptybar2.setScrollFactor(0);
+        this.manabar = new ManaBar(this, 600, 50, 'mana', this.player.mana).setDepth(3);
+        this.manabar.setScrollFactor(0);
+    
        
-        
+        //warning when manabar is too low for a special attack
+        this.manawarning = this.add.text(150,73,'low mana').setDepth(3);
+        this.manawarning.setScrollFactor(0);
+        this.manawarning.setVisible(false)
+
+      
         //Mini Map
 
         //create a sample minimap ---needs to change to dynamic
@@ -88,23 +107,38 @@ export class PlayScene extends Phaser.Scene{
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 500;
-        this.timer = this.add.text(600,0,'Timer:'+this.time);
-     
+
+        this.timer = this.add.text(550,65,'Timer:'+ Math.trunc(this.time)).setDepth(3);
+        this.timer.setScrollFactor(0);
+
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,"building1");
+        this.building=new Units(this,1200,1200,"building1",1,4,100);
         this.building.setScale(0.15);
-        this.University=new Units(this,1200,0,"University");
+        this.University=new Units(this,1200,0,"University",1,2,50);
         this.University.setScale(1.5);
-
-        this.pyramid=new Units(this,0,0,"pyramid");
+        this.pyramid=new Units(this,0,0,"pyramid",1,1,50);
         this.pyramid.setScale(1.5);
-        this.updateSprite(this.pyramid);
-        this.enemyTowers.add(this.pyramid);
+        // Got a merge conflict here, if run into issue, check here
+ 
 
-
-        this.magicstone=new Units(this,0,1200,"magicstone");
+        //this.magicstone=new Units(this,0,1200,"magicstone");
+        this.magicstone=new Units(this,0,1200,"magicstone",1,3,100);
         this.magicstone.setScale(1.5);
+        this.towers.add(this.building);
+        this.towers.add(this.University);
+        this.towers.add(this.pyramid);
+        this.towers.add(this.magicstone);
+        //health bar for towers
+       // this.emptybar3 = new emptyBar(this,1150,1100).setDepth(-1);
+      //  this.building_bar = new HpBar(this,1150,1099,'hp',this.building.healthPoints);
+       // this.emptybar4 = new emptyBar(this,1150,0).setDepth(-1);
+     //   this.University_bar = new HpBar(this,1150,-1,'hp',this.University.healthPoints);
+       // this.emptybar5 = new emptyBar(this,100,0).setDepth(-1);
+        //this.pyramid_bar = new HpBar(this,100,-1,'hp',this.pyramid.healthPoints);
+       // this.emptybar6 = new emptyBar(this,100,1090).setDepth(-1);
+     //   this.magicstone_bar = new HpBar(this,100,1089,'hp',this.magicstone.healthPoints);
+                
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
@@ -128,12 +162,37 @@ export class PlayScene extends Phaser.Scene{
          this.skill.play('ab2');
 
 
+        this.hud = this.add.rectangle(this.game.renderer.width/2, this.game.renderer.height, 
+        this.game.renderer.width*2/3, 140, 0x000000).setInteractive();
+        this.hud.setScrollFactor(0);
+
+        this.unit1 = this.add.sprite(this.game.renderer.width/3, this.game.renderer.height-35, "magic").setScrollFactor(0).setInteractive();
+        this.unit2 = this.add.sprite(this.game.renderer.width/2, this.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
+        this.unit3 = this.add.sprite(this.game.renderer.width*2/3, this.game.renderer.height-35, "angel").setScrollFactor(0).setInteractive();
+
+        this.input.setDraggable([this.unit1, this.unit2, this.unit3]);
+        var originalX;
+        var originalY;
+        this.input.on('dragstart', (pointer, unit) => {
+        originalX = unit.x;
+        originalY = unit.y;
+        });
+        this.input.on('drag', (pointer, unit, dragX, dragY) => {
+        unit.x = dragX;
+        unit.y = dragY;
+        }); 
+        this.input.on('dragend', (pointer, unit) => {
+        this.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
+        unit.x = originalX;
+        unit.y = originalY;
+        }); 
+
 
 
         //create animations for different directions 
     
         //=================animations for p1=================
-        this.anims.create({
+       /* this.anims.create({
             key: "down",
             frameRate: 8,
             //walking downward animation frames
@@ -172,9 +231,9 @@ export class PlayScene extends Phaser.Scene{
             start:9, end:11, zeroPad:1,
             prefix:'p1_', suffix: '.png'
             })
-        });
+        });*/
         //================animations for rider=================
-        /*
+
         this.anims.create({
             key: "down",
             frameRate: 8,
@@ -215,7 +274,7 @@ export class PlayScene extends Phaser.Scene{
             prefix:'rider_', suffix: '.png'
             })
         });
-        */
+        
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
@@ -278,13 +337,61 @@ export class PlayScene extends Phaser.Scene{
     }
 
     update(time,delta) {
-        this.player.mana+=(delta/2000);
-       // console.log(this.player.mana);
-        this.timer.setText( 'Timer: ' + time/1000)
+
+        if(this.player.mana <= 100){
+            this.player.mana+=(delta/1000);
+            }
+        //console.log(this.player.mana);
+        this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
+
         //Handler enemy getting attacked by character, cooldown 2s
+/*
+        this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
+            if(this.canAttack < time){
+                console.log('hit!');
+                if (enemy.active && bullet.active ){
+                    bullet.setActive(false);
+                    bullet.destroy();
+                    bullet.setVisible(false);
+                }
+                enemy.takeDamage(20);
+                console.log(enemy.healthPoints);
+                this.canAttack = time + 2000;
+            }
+        },null,this);
+        
+        this.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
+            if(this.canAttack < time){
+                console.log('hit!');
+                if (tower.active && bullet.active ){
+                    bullet.setActive(false);
+                    bullet.destroy();
+                    bullet.setVisible(false);
+                }
+                
+                if(tower.tower_ID===1){
+                    this.pyramid_bar.cutHPBar(10)
+                    this.pyramid.takeDamage(10);
+                }
+                if(tower.tower_ID===2){
+                    this.University_bar.cutHPBar(5)
+                    this.University.takeDamage(5);
+                }
+                if(tower.tower_ID===3){
+                    this.magicstone_bar.cutHPBar(5)
+                    this.magicstone.takeDamage(5);
+                }
+                if(tower.tower_ID===4){
+                    this.building_bar.cutHPBar(5)
+                    this.building.takeDamage(5);
+                }
+                console.log(tower.healthPoints);
+                this.canAttack = time + 2000;
+            }
+        },null,this);
 
-  
 
+*/
         //Handler character getting attacked by enemy, cooldown 3s
 
     /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
@@ -319,12 +426,13 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(this.player.movementSpeed);
  
             }
-            if (Phaser.Input.Keyboard.JustDown(this.spacebar))
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.mana >= 5)
             {
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.manabar.cutManaBar(5);
+                this.player.mana -= 2;
+                this.manabar.cutManaBar(2);
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
@@ -335,6 +443,16 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(0);
 
             }
+            if(this.player.body.velocity.x > 0){
+                this.player.play("right", true);
+            } else if(this.player.body.velocity.x < 0){
+                this.player.play("left",true);
+            }else if(this.player.body.velocity.y > 0){
+                this.player.play("down",true);
+            }else if(this.player.body.velocity.y < 0){
+                this.player.play("up",true);
+            }
+
 
             if(this.player.body.velocity.x !== 0 || this.player.body.velocity.y !== 0){
                 this.player.nonZeroVelocity = {x:this.player.body.velocity.x,y:this.player.body.velocity.y}; 
@@ -347,10 +465,17 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
             }*/
             //speed up the movement 
-            if(this.player.mana>0){
 
-            if (Phaser.Input.Keyboard.JustDown(this.Qbar))
+            if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
                 this.player.specialAttack();
+                this.manabar.cutManaBar(10);
+                
+            }
+            if(this.player.mana< 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
+                this.manawarning.setVisible(true);            
+            }
+            if(this.player.mana > 10){
+                this.manawarning.setVisible(false);
             }
 
             if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
@@ -382,18 +507,14 @@ export class PlayScene extends Phaser.Scene{
 
                 if(this.player_scale === 2){
                     this.player.setScale(this.player_scale);
-                    this.player_scale --;
+                    this.player_scale  --;
                 }
                 else{
                     this.player.setScale(this.player_scale);
-                    this.player_scale ++;
+                    this.player_scale  ++;
                 }
             }
             this.manabar.update(time,delta);
         }
         
-        
-
     }
-
-

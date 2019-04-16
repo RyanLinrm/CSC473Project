@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
+import {Rider} from "../gameObjects/Rider";
 import { CST } from "../CST";
 import {generate} from 'randomstring';
 import * as firebase from 'firebase';

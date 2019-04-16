@@ -8,15 +8,15 @@ export class Bomber extends Player{
     }
 
     createWeapon(scene) {
-        let bombs = scene.physics.add.group({ classType: Bomb, runChildUpdate: true });
+        this.bullets = scene.physics.add.group({ classType: Bomb, runChildUpdate: true });
         this.attack = () => {
-            let bomb = bombs.get();
-            scene.children.add(bomb);
-            bomb.place(this);
+            let bullet = this.bullets.get();
+            scene.children.add(bullet);
+            bullet.place(this);
         };
 
         this.removeWeapon = () => { //destroys the weapon used
-            bombs.destroy();
+            this.bullets.destroy();
             this.attack = null;
         };
 
