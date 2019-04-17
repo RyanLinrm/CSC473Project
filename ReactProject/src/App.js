@@ -29,14 +29,23 @@ class App extends Component {
 
     return (
       <div className="App">
-      <div className='Top'>
-        <div className ='TopBarArrangement'>
-          <h1>React Phaser Game</h1>
-          <button onClick={this.signInHandler}>{buttonText}</button>
-        </div>
-      </div>
+      <nav className="topbar">
+        <ul>
+          <li><button id="leader">Leaderboards</button></li>
+          <li><h1>React Phaser Game</h1></li>
+          <li><button id="signin" onClick={this.signInHandler}>{buttonText}</button></li>
+        </ul>
+      </nav>
+  
       <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler}/>
-
+      <div className="mostButtons">
+      <ul>
+      <li><button >Single Player</button></li>
+      <li><button >Multiplayer</button></li>
+      <li><button>store</button></li>
+      <li><button>tutorial</button></li>
+      </ul>
+      </div>
       <div className={gameClass}>
         <Game />
       </div>
