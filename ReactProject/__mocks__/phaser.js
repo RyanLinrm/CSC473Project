@@ -25,7 +25,12 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
-                this.setVelocity = ()=>{};
+                this.setVelocity = function(){
+
+                };
+
+                this.kill = jest.fn();
+               
             }
         }
     },

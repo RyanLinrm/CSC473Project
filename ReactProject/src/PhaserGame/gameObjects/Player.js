@@ -9,8 +9,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.id=id;
       //  this.setOrigin(0,0);
-
+       
         this.nonZeroVelocity = {x:0,y:1};
+        this.poop = 123;
 
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
@@ -19,6 +20,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.createSpecialWeapon(scene);
         //Create intial Healthpoints for the player
         this.mana = 100;
+        this.setVelocity({x:57,y:233});
         this.healthPoints = healthPoints;
         this.movementSpeed=movementSpeed;
     }
@@ -95,10 +97,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         console.log("Hit");
     }
 
-
-    setVelocity(x,y){ //overriding setVelocity so that we caan set nonZeroVelocity
+    setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
         super.setVelocity(x,y);
+        this.setNonZeroVelocity(x,y);
+    }
 
+
+    setNonZeroVelocity(x,y){ 
         if (x != 0 || y != 0){
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
