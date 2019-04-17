@@ -13,8 +13,8 @@ nav ul {
 nav ul li{
   display: inline-block;
   color: white;
-  margin-left: 3em;
-  padding: 1em;
+  margin-left: 5em;
+  padding: 2em;
   width: 6em;
 }
 
@@ -38,4 +38,9 @@ nav {
 
 #signin{
   float: right;
+}
+
+.infobutton{
+  position: absolute;
+  bottom: 10px;
 }
