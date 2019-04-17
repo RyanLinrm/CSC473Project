@@ -6,6 +6,7 @@ import Phaser from 'phaser';
 import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
+import { GameLobby } from "./scenes/GameLobby";
 import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 
 export default class Game extends React.Component{
@@ -24,7 +25,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlayScene,PlaySceneMultiplayer
+               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer
             ],
             render:{
                 pixelArt: true

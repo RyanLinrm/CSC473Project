@@ -11,7 +11,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
       //  this.setOrigin(0,0);
        
         this.nonZeroVelocity = {x:0,y:1};
-        this.poop = 123;
 
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
@@ -19,8 +18,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.createWeapon(scene);
         this.createSpecialWeapon(scene);
         //Create intial Healthpoints for the player
-        this.mana = 100;
-        this.setVelocity({x:57,y:233});
+        this.mana = 1000;
         this.healthPoints = healthPoints;
         this.movementSpeed=movementSpeed;
     }

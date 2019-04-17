@@ -30,6 +30,7 @@ export class PlayScene extends Phaser.Scene{
     create(){
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
+       
         this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
         this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
 
@@ -51,7 +52,10 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.damageItems, this.enemyTowers,bothCollisions);
         this.physics.add.overlap(this.enemies, this.damageItems,bothCollisions);
 
-        this.player = new Player(this,300,300, "p1", "p1_01.png");
+        let playerStartingPos = this.startingPosFromTowerNum(1);
+        this.player = new Player(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png");
+
+
         
         //this.player = new Bomber(this,300,300, "p1", "p1_01.png");
 
@@ -59,7 +63,11 @@ export class PlayScene extends Phaser.Scene{
   //      this.player = new Rider(this,300,300, "rider", "rider_01.png").setScale(0.8);
 
  
-        this.towers = this.add.group({runChildUpdate: true}); 
+        this.towers = this.add.group(); 
+        this.towers.removeCallback = ()=>{
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
+        };
         //create phaser game object, and add in sprite
   
        
@@ -119,16 +127,19 @@ export class PlayScene extends Phaser.Scene{
         this.University.setScale(1.5);
         this.pyramid=new Units(this,0,0,"pyramid",1,1,50);
         this.pyramid.setScale(1.5);
+
+        
         // Got a merge conflict here, if run into issue, check here
  
 
         //this.magicstone=new Units(this,0,1200,"magicstone");
         this.magicstone=new Units(this,0,1200,"magicstone",1,3,100);
         this.magicstone.setScale(1.5);
-        this.towers.add(this.building);
+        this.towers.add(this.building); //Move into unit class
         this.towers.add(this.University);
         this.towers.add(this.pyramid);
         this.towers.add(this.magicstone);
+        
         //health bar for towers
        // this.emptybar3 = new emptyBar(this,1150,1100).setDepth(-1);
       //  this.building_bar = new HpBar(this,1150,1099,'hp',this.building.healthPoints);
@@ -336,11 +347,25 @@ export class PlayScene extends Phaser.Scene{
         this.player_scale = 2;
     }
 
+    startingPosFromTowerNum(towerNumber){
+        if(towerNumber === 1){
+            return {x:300,y:300};
+        }
+        else if(towerNumber === 2){
+            return {x:1000,y:300};
+        }
+        else if(towerNumber === 3){
+            return {x:300,y:1000};
+        }
+        else if(towerNumber === 4){
+            return {x:1000,y:1000};
+        }
+    }
+
+
+
     update(time,delta) {
 
-        if(this.player.mana <= 100){
-            this.player.mana+=(delta/1000);
-            }
         //console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
 
@@ -348,21 +373,21 @@ export class PlayScene extends Phaser.Scene{
 /*
         this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
             if(this.canAttack < time){
-                console.log('hit!');
+                //console.log('hit!');
                 if (enemy.active && bullet.active ){
                     bullet.setActive(false);
                     bullet.destroy();
                     bullet.setVisible(false);
                 }
                 enemy.takeDamage(20);
-                console.log(enemy.healthPoints);
+                //console.log(enemy.healthPoints);
                 this.canAttack = time + 2000;
             }
         },null,this);
         
         this.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
             if(this.canAttack < time){
-                console.log('hit!');
+                //console.log('hit!');
                 if (tower.active && bullet.active ){
                     bullet.setActive(false);
                     bullet.destroy();
@@ -385,7 +410,7 @@ export class PlayScene extends Phaser.Scene{
                     this.building_bar.cutHPBar(5)
                     this.building.takeDamage(5);
                 }
-                console.log(tower.healthPoints);
+                //console.log(tower.healthPoints);
                 this.canAttack = time + 2000;
             }
         },null,this);

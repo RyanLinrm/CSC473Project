@@ -11,18 +11,22 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         super(CST.SCENES.PLAYMULTIPLAYER);
         this.updates = {};
         this.otherPlayers = {};
-        this.playerID = generate(10);
-        this.gameRoom = 'Game1';
 
+        this.isCreator = false;
         this.GameIsGoing = false; 
-
-        //Checking who is the HostID
-
-        
-    
+        this.seatNumber = -1;
+        //Checking who is the HostID    
     }
 
+    init(data){
+        this.playerID = data.playerID;
+        this.gameRoom = data.roomkey;
+        this.seatNumber = data.seatNumber;
+    }
+
+
     createPlayer = (id,position,velocity) =>{
+        console.log("CreatingPlayer");
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png");
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
 
@@ -63,23 +67,37 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     create() {
         super.create();
+
+        this.towers.removeCallback = ()=>{
+            if(this.towers.getLength() === 1){
+                this.GameIsGoing = false;
+                let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+                countDownText.setOrigin(0.5,0.5); 
+            }
+
+        };
+        
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
-        this.player.setVisible = false;
-        this.player1 = new Player(this,300,300, "p1", "p1_01.png");
-        this.player1.setVisible();
-
+        let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
+        this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png");
+        this.player1.setVisible(false);
+        this.player.setVisible(true);
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
 
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
-       firebase.database().ref(`Games/${this.gameRoom}/HostID`).once("value", (snapShot) => {
-            let value = snapShot.val();
 
-            if(value === "default"){
+       database.ref(`Games/${this.gameRoom}/creator`).once("value", (snapShot) => {
+            let value = snapShot.val();
+            let uID = value.uid;
+
+            if(uID === this.playerID){ //check if playerCreated the room
+                this.isCreator = true;
                 this.updates[`Games/${this.gameRoom}/HostID`] = this.playerID;
-                let count = 5;
+                let count = 10;
                 let updateCountDown = ()=>{
                     
                     if(count > -2){
@@ -115,15 +133,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         database.ref(`Games/${this.gameRoom}/Players/${this.playerID}`).set({
             movementData: {
-                pos: { x: 300, y: 300 },
+                pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x:0,y:0}
             },
             attack: {
                 time:0,
-                pos: {x:300,y:300},
+                pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x: 0, y:0}
             },    
             playerType: "Bomber"
+        });
+
+        database.ref(`Games/${this.gameRoom}/Towers/${this.seatNumber}`).set({ //CreateTowerInDatabase
+            HP: 100,
+            owner: this.playerID  
         });
 
         database.ref(`Games/${this.gameRoom}/Players`).on('child_added',(snapShot)=>{
@@ -173,6 +196,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let speed = 64;
 
         if (this.GameIsGoing) {
+
 
             if (this.keyboard.SHIFT.isDown) {
                 speed = 192;

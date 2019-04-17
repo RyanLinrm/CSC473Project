@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { CST } from "../CST";
+import {generate} from 'randomstring';
 
 export class MenuScene extends Phaser.Scene{
     constructor(){
@@ -73,7 +74,11 @@ export class MenuScene extends Phaser.Scene{
         });
 
         multiplayerStartButton.on("pointerup", ()=>{
-            this.scene.start(CST.SCENES.PLAYMULTIPLAYER);
+            this.scene.start(CST.SCENES.WAIT);
+            /*this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
+                playerID : generate(10),
+                roomkey : "Game1"
+            });*/
           });
 
     }
