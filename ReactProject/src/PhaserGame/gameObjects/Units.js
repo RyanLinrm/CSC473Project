@@ -3,6 +3,7 @@ import { Bullet } from "../gameObjects/Projectiles";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 import { Enemy } from './Enemy';
 
+
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
@@ -17,7 +18,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         scene.physics.world.enable(this);
         this.setCollideWorldBounds(true);
         //this.setImmovable(true);
-
+        
         this.scene = scene;
         this.healthPoints=healthPoints;
         this.speed=speed;
@@ -30,11 +31,24 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.speed=speed;
         this.range=range;
         this.tower_ID=tower_ID;
+
+
+        scene.updateSprite(this);
+        scene.enemyTowers.add(this);
+
         //this.bar=bar;
+        console.log("Helo " + x + " " + y);
+        this.building_bar = new HpBar(scene,x ,y,'hp',this.healthPoints);
     }
     create(){
         //new Enemy(this.scene,500,500,'dragonrider','dragonrider_01');
 
+    }
+
+
+    collision(){
+        this.building_bar.cutHPBar(5);
+        this.takeDamage(5);
     }
 
 

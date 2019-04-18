@@ -27,6 +27,8 @@ export class HpBar extends Phaser.GameObjects.Image{
         //this.setPosition(0,0);
 
         this.cutWith = this.width;
+
+      //  this.emptybar3 = new emptyBar(scene,x,y).setDepth(-1);
     }
 
     cutHPBar(damage){

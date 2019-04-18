@@ -8,6 +8,7 @@ export class GameLobby extends Phaser.Scene {
         super(CST.SCENES.WAIT);
         this.ref = firebase.database().ref("Games");
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
+        this.seatNumber = -1;
         this.playerID = generate(10);
         this.checkCycle = 0;
     }
@@ -25,6 +26,8 @@ export class GameLobby extends Phaser.Scene {
         };
 
         let key = this.ref.push();
+        this.roomkeys = key.key;
+        this.seatNumber = 1;
         key.set(currentGame, (error)=>{
             if(error){
                 console.log("error");
@@ -44,6 +47,7 @@ export class GameLobby extends Phaser.Scene {
             let game = snapShot.val();
             if( game.seat !== 4 ){
                 let val = game.seat + 1;
+                this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
                 let joiner = {
                     uid: this.playerID,
                     userName: this.playerID
@@ -129,7 +133,8 @@ export class GameLobby extends Phaser.Scene {
                 if( snapShot.val().seat === this.GameState.FULL){
                     this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                         playerID : this.playerID,
-                        roomkey : this.roomkeys
+                        roomkey : this.roomkeys,
+                        seatNumber: this.seatNumber
                     });
                 }
             });

@@ -4,7 +4,6 @@ export class Bullet extends Phaser.GameObjects.Image {
         if(speed === 0)
             speed = 1;
         super(scene,0,0,speed);
-
         this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
@@ -14,6 +13,11 @@ export class Bullet extends Phaser.GameObjects.Image {
         
     }
     //111
+
+    collision(){
+        this.setActive(false);
+        this.setVisible(false);
+    }
 
     shoot(shooter,velocity,exactDirection = false){
         this.timeAlive = 0;

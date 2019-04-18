@@ -4,13 +4,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
-        
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
         this.id=id;
       //  this.setOrigin(0,0);
-
+       
         this.nonZeroVelocity = {x:0,y:1};
 
         //enables body in the phsyics world in the game
@@ -19,7 +18,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.createWeapon(scene);
         this.createSpecialWeapon(scene);
         //Create intial Healthpoints for the player
-        this.mana = 100;
+        this.mana = 1000;
         this.healthPoints = healthPoints;
         this.movementSpeed=movementSpeed;
     }
@@ -60,13 +59,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         
     }
 
+    
     createWeapon(scene){
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            console.log("this");
             let bullet = this.bullets.get();
-            scene.children.add(bullet);
+          //  scene.children.add(bullet);
+            scene.damageItems.add(bullet);
             bullet.shoot(this,this.nonZeroVelocity);
         };
 
@@ -91,10 +91,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     }
 
+    collision(){
+        console.log("Hit");
+    }
 
-    setVelocity(x,y){ //overriding setVelocity so that we caan set nonZeroVelocity
+    setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
         super.setVelocity(x,y);
+        this.setNonZeroVelocity(x,y);
+    }
 
+
+    setNonZeroVelocity(x,y){ 
         if (x != 0 || y != 0){
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
