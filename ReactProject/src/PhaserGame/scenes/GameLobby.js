@@ -109,6 +109,12 @@ export class GameLobby extends Phaser.Scene {
     }
 
     create(){
+        let info = this.add.text(600, 250, "Game Lobby", {fontSize: '32px'});
+        let info2 = this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
+        this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
+
+
+
         this.ref.once("value", snapShot => {
             let gamerooms = snapShot.val();
             /*if(gamerooms)
@@ -124,12 +130,14 @@ export class GameLobby extends Phaser.Scene {
                 this.joinGame(this.roomkeys);
             }
         });
+ 
     }
 
     update(time, delta){
         if( this.checkCycle < time && this.roomkeys !== undefined ){
             this.ref.child(this.roomkeys).once('value', snapShot =>{
-                console.log( snapShot.val().seat );
+                let seat = snapShot.val().seat;
+                this.seatinfo.setText(seat + ' player(s) in the room, waiting...');
                 if( snapShot.val().seat === this.GameState.FULL){
                     this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                         playerID : this.playerID,
