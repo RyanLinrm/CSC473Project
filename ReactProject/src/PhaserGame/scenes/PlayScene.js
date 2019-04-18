@@ -13,6 +13,7 @@ import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
 import {Melee} from "../gameObjects/Melee";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+import spriteAnimations from '../gameObjects/Animations';
 
 export class PlayScene extends Phaser.Scene{
 
@@ -21,9 +22,9 @@ export class PlayScene extends Phaser.Scene{
     }
 
     preload(){ 
-       this.load.image("tiles1", `${process.env.PUBLIC_URL}/assets/tiles/map_atlas.png`);
+        spriteAnimations(this);
+        this.load.image("tiles1", `${process.env.PUBLIC_URL}/assets/tiles/map_atlas.png`);
         this.load.image("tiles2", `${process.env.PUBLIC_URL}/assets/tiles/map_atlas2.png`);
-
         this.load.tilemapTiledJSON("Mymap",`${process.env.PUBLIC_URL}/assets/map/map.json`);
     }
 
@@ -38,8 +39,8 @@ export class PlayScene extends Phaser.Scene{
         this.towers = this.add.group({runChildUpdate: true}); 
         //create phaser game object, and add in sprite
   
-        this.player = new Player(this,300,300, "rider", "rider_01.png",100,200).setScale(0.6);
-
+        this.player = new Player(this,300,300, "rider", "rider_01.png",100,200,1).setScale(0.6);
+        this.add.sprite(this,600,600,"shoot4");
         //this.player = new Player(this,300,300, "p1", "p1_01.png");
    
 
@@ -48,7 +49,7 @@ export class PlayScene extends Phaser.Scene{
         this.player.setSize(36, 40);
         //The enemies  
         this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png", this.player, 60, 1000, 10);
-        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png", this.player, 80, 1000, 20);
+        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",1, this.player, 80, 1000, 20);
         this.container= this.add.container(575,500);
         this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);
         this.container.add(this.demon1);
@@ -57,15 +58,15 @@ export class PlayScene extends Phaser.Scene{
         //this.enemyGroup.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
-        this.emptybar = new emptyBar(this, 600, 1).setDepth(2);
+        this.emptybar = new emptyBar(this, 600, 21).setDepth(2);
         this.emptybar.setScrollFactor(0);
-        this.hpbar = new HpBar(this, 600, 0, 'hp', this.player.healthPoints).setDepth(3);
+        this.hpbar = new HpBar(this, 600, 20, 'hp', this.player.healthPoints).setDepth(3);
         this.hpbar.setScrollFactor(0);
 
         //Mana bar
-        this.emptybar2 = new emptyBar(this, 600, 32).setDepth(2);
+        this.emptybar2 = new emptyBar(this, 600, 51).setDepth(2);
         this.emptybar2.setScrollFactor(0);
-        this.manabar = new ManaBar(this, 600, 31, 'mana', this.player.mana).setDepth(3);
+        this.manabar = new ManaBar(this, 600, 50, 'mana', this.player.mana).setDepth(3);
         this.manabar.setScrollFactor(0);
     
        
@@ -83,16 +84,16 @@ export class PlayScene extends Phaser.Scene{
         this.minimap.scrollX = 600;
         this.minimap.scrollY = 500;
 
-        this.timer = this.add.text(600,45,'Timer:'+ Math.trunc(this.time));
+        this.timer = this.add.text(550,65,'Timer:'+ Math.trunc(this.time)).setDepth(3);
         this.timer.setScrollFactor(0);
 
         //adding buildings for each player
         
         this.building=new Units(this,1200,1200,"building1",1,4,100);
         this.building.setScale(0.15);
-        this.University=new Units(this,1200,0,"University",1,2,100);
+        this.University=new Units(this,1200,0,"University",1,2,50);
         this.University.setScale(1.5);
-        this.pyramid=new Units(this,0,0,"pyramid",1,1,100);
+        this.pyramid=new Units(this,0,0,"pyramid",1,1,50);
         this.pyramid.setScale(1.5);
         // Got a merge conflict here, if run into issue, check here
         this.updateSprite(this.pyramid);
@@ -136,91 +137,31 @@ export class PlayScene extends Phaser.Scene{
          this.skill.play('ab2');
 
 
+        this.hud = this.add.rectangle(this.game.renderer.width/2, this.game.renderer.height, 
+        this.game.renderer.width*2/3, 140, 0x000000).setInteractive();
+        this.hud.setScrollFactor(0);
 
+        this.unit1 = this.add.sprite(this.game.renderer.width/3, this.game.renderer.height-35, "magic").setScrollFactor(0).setInteractive();
+        this.unit2 = this.add.sprite(this.game.renderer.width/2, this.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
+        this.unit3 = this.add.sprite(this.game.renderer.width*2/3, this.game.renderer.height-35, "angel").setScrollFactor(0).setInteractive();
 
-        //create animations for different directions 
-    
-        /*//=================animations for p1=================
-        this.anims.create({
-            key: "down",
-            frameRate: 8,
-            //walking downward animation frames
-            frames: this.anims.generateFrameNames('p1', {
-            start:0, end:2, zeroPad:1,
-            prefix:'p1_', suffix: '.png'
-            })
+        this.input.setDraggable([this.unit1, this.unit2, this.unit3]);
+        var originalX;
+        var originalY;
+        this.input.on('dragstart', (pointer, unit) => {
+        originalX = unit.x;
+        originalY = unit.y;
         });
-        
+        this.input.on('drag', (pointer, unit, dragX, dragY) => {
+        unit.x = dragX;
+        unit.y = dragY;
+        }); 
+        this.input.on('dragend', (pointer, unit) => {
+        this.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
+        unit.x = originalX;
+        unit.y = originalY;
+        }); 
 
-        this.anims.create({
-            key:'left', 
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('p1', {
-            start:3, end:5, zeroPad:1,
-            prefix:'p1_', suffix: '.png'
-            })
-        });
-
-        this.anims.create({
-            key:'right', 
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('p1', {
-            start:6, end:8, zeroPad:1,
-            prefix:'p1_', suffix: '.png'
-            })
-        });
-
-        this.anims.create({
-            key:'up',
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('p1', {
-            start:9, end:11, zeroPad:1,
-            prefix:'p1_', suffix: '.png'
-            })
-        });*/
-        //================animations for rider=================
-
-        this.anims.create({
-            key: "down",
-            frameRate: 8,
-            //walking downward animation frames
-            frames: this.anims.generateFrameNames('rider', {
-            start:0, end:3, zeroPad:1,
-            prefix:'rider_', suffix: '.png'
-            })
-        });
-        
-        this.anims.create({
-            key:'left', 
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('rider', {
-            start:4, end:7, zeroPad:1,
-            prefix:'rider_', suffix: '.png'
-            })
-        });
-        this.anims.create({
-            key:'up', 
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('rider', {
-            start:8, end:11, zeroPad:1,
-            prefix:'rider_', suffix: '.png'
-            })
-        });
-        this.anims.create({
-            key:'right',
-            frameRate: 8,
-            //walking left animation frames
-            frames: this.anims.generateFrameNames('rider', {
-            start:12, end:15, zeroPad:1,
-            prefix:'rider_', suffix: '.png'
-            })
-        });
-    
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
       
@@ -284,7 +225,7 @@ export class PlayScene extends Phaser.Scene{
 
     update(time,delta) {
 
-        if(this.player.mana <= 100){
+        if(this.player.mana <= 200){
             this.player.mana+=(delta/1000);
             }
         //console.log(this.player.mana);
@@ -315,19 +256,19 @@ export class PlayScene extends Phaser.Scene{
                     bullet.setVisible(false);
                 }
                 
-                if(tower.tower_ID==1){
+                if(tower.tower_ID===1){
                     this.pyramid_bar.cutHPBar(10)
                     this.pyramid.takeDamage(10);
                 }
-                if(tower.tower_ID==2){
+                if(tower.tower_ID===2){
                     this.University_bar.cutHPBar(5)
                     this.University.takeDamage(5);
                 }
-                if(tower.tower_ID==3){
+                if(tower.tower_ID===3){
                     this.magicstone_bar.cutHPBar(5)
                     this.magicstone.takeDamage(5);
                 }
-                if(tower.tower_ID==4){
+                if(tower.tower_ID===4){
                     this.building_bar.cutHPBar(5)
                     this.building.takeDamage(5);
                 }
@@ -376,8 +317,8 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.player.mana -= 1;
-                this.manabar.cutManaBar(1);
+                this.player.mana -= 2;
+                this.manabar.cutManaBar(2);
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){

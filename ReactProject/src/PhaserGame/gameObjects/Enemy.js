@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { Bullet } from "../gameObjects/Projectiles";
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,target,healthPoints = 50,attackRate=1000,ATK=20,attackRange=500){
+    constructor(scene,x,y,key,textureName,enemyID,target,healthPoints = 50,attackRate=1000,ATK=20,attackRange=500){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -9,6 +9,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         scene.sys.displayList.add(this);
         this.setOrigin(0,0);
         this.scene=scene;
+        this.enemyID=enemyID;
         this.createBasicAtk(scene);
         //enable body in physics game
         scene.physics.world.enableBody(this);
@@ -37,6 +38,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //sets up the movement funciton that is called by the update method.
         this.moveEnemy = () =>{
             scene.physics.moveToObject(this, target);
+            console.log(this);
             
         };
     }
@@ -46,6 +48,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.destroy();
         
     }
+    enemymovement(){
+        if(this.enemyID===1){
+            if(this.body.velocity.x > 0){
+                this.play("ninjabot_right", true);
+            } else if(this.body.velocity.x < 0){
+                this.play("ninjabot_left",true);
+            }else if(this.body.velocity.y > 0){
+                this.play("ninjabot_down",true);
+            }else if(this.body.velocity.y < 0){
+                this.play("ninjabot_up",true);
+        
+            }
+        }
+    }
 
     createBasicAtk(scene){
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
@@ -54,7 +70,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             //console.log("this");
             let bullet = this.bullets.get();
             scene.children.add(bullet);
-            bullet.shoot(this,target,false);
+            bullet.shoot(this,target,true);
         };
 
         this.removeATk = ()=>{ //destroys the weapon used
@@ -77,15 +93,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     update(){
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
         this.moveEnemy();
+        this.enemymovement();
+        console.log(this.body.velocity.y)
         if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
             let speed = 10;
             let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
             let angle = Math.atan((this.scene.player.y - this.y)/(this.scene.player.x - this.x));
             let vX = (this.scene.player.x - this.x)/distance;
             let vY = (this.scene.player.y - this.y)/distance;
-            this.BasicAtk({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});
-
+            this.BasicAtk({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});}
  
-    }
+    
 }
 }

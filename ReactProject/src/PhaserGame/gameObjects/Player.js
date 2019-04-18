@@ -1,13 +1,14 @@
 import { Bullet } from "../gameObjects/Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
+    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,characterId=null){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
+        
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
-        this.id=id;
+        this.characterId=characterId;
       //  this.setOrigin(0,0);
 
         this.nonZeroVelocity = {x:0,y:1};
@@ -22,6 +23,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.healthPoints = healthPoints;
         this.movementSpeed=movementSpeed;
     }
+    
 
     createSpecialWeapon(scene){ //Need to limit range of attack
         let bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
@@ -98,18 +100,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
     }
+    player_movement(){
+         //Player Update Function
+         if(this.characterId===0){
+            if(this.body.velocity.x > 0){
+                this.play("p1_right", true);
+            } else if(this.body.velocity.x < 0){
+                this.play("p1_left",true);
+            }else if(this.body.velocity.y > 0){
+                this.play("p1_down",true);
+            }else if(this.body.velocity.y < 0){
+                this.play("p1_up",true);
+            }
+        }
+            if(this.characterId===1){
+            if(this.body.velocity.x > 0){
+                this.play("rider_right", true);
+            } else if(this.body.velocity.x < 0){
+                this.play("rider_left",true);
+            }else if(this.body.velocity.y > 0){
+                this.play("rider_down",true);
+            }else if(this.body.velocity.y < 0){
+                this.play("rider_up",true);
+            }
+        }
+    
+    }
 
     update(){
-        //Player Update Function
-        if(this.body.velocity.x > 0){
-            this.play("right", true);
-        } else if(this.body.velocity.x < 0){
-            this.play("left",true);
-        }else if(this.body.velocity.y > 0){
-            this.play("down",true);
-        }else if(this.body.velocity.y < 0){
-            this.play("up",true);
-        }
+        this.player_movement();
     }
 
 

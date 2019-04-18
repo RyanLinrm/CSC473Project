@@ -17,6 +17,14 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         scene.physics.world.enable(this);
         this.setCollideWorldBounds(true);
         //this.setImmovable(true);
+
+        this.scene = scene;
+        this.healthPoints=healthPoints;
+        this.speed=speed;
+        this.range=range;
+        this.createDefense(scene);
+     
+
         this.canAttack = 0;
         this.healthPoints=healthPoints;
         this.speed=speed;
@@ -26,6 +34,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     }
     create(){
         //new Enemy(this.scene,500,500,'dragonrider','dragonrider_01');
+
     }
 
 
@@ -49,6 +58,26 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
             //need some function to stop the play's action
         }
     }
+
+    createDefense(scene){
+        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+
+        this.defend = (target)=>{
+            //console.log("this");
+            let bullet = this.bullets.get();
+            scene.children.add(bullet);
+            bullet.shoot(this,target,true);
+            bullet.setTexture('shoot3').setScale(0.7).setSize(32,30);
+        };
+
+        this.removeDefense = ()=>{ //destroys the weapon used
+            this.bullets.destroy();
+            this.attack = null;
+        };    
+
+    }
+ 
+
     //still need to modify to let this work...
     attackTower(scene){  
     this.bullets= scene.physics.add.group({classType: Bullet, runChildUpdate: true});  
@@ -82,8 +111,15 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     
     },null,this);}
 
-    update(time,delta) {
-       // this.create();
-       //this.attackTower(this.scene);
+    update(){
+        
+        if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
+            let speed = 10;
+            let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
+            let angle = Math.atan((this.scene.player.y - this.y)/(this.scene.player.x - this.x));
+            let vX = (this.scene.player.x - this.x)/distance;
+            let vY = (this.scene.player.y - this.y)/distance;
+            this.defend({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});
+        }
     }
 }
