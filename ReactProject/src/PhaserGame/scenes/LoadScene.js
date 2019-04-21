@@ -38,7 +38,7 @@ export class LoadScene extends Phaser.Scene{
     this.load.atlas("p1", `${process.env.PUBLIC_URL}/assets/sprite/p1.png`, `${process.env.PUBLIC_URL}/assets/sprite/p1.json`);
     this.load.atlas("rider", `${process.env.PUBLIC_URL}/assets/sprite/rider.png`, `${process.env.PUBLIC_URL}/assets/sprite/rider.json`);
     
-    this.load.atlas("wolf", `${process.env.PUBLIC_URL}/assets/sprite/wolf.png`, `${process.env.PUBLIC_URL}/assets/sprite/wolf.json`);
+    this.load.atlas("wolf", `${process.env.PUBLIC_URL}/assets/sprite/units/wolf.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/wolf.json`);
     this.load.atlas("building1",`${process.env.PUBLIC_URL}/assets/sprite/buildings/building1.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/building1_atlas.json`);
     this.load.atlas("University", `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.json`);
     this.load.atlas("pyramid", `${process.env.PUBLIC_URL}/assets/sprite/buildings/pyramid.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/pyramid.json`);

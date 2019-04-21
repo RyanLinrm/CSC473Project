@@ -81,7 +81,7 @@ export default function spriteAnimations (scene) {
             key: "wolf_down",
             frameRate: 8,
             frames: scene.anims.generateFrameNames('wolf', {
-            start:1, end:4, zeroPad:1,
+            start:0, end:3, zeroPad:2,
             prefix:'wolf_', suffix: '.png'
             })
         });
@@ -90,59 +90,93 @@ export default function spriteAnimations (scene) {
             key:'wolf_left', 
             frameRate: 8,
             frames: scene.anims.generateFrameNames('wolf', {
-            start:5, end:8, zeroPad:1,
+            start:4, end:7, zeroPad:2,
             prefix:'wolf_', suffix: '.png'
             })
         });
         scene.anims.create({
-            key:'wolf_up', 
+            key:'wolf_right', 
             frameRate: 8,
             frames: scene.anims.generateFrameNames('wolf', {
-            start:9, end:12, zeroPad:1,
+            start:8, end:11, zeroPad:2,
             prefix:'wolf_', suffix: '.png'
             })
         });
         scene.anims.create({
-            key:'wolf_right',
+            key:'wolf_up',
             frameRate: 8,
             frames: scene.anims.generateFrameNames('wolf', {
-            start:13, end:16, zeroPad:1,
+            start:12, end:15, zeroPad:2,
             prefix:'wolf_', suffix: '.png'
             })
         });
-             //================animations for ninjabot=================
-             scene.anims.create({
-                key: "ninjabot_down",
-                frameRate: 8,
-                frames: scene.anims.generateFrameNames('ninjabot', {
-                start:1, end:3, zeroPad:2,
-                prefix:'ninjabot', suffix: '.png'
-                })
-            });
-            
-            scene.anims.create({
-                key:'ninjabot_left', 
-                frameRate: 8,
-                frames: scene.anims.generateFrameNames('ninjabot', {
-                start:4, end:6, zeroPad:2,
-                prefix:'ninjabot_', suffix: '.png'
-                })
-            });
-            scene.anims.create({
-                key:'ninjabot_right', 
-                frameRate: 8,
-                frames: scene.anims.generateFrameNames('ninjabot', {
-                start:7, end:9, zeroPad:2,
-                prefix:'ninjabot_', suffix: '.png'
-                })
-            });
-            scene.anims.create({
-                key:'ninjabot_up',
-                frameRate: 8,
-                frames: scene.anims.generateFrameNames('ninjabot', {
-                start:10, end:12, zeroPad:2,
-                prefix:'ninjabot_', suffix: '.png'
-                })
-            });
+        //================animations for ninjabot=================
+        scene.anims.create({
+            key: "ninjabot_down",
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('ninjabot', {
+            start:1, end:3, zeroPad:2,
+            prefix:'ninjabot_', suffix: '.png'
+            })
+        });
+        
+        scene.anims.create({
+            key:'ninjabot_left', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('ninjabot', {
+            start:4, end:6, zeroPad:2,
+            prefix:'ninjabot_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'ninjabot_right', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('ninjabot', {
+            start:7, end:9, zeroPad:2,
+            prefix:'ninjabot_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'ninjabot_up',
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('ninjabot', {
+            start:10, end:12, zeroPad:2,
+            prefix:'ninjabot_', suffix: '.png'
+            })
+        });     
+        //================animations for skull=================
+        scene.anims.create({
+            key: "skull_down",
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('skull', {
+            start:1, end:4, zeroPad:2,
+            prefix:'skull_', suffix: '.png'
+            })
+        });
+        
+        scene.anims.create({
+            key:'skull_left', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('skull', {
+            start:5, end:8, zeroPad:2,
+            prefix:'skull_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'skull_right', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('skull', {
+            start:9, end:12, zeroPad:2,
+            prefix:'skull_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'skull_up',
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('skull', {
+            start:13, end:16, zeroPad:2,
+            prefix:'skull_', suffix: '.png'
+            })
+        });
 }
    

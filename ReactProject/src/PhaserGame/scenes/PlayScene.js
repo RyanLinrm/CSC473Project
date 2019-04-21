@@ -48,7 +48,7 @@ export class PlayScene extends Phaser.Scene{
         //this.player.setSize( 24, 28).setOffset(5,5);
         this.player.setSize(36, 40);
         //The enemies  
-        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png", this.player, 60, 1000, 10);
+        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",0, this.player, 60, 1000, 10);
         this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",1, this.player, 80, 1000, 20);
         this.container= this.add.container(575,500);
         this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);

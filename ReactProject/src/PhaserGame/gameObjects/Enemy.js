@@ -13,7 +13,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.createBasicAtk(scene);
         //enable body in physics game
         scene.physics.world.enableBody(this);
-
         //Health
         this.healthPoints = healthPoints;
 
@@ -49,15 +48,29 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
     }
     enemymovement(){
+        //movement for wolf
+        if(this.enemyID===0){
+            if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
+                this.play('wolf_down',true);
+            }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
+                this.play('wolf_right',true);
+            }else if(this.body.velocity.x < 0 && this.body.velocity.y > 0){
+                this.play('wolf_left',true);
+            }else if(this.body.velocity.x < 0 && this.body.velocity.y < 0){
+                this.play('wolf_up',true);
+        
+            }
+        }
+        //movement for ninjabot
         if(this.enemyID===1){
-            if(this.body.velocity.x > 0){
-                this.play("ninjabot_right", true);
-            } else if(this.body.velocity.x < 0){
-                this.play("ninjabot_left",true);
-            }else if(this.body.velocity.y > 0){
-                this.play("ninjabot_down",true);
-            }else if(this.body.velocity.y < 0){
-                this.play("ninjabot_up",true);
+            if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
+                this.play('ninjabot_down',true);
+            }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
+                this.play('ninjabot_right',true);
+            }else if(this.body.velocity.x < 0 && this.body.velocity.y > 0){
+                this.play('ninjabot_left',true);
+            }else if(this.body.velocity.x < 0 && this.body.velocity.y < 0){
+                this.play('ninjabot_up',true);
         
             }
         }
@@ -94,6 +107,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
         this.moveEnemy();
         this.enemymovement();
+        this.body.velocity.x=this.body.velocity.x;
+        this.body.velocity.y=this.body.velocity.y;
         console.log(this.body.velocity.y)
         if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
             let speed = 10;
