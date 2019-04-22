@@ -3,10 +3,10 @@ import {CST} from "../CST";
 
 
 
-export class LoadScene extends Phaser.Scene{
+export class LoadScene2 extends Phaser.Scene{
     constructor(){
         super({
-            key: CST.SCENES.LOAD
+            key: CST.SCENES.LOAD2
         })
     }
     init(){
@@ -71,7 +71,7 @@ export class LoadScene extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start(CST.SCENES.PLAY);
+        this.scene.start(CST.SCENES.WAIT);
     }
 
     update(){

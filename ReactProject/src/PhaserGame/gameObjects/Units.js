@@ -1,12 +1,13 @@
 import Phaser from 'phaser';
-import { Bullet } from "../gameObjects/Projectiles";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+import { Bullet } from "./Projectiles";
+import { emptyBar, HpBar, ManaBar } from "./StatusBar";
 import { Enemy } from './Enemy';
+
 
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
-    constructor(scene,x,y,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=null){
+    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=null){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -17,24 +18,49 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         scene.physics.world.enable(this);
         this.setCollideWorldBounds(true);
         //this.setImmovable(true);
-
+        this.barx=this.barx;
+        this.bary=this.bary;
         this.scene = scene;
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
         this.createDefense(scene);
-     
+        this.beingAttacked=false;
 
         this.canAttack = 0;
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
         this.tower_ID=tower_ID;
-        //this.bar=bar;
+
+
+        scene.updateSprite(this);
+        scene.enemyTowers.add(this);
+
+        //console.log("Helo " + x + " " + y);
+        this.building_bar = new HpBar(scene,barx ,bary,'hp',this.healthPoints);
     }
     create(){
         //new Enemy(this.scene,500,500,'dragonrider','dragonrider_01');
 
+    }
+
+
+    collision(){
+        this.building_bar.cutHPBar(5);
+        this.takeDamage(5);
+        this.beingAttacked=true;
+    }
+    isInjured(time){
+        if(this.beingAttacked===true){
+            this.tint=0xff0000;
+            this.count=time;
+        }
+        else{
+            if(time>this.count+1000)
+            {this.tint=0xffffff;}
+
+        }
     }
 
 
@@ -76,43 +102,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         };    
 
     }
- 
 
-    //still need to modify to let this work...
-    attackTower(scene){  
-    this.bullets= scene.physics.add.group({classType: Bullet, runChildUpdate: true});  
-
-    scene.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
-        if(this.canAttack < this.time){
-            if (tower.active && bullet.active ){
-                bullet.setActive(false);
-                bullet.destroy();
-                bullet.setVisible(false);
-            }
-            
-            if(tower.tower_ID==1){
-                this.pyramid_bar.cutHPBar(10)
-                this.pyramid.takeDamage(10);
-            }
-            if(tower.tower_ID==2){
-                this.University_bar.cutHPBar(5)
-                this.University.takeDamage(5);
-            }
-            if(tower.tower_ID==3){
-                this.magicstone_bar.cutHPBar(5)
-                this.magicstone.takeDamage(5);
-            }
-            if(tower.tower_ID==4){
-                this.building_bar.cutHPBar(5)
-                this.building.takeDamage(5);
-            }
-            this.canAttack = this.time + 2000;
-        }
-    
-    },null,this);}
-
-    update(){
-        
+    update(time){
+        this.isInjured(time);
+        this.beingAttacked=false;
         if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
             let speed = 10;
             let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));

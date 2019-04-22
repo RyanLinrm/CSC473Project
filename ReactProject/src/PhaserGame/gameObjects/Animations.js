@@ -178,5 +178,17 @@ export default function spriteAnimations (scene) {
             prefix:'skull_', suffix: '.png'
             })
         });
+         
+       //set up attacking animation check
+       scene.anims.create({
+        key: "ab2",
+        frameRate: 8,
+        //walking downward animation frames
+        frames: scene.anims.generateFrameNames('ability2', {
+        start:1, end:10, zeroPad:1,
+        prefix:'a2_', suffix: '.png'
+        }),
+        repeat: -1
+     });
 }
    

@@ -4,8 +4,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         if(speed === 0)
             speed = 1;
         super(scene,0,0,speed);
-
-        this.setTexture('shoot3').setScale(0.7).setSize(32,30);
+        this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
         this.xSpeed = speed;
@@ -14,6 +13,11 @@ export class Bullet extends Phaser.GameObjects.Image {
         
     }
     //111
+
+    collision(){
+        this.setActive(false);
+        this.setVisible(false);
+    }
 
     shoot(shooter,velocity,exactDirection = false){
         this.timeAlive = 0;
@@ -47,7 +51,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.y += this.ySpeed * delta;
         
         //just modified for rider's poison
-        if(this.timeAlive > 220){
+        if(this.timeAlive > 2000){
            // this.destroy();
             this.setActive(false);
             this.setVisible(false);
@@ -153,22 +157,6 @@ export class sword extends Phaser.GameObjects.Image {
         this.timeAlive = -1;
         this.scene = scene;      
     }
-
- 
-
-    /*explode(shooter,scene){
-        this.timeAlive = 0;
-        this.setActive(true);
-        this.setVisible(true);
-        this.setPosition(shooter.x,shooter.y);
-        this.setAngle(shooter.body.rotation);
-        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
-        let bullet = this.bullets.get();
-        bullet.speed=0.03;
-        bullet.setTexture('shoot5').setScale(0.3).setSize(45,40);
-        scene.children.add(bullet);
-        bullet.shoot(this,this.nonZeroVelocity);
-        };*/
         shoot(shooter,velocity){
             this.timeAlive = 0;
             this.setActive(true);
