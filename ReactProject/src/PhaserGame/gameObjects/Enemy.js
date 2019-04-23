@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
-import { Bullet } from "../gameObjects/Projectiles";
+import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=1000,ATK=20,attackRange=180){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=1.3,ATK=20,attackRange=180){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -18,7 +18,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.beingAttacked=false;
         //Health
         this.healthPoints = healthPoints;
-    
+        this.bulletTexture="shoot3";
         //Attack Speed
         this.attackRate = attackRate;
         this.nextAttack = 0;
@@ -72,7 +72,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.takeDamage(20);
         this.beingAttacked=true;
 
-    
+   
     }
     isInjured(time){
         if(this.beingAttacked===true){
@@ -86,28 +86,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
     }
 
-
-    createAttack(scene){
-        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
-
-        this.basicattack = (target)=>{
-            //console.log("this");
-            let bullet = this.bullets.get();
-            scene.children.add(bullet);
-            bullet.shoot(this,target,true);
-            bullet.setTexture('shoot3').setScale(0.7).setSize(32,30);
-        };
-
-        this.removeDefense = ()=>{ //destroys the weapon used
-            this.bullets.destroy();
-            this.attack = null;
-        };    
-
-    }
-
     enemymovement(){
         //movement for wolf
         if(this.enemyID===0){
+            this.bulletTexture="shoot5";
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('wolf_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -121,6 +103,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         //movement for ninjabot
         if(this.enemyID===1){
+            this.bulletTexture="shoot3";
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('ninjabot_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -133,6 +116,24 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             }
         }
     }
+    createAttack(scene){
+        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+
+        this.basicattack = (target)=>{
+            //console.log("this");
+            let bullet = this.bullets.get();
+            bullet.speed=this.attackRate;
+            scene.children.add(bullet);
+            bullet.shoot(this,target,true);
+            bullet.setTexture(this.bulletTexture).setScale(0.15).setSize(32,30);
+        };
+
+        this.removeDefense = ()=>{ //destroys the weapon used
+            this.bullets.destroy();
+            this.attack = null;
+        };    
+
+    }
 
     update(time, delta){
         this.isInjured(time);
@@ -140,15 +141,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
         this.enemymovement();
         this.moveEnemy();
-    
-        this.body.velocity.x=this.body.velocity.x;
-        this.body.velocity.y=this.body.velocity.y;
         if (Math.abs(this.scene.player.x - this.x) < this.attackRange && Math.abs(this.scene.player.y - this.y) < this.attackRange){
-            
-            let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
+          //  let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
+            let distance=Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y);
             let vX = (this.scene.player.x - this.x)/distance;
             let vY = (this.scene.player.y - this.y)/distance;
-            this.basicattack({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});
+            this.basicattack({x: vX,y: vY});
+
         }
     }
 

@@ -1,4 +1,4 @@
-import { Bullet } from "../gameObjects/Projectiles";
+import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,id=0){
@@ -100,7 +100,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         if(this.beingAttacked===true){
             this.tint=0xff0000;
             this.count=time;
-        }
+        }   
         else{
             if(time>this.count+1000)
             {this.tint=0xffffff;}

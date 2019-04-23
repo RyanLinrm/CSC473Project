@@ -93,7 +93,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.shoot(this,target,true);
-            bullet.setTexture('shoot3').setScale(0.7).setSize(32,30);
+            bullet.setTexture('shoot3').setScale(0.2).setSize(32,30);
         };
 
         this.removeDefense = ()=>{ //destroys the weapon used

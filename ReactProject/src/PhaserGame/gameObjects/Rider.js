@@ -1,5 +1,5 @@
 import {Player} from "../gameObjects/Player";
-import { Posion } from "../gameObjects/Projectiles";
+import { Posion } from "./Projectiles";
 export class Rider extends Player{
     constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=128){
         super(scene,x,y,key,textureName,healthPoints = 500);

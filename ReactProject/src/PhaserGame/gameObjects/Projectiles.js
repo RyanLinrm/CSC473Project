@@ -51,7 +51,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.y += this.ySpeed * delta;
         
         //just modified for rider's poison
-        if(this.timeAlive > 2000){
+        if(this.timeAlive > 200){
            // this.destroy();
             this.setActive(false);
             this.setVisible(false);
