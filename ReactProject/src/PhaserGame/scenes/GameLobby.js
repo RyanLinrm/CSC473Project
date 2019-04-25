@@ -11,7 +11,6 @@ export class GameLobby extends Phaser.Scene {
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
         this.seatNumber = -1;
         this.playerID = generate(10);
-        this.checkCycle = 0;
     }
 
     createGame = () =>{
@@ -33,7 +32,6 @@ export class GameLobby extends Phaser.Scene {
                 console.log("error");
             }else {
                 console.log('created game',key);
-                key.onDisconnect().remove();
             }
         });
     }
@@ -80,6 +78,7 @@ export class GameLobby extends Phaser.Scene {
                     roomkey : this.roomkeys,
                     seatNumber: this.seatNumber
                 });
+                this.ref.child(key).off();
             }
             else{
                 this.seatinfo.setText(seat + ' player(s) in the room, waiting...');

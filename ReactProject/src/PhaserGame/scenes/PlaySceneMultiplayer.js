@@ -182,6 +182,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.removePlayer(snapShot.key);
         });
 
+        /*Just to prevent game crashing caused by game master leaving the room, will add in futher implement later */
+        database.ref(`Games/${this.gameRoom}`).on('child_removed', (snapShot) =>{
+            
+            if(!snapShot.val().Playsers){
+                database.ref(`Games/${this.gameRoom}`).remove();
+            }
+        });
+        /** */
+
         window.addEventListener('beforeunload', (event) => {
 
             database.ref(`Games/${this.gameRoom}/Players/${this.playerID}`).remove();
