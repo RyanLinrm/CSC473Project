@@ -1,17 +1,17 @@
-import { Bullet } from "../gameObjects/Projectiles";
+import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,id=0){
+    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,id=0){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
-        this.id=id;
-      //  this.setOrigin(0,0);
-       
+        this.characterId=characterId;
+        // this.setOrigin(0,0);
         this.nonZeroVelocity = {x:0,y:1};
-
+        this.beingAttacked=false;
+        this.canbeAttacked=true;
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
         scene.updateSprite(this); 
@@ -39,7 +39,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             
                 velocityArray.forEach((v)=>{
                     let bullet = bullets.get();
-                    scene.children.add(bullet);
+                  //  scene.children.add(bullet);
+                    scene.damageItems.add(bullet);
                     bullet.shoot(this,v);
                 });
                     
@@ -83,7 +84,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     takeDamage(damage){
+        if(this.canbeAttacked===true){
         this.healthPoints = this.healthPoints - damage;
+        this.scene.hpbar.cutHPBar(5);}
 
         if( this.healthPoints <= 0 ){
             this.kill();
@@ -92,7 +95,25 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     collision(){
-        console.log("Hit");
+        this.takeDamage(5);
+        this.beingAttacked=true;
+        this.canbeAttacked=false;
+    }
+
+    isInjured(time){
+        if(this.beingAttacked===true){
+            this.tint=0xff0000;
+ 
+            this.count=time;
+        }   
+        else{
+            if(time>this.count+500)
+            {this.tint=0xffffff;
+             this.canbeAttacked=true;
+            }
+            
+
+        }
     }
 
     setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
@@ -106,18 +127,39 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
     }
-
-    update(){
+    player_movement(){
         //Player Update Function
-        if(this.body.velocity.x > 0){
-            this.play("right", true);
-        } else if(this.body.velocity.x < 0){
-            this.play("left",true);
-        }else if(this.body.velocity.y > 0){
-            this.play("down",true);
-        }else if(this.body.velocity.y < 0){
-            this.play("up",true);
-        }
+        if(this.characterId===0){
+           if(this.body.velocity.x > 0){
+               this.play("p1_right", true);
+           } else if(this.body.velocity.x < 0){
+               this.play("p1_left",true);
+           }else if(this.body.velocity.y > 0){
+               this.play("p1_down",true);
+           }else if(this.body.velocity.y < 0){
+               this.play("p1_up",true);
+           }
+       }
+           if(this.characterId===1){
+           if(this.body.velocity.x > 0){
+               this.play("rider_right", true);
+           } else if(this.body.velocity.x < 0){
+               this.play("rider_left",true);
+           }else if(this.body.velocity.y > 0){
+               this.play("rider_down",true);
+           }else if(this.body.velocity.y < 0){
+               this.play("rider_up",true);
+           }
+       }
+   
+   }
+
+    update(time){
+        this.isInjured(time);
+        console.log(this.healthPoints)
+        this.beingAttacked=false;
+        //Player Update Function
+        this.player_movement();
     }
 
 

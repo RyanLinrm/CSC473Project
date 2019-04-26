@@ -18,7 +18,6 @@ const phaserMock = {
             this.setVisible = () =>{};
             this.setPosition = ()=>{};
             this.setAngle = ()=>{};
-            this.setCrop = ()=> {};
 
         }
     },
@@ -26,12 +25,7 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
-                this.setVelocity = function(){
 
-                };
-
-                this.kill = jest.fn();
-               
             }
         }
     },
