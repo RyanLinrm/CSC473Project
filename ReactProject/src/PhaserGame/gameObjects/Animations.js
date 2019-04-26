@@ -197,7 +197,7 @@ export default function spriteAnimations (scene) {
             })
         });
         scene.anims.create({
-            key:'skull_right', 
+            key:'skull_up', 
             frameRate: 8,
             frames: scene.anims.generateFrameNames('skull', {
             start:9, end:12, zeroPad:2,
@@ -205,7 +205,7 @@ export default function spriteAnimations (scene) {
             })
         });
         scene.anims.create({
-            key:'skull_up',
+            key:'skull_right',
             frameRate: 8,
             frames: scene.anims.generateFrameNames('skull', {
             start:13, end:16, zeroPad:2,

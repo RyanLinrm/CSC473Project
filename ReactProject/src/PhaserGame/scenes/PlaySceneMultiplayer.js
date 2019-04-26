@@ -27,7 +27,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png");
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,false);
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
 
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/movementData`).on("child_changed", (snapShot) => {
@@ -81,7 +81,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png");
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,false);
         this.player1.setVisible(false);
         this.player.setVisible(true);
         this.physics.add.collider(this.player1, this.CollisionLayer);

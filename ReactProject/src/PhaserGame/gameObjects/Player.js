@@ -1,12 +1,12 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,id=0){
+    constructor(scene,x,y,key,textureName,characterId,ally=true,healthPoints = 100,movementSpeed=64){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-
+        this.ally=ally;
         this.characterId=characterId;
         // this.setOrigin(0,0);
         this.nonZeroVelocity = {x:0,y:1};
@@ -106,15 +106,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
  
             this.count=time;
         }   
-        else{
-            if(time>this.count+500)
+    
+        if(time>this.count+500)
             {this.tint=0xffffff;
              this.canbeAttacked=true;
             }
             
 
         }
-    }
+    
 
     setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
         super.setVelocity(x,y);
@@ -156,7 +156,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     update(time){
         this.isInjured(time);
-        console.log(this.healthPoints)
+      //  console.log(this.healthPoints)
         this.beingAttacked=false;
         //Player Update Function
         this.player_movement();
