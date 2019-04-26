@@ -18,8 +18,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.bulletscale=0.15;
         //Health
         this.healthPoints = healthPoints;
+        
         this.bulletTexture="shoot3";
         //Attack Speed and movementSpeed
+        
+
+        //Attack Speed
         this.attackRate = attackRate;
         this.nextAttack = 0;
         this.movementSpeed=movementSpeed;
@@ -36,7 +40,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //setup the movement of the enemy
         this.setupMovement(scene,target);
 
+
         this.setVisible = false;
+
+        
+
     }
      
 
@@ -221,6 +229,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.isInjured(time);
         this.beingAttacked=false;
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
+
         this.enemymovement();
         this.moveEnemy();
         console.log(this.healthPoints)
@@ -230,7 +239,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             let vX = (this.scene.player.x - this.x)/distance;
             let vY = (this.scene.player.y - this.y)/distance;
             this.basicattack({x: vX,y: vY});
-
         }
     }
 

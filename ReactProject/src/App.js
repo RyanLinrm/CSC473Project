@@ -45,14 +45,15 @@ class App extends Component {
   }
 
   startingpage = () => {
-    this.setState({
+    /*this.setState({
       showGame:true,
       showsingle:false,
       showmulti:false,  
       hideButton:true,
       showbuttons: true,
       infobutton: true   
-    })
+    })*/
+    window.location.reload();
   }
   
 
