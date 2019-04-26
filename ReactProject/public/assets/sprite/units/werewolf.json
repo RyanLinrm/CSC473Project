@@ -1,339 +1,339 @@
 {
 	"frames": [
 		{
-			"filename": "skull_01.png",
+			"filename": "werewolf_00.png",
 			"frame": {
 				"x": 1,
 				"y": 1,
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_02.png",
+			"filename": "werewolf_01.png",
 			"frame": {
-				"x": 31,
+				"x": 54,
 				"y": 1,
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_03.png",
+			"filename": "werewolf_02.png",
 			"frame": {
-				"x": 61,
+				"x": 107,
 				"y": 1,
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 28,
-				"h": 47
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_04.png",
+			"filename": "werewolf_03.png",
 			"frame": {
-				"x": 91,
+				"x": 160,
 				"y": 1,
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 28,
-				"h": 46
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_05.png",
+			"filename": "werewolf_04.png",
 			"frame": {
-				"x": 121,
+				"x": 213,
 				"y": 1,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_06.png",
+			"filename": "werewolf_05.png",
 			"frame": {
-				"x": 144,
+				"x": 266,
 				"y": 1,
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_07.png",
+			"filename": "werewolf_06.png",
 			"frame": {
-				"x": 167,
+				"x": 319,
 				"y": 1,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_08.png",
+			"filename": "werewolf_07.png",
 			"frame": {
-				"x": 190,
+				"x": 372,
 				"y": 1,
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_09.png",
+			"filename": "werewolf_08.png",
 			"frame": {
-				"x": 214,
+				"x": 425,
 				"y": 1,
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_10.png",
+			"filename": "werewolf_09.png",
 			"frame": {
-				"x": 246,
+				"x": 478,
 				"y": 1,
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_11.png",
+			"filename": "werewolf_10.png",
 			"frame": {
-				"x": 278,
+				"x": 531,
 				"y": 1,
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 30,
-				"h": 47
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_12.png",
+			"filename": "werewolf_11.png",
 			"frame": {
-				"x": 310,
+				"x": 584,
 				"y": 1,
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 30,
-				"h": 46
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_13.png",
+			"filename": "werewolf_12.png",
 			"frame": {
-				"x": 342,
+				"x": 637,
 				"y": 1,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_14.png",
+			"filename": "werewolf_13.png",
 			"frame": {
-				"x": 365,
+				"x": 690,
 				"y": 1,
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 42
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_15.png",
+			"filename": "werewolf_14.png",
 			"frame": {
-				"x": 388,
+				"x": 743,
 				"y": 1,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 21,
-				"h": 44
+				"w": 51,
+				"h": 70
 			}
 		},
 		{
-			"filename": "skull_16.png",
+			"filename": "werewolf_15.png",
 			"frame": {
-				"x": 411,
+				"x": 796,
 				"y": 1,
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"rotated": false,
 			"trimmed": false,
 			"spriteSourceSize": {
 				"x": 0,
 				"y": 0,
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			},
 			"sourceSize": {
-				"w": 22,
-				"h": 42
+				"w": 51,
+				"h": 70
 			}
 		}
 	],
@@ -343,8 +343,8 @@
 		"image": "spritesheet.png",
 		"format": "RGBA8888",
 		"size": {
-			"w": 434,
-			"h": 49
+			"w": 848,
+			"h": 72
 		},
 		"scale": "1"
 	}

@@ -23,4 +23,9 @@ export class Melee extends Player{
         };
 
     }
+    update(time){
+        this.player_movement();
+        this.isInjured(time);
+        this.beingAttacked=false;
+    }
 } 
