@@ -110,6 +110,40 @@ export default function spriteAnimations (scene) {
             prefix:'wolf_', suffix: '.png'
             })
         });
+         //================animations for werewolf=================
+        scene.anims.create({
+            key: "werewolf_down",
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('werewolf', {
+            start:0, end:3, zeroPad:2,
+            prefix:'werewolf_', suffix: '.png'
+            })
+        });
+        
+        scene.anims.create({
+            key:'werewolf_left', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('werewolf', {
+            start:4, end:7, zeroPad:2,
+            prefix:'werewolf_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'werewolf_right', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('werewolf', {
+            start:8, end:11, zeroPad:2,
+            prefix:'werewolf_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'werewolf_up',
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('werewolf', {
+            start:12, end:15, zeroPad:2,
+            prefix:'werewolf_', suffix: '.png'
+            })
+        });
         //================animations for ninjabot=================
         scene.anims.create({
             key: "ninjabot_down",
@@ -190,5 +224,40 @@ export default function spriteAnimations (scene) {
         }),
         repeat: -1
      });
+       //================animations for demon1=================
+
+        scene.anims.create({
+            key: "demon1_down",
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('demon1', {
+            start:1, end:4, zeroPad:2,
+            prefix:'demon1_', suffix: '.png'
+            })
+        });
+        
+        scene.anims.create({
+            key:'demon1_left', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('demon1', {
+            start:5, end:8, zeroPad:2,
+            prefix:'demon1_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'demon1_right', 
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('demon1', {
+            start:9, end:12, zeroPad:2,
+            prefix:'demon1_', suffix: '.png'
+            })
+        });
+        scene.anims.create({
+            key:'demon1_up',
+            frameRate: 8,
+            frames: scene.anims.generateFrameNames('demon1', {
+            start:12, end:16, zeroPad:2,
+            prefix:'demon1_', suffix: '.png'
+            })
+        });
 }
    

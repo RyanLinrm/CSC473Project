@@ -41,7 +41,8 @@ export class PlayScene extends Phaser.Scene{
         this.enemyPlayers = this.add.group();
         this.enemyTowers = this.add.group();
         this.damageItems = this.add.group(); 
-
+        this.enemiesAttacks = this.add.group();
+        this.towerShooting =this.add.group();
         //Collision Functions
         //Funciton to run collision funciton of both objects
         let bothCollisions = (objectA,objectB)=>{
@@ -54,7 +55,8 @@ export class PlayScene extends Phaser.Scene{
         };
         this.physics.add.overlap(this.damageItems, this.enemyTowers,bothCollisions);
         this.physics.add.overlap(this.enemies, this.damageItems,bothCollisions);
-
+        this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,bothCollisions);
+        this.physics.add.overlap(this.towerShooting,this.enemyPlayers,bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
         this.player = new Player(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,100,200);
         this.enemyPlayers.add(this.player);
@@ -75,19 +77,19 @@ export class PlayScene extends Phaser.Scene{
 
         //adjust player hit box
         //this.player.setSize( 24, 28).setOffset(5,5);
-        this.player.setSize(36, 40);
+        this.player.setSize(34, 36);
         //The enemies  
-        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,100,0.1,20,50);
+        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20);
         this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
-        this.container= this.add.container(575,500);
-       // this.demon1=new Enemy(this,0,0,"demon1","demon1_01",this.player).setScale(1.5);
-       // this.container.add(this.demon1);
-        this.skill=this.add.sprite(30, 0, 'a2_01');
-        this.container.add(this.skill);
-        this.skill.play('ab2');
-        this.container.add(this.skill)
+  
+        
+        //this.container= this.add.container(200, 200);
+        this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
+   
+        //this.container.add(this.skill)
         this.enemies.add(this.wolf); ///Need to move this into the enemy class
         this.enemies.add(this.ninjabot);
+        this.enemies.add(this.demon1);
         //this.enemies.add(this.demon1);
 
         //Stauts bars : hp with a front bar and backing bar
@@ -252,54 +254,6 @@ export class PlayScene extends Phaser.Scene{
         //console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
 
-        //Handler enemy getting attacked by character, cooldown 2s
-/*
-        this.physics.add.overlap(this.enemyGroup,this.player.bullets,(enemy, bullet)=>{
-            if(this.canAttack < time){
-                //console.log('hit!');
-                if (enemy.active && bullet.active ){
-                    bullet.setActive(false);
-                    bullet.destroy();
-                    bullet.setVisible(false);
-                }
-                enemy.takeDamage(20);
-                //console.log(enemy.healthPoints);
-                this.canAttack = time + 2000;
-            }
-        },null,this);
-        
-        this.physics.add.overlap(this.towers,this.player.bullets,(tower, bullet)=>{
-            if(this.canAttack < time){
-                //console.log('hit!');
-                if (tower.active && bullet.active ){
-                    bullet.setActive(false);
-                    bullet.destroy();
-                    bullet.setVisible(false);
-                }
-                
-                if(tower.tower_ID===1){
-                    this.pyramid_bar.cutHPBar(10)
-                    this.pyramid.takeDamage(10);
-                }
-                if(tower.tower_ID===2){
-                    this.University_bar.cutHPBar(5)
-                    this.University.takeDamage(5);
-                }
-                if(tower.tower_ID===3){
-                    this.magicstone_bar.cutHPBar(5)
-                    this.magicstone.takeDamage(5);
-                }
-                if(tower.tower_ID===4){
-                    this.building_bar.cutHPBar(5)
-                    this.building.takeDamage(5);
-                }
-                //console.log(tower.healthPoints);
-                this.canAttack = time + 2000;
-            }
-        },null,this);
-
-
-*/
         //Handler character getting attacked by enemy, cooldown 3s
 
     /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{

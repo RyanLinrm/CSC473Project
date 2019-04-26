@@ -24,7 +24,7 @@ export default class Game extends React.Component{
                 default: 'arcade',
                 
                 arcade: {
-                    debug: true
+                    debug: false
                 }
             },
             scene:[

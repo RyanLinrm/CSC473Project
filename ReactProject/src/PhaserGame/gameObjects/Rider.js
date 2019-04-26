@@ -1,11 +1,13 @@
 import {Player} from "../gameObjects/Player";
 import { Posion } from "./Projectiles";
 export class Rider extends Player{
-    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=128){
+    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=128){
         super(scene,x,y,key,textureName,healthPoints = 500);
         this.movementSpeed=movementSpeed;
-
+        this.characterId=characterId;
+        this.beingAttacked=false;
     }
+    
 
 
 
@@ -15,6 +17,7 @@ export class Rider extends Player{
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.place(this);
+
         };
 
     this.removeWeapon = () => { //destroys the weapon used
@@ -22,6 +25,11 @@ export class Rider extends Player{
         this.attack = null;
         };
 
+    }
+    update(time){
+        this.player_movement();
+        this.isInjured(time);
+        this.beingAttacked=false;
     }
  
 

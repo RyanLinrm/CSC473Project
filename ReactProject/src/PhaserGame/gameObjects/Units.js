@@ -91,7 +91,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.defend = (target)=>{
             //console.log("this");
             let bullet = this.bullets.get();
-            scene.children.add(bullet);
+            scene.towerShooting.add(bullet);
             bullet.shoot(this,target,true);
             bullet.setTexture('shoot3').setScale(0.2).setSize(32,30);
         };

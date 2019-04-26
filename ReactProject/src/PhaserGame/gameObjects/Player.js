@@ -9,9 +9,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         this.characterId=characterId;
         // this.setOrigin(0,0);
-       
         this.nonZeroVelocity = {x:0,y:1};
         this.beingAttacked=false;
+        this.canbeAttacked=true;
         //enables body in the phsyics world in the game
         scene.physics.world.enableBody(this);
         scene.updateSprite(this); 
@@ -39,7 +39,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             
                 velocityArray.forEach((v)=>{
                     let bullet = bullets.get();
-                    scene.children.add(bullet);
+                  //  scene.children.add(bullet);
+                    scene.damageItems.add(bullet);
                     bullet.shoot(this,v);
                 });
                     
@@ -83,7 +84,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     takeDamage(damage){
+        if(this.canbeAttacked===true){
         this.healthPoints = this.healthPoints - damage;
+        this.scene.hpbar.cutHPBar(5);}
 
         if( this.healthPoints <= 0 ){
             this.kill();
@@ -92,18 +95,23 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     collision(){
-        this.takeDamage(20);
+        this.takeDamage(5);
         this.beingAttacked=true;
+        this.canbeAttacked=false;
     }
 
     isInjured(time){
         if(this.beingAttacked===true){
             this.tint=0xff0000;
+ 
             this.count=time;
         }   
         else{
-            if(time>this.count+1000)
-            {this.tint=0xffffff;}
+            if(time>this.count+500)
+            {this.tint=0xffffff;
+             this.canbeAttacked=true;
+            }
+            
 
         }
     }
@@ -148,6 +156,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     update(time){
         this.isInjured(time);
+        console.log(this.healthPoints)
         this.beingAttacked=false;
         //Player Update Function
         this.player_movement();

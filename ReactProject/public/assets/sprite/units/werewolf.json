@@ -1,0 +1,351 @@
+{
+	"frames": [
+		{
+			"filename": "werewolf_00.png",
+			"frame": {
+				"x": 1,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_01.png",
+			"frame": {
+				"x": 54,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_02.png",
+			"frame": {
+				"x": 107,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_03.png",
+			"frame": {
+				"x": 160,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_04.png",
+			"frame": {
+				"x": 213,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_05.png",
+			"frame": {
+				"x": 266,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_06.png",
+			"frame": {
+				"x": 319,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_07.png",
+			"frame": {
+				"x": 372,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_08.png",
+			"frame": {
+				"x": 425,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_09.png",
+			"frame": {
+				"x": 478,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_10.png",
+			"frame": {
+				"x": 531,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_11.png",
+			"frame": {
+				"x": 584,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_12.png",
+			"frame": {
+				"x": 637,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_13.png",
+			"frame": {
+				"x": 690,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_14.png",
+			"frame": {
+				"x": 743,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		},
+		{
+			"filename": "werewolf_15.png",
+			"frame": {
+				"x": 796,
+				"y": 1,
+				"w": 51,
+				"h": 70
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 51,
+				"h": 70
+			},
+			"sourceSize": {
+				"w": 51,
+				"h": 70
+			}
+		}
+	],
+	"meta": {
+		"app": "http://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"image": "spritesheet.png",
+		"format": "RGBA8888",
+		"size": {
+			"w": 848,
+			"h": 72
+		},
+		"scale": "1"
+	}
+}
