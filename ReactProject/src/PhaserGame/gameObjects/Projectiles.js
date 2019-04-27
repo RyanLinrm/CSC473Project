@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 export class Bullet extends Phaser.GameObjects.Image {
-    constructor(scene,speed=1,shootRange){
+    constructor(scene,speed=1,parent='233',shootRange){
         if(speed === 0)
             speed = 1;
         super(scene,0,0,speed);
@@ -19,7 +19,8 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.setVisible(false);
     }
 
-    shoot(shooter,velocity,exactDirection = false){
+    shoot(uid,shooter,velocity,exactDirection = false){
+        this.uid = uid;
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
@@ -89,7 +90,8 @@ export class Bomb extends Phaser.GameObjects.Image {
             let bullet = bullets.get();
             bullet.speed=1;
             bullet.setTexture('shoot3').setScale(0.7).setSize(32,30);
-            scene.children.add(bullet);
+            //scene.children.add(bullet);
+            scene.damageItems.add(bullet);
             bullet.shoot(this,v);
         });
 
@@ -134,7 +136,8 @@ export class Posion extends Phaser.GameObjects.Image {
             bullet.speed=0.03;
             bullet.shootRange=2000;
             bullet.setTexture('shoot4').setScale(0.3).setSize(45,40);
-            scene.children.add(bullet);
+            //scene.children.add(bullet);
+            scene.damageItems.add(bullet);
             bullet.shoot(this,v);
         });
 

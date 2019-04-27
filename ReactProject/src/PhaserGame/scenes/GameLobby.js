@@ -32,6 +32,7 @@ export class GameLobby extends Phaser.Scene {
                 console.log("error");
             }else {
                 console.log('created game',key);
+                key.onDisconnect().remove();
             }
         });
     }

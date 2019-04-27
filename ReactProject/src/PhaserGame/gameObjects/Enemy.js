@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,uid='234'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -21,7 +21,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
         this.bulletTexture="shoot3";
         //Attack Speed and movementSpeed
-        
+        this.uid = uid;
 
         //Attack Speed
         this.attackRate = attackRate;
@@ -213,7 +213,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             bullet.speed=this.attackRate;
             //scene.children.add(bullet);
             scene.enemiesAttacks.add(bullet);
-            bullet.shoot(this,target,true);
+            bullet.shoot(this.uid,this,target,true);
             bullet.setPosition(this.x+26,this.y+40);
             bullet.setTexture(this.bulletTexture).setScale(this.bulletscale).setSize(32,30);
         };
@@ -232,7 +232,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
         this.enemymovement();
         this.moveEnemy();
-        console.log(this.healthPoints)
+        //console.log(this.healthPoints)
         if (Math.abs(this.scene.player.x - this.x) < this.attackRange && Math.abs(this.scene.player.y - this.y) < this.attackRange){
           //  let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
             let distance=Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y);

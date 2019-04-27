@@ -7,7 +7,7 @@ import { Enemy } from './Enemy';
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
-    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=null){
+    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=null,uid='234'){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -32,6 +32,8 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.speed=speed;
         this.range=range;
         this.tower_ID=tower_ID;
+
+        this.uid = uid;
 
 
         scene.updateSprite(this);
@@ -92,7 +94,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
             //console.log("this");
             let bullet = this.bullets.get();
             scene.towerShooting.add(bullet);
-            bullet.shoot(this,target,true);
+            bullet.shoot(this.uid,this,target,true);
             bullet.setTexture('shoot3').setScale(0.2).setSize(32,30);
         };
 

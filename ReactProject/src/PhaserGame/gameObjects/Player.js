@@ -1,13 +1,14 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,id=0){
+    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid='233'){
         super(scene,x,y,key,textureName,movementSpeed);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
         this.characterId=characterId;
+        this.uid = uid;
         // this.setOrigin(0,0);
         this.nonZeroVelocity = {x:0,y:1};
         this.beingAttacked=false;
@@ -62,17 +63,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     
     createWeapon(scene){
-        this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
+        let bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
 
         this.attack = ()=>{
-            let bullet = this.bullets.get();
+            let bullet = bullets.get();
           //  scene.children.add(bullet);
             scene.damageItems.add(bullet);
-            bullet.shoot(this,this.nonZeroVelocity);
+            bullet.shoot(this.uid,this,this.nonZeroVelocity);
         };
 
         this.removeWeapon = ()=>{ //destroys the weapon used
-            this.bullets.destroy();
+            bullets.destroy();
             this.attack = null;
         };    
 
@@ -156,7 +157,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     update(time){
         this.isInjured(time);
-        console.log(this.healthPoints)
+        //console.log(this.healthPoints)
         this.beingAttacked=false;
         //Player Update Function
         this.player_movement();
