@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Game from './PhaserGame/Game';
 import Leaderboard from './LeaderBoard.js';
+import HomeNavBar from './HomeNavBar.js';
 import './App.css';
 import { Button } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
@@ -73,26 +74,20 @@ class App extends Component {
 
     return (
       <div className="App">
-      {!this.state.showsingle && !this.state.showmulti  &&
-      <nav className="topbar">
-        <ul>
-          <li><button onClick={this.showLeaderBoardHandler} id="leader">Leaderboards</button></li>
-          <li><h1>React Phaser Game</h1></li>
-          <li><button id="signin" onClick={this.signInHandler}>{buttonText}</button></li>
-        </ul>
-      </nav>
-      }
-      <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler}/>
-      {this.state.showbuttons && (
-      <div className="mostButtons">
-      <ul>
-      <li><button onClick ={this.showSinglePlayerHandler}>Single Player</button></li>
-      <li><button onClick ={this.showMultiPlayerHandler}>Multiplayer</button></li>
-      <li><button>store</button></li>
-      <li><button>tutorial</button></li>
-      </ul>
-      </div>
-      )}
+        {!this.state.showsingle && !this.state.showmulti &&
+          <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonText={buttonText} />
+        }
+        <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
+        {this.state.showbuttons && (
+          <div className="mostButtons">
+            <ul>
+              <li><Button variant="success"onClick={this.showSinglePlayerHandler}>Single Player</Button></li>
+              <li><Button onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer</Button></li>
+              <li><Button variant="info">Tutorial</Button></li>
+              <li> <Button variant="danger">Store</Button></li>
+            </ul>
+          </div>
+        )}
 
     {this.state.showLeaderboard && (
         <div>
@@ -106,18 +101,18 @@ class App extends Component {
       {this.state.showsingle && (
         <div>
         <Game name={"singleplayer"}/>
-        <button onClick={this.startingpage}>back</button>
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
 
       {this.state.showmulti && (
         <div>
        <Game name={"multiplayer"}/>
-        <button onClick={this.startingpage}>back</button>
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
       {this.state.infobutton &&
-      <button className="infobutton">info</button>
+      <Button className="infobutton" variant="secondary">Info</Button>
       }
       </div>
     );
