@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Game from './PhaserGame/Game';
+import Leaderboard from './LeaderBoard.js';
 import './App.css';
-
+import { Button } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
 
@@ -13,7 +14,8 @@ class App extends Component {
     this.state = {
       showGame:false, 
       showsingle:false,
-      showmulti:false, 
+      showmulti:false,
+      showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
       infobutton: true 
@@ -55,18 +57,26 @@ class App extends Component {
     })*/
     window.location.reload();
   }
+
+  showLeaderBoardHandler = ()=>{
+    this.setState({ 
+      showLeaderboard: !this.state.showLeaderboard,
+      showbuttons: !this.state.showbuttons,
+      infobutton: !this.state.infobutton});
+  }
   
 
   render() {
     let gameClass = this.state.showGame ? '' : 'hidden';
     let buttonText = this.state.showGame ? 'Sign In' : 'Play';
+    let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]];
 
     return (
       <div className="App">
       {!this.state.showsingle && !this.state.showmulti  &&
       <nav className="topbar">
         <ul>
-          <li><button id="leader">Leaderboards</button></li>
+          <li><button onClick={this.showLeaderBoardHandler} id="leader">Leaderboards</button></li>
           <li><h1>React Phaser Game</h1></li>
           <li><button id="signin" onClick={this.signInHandler}>{buttonText}</button></li>
         </ul>
@@ -83,6 +93,15 @@ class App extends Component {
       </ul>
       </div>
       )}
+
+    {this.state.showLeaderboard && (
+        <div>
+        <Leaderboard list={leaderBoardList}/>
+        <button onClick={this.startingpage}>back</button>
+        </div>
+      )}  
+
+
 
       {this.state.showsingle && (
         <div>
