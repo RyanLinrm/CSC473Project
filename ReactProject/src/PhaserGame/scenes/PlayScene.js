@@ -12,7 +12,8 @@ import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
 import {Melee} from "../gameObjects/Melee";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+import {HUD} from "../gameObjects/HUD";
+
 import spriteAnimations from '../gameObjects/Animations';
 export class PlayScene extends Phaser.Scene{
 
@@ -96,17 +97,7 @@ export class PlayScene extends Phaser.Scene{
         this.enemies.add(this.demon1);
         //this.enemies.add(this.demon1);
 
-        //Stauts bars : hp with a front bar and backing bar
-        this.emptybar = new emptyBar(this, 600, 21).setDepth(2);
-        this.emptybar.setScrollFactor(0);
-        this.hpbar = new HpBar(this, 600, 20, 'hp', this.player.healthPoints).setDepth(3);
-        this.hpbar.setScrollFactor(0);
 
-        //Mana bar
-        this.emptybar2 = new emptyBar(this, 600, 51).setDepth(2);
-        this.emptybar2.setScrollFactor(0);
-        this.manabar = new ManaBar(this, 600, 50, 'mana', this.player.mana).setDepth(3);
-        this.manabar.setScrollFactor(0);
     
        
         //warning when manabar is too low for a special attack
@@ -149,31 +140,8 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.player, this.enemies);
       
 
-        //adding drag to the ui scene.
-        this.hud = this.add.rectangle(this.game.renderer.width/2, this.game.renderer.height, 
-        this.game.renderer.width*2/3, 140, 0x000000).setInteractive();
-        this.hud.setScrollFactor(0);
-
-        this.unit1 = this.add.sprite(this.game.renderer.width/3, this.game.renderer.height-35, "ninjabot").setScrollFactor(0).setInteractive();
-        this.unit2 = this.add.sprite(this.game.renderer.width/2, this.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
-        this.unit3 = this.add.sprite(this.game.renderer.width*2/3, this.game.renderer.height-35, "skull").setScrollFactor(0).setInteractive();
-
-        this.input.setDraggable([this.unit1, this.unit2, this.unit3]);
-        var originalX;
-        var originalY;
-        this.input.on('dragstart', (pointer, unit) => {
-        originalX = unit.x;
-        originalY = unit.y;
-        });
-        this.input.on('drag', (pointer, unit, dragX, dragY) => {
-        unit.x = dragX;
-        unit.y = dragY;
-        }); 
-        this.input.on('dragend', (pointer, unit) => {
-        this.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
-        unit.x = originalX;
-        unit.y = originalY;
-        }); 
+        //HUD
+        let hUD = new HUD(this);
 
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");

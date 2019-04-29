@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
+import { Container } from 'react-bootstrap';
+
 export default function Leaderboard(props){
     let entries = [];
     
@@ -15,18 +17,24 @@ export default function Leaderboard(props){
     });
 
     return (
-    <Table striped bordered hover>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Player</th>
-                <th>Score</th>
-                <th>Fastest Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            {entries}
-        </tbody>
-    </Table>);
+        <Container>
+            <Container>
+                <h1>Leaderboard</h1>
+            </Container>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Player</th>
+                        <th>Score</th>
+                        <th>Fastest Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {entries}
+                </tbody>
+            </Table>
+        </Container>
+    );
     
 }
