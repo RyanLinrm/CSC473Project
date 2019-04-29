@@ -36,7 +36,7 @@ export class PlayScene extends Phaser.Scene{
         this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
         this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
 
-
+        this.attackableGroup = this.add.group({runChildUpdate: true}); 
         //Create Groups for updating andn collision detection;  
         this.enemies = this.add.group(); 
         this.enemyPlayers = this.add.group();
@@ -44,7 +44,6 @@ export class PlayScene extends Phaser.Scene{
         this.damageItems = this.add.group(); 
         this.enemiesAttacks = this.add.group();
         this.towerShooting =this.add.group();
-
         //Collision Functions
         //Funciton to run collision funciton of both objects
         let bothCollisions = (objectA,objectB)=>{
@@ -59,9 +58,11 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.enemies, this.damageItems,bothCollisions);
         this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemyPlayers,bothCollisions);
+        this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,bothCollisions);
+        this.physics.add.overlap(this.towerShooting,this.enemies,bothCollisions);
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
-        this.player = new Player(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,true,100,200);
+        this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,true,100,200);
         this.enemyPlayers.add(this.player);
 
         
@@ -76,24 +77,7 @@ export class PlayScene extends Phaser.Scene{
             let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
             countDownText.setOrigin(0.5,0.5); 
         };
-        //create phaser game object, and add in sprite
 
-        //adjust player hit box
-        //this.player.setSize( 24, 28).setOffset(5,5);
-        this.player.setSize(34, 36);
-        //The enemies  
-        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99);
-        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
-  
-        
-        //this.container= this.add.container(200, 200);
-        //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
-   
-        //this.container.add(this.skill)
-        this.enemies.add(this.wolf); ///Need to move this into the enemy class
-        this.enemies.add(this.ninjabot);
-        //this.enemies.add(this.demon1);
-     
 
         //Stauts bars : hp with a front bar and backing bar
         this.emptybar = new emptyBar(this, 600, 21).setDepth(2);
@@ -127,16 +111,12 @@ export class PlayScene extends Phaser.Scene{
 
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4,100);
-        this.building.setScale(0.15);
-        this.University=new Units(this,1200,0,1150,-1,"University",1,2,50);
-        this.University.setScale(1.5);
-        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1,50);
-        this.pyramid.setScale(1.5);
-        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,3,100);
-        this.magicstone.setScale(1.5);
+        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4).setScale(0.15);
+        this.university=new Units(this,1200,0,1150,-1,"university",1,2).setScale(1.5);
+        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1).setScale(1.5);
+        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,3).setScale(1.5);
         this.towers.add(this.building); //Move into unit class
-        this.towers.add(this.University);
+        this.towers.add(this.university);
         this.towers.add(this.pyramid);
         this.towers.add(this.magicstone);
                  
@@ -146,37 +126,27 @@ export class PlayScene extends Phaser.Scene{
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.player, this.enemies);
-      
-/*
-        //adding drag to the ui scene.
-        this.hud = this.add.rectangle(this.game.renderer.width/2, this.game.renderer.height, 
-        this.game.renderer.width*2/3, 140, 0x000000).setInteractive();
-        this.hud.setScrollFactor(0);
-
-        this.unit1 = this.add.sprite(this.game.renderer.width/3, this.game.renderer.height-35, "ninjabot").setScrollFactor(0).setInteractive();
-        this.unit2 = this.add.sprite(this.game.renderer.width/2, this.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
-        this.unit3 = this.add.sprite(this.game.renderer.width*2/3, this.game.renderer.height-35, "skull").setScrollFactor(0).setInteractive();
-
-        this.input.setDraggable([this.unit1, this.unit2, this.unit3]);
-        var originalX;
-        var originalY;
-        this.input.on('dragstart', (pointer, unit) => {
-        originalX = unit.x;
-        originalY = unit.y;
-        });
-        this.input.on('drag', (pointer, unit, dragX, dragY) => {
-        unit.x = dragX;
-        unit.y = dragY;
-        }); 
-        this.input.on('dragend', (pointer, unit) => {
-        this.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
-        unit.x = originalX;
-        unit.y = originalY;
-        }); */
         dragsystem(this);
+        //create phaser game object, and add in sprite
+
+        //adjust player hit box
+        //this.player.setSize( 24, 28).setOffset(5,5);
+        this.player.setSize(34, 36);
+        //The enemies  
+        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99);
+        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
+  
+        
+        //this.container= this.add.container(200, 200);
+        //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
+   
+        //this.container.add(this.skill)
+        this.enemies.add(this.wolf); ///Need to move this into the enemy class
+        this.enemies.add(this.ninjabot);
+        //this.enemies.add(this.demon1);
+     
         //input and phyics
-        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
-      
+        this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
@@ -195,7 +165,7 @@ export class PlayScene extends Phaser.Scene{
         this.waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
         let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
         let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
-         this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
+        this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
         this.CollisionLayer.setCollisionByProperty({collides:true});

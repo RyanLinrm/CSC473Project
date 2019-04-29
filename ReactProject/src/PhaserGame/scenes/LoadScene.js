@@ -44,7 +44,7 @@ export class LoadScene extends Phaser.Scene{
     this.load.atlas("wolf", `${process.env.PUBLIC_URL}/assets/sprite/units/wolf.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/wolf.json`);
     this.load.atlas("werewolf", `${process.env.PUBLIC_URL}/assets/sprite/units/werewolf.png`, `${process.env.PUBLIC_URL}/assets/sprite/units/werewolf.json`);
     this.load.atlas("building1",`${process.env.PUBLIC_URL}/assets/sprite/buildings/building1.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/building1_atlas.json`);
-    this.load.atlas("University", `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.json`);
+    this.load.atlas("university", `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/University.json`);
     this.load.atlas("pyramid", `${process.env.PUBLIC_URL}/assets/sprite/buildings/pyramid.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/pyramid.json`);
     this.load.atlas("magicstone", `${process.env.PUBLIC_URL}/assets/sprite/buildings/magicstone.png`, `${process.env.PUBLIC_URL}/assets/sprite/buildings/magicstone.json`);
     this.load.audio("menuMusic", `${process.env.PUBLIC_URL}/assets/music/Rise of spirit.mp3`);

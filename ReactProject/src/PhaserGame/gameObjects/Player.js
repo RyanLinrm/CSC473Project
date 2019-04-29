@@ -107,7 +107,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.count=time;
         }   
     
-        if(time>this.count+500)
+        if(time>this.count+100)
             {this.tint=0xffffff;
              this.canbeAttacked=true;
             }

@@ -2,12 +2,17 @@ import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=200){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
+        this.building=scene.building;
+        this.university=scene.university;
+        this.pyramid=scene.pyramid;
+        this.magicstone=scene.magicstone;
+        this.towers=[this.pyramid,this.university,this.magicstone,this.building];
         this.setOrigin(0,0);
         this.enemyID=enemyID;
         this.timeCycle=0;
@@ -30,65 +35,95 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
        // this.scene.physics.world.enableBody(this.demonskill);
         //Attack power
         this.ATK = ATK;
-     
+        
         //Attack Range
         //this.distance = Phaser.Math.Distance.Between(this.x, this.y, target.x, target.y);
         this.attackRange=attackRange;
 
         //setup the movement of the enemy
-        this.setupMovement(scene,target);
-
+        this.target=target;
+        this.setupMovement(scene,this.target);
         this.setVisible = false;
     }
      
-
+    changetarget(newtarget){
+        this.target=newtarget;
+    }
+    distance(enemy,target){
+        let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
+        return distance;
+    }
     setupMovement(scene,target){
  
         //sets up the movement funciton that is called by the update method.
         this.moveEnemy = () =>{
-            scene.physics.moveToObject(this, target,this.movementSpeed);
             this.EnemyBehavior(this,target);
-      
-            
+     
+            scene.physics.moveToObject(this,this.target,this.movementSpeed);
+         
         };
     }
 
     EnemyBehavior(enemy,target){
+        target=this.target;
+        let player=this.scene.player;
         this.randomMove = () =>{
-        const randNumber = Math.floor((Math.random() * 4) + 1);
+        const randNumber = Math.floor((Math.random() * 5) + 1);
+        const randomdist = Math.floor((Math.random() * 100) + 1);
         switch(randNumber) {
           case 1: 
-            enemy.setPosition(target.x+50,target.y+50); 
+            enemy.setPosition(target.x+randomdist,target.y+randomdist); 
             break;
           case 2:
-            enemy.setPosition(target.x+50,target.y-50); 
+            enemy.setPosition(target.x+randomdist,target.y-randomdist); 
             break;
           case 3:
-           enemy.setPosition(target.x-50,target.y+50); 
+           enemy.setPosition(target.x-randomdist,target.y+randomdist); 
             break;
           case 4:
-           enemy.setPosition(target.x-50,target.y-50); 
+           enemy.setPosition(target.x-randomdist,target.y-randomdist); 
             break;
-        
-         
+          case 5:
+           enemy.setPosition(target.x,target.y); 
+            break;
         } };    
         // this.matter.world.on('collisionstart', function (event, bodyA, bodyB) { 
         this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
-        if(Math.abs(target.x - enemy.x) > this.attackRange && Math.abs(target.y - enemy.y) > this.attackRange){
-            let originalspeed=this.movementSpeed;
-            this.movementSpeed=this.movementSpeed+1;
-    
-            if(this.movementSpeed>=target.movementSpeed+10){
-               this.movementSpeed=originalspeed;
-               //console.log(originalspeed);
-           }
-        }
-
-        //need some function to assign the target to the next attackable enemies or players
-        //need a way to assign ally 
+    /*    this.scene.physics.add.overlap(enemy, this.scene.CollisionLayer, (enemy,CollisionLayer)=>{
+            enemy.setPosition(enemy.x-100,enemy.y-100); 
+        },null,this);*/
+        let shortestDistance=1000000000;
+        this.findneartower = () =>{
+        for (var i = 0; i < 4; i++) {
+            if(this.towers[i].active){
+            let towerdistance=this.distance(enemy,this.towers[i]);
+            if (towerdistance<shortestDistance){
+                shortestDistance=towerdistance;      
+                this.changetarget(this.towers[i]);}
+            }
+        } };  
         
-    }
+        if(Math.abs(player.x - enemy.x) < this.attackRange+40 && Math.abs(player.y - enemy.y) < this.attackRange+40){
+            if(player.active){
+            this.changetarget(this.scene.player);}
+            else{
+                this.findneartower();}
+            }
+        
+        else{     
+            this.findneartower();}
+ 
+
+        this.movementSpeed=this.movementSpeed+1;
+
+        if(this.movementSpeed>=player.movementSpeed+10){
+            this.movementSpeed=65;         
+         }
+        }
+           
+        
+    
        
 
     kill(){
@@ -203,6 +238,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         if(this.enemyID===3){
             this.bulletTexture="shoot8";
             this.bulletscale=0.6;
+            this.cooldown=100;
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('skull_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -236,6 +272,18 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         };    
 
     }
+    enemyAttack(enemy,target,time){
+
+         if (Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < enemy.attackRange){
+          //  let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
+            let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
+            let vX = (target.x - enemy.x)/distance;
+            let vY = (target.y - enemy.y)/distance;
+            if(this.timeCycle < time){
+            this.basicattack({x: vX,y: vY});
+            this.timeCycle = time + this.cooldown ;}
+    }
+}
 
     update(time, delta){
         this.isInjured(time);
@@ -243,17 +291,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
         this.enemymovement();
         this.moveEnemy();
-        if (Math.abs(this.scene.player.x - this.x) < this.attackRange && Math.abs(this.scene.player.y - this.y) < this.attackRange){
-          //  let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
-            let distance=Phaser.Math.Distance.Between(this.x, this.y, this.scene.player.x, this.scene.player.y);
-            let vX = (this.scene.player.x - this.x)/distance;
-            let vY = (this.scene.player.y - this.y)/distance;
-            if(this.timeCycle < time){
-            this.basicattack({x: vX,y: vY});
-            this.timeCycle = time + this.cooldown ;}
+        this.enemyAttack(this,this.target,time);
 
         }
-    }
-
     
-}
+    }
+    

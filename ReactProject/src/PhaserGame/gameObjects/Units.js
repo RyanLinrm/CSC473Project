@@ -7,7 +7,7 @@ import { Enemy } from './Enemy';
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
-    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=null){
+    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=1000,speed=1,range=180,cooldown=100){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -24,16 +24,16 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
+        this.cooldown=cooldown;
         this.createDefense(scene);
         this.beingAttacked=false;
-
+        this.timeCycle=0;
         this.canAttack = 0;
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
         this.tower_ID=tower_ID;
-
-
+        this.target=scene.player;
         scene.updateSprite(this);
         scene.enemyTowers.add(this);
 
@@ -102,17 +102,43 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         };    
 
     }
+    distance(enemy,target){
+        let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
+        return distance;
+    }
+    towerAttack(tower,target,time){
+        this.enemies=this.scene.enemies.getChildren();
+        let len = this.scene.enemies.getLength()
+        let shortestDistance=1000000000;
+        console.log(this.len)
+        this.findnearenemy = () =>{
+            for (var i = 0; i < len.siz; i++) {
+                if(this.towers[i].active){
+                let towerdistance=this.distance(tower,this.towers[i]);
+                if (towerdistance<shortestDistance){
+                    shortestDistance=towerdistance;      
+                    this.changetarget(this.towers[i]);}
+                }
+            } };  
+        if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){
+            if(this.enemies.active){
+            this.target=this.enemies;}
+            let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
+            let angle = Math.atan((target.y - tower.y)/(target.x - tower.x));
+            let vX = (target.x - tower.x)/distance;
+            let vY = (target.y - tower.y)/distance;
+            if(this.timeCycle < time){
+                this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
+                this.timeCycle = time + tower.cooldown ;}
+        }
+    }
 
     update(time){
         this.isInjured(time);
         this.beingAttacked=false;
-        if (Math.abs(this.scene.player.x - this.x) < 180 && Math.abs(this.scene.player.y - this.y) < 180){
-            let speed = 10;
-            let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));
-            let angle = Math.atan((this.scene.player.y - this.y)/(this.scene.player.x - this.x));
-            let vX = (this.scene.player.x - this.x)/distance;
-            let vY = (this.scene.player.y - this.y)/distance;
-            this.defend({x: vX - this.body.velocity.x ,y: vY - this.body.velocity.y});
-        }
+        this.towerAttack(this,this.target,time);
+       // console.log(this.len)
+           
+        
     }
 }
