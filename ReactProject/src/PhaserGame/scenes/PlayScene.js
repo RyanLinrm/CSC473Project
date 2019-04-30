@@ -29,6 +29,10 @@ export class PlayScene extends Phaser.Scene{
         this.load.tilemapTiledJSON("Mymap",`${process.env.PUBLIC_URL}/assets/map/map.json`);
     }
 
+    init(data){
+        this.spritekey = data
+    }
+
     create(uid){
         this.playerUid = uid;
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
@@ -63,7 +67,14 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,this.bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemyPlayers,this.bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
-        this.player = new Player(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,100,200,this.playerUid);
+        switch(this.spritekey){
+            case "bomber":
+            this.player = new Player(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,100,200,this.playerUid);
+            break;
+            case "rider":
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,100,200,this.playerUid).setScale(0.8);
+            break;
+        }
         this.enemyPlayers.add(this.player);
 
         
