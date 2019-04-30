@@ -15,5 +15,22 @@
                 "cognito90ed6030": {}
             }
         }
+    },
+    "runmindev": {
+        "awscloudformation": {
+            "AuthRoleName": "csc473project-20190430131341-authRole",
+            "UnauthRoleArn": "arn:aws:iam::508071436700:role/csc473project-20190430131341-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::508071436700:role/csc473project-20190430131341-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "csc473project-20190430131341-deployment",
+            "UnauthRoleName": "csc473project-20190430131341-unauthRole",
+            "StackName": "csc473project-20190430131341",
+            "StackId": "arn:aws:cloudformation:us-east-2:508071436700:stack/csc473project-20190430131341/4d54b320-6b6b-11e9-848b-06017dd90e3a"
+        },
+        "categories": {
+            "auth": {
+                "cognito90ed6030": {}
+            }
+        }
     }
 }

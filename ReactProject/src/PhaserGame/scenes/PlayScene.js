@@ -265,8 +265,8 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.player.mana -= 2;
-                this.manabar.cutManaBar(2);
+                /*this.player.mana -= 2;
+                this.manabar.cutManaBar(2);*/
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
