@@ -230,8 +230,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.beingAttacked=false;
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
 
-        this.enemymovement();
-        this.moveEnemy();
+       // this.enemymovement();
+       // this.moveEnemy();
         //console.log(this.healthPoints)
         if (Math.abs(this.scene.player.x - this.x) < this.attackRange && Math.abs(this.scene.player.y - this.y) < this.attackRange){
           //  let distance = Math.sqrt(Math.pow(this.scene.player.x - this.x, 2) + Math.pow(this.scene.player.y - this.y, 2));

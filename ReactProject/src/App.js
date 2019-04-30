@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Game from './PhaserGame/Game';
+import Leaderboard from './LeaderBoard.js';
+import HomeNavBar from './HomeNavBar.js';
 import './App.css';
-
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
 
@@ -13,10 +15,12 @@ class App extends Component {
     this.state = {
       showGame:false, 
       showsingle:false,
-      showmulti:false, 
+      showmulti:false,
+      showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
-      infobutton: true 
+      infobutton: true,
+      signInName: null,
     };
 
     
@@ -25,7 +29,19 @@ class App extends Component {
   signInHandler = (signInState) => {
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
-   
+     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+
+      this.setState({ 
+        signInName:cognitoUser.username
+      });
+       
+       
+     });
+    }
+    else if(signInState == 'signIn'){
+      this.setState({ 
+        signInName:null
+      });
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -55,50 +71,88 @@ class App extends Component {
     })*/
     window.location.reload();
   }
+
+  showLeaderBoardHandler = ()=>{
+    this.setState({ 
+      showLeaderboard: !this.state.showLeaderboard,
+      showbuttons: !this.state.showbuttons,
+      infobutton: !this.state.infobutton});
+  }
   
 
   render() {
+   
     let gameClass = this.state.showGame ? '' : 'hidden';
     let buttonText = this.state.showGame ? 'Sign In' : 'Play';
+    let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
+    ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
+  ];
 
     return (
-      <div className="App">
-      {!this.state.showsingle && !this.state.showmulti  &&
-      <nav className="topbar">
-        <ul>
-          <li><button id="leader">Leaderboards</button></li>
-          <li><h1>React Phaser Game</h1></li>
-          <li><button id="signin" onClick={this.signInHandler}>{buttonText}</button></li>
-        </ul>
-      </nav>
-      }
-      <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler}/>
-      {this.state.showbuttons && (
-      <div className="mostButtons">
-      <ul>
-      <li><button onClick ={this.showSinglePlayerHandler}>Single Player</button></li>
-      <li><button onClick ={this.showMultiPlayerHandler}>Multiplayer</button></li>
-      <li><button>store</button></li>
-      <li><button>tutorial</button></li>
-      </ul>
-      </div>
-      )}
+      <div className="App ">
+        {!this.state.showsingle && !this.state.showmulti &&
+          <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
+        }
+        <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
+        {this.state.showbuttons && (
+          
+          <Container >
+
+            <br></br>
+
+            <Row className="form-group"> {/* Form Group add 15px spacing */}
+              <Col>
+                <Button className="col-md-2" variant="success" onClick={this.showSinglePlayerHandler}>Single Player</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" variant="info">Tutorial</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" variant="danger">Store</Button>
+              </Col>
+            </Row>
+
+
+          </Container>
+     
+        )}
+
+    {this.state.showLeaderboard && (
+        <div>
+        <Leaderboard list={leaderBoardList}/>
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        </div>
+      )}  
+
+
 
       {this.state.showsingle && (
         <div>
         <Game name={"singleplayer"}/>
-        <button onClick={this.startingpage}>back</button>
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
 
       {this.state.showmulti && (
         <div>
        <Game name={"multiplayer"}/>
-        <button onClick={this.startingpage}>back</button>
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
       {this.state.infobutton &&
-      <button className="infobutton">info</button>
+      <Button className="infobutton" variant="secondary">Info</Button>
       }
       </div>
     );
