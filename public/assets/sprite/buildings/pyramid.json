@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "pyramid.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 129,
+				"h": 85
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "pyramid.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 27,
+						"w": 127,
+						"h": 83
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 127,
+						"h": 83
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e9c48a800de0ca83228dfe89d528ec89:a9615513a77e8ee11a6e16b0f38cbe09:6d859a0326f273b9c244911bc932d1c5$"
+	}
+}

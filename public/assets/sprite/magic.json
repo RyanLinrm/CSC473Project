@@ -1,0 +1,356 @@
+{
+	"textures": [
+		{
+			"image": "magic.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 109,
+				"h": 200
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "Magic_01.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 49
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_02.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 26,
+						"h": 51
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 26,
+						"h": 51
+					},
+					"frame": {
+						"x": 28,
+						"y": 0,
+						"w": 26,
+						"h": 51
+					}
+				},
+				{
+					"filename": "Magic_03.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 49
+					},
+					"frame": {
+						"x": 54,
+						"y": 0,
+						"w": 28,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_04.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 26,
+						"h": 51
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 26,
+						"h": 51
+					},
+					"frame": {
+						"x": 82,
+						"y": 0,
+						"w": 26,
+						"h": 51
+					}
+				},
+				{
+					"filename": "Magic_05.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 50
+					},
+					"frame": {
+						"x": 0,
+						"y": 51,
+						"w": 25,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Magic_06.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 49
+					},
+					"frame": {
+						"x": 25,
+						"y": 51,
+						"w": 30,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_07.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 50
+					},
+					"frame": {
+						"x": 55,
+						"y": 51,
+						"w": 25,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Magic_08.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 49
+					},
+					"frame": {
+						"x": 80,
+						"y": 51,
+						"w": 29,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_09.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 50
+					},
+					"frame": {
+						"x": 0,
+						"y": 101,
+						"w": 25,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Magic_10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 30,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 30,
+						"h": 49
+					},
+					"frame": {
+						"x": 25,
+						"y": 101,
+						"w": 30,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_11.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 50
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 50
+					},
+					"frame": {
+						"x": 55,
+						"y": 101,
+						"w": 25,
+						"h": 50
+					}
+				},
+				{
+					"filename": "Magic_12.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 29,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 29,
+						"h": 49
+					},
+					"frame": {
+						"x": 80,
+						"y": 101,
+						"w": 29,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_13.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 48
+					},
+					"frame": {
+						"x": 0,
+						"y": 151,
+						"w": 28,
+						"h": 48
+					}
+				},
+				{
+					"filename": "Magic_14.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 49
+					},
+					"frame": {
+						"x": 28,
+						"y": 151,
+						"w": 25,
+						"h": 49
+					}
+				},
+				{
+					"filename": "Magic_15.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 28,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 28,
+						"h": 48
+					},
+					"frame": {
+						"x": 53,
+						"y": 151,
+						"w": 28,
+						"h": 48
+					}
+				},
+				{
+					"filename": "Magic_16.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 25,
+						"h": 49
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 25,
+						"h": 49
+					},
+					"frame": {
+						"x": 81,
+						"y": 151,
+						"w": 25,
+						"h": 49
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:51c8429122b15635f42b1894fe2f4566:bd037a91f3bfa5ae1a6ab1f25e0c00f6:27156573465cc4661adee91d4b323262$"
+	}
+}
