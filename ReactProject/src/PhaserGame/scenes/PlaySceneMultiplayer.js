@@ -207,6 +207,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
             for( let pid in this.otherPlayers ){
                 this.physics.add.overlap(this.damageItems, this.otherPlayers[pid],this.bothCollisions);
+                this.physics.add.collider(this.otherPlayers[pid], this.CollisionLayer);
+                this.physics.add.collider(this.otherPlayers[pid], this.waterLayer);
             }
         });
 

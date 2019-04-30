@@ -10,5 +10,5 @@ dist/
 coverage/
 node_modules/
 aws-exports.js
-firebase-config.js
+#firebase-config.js
 awsconfiguration.json
