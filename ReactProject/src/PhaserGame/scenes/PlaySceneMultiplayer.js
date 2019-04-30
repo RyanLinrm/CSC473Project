@@ -83,15 +83,17 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
-        this.player1.setVisible(true);
-        this.player.setVisible(false);
+        this.player1.setVisible(false);
+        this.player.setVisible(true);
+        //this.player1.setVisible(true);
+        //this.player.setVisible(false);
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
 
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
-       this.player.kill();
-       this.cameras.main.startFollow(this.player1);
+       //this.player.kill();
+       //this.cameras.main.startFollow(this.player1);
 
        database.ref(`Games/${this.gameRoom}/creator`).once("value", (snapShot) => {
             let value = snapShot.val();
@@ -168,15 +170,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             let changedKey = snapShot.key; //The key for the data that was changed
 
             if(changedKey === 'pos'){
-                this.player1.setPosition(dataChanged.x,dataChanged.y); 
+                this.player.setPosition(dataChanged.x,dataChanged.y); 
             }else{
-                this.player1.setVelocity(dataChanged.x,dataChanged.y); 
+                this.player.setVelocity(dataChanged.x,dataChanged.y); 
             }
         });
 
         database.ref(`Games/${this.gameRoom}/Players/${this.playerID}/attack/time`).on("value", (snapShot) => { 
             if (snapShot.val() != 0)       
-                this.player1.attack();
+                this.player.attack();
 
         });
 
@@ -202,12 +204,9 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         let ref = database.ref(`Games/${this.gameRoom}/Players/`);
         ref.on('child_added',snapShot=> {
+            this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
             for( let pid in this.otherPlayers ){
                 this.physics.add.overlap(this.damageItems, this.otherPlayers[pid],this.bothCollisions);
-            }
-            if(Object.keys(this.otherPlayers).length >= 3){
-                this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
-                ref.off();
             }
         });
 

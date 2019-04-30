@@ -35,6 +35,22 @@ export class GameLobby extends Phaser.Scene {
                 key.onDisconnect().remove();
             }
         });
+        this.createbutton(this.roomkeys);
+    }
+
+    createbutton = (key)=> {
+        this.startButton =
+            this.add.image(this.game.renderer.width / 2,
+                this.game.renderer.height / 2 + 225, "PlayButton").setDepth(1);
+
+        this.startButton.setInteractive();
+        
+        let ref = this.ref.child(key);
+        ref.child('start').set(false);
+
+        this.startButton.on("pointerup", ()=>{
+            ref.update({start: true});
+          });
     }
 
     joinGame = (key) =>{
@@ -70,10 +86,18 @@ export class GameLobby extends Phaser.Scene {
     }
 
     litsenGame = (key) => {
-        this.ref.child(key).on('child_changed', snapShot=>{
-            let seat = snapShot.val();
+        this.ref.child(key).on('value', snapShot=>{
+            let seat = snapShot.val().seat;
 
             if( seat === this.GameState.FULL ){
+                this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
+                    playerID : this.playerID,
+                    roomkey : this.roomkeys,
+                    seatNumber: this.seatNumber
+                });
+                this.ref.child(key).off();
+            }
+            else if(snapShot.val().start){
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
@@ -88,6 +112,7 @@ export class GameLobby extends Phaser.Scene {
     }
 
     create(){
+
         let info = this.add.text(600, 250, "Game Lobby", {fontSize: '32px'});
         let info2 = this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
         this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
@@ -122,5 +147,4 @@ export class GameLobby extends Phaser.Scene {
         });
  
     }
-
 }
