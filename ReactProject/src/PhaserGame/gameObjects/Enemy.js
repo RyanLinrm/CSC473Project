@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='234'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -25,8 +25,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.bulletscale=0.15;
         //Health
         this.healthPoints = healthPoints;
+        
         this.bulletTexture="shoot3";
         //Attack Speed and movementSpeed
+        this.uid = uid;
+
+        //Attack Speed
         this.attackRate = attackRate;
         this.nextAttack = 0;
         this.movementSpeed=movementSpeed;
@@ -44,6 +48,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.target=target;
         this.setupMovement(scene,this.target);
         this.setVisible = false;
+
+        
+
     }
      
     changetarget(newtarget){
@@ -90,13 +97,14 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         // this.matter.world.on('collisionstart', function (event, bodyA, bodyB) { 
         this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
-    /*    this.scene.physics.add.overlap(enemy, this.scene.CollisionLayer, (enemy,CollisionLayer)=>{
-            enemy.setPosition(enemy.x-100,enemy.y-100); 
+      /*  this.scene.physics.add.overlap(enemy, this.scene.CollisionLayer, (enemy,CollisionLayer)=>{
+            enemy.setVelocityX(-200);
+            enemy.setVelocityY(200);
         },null,this);*/
         let shortestDistance=1000000000;
         this.findneartower = () =>{
         for (var i = 0; i < 4; i++) {
-            if(this.towers[i].active){
+            if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
             let towerdistance=this.distance(enemy,this.towers[i]);
             if (towerdistance<shortestDistance){
                 shortestDistance=towerdistance;      
@@ -105,7 +113,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         } };  
         
         if(Math.abs(player.x - enemy.x) < this.attackRange+40 && Math.abs(player.y - enemy.y) < this.attackRange+40){
-            if(player.active){
+            if(player.active && player.uid!=enemy.uid){
             this.changetarget(this.scene.player);}
             else{
                 this.findneartower();}
@@ -261,7 +269,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             bullet.speed=this.attackRate;
             //scene.children.add(bullet);
             scene.enemiesAttacks.add(bullet);
-            bullet.shoot(this,target,true);
+            bullet.shoot(this.uid,this,target,true);
             bullet.setPosition(this.x+26,this.y+40);
             bullet.setTexture(this.bulletTexture).setScale(this.bulletscale).setSize(32,30);
         };
@@ -289,6 +297,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.isInjured(time);
         this.beingAttacked=false;
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
+
         this.enemymovement();
         this.moveEnemy();
         this.enemyAttack(this,this.target,time);

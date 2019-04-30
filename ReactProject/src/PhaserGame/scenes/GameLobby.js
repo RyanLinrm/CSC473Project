@@ -2,6 +2,7 @@ import Phaser, { Scene } from 'phaser';
 import { CST } from "../CST";
 import {generate} from 'randomstring';
 import * as firebase from 'firebase';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 export class GameLobby extends Phaser.Scene {
     constructor(){
@@ -10,12 +11,10 @@ export class GameLobby extends Phaser.Scene {
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
         this.seatNumber = -1;
         this.playerID = generate(10);
-        this.checkCycle = 0;
     }
 
     createGame = () =>{
         console.log('creating a game!');
-        this.yesorno = false;
 
         let currentGame = {
             creator: {
@@ -42,70 +41,50 @@ export class GameLobby extends Phaser.Scene {
         console.log('joining game', key);
 
         let childref = this.ref.child(key);
+        childref.transaction( (snapShot) =>{
         
-        childref.once('value', snapShot=>{
-            let game = snapShot.val();
-            if( game.seat !== 4 ){
-                let val = game.seat + 1;
-                this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
-                let joiner = {
-                    uid: this.playerID,
-                    userName: this.playerID
-                }
+            childref.once('value', snapShot =>{
+                let game = snapShot.val();
+                let val = game.seat;
+                if( game.seat !== 4 ){
+                    let val = game.seat + 1;
+                    this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
+                    let joiner = {
+                        uid: this.playerID,
+                        userName: this.playerID
+                    }
 
-                childref.update( {seat : val} );
-                childref.push().set(joiner, (error)=>{
-                    if(error){
-                        console.log('error when player joining game');
-                    }
-                    else{
-                        console.log('a player sits down');
-                    }
+                    childref.update( {seat : val} );
+                    childref.push(joiner);
+                }
+                else{
+                    alert('Full Room! Sorry, an error appears, reload page now');
+                    window.location.reload();
+                }
+                })
+        }/*, (err, commit, snapShot) =>{
+            if(commit){
+                console.log(snapShot.val());
+            }
+        } */)
+    }
+
+    litsenGame = (key) => {
+        this.ref.child(key).on('child_changed', snapShot=>{
+            let seat = snapShot.val();
+
+            if( seat === this.GameState.FULL ){
+                this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
+                    playerID : this.playerID,
+                    roomkey : this.roomkeys,
+                    seatNumber: this.seatNumber
                 });
+                this.ref.child(key).off();
             }
             else{
-                alert('Full Room!');
+                this.seatinfo.setText(seat + ' player(s) in the room, waiting...');
             }
-            /*
-        this.ref.child(key).transaction( (game) =>{
-            if( !game.joiner ){
-                game.state = this.GameState.ONEJOINED;
-                game.joiner = {
-                    uid: this.playerID,
-                    userName: this.playerID
-                }
-                console.log('p1 sits down');
-            }*/
-            /*
-            else if( game.state !== 4 ){
-                game.state = this.GameState.TWOJOINED;
-                game.joiner2 = {
-                    uid: this.playerID,
-                    userName: this.playerID
-                }
-                console.log('p2 sits down');
-            }
-            else if( game.state !== 4 ){
-                game.state = this.GameState.FULL;
-                game.joiner3 = {
-                    uid: this.playerID,
-                    userName: this.playerID
-                }
-                console.log('p3 sits down');
-            }
-            return game;
-        }, (error, committed, snapShot)=> {
-            if(committed){
-                if(snapShot.val().state === this.GameState.FULL){
-                    console.log("FULL ROOM");
-                    this.yesorno = true;
-                    //this.scene.start(CST.SCENES.PLAYMULTIPLAYER);
-                }
-            }
-            else {
-                console.log('error joining game 1st');
-            }*/
-        });
+        })
     }
 
     create(){
@@ -114,39 +93,34 @@ export class GameLobby extends Phaser.Scene {
         this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
 
 
-
-        this.ref.once("value", snapShot => {
+        this.ref.once('value', snapShot => {
             let gamerooms = snapShot.val();
-            /*if(gamerooms)
-            console.log(Object.keys(gamerooms)[0]);*/
+            
             if( !gamerooms ){
                 this.createGame();
             }
-            /*else if( this.CanCreateGame() ){
-                this.createGame();
-            }*/
+            
             else {
-                this.roomkeys = Object.keys(gamerooms)[0];
-                this.joinGame(this.roomkeys);
+                let keys = Object.keys(gamerooms);
+
+                for( let i = 0; i < keys.length; i++ ){
+
+                    if( gamerooms[keys[i]].seat < 4 ){
+
+                        this.roomkeys = keys[i];
+                        this.joinGame(this.roomkeys);
+                        break;
+                    }
+                    else if(i === keys.length - 1){
+                        this.createGame();
+                        break;
+                    }
+                };
             }
+        }).then( snapShot =>{
+            this.litsenGame(this.roomkeys);
         });
  
     }
 
-    update(time, delta){
-        if( this.checkCycle < time && this.roomkeys !== undefined ){
-            this.ref.child(this.roomkeys).once('value', snapShot =>{
-                let seat = snapShot.val().seat;
-                this.seatinfo.setText(seat + ' player(s) in the room, waiting...');
-                if( snapShot.val().seat === this.GameState.FULL){
-                    this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
-                        playerID : this.playerID,
-                        roomkey : this.roomkeys,
-                        seatNumber: this.seatNumber
-                    });
-                }
-            });
-            this.checkCycle = 5000 + time;
-        }
-    }
 }

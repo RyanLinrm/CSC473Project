@@ -5,6 +5,7 @@ import {Rider} from "../gameObjects/Rider";
 import { CST } from "../CST";
 import {generate} from 'randomstring';
 import * as firebase from 'firebase';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
@@ -27,7 +28,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,false);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,100,64,id);
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
 
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/movementData`).on("child_changed", (snapShot) => {
@@ -66,7 +67,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     create() {
-        super.create();
+        super.create(this.playerID);
 
         this.towers.removeCallback = ()=>{
             if(this.towers.getLength() === 1){
@@ -81,7 +82,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,false);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
         this.player1.setVisible(false);
         this.player.setVisible(true);
         this.physics.add.collider(this.player1, this.CollisionLayer);
@@ -182,10 +183,30 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.removePlayer(snapShot.key);
         });
 
+        /*Just to prevent game crashing caused by game master leaving the room, will add in futher implement later */
+        database.ref(`Games/${this.gameRoom}`).on('child_removed', (snapShot) =>{
+            
+            if(!snapShot.val().Playsers){
+                database.ref(`Games/${this.gameRoom}`).remove();
+            }
+        });
+        /** */
+
         window.addEventListener('beforeunload', (event) => {
 
             database.ref(`Games/${this.gameRoom}/Players/${this.playerID}`).remove();
 
+        });
+        
+        let ref = database.ref(`Games/${this.gameRoom}/Players/`);
+        ref.on('child_added',snapShot=> {
+            for( let pid in this.otherPlayers ){
+                this.physics.add.overlap(this.damageItems, this.otherPlayers[pid],this.bothCollisions);
+            }
+            if(Object.keys(this.otherPlayers).length >= 3){
+                this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
+                ref.off();
+            }
         });
 
     }

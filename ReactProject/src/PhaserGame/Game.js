@@ -24,7 +24,7 @@ export default class Game extends React.Component{
                 default: 'arcade',
                 
                 arcade: {
-                    debug: false
+                    debug: true
                 }
             },
             scene:[
@@ -45,7 +45,7 @@ export default class Game extends React.Component{
                 default: 'arcade',
                 
                 arcade: {
-                    debug: false
+                    debug: true
                 }
             },
             scene:[

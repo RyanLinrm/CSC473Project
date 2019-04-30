@@ -29,7 +29,8 @@ export class PlayScene extends Phaser.Scene{
         this.load.tilemapTiledJSON("Mymap",`${process.env.PUBLIC_URL}/assets/map/map.json`);
     }
 
-    create(){
+    create(uid){
+        this.playerUid = uid;
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
        
@@ -46,20 +47,22 @@ export class PlayScene extends Phaser.Scene{
         this.towerShooting =this.add.group();
         //Collision Functions
         //Funciton to run collision funciton of both objects
-        let bothCollisions = (objectA,objectB)=>{
-            if(objectA.active && objectB.active ){
+        this.bothCollisions = (objectA,objectB)=>{
+            
+            if(objectA.active && objectB.active){
+                if(objectA.uid !== objectB.uid){
                 objectA.collision();
                 objectB.collision();
-           
-                
+                }
+                 
             }
         };
-        this.physics.add.overlap(this.damageItems, this.enemyTowers,bothCollisions);
-        this.physics.add.overlap(this.enemies, this.damageItems,bothCollisions);
-        this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,bothCollisions);
-        this.physics.add.overlap(this.towerShooting,this.enemyPlayers,bothCollisions);
-        this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,bothCollisions);
-        this.physics.add.overlap(this.towerShooting,this.enemies,bothCollisions);
+        this.physics.add.overlap(this.damageItems, this.enemyTowers,this.bothCollisions);
+        this.physics.add.overlap(this.enemies, this.damageItems,this.bothCollisions);
+        this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,this.bothCollisions);
+        this.physics.add.overlap(this.towerShooting,this.enemyPlayers,this.bothCollisions);
+        this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,this.bothCollisions);
+        this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
         this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,true,100,200);
@@ -111,9 +114,9 @@ export class PlayScene extends Phaser.Scene{
 
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4).setScale(0.15);
+        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4,1000,1,180,200).setScale(0.15);
         this.university=new Units(this,1200,0,1150,-1,"university",1,2).setScale(1.5);
-        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1).setScale(1.5);
+        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1,1000,4,180,200,'233').setScale(1.5);
         this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,3).setScale(1.5);
         this.towers.add(this.building); //Move into unit class
         this.towers.add(this.university);
@@ -133,8 +136,8 @@ export class PlayScene extends Phaser.Scene{
         //this.player.setSize( 24, 28).setOffset(5,5);
         this.player.setSize(34, 36);
         //The enemies  
-        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99);
-        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
+        this.wolf = new Enemy(this, 200, 200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99,200,'233');
+        this.ninjabot= new Enemy(this, 300, 350, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700,'233') ;
   
         
         //this.container= this.add.container(200, 200);
