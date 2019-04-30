@@ -3,7 +3,7 @@ import Game from './PhaserGame/Game';
 import Leaderboard from './LeaderBoard.js';
 import HomeNavBar from './HomeNavBar.js';
 import './App.css';
-import { Button } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
 
@@ -19,7 +19,8 @@ class App extends Component {
       showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
-      infobutton: true 
+      infobutton: true,
+      signInName: null,
     };
 
     
@@ -28,7 +29,19 @@ class App extends Component {
   signInHandler = (signInState) => {
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
-   
+     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+
+      this.setState({ 
+        signInName:cognitoUser.username
+      });
+       
+       
+     });
+    }
+    else if(signInState == 'signIn'){
+      this.setState({ 
+        signInName:null
+      });
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -68,6 +81,7 @@ class App extends Component {
   
 
   render() {
+   
     let gameClass = this.state.showGame ? '' : 'hidden';
     let buttonText = this.state.showGame ? 'Sign In' : 'Play';
     let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
@@ -75,20 +89,44 @@ class App extends Component {
   ];
 
     return (
-      <div className="App">
+      <div className="App ">
         {!this.state.showsingle && !this.state.showmulti &&
-          <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonText={buttonText} />
+          <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
         }
         <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
         {this.state.showbuttons && (
-          <div className="mostButtons">
-            <ul>
-              <li><Button variant="success"onClick={this.showSinglePlayerHandler}>Single Player</Button></li>
-              <li><Button onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer</Button></li>
-              <li><Button variant="info">Tutorial</Button></li>
-              <li> <Button variant="danger">Store</Button></li>
-            </ul>
-          </div>
+          
+          <Container >
+
+            <br></br>
+
+            <Row className="form-group"> {/* Form Group add 15px spacing */}
+              <Col>
+                <Button className="col-md-2" variant="success" onClick={this.showSinglePlayerHandler}>Single Player</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" variant="info">Tutorial</Button>
+              </Col>
+            </Row>
+
+            <Row className="form-group">
+              <Col>
+                <Button className="col-md-2" variant="danger">Store</Button>
+              </Col>
+            </Row>
+
+
+          </Container>
+     
         )}
 
     {this.state.showLeaderboard && (

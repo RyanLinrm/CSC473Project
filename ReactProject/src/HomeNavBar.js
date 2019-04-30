@@ -4,21 +4,28 @@ import Nav from 'react-bootstrap/Nav';
 import { Container } from 'react-bootstrap';
 
 export default function HomeNavbar(props){
+    let signInText = "Sign In";
+    if(props.signInButtonName !== null){
+        signInText = props.signInButtonName;
+    }
+
 
     return(
         <Navbar bg="dark" variant="dark">
-            <Container>
+            <Container className ="d-flex justify-content-around">
 
-                <Nav className="mx-auto">
+                <Nav >
                     <Nav.Link onClick={props.leaderBoardOnClick}>Leaderboard</Nav.Link>
                 </Nav>
                 
-                <Navbar.Brand className="mx-auto" href="#home">React Phaser Game</Navbar.Brand>
-
-                <Nav className="mx-auto">
-                    <Nav.Link onClick={props.signInOnClick}>{props.signInButtonText}</Nav.Link>
+                <Nav  >
+                <Navbar.Brand href="#home">React Phaser Game</Navbar.Brand>
                 </Nav>
-
+               
+                <Nav >
+                    <Nav.Link onClick={props.signInOnClick}>{signInText}</Nav.Link>
+                </Nav>
+               
             </Container>
         </Navbar>
     );

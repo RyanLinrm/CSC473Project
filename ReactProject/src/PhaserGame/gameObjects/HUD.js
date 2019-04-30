@@ -25,7 +25,7 @@ export class HUD {
 
         let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
         let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
-
+        
         let player2 = scene.add.sprite(35, scene.game.renderer.height /5 * 2, "p1").setScrollFactor(0).setInteractive();
         let player2Health = scene.add.text(35, scene.game.renderer.height /5 * 2 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
 
@@ -35,6 +35,7 @@ export class HUD {
         let player4 = scene.add.sprite(35, scene.game.renderer.height/ 5 * 4, "p1").setScrollFactor(0).setInteractive();
         let player4Health = scene.add.text(35, scene.game.renderer.height/ 5 * 4 + 30, '500/500', { fontSize: 15, color: '#FF0000'});
 
+        this.playerHealthLabels = [player1Health,player2Health,player3Health,player4Health];
 
         player1Health.setOrigin(0.5); player2Health.setOrigin(0.5); 
         player3Health.setOrigin(0.5); player4Health.setOrigin(0.5);
@@ -42,7 +43,7 @@ export class HUD {
         player3Health.setScrollFactor(0); player4Health.setScrollFactor(0);
         //Side HUD
 
-
+        this.setPlayerHealth(1,400);
 
         //BottomHUD
         let hud = scene.add.rectangle(scene.game.renderer.width / 2, scene.game.renderer.height,
@@ -72,5 +73,9 @@ export class HUD {
             unit.y = originalY;
         });
         //Bottom HUD
+    }
+
+    setPlayerHealth = (playerNumber,health)=>{
+        this.playerHealthLabels[playerNumber - 1].setText(`${health}/500`); //setsThePlayer health label to the given health value
     }
 }
