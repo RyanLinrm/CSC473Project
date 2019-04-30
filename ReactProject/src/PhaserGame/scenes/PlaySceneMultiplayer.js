@@ -67,6 +67,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     create() {
+        this.spritekey = "bomber";
         super.create(this.playerID);
 
         this.towers.removeCallback = ()=>{

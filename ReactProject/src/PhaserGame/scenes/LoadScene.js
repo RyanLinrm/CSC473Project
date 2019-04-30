@@ -74,7 +74,7 @@ export class LoadScene extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start(CST.SCENES.PLAY);
+        this.scene.start(CST.SCENES.CHAR);
     }
 
     update(){

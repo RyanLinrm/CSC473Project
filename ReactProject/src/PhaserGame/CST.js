@@ -5,6 +5,7 @@ export const CST ={
         MENU: "MENU",
         PLAY: "PLAY",
         WAIT: "WAIT",
-        PLAYMULTIPLAYER: "PLAYMULTIPLAYER"   
+        PLAYMULTIPLAYER: "PLAYMULTIPLAYER",
+        CHAR: "CHAR"    
     }
 }
