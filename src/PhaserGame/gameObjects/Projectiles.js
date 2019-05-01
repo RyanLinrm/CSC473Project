@@ -138,7 +138,7 @@ export class Posion extends Phaser.GameObjects.Image {
             bullet.setTexture('shoot4').setScale(0.3).setSize(45,40);
             //scene.children.add(bullet);
             scene.damageItems.add(bullet);
-            bullet.shoot(this,v);
+            bullet.shoot(this.uid,this,v);
         });
 
 
