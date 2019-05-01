@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "sword_in_the_stone.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 107,
+				"h": 128
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "sword_in_the_stone.svg",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 6,
+						"y": 2,
+						"w": 105,
+						"h": 126
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 105,
+						"h": 126
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:6462f262549d106ccfdbcb7ee00ba207:c4a39b2fc181ea45899316b081ba8483:090d77092f9485bc5e99de1e1ef730aa$"
+	}
+}

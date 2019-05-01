@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "magicstone.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 122,
+				"h": 105
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "magicstones.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 128,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 4,
+						"w": 120,
+						"h": 103
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 120,
+						"h": 103
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:bffadf0ddd1a75795470c0bda46439af:d5e9ec053a3ca46b029d0f41cc376bd7:9db4942c36b505a15657b24013488f0a$"
+	}
+}

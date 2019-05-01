@@ -1,0 +1,47 @@
+.App {
+  text-align: center;
+}
+
+.hidden { display:none; }
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav ul li{
+  display: inline-block;
+  color: white;
+  margin-left: 5em;
+  padding: 2em;
+  width: 6em;
+}
+
+ul {
+  list-style: none;
+}
+
+.mostButtons ul li {
+  margin: auto;
+  padding: 2em;
+}
+
+nav {
+  margin: 0;
+  color: white;
+  background: black
+}
+
+#leader{
+  float: left;
+}
+
+#signin{
+  float: right;
+}
+
+.infobutton{
+  position: absolute;
+  bottom: 10px;
+}
