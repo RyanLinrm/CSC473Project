@@ -14,7 +14,8 @@ import {Rider} from "../gameObjects/Rider";
 import {Melee} from "../gameObjects/Melee";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 import spriteAnimations from '../gameObjects/Animations';
-import dragsystem from '../gameObjects/dragsystem';
+import {HUD} from "../gameObjects/HUD";
+
 export class PlayScene extends Phaser.Scene{
 
     constructor(sceneKey = CST.SCENES.PLAY){
@@ -65,7 +66,7 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
-        this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,true,100,200);
+        this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         this.enemyPlayers.add(this.player);
 
         
@@ -129,7 +130,8 @@ export class PlayScene extends Phaser.Scene{
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.player, this.enemies);
-        dragsystem(this);
+        //HUD
+        let hUD = new HUD(this);
         //create phaser game object, and add in sprite
 
         //adjust player hit box
