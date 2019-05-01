@@ -56,10 +56,11 @@ export class HUD {
         let unit2 = scene.add.sprite(scene.game.renderer.width*0.35, scene.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
         let unit3 = scene.add.sprite(scene.game.renderer.width*0.45, scene.game.renderer.height-35, "skull").setScrollFactor(0).setInteractive();
         let unit4 = scene.add.sprite(scene.game.renderer.width*0.55, scene.game.renderer.height-35, "demon1").setScrollFactor(0).setInteractive();
-
+        let unit5 = scene.add.sprite(scene.game.renderer.width*0.65, scene.game.renderer.height-35, "wall").setScrollFactor(0).setInteractive().setScale(0.4);
+        
        
 
-        scene.input.setDraggable([unit1, unit2, unit3,unit4]);
+        scene.input.setDraggable([unit1, unit2, unit3,unit4,unit5]);
         var originalX;
         var originalY;
         scene.input.on('dragstart', (pointer, unit) => {
@@ -95,6 +96,13 @@ export class HUD {
                    scene.player.mana-=40;
                    scene.manabar.cutManaBar(40);
                }
+               if(unit.texture.key==='wall'){              
+                scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",scene.player,null,100,0,0,0,0,0).setScale(0.5);
+                scene.newenemy.body.immovable=true;
+                scene.newenemy.body.moves=false;
+                scene.player.mana-=20;
+                scene.manabar.cutManaBar(20);
+                }
                unit.x = originalX;
                unit.y = originalY;
                scene.enemies.add(scene.newenemy);

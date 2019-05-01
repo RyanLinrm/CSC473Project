@@ -64,9 +64,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
  
         //sets up the movement funciton that is called by the update method.
         this.moveEnemy = () =>{
+            if(this.movementSpeed!=0){
             this.EnemyBehavior(this,target);
-     
-            scene.physics.moveToObject(this,this.target,this.movementSpeed);
+            
+            scene.physics.moveToObject(this,this.target,this.movementSpeed);}
          
         };
     }
