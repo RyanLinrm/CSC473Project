@@ -23,6 +23,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.playerID = data.playerID;
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
+        this.spritekey = data.chartype;
     }
 
 
@@ -67,7 +68,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     create() {
-        this.spritekey = "bomber";
+        //this.spritekey = "bomber";
         super.create(this.playerID);
 
         this.towers.removeCallback = ()=>{

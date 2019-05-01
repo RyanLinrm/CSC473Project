@@ -75,7 +75,7 @@ export class LoadScene2 extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start(CST.SCENES.WAIT);
+        this.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
     }
 
     update(){
