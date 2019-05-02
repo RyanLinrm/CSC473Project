@@ -19,6 +19,7 @@ export class PlayScene extends Phaser.Scene{
 
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
+        this.single = true;
     }
 
     preload(){ 
@@ -33,8 +34,10 @@ export class PlayScene extends Phaser.Scene{
         this.spritekey = data
     }
 
-    create(uid){
+    create(uid, multi){
         this.playerUid = uid;
+        if(multi) this.single = false;
+        console.log(this.single);
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
        
@@ -63,7 +66,7 @@ export class PlayScene extends Phaser.Scene{
         };
 
         this.physics.add.overlap(this.damageItems, this.enemyTowers,this.bothCollisions);
-        this.physics.add.overlap(this.enemies, this.damageItems,this.bothCollisions);
+        this.physics.add.overlap(this.damageItems, this.enemies,this.bothCollisions);
         this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,this.bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemyPlayers,this.bothCollisions);
         let playerStartingPos = this.startingPosFromTowerNum(1);
@@ -106,7 +109,6 @@ export class PlayScene extends Phaser.Scene{
         this.enemies.add(this.wolf); ///Need to move this into the enemy class
         this.enemies.add(this.ninjabot);
         this.enemies.add(this.demon1);
-        //this.enemies.add(this.demon1);
 
 
     
@@ -152,7 +154,9 @@ export class PlayScene extends Phaser.Scene{
       
 
         //HUD
-        let hUD = new HUD(this);
+        if(this.single) {
+            let hUD = new HUD(this, this.player, this.player.uid);
+        }    
 
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");
