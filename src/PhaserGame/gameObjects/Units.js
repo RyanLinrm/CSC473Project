@@ -57,6 +57,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
 
     }
 
+    assignID(uid){
+        this.uid = uid;
+    }
+
 
     collision(){
         this.building_bar.cutHPBar(5);
@@ -123,7 +127,6 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.enemies=this.scene.enemies.getChildren();
         let len = this.scene.enemies.getLength()
         let shortestDistance=1000000000;
-        console.log(this.len)
         this.findnearenemy = () =>{
             for (var i = 0; i < len; i++) {
                 if(this.enemies[i].active){

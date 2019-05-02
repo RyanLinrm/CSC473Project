@@ -7,6 +7,8 @@ import {generate} from 'randomstring';
 import * as firebase from 'firebase';
 import { ConsoleLogger } from '@aws-amplify/core';
 import {HUD} from "../gameObjects/HUD";
+import {Enemy} from "../gameObjects/Enemy";
+import spriteAnimations from '../gameObjects/Animations';
 
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
@@ -94,21 +96,49 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/inGame`).off();
     }
 
+    addNewEnemy = (x, y, type, playerid) => {
+
+        if(type==='wolf'){              
+            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,20,99,200,playerid);
+        }
+
+        else if(type==='ninjabot'){              
+            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,100,0.8,5,180,60,700,playerid)
+        }
+        
+        else if(type==='skull'){              
+            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,600,playerid).setScale(0.9);
+        }
+        else if(type==='demon1'){              
+            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,200,0.7,2,200,70,600, playerid).setScale(1.5);
+        }
+        else if(type==='wall'){              
+            this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
+            this.newenemy.body.immovable=true;
+            this.newenemy.body.moves=false;
+        }
+        this.enemies.add(this.newenemy);
+
+        this.attackableGroup.add(this.newenemy);
+
+    }
+
     create() {
         //this.spritekey = "bomber";
-        super.create(this.playerID, true);
+        super.create(this.playerID, 'multi');
 
       
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
+        console.log(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,100,200,this.playerUid).setScale(0.8);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,100,200,this.playerID).setScale(0.6);
         }
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
@@ -116,12 +146,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.player.setVisible(false);
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
+        //adjust player hit box
+        this.player1.setSize(34, 36);
+
+        if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
+        else if(this.seatNumber === 2) this.university.assignID(this.playerID);
+        else if(this.seatNumber === 3) this.building.assignID(this.playerID);
+        else this.magicstone.assignID(this.playerID);
 
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
-       this.player.kill();
+
        this.cameras.main.startFollow(this.player1);
-       let hUD = new HUD(this, this.player1, this.player1.uid);
+       this.player.kill();
+       this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
 
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {
@@ -240,6 +278,16 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
         
+        //check if otherplayer has placed a new enemy on the map
+        firebase.database().ref(`Games/${this.gameRoom}/enemy`).on('child_changed', snapShot=>{
+            let newenemyinfo = snapShot.val();
+
+            if( newenemyinfo.x >= 0 && newenemyinfo.y >= 0 && newenemyinfo.ownerid !== this.playerID ){
+                this.addNewEnemy( newenemyinfo.x, newenemyinfo.y, newenemyinfo.type, newenemyinfo.ownerid );
+            }
+        })
+
+        //add in collider
         let ref = database.ref(`Games/${this.gameRoom}/Players/`);
         ref.on('child_added',snapShot=> {
             this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
@@ -259,8 +307,9 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
 
-        if (this.GameIsGoing) {
-            
+        if (this.GameIsGoing && this.player1.active) {
+
+
             if (this.keyboard.SHIFT.isDown) {
                 speed = 192;
             }
