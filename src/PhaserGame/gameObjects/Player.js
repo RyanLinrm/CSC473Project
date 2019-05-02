@@ -80,13 +80,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     kill(){
         //Remove a player so we can handle other things related to the death such as removing the wepopn    
+        console.log(this);
         this.destroy();
     }
 
     takeDamage(damage){
         if(this.canbeAttacked===true){
         this.healthPoints = this.healthPoints - damage;
-        this.scene.hpbar.cutHPBar(5);}
+       }
 
         if( this.healthPoints <= 0 ){
             this.kill();

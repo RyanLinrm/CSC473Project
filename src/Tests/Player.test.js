@@ -5,11 +5,12 @@ import { PlayScene } from '../PhaserGame/scenes/PlayScene';
 
 test('Testing the Player constructer correctly intializes player',()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
-    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
 
     expect(player.healthPoints).toBe(hP);
     expect(player.movementSpeed).toBe(movementSpeed);
-    expect(player.id).toBe(id);
+    expect(player.uid).toBe(id);
+    expect(player.characterId).toBe(1);
     expect(player.createWeapon).toBeDefined();
     expect(player.removeWeapon).toBeDefined();
     expect(player.specialAttack).toBeDefined();
@@ -18,7 +19,7 @@ test('Testing the Player constructer correctly intializes player',()=>{
 
 test('Testing the setVelocity function for nonZero values of x and y', ()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
     
     player.setNonZeroVelocity(57,233);
     expect(player.nonZeroVelocity).toEqual({x:57,y:233});
@@ -33,7 +34,7 @@ test('Testing the setVelocity function for nonZero values of x and y', ()=>{
 
 test('Testing the setVelocity function for zero values of x and y', ()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
     
     player.setNonZeroVelocity(57,233);
     expect(player.nonZeroVelocity).toEqual({x:57,y:233});
@@ -50,7 +51,7 @@ test('Testing the setVelocity function for zero values of x and y', ()=>{
 
 test('Testing if takeDamage correctly decrease the damage', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
     
     player.takeDamage(20);
     expect(player.healthPoints).toEqual(80);
@@ -68,13 +69,155 @@ test('Testing if takeDamage correctly decrease the damage', ()=>{
 
 test('Testing if takeDamage calls kill when damage is less than 0', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
-    
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.kill = jest.fn();
     player.takeDamage(105);
     expect(player.healthPoints).toEqual(-5);
     expect(player.kill).toBeCalledTimes(1);
 
 });
+
+test('Testing if collision funciton correctly works', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+
+    player.takeDamage = jest.fn();
+    player.collision();
+
+    expect(player.beingAttacked).toEqual(true);
+    expect(player.canbeAttacked).toEqual(false);
+    expect(player.takeDamage).toBeCalledTimes(1);
+
+});
+
+test('Testing if isInjured function correctly work (changes tint and count) while being attacked', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+
+    player.beingAttacked = true;
+    player.isInjured(560);
+
+    expect(player.tint).toEqual(0xff0000);
+    expect(player.count).toEqual(560);
+    
+});
+
+test('Testing if isInjured function correctly work (changes tint and count) while not attacked', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.count = 100
+    //time > this.count + 500
+    player.beingAttacked = false;
+
+    player.isInjured(6000);
+    expect(player.tint).toEqual(0xffffff);
+    expect(player.canbeAttacked).toEqual(true);
+    
+});
+
+test('Testing if player_movement works when the characterID is 0', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.characterId = 0;
+    player.play = jest.fn();
+   
+    //velocity.x > 0
+    player.body.velocity.x = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(1);
+    expect(player.play.mock.calls[0][0]).toBe("p1_right");
+    expect(player.play.mock.calls[0][1]).toBe(true);
+
+    //velocity.x < 0
+    player.body.velocity.x = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(2);
+    expect(player.play.mock.calls[1][0]).toBe("p1_left");
+    expect(player.play.mock.calls[1][1]).toBe(true);
+
+    //velocity.y > 0
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(3);
+    expect(player.play.mock.calls[2][0]).toBe("p1_down");
+    expect(player.play.mock.calls[2][1]).toBe(true);
+
+    //velocity.y < 0
+    player.body.velocity.y = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(4);
+    expect(player.play.mock.calls[3][0]).toBe("p1_up");
+    expect(player.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if player_movement works when the characterID is 1', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.characterId = 1;
+    player.play = jest.fn();
+
+    //velocity.x > 0
+    player.body.velocity.x = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(1);
+    expect(player.play.mock.calls[0][0]).toBe("rider_right");
+    expect(player.play.mock.calls[0][1]).toBe(true);
+
+    //velocity.x < 0
+    player.body.velocity.x = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(2);
+    expect(player.play.mock.calls[1][0]).toBe("rider_left");
+    expect(player.play.mock.calls[1][1]).toBe(true);
+
+    //velocity.y > 0
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(3);
+    expect(player.play.mock.calls[2][0]).toBe("rider_down");
+    expect(player.play.mock.calls[2][1]).toBe(true);
+
+    //velocity.y < 0
+    player.body.velocity.y = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(4);
+    expect(player.play.mock.calls[3][0]).toBe("rider_up");
+    expect(player.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if createweapon correctly initialized the  weapons for the player',()=>{
+    const hP = 53; const movementSpeed = 42; const id = "abc";
+    const newScene = new PlayScene();
+    newScene.physics.add.group = jest.fn();
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.attack = undefined; player.removeWeapon = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
+
+    player.createWeapon(newScene);
+    expect(newScene.physics.add.group).toBeCalledTimes(1);
+    expect(player.attack).toBeDefined();
+    expect(player.removeWeapon).toBeDefined();
+    
+});
+
+test('Testing the update function of the player',()=>{
+    const hP = 53; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.isInjured = jest.fn();
+    player.player_movement = jest.fn();
+
+    player.update(1000);
+    expect(player.isInjured).toBeCalledTimes(1);
+    expect(player.player_movement).toBeCalledTimes(1);
+    expect(player.isInjured.mock.calls[0][0]).toBe(1000);
+    expect(player.beingAttacked).toEqual(false);
+});
+
+
+
+
+
 
 
 

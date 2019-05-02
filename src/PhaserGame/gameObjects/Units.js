@@ -33,14 +33,22 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.speed=speed;
         this.range=range;
         this.tower_ID=tower_ID;
+        
         this.target=scene.player;
 
         this.uid = uid;
 
+        this.playersTower = false;
+        this.setPlayersTower = ()=>{
+            this.playersTower = true;
+        };
+       
 
         scene.updateSprite(this);
         scene.enemyTowers.add(this);
 
+        this.scene = scene;
+        
         //console.log("Helo " + x + " " + y);
         this.building_bar = new HpBar(scene,barx ,bary,'hp',this.healthPoints);
     }
@@ -88,6 +96,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     tower_destory(){
         if (this.tower=true && this.healthPoints<=0){
             this.destroy();
+          
             //the player who owns the tower lost
             //need some function to stop the play's action
         }

@@ -20,6 +20,9 @@ export class PlayScene extends Phaser.Scene{
 
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
+        this.sceneType = "Single";
+        this.seatNumber = 1;
+        this.single = true;
         this.mode = 'single';
     }
 
@@ -85,9 +88,18 @@ export class PlayScene extends Phaser.Scene{
 
         
         this.towers = this.add.group(); 
-        this.towers.removeCallback = ()=>{
-            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
-            countDownText.setOrigin(0.5,0.5); 
+        this.towers.removeCallback = (tower)=>{
+            
+            if(tower.tower_ID === this.seatNumber){
+                this.towerDestroyed(tower.tower_ID);
+            }
+            else{
+                console.log(this.towers.getLength());
+                if(this.towers.getLength() === 1 && this.GameIsGoing === true){
+                    this.wonGame();
+                }
+            }
+           
         };
     
        
@@ -223,7 +235,9 @@ export class PlayScene extends Phaser.Scene{
 
 
     update(time,delta) {
-
+        if(this.GameIsGoing === false){
+            return;
+        }
         //console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
 
@@ -339,7 +353,24 @@ export class PlayScene extends Phaser.Scene{
                     this.player_scale  ++;
                 }
             }
-            this.manabar.update(time,delta);
+            // this.manabar.update(time,delta);
+        }
+
+        wonGame = ()=>{
+            this.GameIsGoing = false;
+            let countDownText= this.add.text(this.player.x, this.player.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
+        }
+    
+        gameOver = ()=>{
+            this.GameIsGoing = false;
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
+        }
+
+        towerDestroyed = ()=>{
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
         }
         
     }
