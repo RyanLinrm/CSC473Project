@@ -76,5 +76,15 @@ test('Testing if takeDamage calls kill when damage is less than 0', ()=>{
 
 });
 
+test('Testing if mana decreases after a special attack', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+
+    player.specialAttack();
+    expect(player.mana).toEqual(990);
+    player.specialAttack();
+    expect(player.mana).toEqual(980);
+})
+
 
 
