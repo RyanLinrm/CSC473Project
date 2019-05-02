@@ -302,13 +302,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     }
 
-    gameOver = ()=>{
-        this.GameIsGoing = false;
-        let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
-        countDownText.setOrigin(0.5,0.5); 
-    }
+
 
     towerDestroyed = (TowerID)=>{
+        this.GameIsGoing = false;
         this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
         this.scene.start(CST.SCENES.GAMEOVER);

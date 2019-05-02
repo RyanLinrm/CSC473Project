@@ -8,6 +8,7 @@ import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
 import { LoadScene2 } from "./scenes/LoadScene2";
 import { GameLobby } from "./scenes/GameLobby";
+import { GameOverScene } from "./scenes/GameOverScene";
 import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 import {CharSelectScene} from "./scenes/CharSelectScene"
 
@@ -29,7 +30,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene
+               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,GameOverScene
             ],
             render:{
                 pixelArt: true
@@ -50,7 +51,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene2,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene
+               LoadScene2,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,GameOverScene
             ],
             render:{
                 pixelArt: true
