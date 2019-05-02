@@ -115,6 +115,42 @@ test('Testing if isInjured function correctly work (changes tint and count) whil
     
 });
 
+test('Testing if player_movement works when the characterID is 0', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.characterId = 0;
+    player.play = jest.fn();
+   
+    //velocity.x > 0
+    player.body.velocity.x = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(1);
+    expect(player.play.mock.calls[0][0]).toBe("p1_right");
+    expect(player.play.mock.calls[0][1]).toBe(true);
+
+    //velocity.x < 0
+    player.body.velocity.x = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(2);
+    expect(player.play.mock.calls[1][0]).toBe("p1_left");
+    expect(player.play.mock.calls[1][1]).toBe(true);
+
+    //velocity.y > 0
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(3);
+    expect(player.play.mock.calls[2][0]).toBe("p1_down");
+    expect(player.play.mock.calls[2][1]).toBe(true);
+
+    //velocity.y < 0
+    player.body.velocity.y = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(4);
+    expect(player.play.mock.calls[3][0]).toBe("p1_up");
+    expect(player.play.mock.calls[3][1]).toBe(true);
+});
+
 
 
 

@@ -26,6 +26,12 @@ const phaserMock = {
         Arcade:{
             Sprite: function(){
                 this.destroy = ()=>{};
+                this.body = {
+                    velocity:{
+                        x:0,
+                        y:0
+                    }
+                };
             },
            
         }
