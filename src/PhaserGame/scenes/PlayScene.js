@@ -19,6 +19,8 @@ export class PlayScene extends Phaser.Scene{
 
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
+        this.sceneType = "Single";
+        this.seatNumber = 1;
     }
 
     preload(){ 
@@ -85,9 +87,12 @@ export class PlayScene extends Phaser.Scene{
 
  
         this.towers = this.add.group(); 
-        this.towers.removeCallback = ()=>{
-            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
-            countDownText.setOrigin(0.5,0.5); 
+        this.towers.removeCallback = (tower)=>{
+            
+            if(tower.tower_ID === this.seatNumber){
+                this.towerDestroyed(tower.tower_ID);
+            }
+           
         };
         //create phaser game object, and add in sprite
 
@@ -142,7 +147,11 @@ export class PlayScene extends Phaser.Scene{
         this.towers.add(this.University);
         this.towers.add(this.pyramid);
         this.towers.add(this.magicstone);
-                 
+
+        console.log(this.building.tower_ID);
+        console.log(this.University.tower_ID);
+        console.log(this.pyramid.tower_ID);
+        console.log(this.magicstone.tower_ID);        
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
@@ -350,6 +359,11 @@ export class PlayScene extends Phaser.Scene{
                 }
             }
             this.manabar.update(time,delta);
+        }
+
+        towerDestroyed = ()=>{
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
         }
         
     }
