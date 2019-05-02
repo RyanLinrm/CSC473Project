@@ -24,12 +24,22 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.playerID = data.playerID;
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
+        this.spritekey = data.chartype;
     }
 
 
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
+        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
+            this.temp = snapShot.val();
+        })
+        console.log(this.temp);
+        if(this.temp == "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,100,64,id);
+        }
+        else if (this.temp == "rider"){
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,100,200,id).setScale(0.8); 
+        }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
 
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/movementData`).on("child_changed", (snapShot) => {
@@ -68,7 +78,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     create() {
-        this.spritekey = "bomber";
+        //this.spritekey = "bomber";
         super.create(this.playerID, true);
 
         this.towers.removeCallback = ()=>{
@@ -84,7 +94,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
+        if(this.spritekey == "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
+        }
+        else if(this.spritekey == "rider"){
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,100,200,this.playerUid).setScale(0.8);
+        }
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
         this.player1.setVisible(true);
@@ -148,9 +163,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 time:0,
                 pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x: 0, y:0}
-            },
-            HP: this.player1.healthPoints,    
-            playerType: "Bomber"
+            },    
+            playerType: this.spritekey
         });
 
         database.ref(`Games/${this.gameRoom}/Towers/${this.seatNumber}`).set({ //CreateTowerInDatabase

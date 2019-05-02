@@ -60,7 +60,6 @@ export class PlayScene extends Phaser.Scene{
                 if(objectA.uid !== objectB.uid){
                 objectA.collision();
                 objectB.collision();
-                console.log(objectB.healthPoints);
                 }
                  
             }
@@ -99,18 +98,17 @@ export class PlayScene extends Phaser.Scene{
         //this.player.setSize( 24, 28).setOffset(5,5);
         this.player.setSize(34, 36);
         //The enemies  
-       // this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,60,'224');
-        //this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
+        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,60,'224');
+        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
   
         
         //this.container= this.add.container(200, 200);
-  //      this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
+        this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
    
         //this.container.add(this.skill)
-    //    this.enemies.add(this.wolf); ///Need to move this into the enemy class
-      //  this.enemies.add(this.ninjabot);
-      //  this.enemies.add(this.demon1);
-        //this.enemies.add(this.demon1);
+        this.enemies.add(this.wolf); ///Need to move this into the enemy class
+        this.enemies.add(this.ninjabot);
+        this.enemies.add(this.demon1);
 
 
     

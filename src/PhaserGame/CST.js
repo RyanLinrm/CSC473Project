@@ -6,6 +6,7 @@ export const CST ={
         PLAY: "PLAY",
         WAIT: "WAIT",
         PLAYMULTIPLAYER: "PLAYMULTIPLAYER",
-        CHAR: "CHAR"    
+        CHAR: "CHAR",
+        MULTIPLAYERCHARSELECT: "MULTIPLAYERCHARSELECT"     
     }
 }

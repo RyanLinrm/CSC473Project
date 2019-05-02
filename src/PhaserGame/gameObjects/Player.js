@@ -42,7 +42,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
                     let bullet = bullets.get();
                   //  scene.children.add(bullet);
                     scene.damageItems.add(bullet);
-                    bullet.shoot(this,v);
+                    bullet.shoot(this.uid,this,v);
                 });
                     
                 this.mana-=10;
