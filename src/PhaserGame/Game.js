@@ -11,6 +11,7 @@ import { GameLobby } from "./scenes/GameLobby";
 import { GameOverScene } from "./scenes/GameOverScene";
 import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 import {CharSelectScene} from "./scenes/CharSelectScene"
+import { MULTIPLAYERCHARSELECT } from './scenes/Multiplayercharselect';
 
 export default class Game extends React.Component{
     componentDidMount(){
@@ -30,7 +31,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,GameOverScene
+               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
             ],
             render:{
                 pixelArt: true
@@ -51,7 +52,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene2,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,GameOverScene
+               LoadScene2,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
             ],
             render:{
                 pixelArt: true

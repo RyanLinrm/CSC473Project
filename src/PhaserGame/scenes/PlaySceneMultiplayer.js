@@ -6,6 +6,7 @@ import { CST } from "../CST";
 import {generate} from 'randomstring';
 import * as firebase from 'firebase';
 import { ConsoleLogger } from '@aws-amplify/core';
+import {HUD} from "../gameObjects/HUD";
 
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
@@ -25,12 +26,22 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.playerID = data.playerID;
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
+        this.spritekey = data.chartype;
     }
 
 
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
+        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
+            this.temp = snapShot.val();
+        })
+        console.log(this.temp);
+        if(this.temp == "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,100,64,id);
+        }
+        else if (this.temp == "rider"){
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,100,200,id).setScale(0.8); 
+        }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
 
 
@@ -84,8 +95,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     create() {
-        this.spritekey = "bomber";
-        super.create(this.playerID);
+        //this.spritekey = "bomber";
+        super.create(this.playerID, true);
 
       
         
@@ -93,19 +104,25 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
+        if(this.spritekey == "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
-        this.player1.setVisible(false);
-        this.player.setVisible(true);
-        //this.player1.setVisible(true);
-        //this.player.setVisible(false);
+        }
+        else if(this.spritekey == "rider"){
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,100,200,this.playerUid).setScale(0.8);
+        }
+        //this.player1.setVisible(false);
+        //this.player.setVisible(true);
+        this.player1.setVisible(true);
+        this.player.setVisible(false);
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
 
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
-       //this.player.kill();
-       //this.cameras.main.startFollow(this.player1);
-      
+       this.player.kill();
+       this.cameras.main.startFollow(this.player1);
+       let hUD = new HUD(this, this.player1, this.player1.uid);
+
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {
             let value = snapShot.val();
@@ -159,8 +176,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x: 0, y:0}
             },
-            inGame: true,    
-            playerType: "Bomber"
+            inGame: true,     
+            playerType: this.spritekey
         });
         
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
@@ -187,16 +204,16 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             let changedKey = snapShot.key; //The key for the data that was changed
 
             if(changedKey === 'pos'){
-                this.player.setPosition(dataChanged.x,dataChanged.y); 
+                this.player1.setPosition(dataChanged.x,dataChanged.y); 
             }else{
-                this.player.setVelocity(dataChanged.x,dataChanged.y); 
+                this.player1.setVelocity(dataChanged.x,dataChanged.y); 
             }
         });
         
         let timeDB = `Games/${this.gameRoom}/Players/${this.playerID}/attack/time`;
         database.ref(timeDB).on("value", (snapShot) => { 
             if (snapShot.val() != 0)       
-                this.player.attack();
+                this.player1.attack();
 
         });
 

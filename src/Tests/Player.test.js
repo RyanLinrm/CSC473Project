@@ -151,6 +151,71 @@ test('Testing if player_movement works when the characterID is 0', ()=>{
     expect(player.play.mock.calls[3][1]).toBe(true);
 });
 
+test('Testing if player_movement works when the characterID is 1', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.characterId = 1;
+    player.play = jest.fn();
+
+    //velocity.x > 0
+    player.body.velocity.x = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(1);
+    expect(player.play.mock.calls[0][0]).toBe("rider_right");
+    expect(player.play.mock.calls[0][1]).toBe(true);
+
+    //velocity.x < 0
+    player.body.velocity.x = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(2);
+    expect(player.play.mock.calls[1][0]).toBe("rider_left");
+    expect(player.play.mock.calls[1][1]).toBe(true);
+
+    //velocity.y > 0
+    player.body.velocity.x = 0;
+    player.body.velocity.y = 10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(3);
+    expect(player.play.mock.calls[2][0]).toBe("rider_down");
+    expect(player.play.mock.calls[2][1]).toBe(true);
+
+    //velocity.y < 0
+    player.body.velocity.y = -10;
+    player.player_movement();
+    expect(player.play).toBeCalledTimes(4);
+    expect(player.play.mock.calls[3][0]).toBe("rider_up");
+    expect(player.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if createweapon correctly initialized the  weapons for the player',()=>{
+    const hP = 53; const movementSpeed = 42; const id = "abc";
+    const newScene = new PlayScene();
+    newScene.physics.add.group = jest.fn();
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.attack = undefined; player.removeWeapon = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
+
+    player.createWeapon(newScene);
+    expect(newScene.physics.add.group).toBeCalledTimes(1);
+    expect(player.attack).toBeDefined();
+    expect(player.removeWeapon).toBeDefined();
+    
+});
+
+test('Testing the update function of the player',()=>{
+    const hP = 53; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.isInjured = jest.fn();
+    player.player_movement = jest.fn();
+
+    player.update(1000);
+    expect(player.isInjured).toBeCalledTimes(1);
+    expect(player.player_movement).toBeCalledTimes(1);
+    expect(player.isInjured.mock.calls[0][0]).toBe(1000);
+    expect(player.beingAttacked).toEqual(false);
+});
+
+
+
 
 
 

@@ -52,7 +52,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.y += this.ySpeed * delta;
         
         //just modified for rider's poison
-        if(this.timeAlive > 300){
+        if(this.timeAlive > this.shootRange){
            // this.destroy();
             this.setActive(false);
             this.setVisible(false);
@@ -72,7 +72,8 @@ export class Bomb extends Phaser.GameObjects.Image {
         
     }
 
-    place(shooter){
+    place(shooter,uid){
+        this.uid=uid;
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
@@ -89,10 +90,10 @@ export class Bomb extends Phaser.GameObjects.Image {
          
             let bullet = bullets.get();
             bullet.speed=1;
-            bullet.setTexture('shoot3').setScale(0.7).setSize(32,30);
+            bullet.setTexture('shoot3').setScale(0.4).setSize(32,30);
             //scene.children.add(bullet);
             scene.damageItems.add(bullet);
-            bullet.shoot(this,v);
+            bullet.shoot(this.uid,this,v);
         });
 
             this.setActive(false);
@@ -119,7 +120,8 @@ export class Posion extends Phaser.GameObjects.Image {
         this.scene = scene;      
     }
 
-    place(shooter){
+    place(shooter,uid){
+        this.uid=uid;
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
@@ -138,7 +140,7 @@ export class Posion extends Phaser.GameObjects.Image {
             bullet.setTexture('shoot4').setScale(0.3).setSize(45,40);
             //scene.children.add(bullet);
             scene.damageItems.add(bullet);
-            bullet.shoot(this,v);
+            bullet.shoot(this.uid,this,v);
         });
 
 

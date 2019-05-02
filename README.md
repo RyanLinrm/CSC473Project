@@ -1,5 +1,5 @@
 # CSC473 Project
-## Strategy Game Arena
+## Strategy Arena Game
 
 * Team members: Nabhan Maswood, Hongjie Huang, Adam McKoy, Michael Richards, Runmin Lin
 

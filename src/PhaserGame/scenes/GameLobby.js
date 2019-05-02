@@ -13,6 +13,10 @@ export class GameLobby extends Phaser.Scene {
         this.playerID = generate(10);
     }
 
+    init(data){
+        this.playertype = data;
+    } 
+
     createGame = () =>{
         console.log('creating a game!');
 
@@ -93,7 +97,8 @@ export class GameLobby extends Phaser.Scene {
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
-                    seatNumber: this.seatNumber
+                    seatNumber: this.seatNumber,
+                    chartype: this.playertype
                 });
                 this.ref.child(key).off();
             }
@@ -101,7 +106,8 @@ export class GameLobby extends Phaser.Scene {
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
-                    seatNumber: this.seatNumber
+                    seatNumber: this.seatNumber,
+                    chartype: this.playertype
                 });
                 this.ref.child(key).off();
             }

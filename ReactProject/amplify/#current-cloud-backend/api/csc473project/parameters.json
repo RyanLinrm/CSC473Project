@@ -1,0 +1,10 @@
+{
+    "AppSyncApiName": "csc473project",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito90ed6030",
+            "Outputs.UserPoolId"
+        ]
+    }
+}
