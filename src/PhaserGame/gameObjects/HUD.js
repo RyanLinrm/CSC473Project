@@ -1,9 +1,15 @@
 import Phaser from 'phaser';
 import {Enemy} from "../gameObjects/Enemy";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+import * as firebase from 'firebase';
 
 export class HUD {
-    constructor(scene, player, uid) {
+    constructor(scene, player, uid, gamemode, room) {
+        if(gamemode === 'multi'){
+            this.ref = firebase.database();
+            this.roomkey = room;
+            this.ref.ref(`Games/${this.roomkey}`).child(`enemy`).child(uid).set({x:-1, y:-1, type:'wolf', ownerid: uid});
+        }
         //Mana and Health Bars
         //Stauts bars : hp with a front bar and backing bar
         scene.emptybar = new emptyBar(scene, 130,scene.game.renderer.height- 21).setDepth(2);
@@ -75,33 +81,38 @@ export class HUD {
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
            if(scene.player.mana>5){
                 if(unit.texture.key==='wolf'){              
-                   scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",scene.player,0,200,0.1,5,20,99);
+                    scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,20,99,200,player.uid);
                    scene.player.mana-=50;
                    scene.manabar.cutManaBar(50);
+                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wolf',player.uid);
                }
        
                if(unit.texture.key==='ninjabot'){              
-                   scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",scene.player,1)
+                   scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",player,1,100,0.8,5,180,60,700,player.uid)
                    scene.player.mana-=25;
                    scene.manabar.cutManaBar(25)
+                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'ninjabot',player.uid);
                }
                
                if(unit.texture.key==='skull'){              
-                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",scene.player,3,200).setScale(0.9);
+                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,600,player.uid).setScale(0.9);
                    scene.player.mana-=25;
                    scene.manabar.cutManaBar(25);
+                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
                }
                if(unit.texture.key==='demon1'){              
-                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",scene.player,2,200,0.7,2,200,70).setScale(1.5);
+                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,600, player.uid).setScale(1.5);
                    scene.player.mana-=40;
                    scene.manabar.cutManaBar(40);
+                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
                }
                if(unit.texture.key==='wall'){              
-                scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",scene.player,null,100,0,0,0,0,0).setScale(0.5);
+                scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
                 scene.newenemy.body.immovable=true;
                 scene.newenemy.body.moves=false;
                 scene.player.mana-=20;
                 scene.manabar.cutManaBar(20);
+                if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wall',player.uid);
                 }
                unit.x = originalX;
                unit.y = originalY;
@@ -116,4 +127,13 @@ export class HUD {
     setPlayerHealth = (playerNumber,health)=>{
         this.playerHealthLabels[playerNumber - 1].setText(`${health}/500`); //setsThePlayer health label to the given health value
     }
+
+    updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) =>{
+        this.ref.ref(`Games/${this.roomkey}/enemy/${playerid}`).update({ 
+            x: xval,
+            y: yval,
+            type: enemytype,
+            ownerid: playerid});
+    }
+
 }

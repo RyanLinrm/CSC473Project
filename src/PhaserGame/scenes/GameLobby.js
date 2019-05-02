@@ -136,7 +136,7 @@ export class GameLobby extends Phaser.Scene {
 
                 for( let i = 0; i < keys.length; i++ ){
 
-                    if( gamerooms[keys[i]].seat < 4 ){
+                    if( gamerooms[keys[i]].seat < 4 && !gamerooms[keys[i]].start ){
 
                         this.roomkeys = keys[i];
                         this.joinGame(this.roomkeys);

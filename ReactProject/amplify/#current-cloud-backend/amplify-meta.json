@@ -1,0 +1,57 @@
+{
+	"providers": {
+		"awscloudformation": {
+			"AuthRoleName": "csc473project-20190403143310-authRole",
+			"UnauthRoleArn": "arn:aws:iam::440617257162:role/csc473project-20190403143310-unauthRole",
+			"AuthRoleArn": "arn:aws:iam::440617257162:role/csc473project-20190403143310-authRole",
+			"Region": "us-east-1",
+			"DeploymentBucketName": "csc473project-20190403143310-deployment",
+			"UnauthRoleName": "csc473project-20190403143310-unauthRole",
+			"StackName": "csc473project-20190403143310",
+			"StackId": "arn:aws:cloudformation:us-east-1:440617257162:stack/csc473project-20190403143310/51037a80-5647-11e9-ad66-12d3b8b76b62"
+		},
+		"categories": {
+			"auth": {
+				"cognito90ed6030": {}
+			}
+		}
+	},
+	"auth": {
+		"cognito90ed6030": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/csc473project-20190403143310-deployment/amplify-cfn-templates/auth/cognito90ed6030-cloudformation-template.yml",
+				"logicalId": "authcognito90ed6030"
+			},
+			"lastPushTimeStamp": "2019-04-03T22:04:52.639Z",
+			"output": {
+				"AppClientSecret": "1g3t3i8odgh81bv5hpv8celiu2ikrk7b21gt4i2flstoundqvmha",
+				"UserPoolId": "us-east-1_GdvC187jB",
+				"AppClientIDWeb": "65sknpntqd558eroqvg4budq2k",
+				"AppClientID": "3qctpj8gp48c027hjmmdjejgvi",
+				"IdentityPoolId": "us-east-1:1e58da8f-fd0e-4170-97d2-a17ddd1f3ea1",
+				"IdentityPoolName": "cognito90ed6030_identitypool_90ed6030__dev",
+				"UserPoolName": "cognito90ed6030_userpool_90ed6030"
+			},
+			"lastPushDirHash": "M4g4Ncknfy3nAsdfM2DNMxlusKE="
+		}
+	},
+	"api": {
+		"csc473project": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"securityType": "AMAZON_COGNITO_USER_POOLS",
+				"GraphQLAPIIdOutput": "lahr4dul2nhqhc2mrzjh7i2hmq",
+				"GraphQLAPIEndpointOutput": "https://leffesfrkfei3ocmge6crt5vmi.appsync-api.us-east-1.amazonaws.com/graphql"
+			},
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/csc473project-20190403143310-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+				"logicalId": "apicsc473project"
+			},
+			"lastPushTimeStamp": "2019-04-03T22:04:54.823Z",
+			"lastPushDirHash": "LhBuxBExWG6R/mHfM6b1JZ5ztpo="
+		}
+	}
+}

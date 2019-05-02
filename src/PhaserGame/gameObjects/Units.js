@@ -7,7 +7,7 @@ import { Enemy } from './Enemy';
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
-    constructor(scene,x,y,barx,bary,name,type=0,tower_ID=null,healthPoints=500,speed=1,range=180,cooldown=100,uid='235'){
+    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='235'){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -32,21 +32,32 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
-        this.tower_ID=tower_ID;
+        
         this.target=scene.player;
 
         this.uid = uid;
 
+        this.playersTower = false;
+        this.setPlayersTower = ()=>{
+            this.playersTower = true;
+        };
+       
 
         scene.updateSprite(this);
         scene.enemyTowers.add(this);
 
+        this.scene = scene;
+        
         //console.log("Helo " + x + " " + y);
         this.building_bar = new HpBar(scene,barx ,bary,'hp',this.healthPoints);
     }
     create(){
         //new Enemy(this.scene,500,500,'dragonrider','dragonrider_01');
 
+    }
+
+    assignID(uid){
+        this.uid = uid;
     }
 
 
@@ -84,6 +95,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     tower_destory(){
         if (this.tower=true && this.healthPoints<=0){
             this.destroy();
+          
             //the player who owns the tower lost
             //need some function to stop the play's action
         }
@@ -114,7 +126,6 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.enemies=this.scene.enemies.getChildren();
         let len = this.scene.enemies.getLength()
         let shortestDistance=1000000000;
-        console.log(this.len)
         this.findnearenemy = () =>{
             for (var i = 0; i < len; i++) {
                 if(this.enemies[i].active){

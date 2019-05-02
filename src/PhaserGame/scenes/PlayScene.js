@@ -20,7 +20,10 @@ export class PlayScene extends Phaser.Scene{
 
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
+        this.sceneType = "Single";
+        this.seatNumber = 1;
         this.single = true;
+        this.mode = 'single';
     }
 
     preload(){ 
@@ -37,8 +40,7 @@ export class PlayScene extends Phaser.Scene{
 
     create(uid, multi){
         this.playerUid = uid;
-        if(multi) this.single = false;
-        console.log(this.single);
+        if(multi !== undefined) this.mode = multi;
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
        
@@ -86,28 +88,19 @@ export class PlayScene extends Phaser.Scene{
 
         
         this.towers = this.add.group(); 
-        this.towers.removeCallback = ()=>{
-            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
-            countDownText.setOrigin(0.5,0.5); 
+        this.towers.removeCallback = (tower)=>{
+            
+            if(tower.tower_ID === this.seatNumber){
+                this.towerDestroyed(tower.tower_ID);
+            }
+            else{
+                console.log(this.towers.getLength());
+                if(this.towers.getLength() === 1 && this.GameIsGoing === true){
+                    this.wonGame();
+                }
+            }
+           
         };
-
-        //adjust player hit box
-        //this.player.setSize( 24, 28).setOffset(5,5);
-      
-        //The enemies  
-        this.wolf = new Enemy(this, 100, 100, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,60,'224');
-        this.ninjabot= new Enemy(this, 200, 150, "ninjabot", "ninjabot_1.png",this.player,1) ;
-  
-        
-        //this.container= this.add.container(200, 200);
-        this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
-   
-        //this.container.add(this.skill)
-        this.enemies.add(this.wolf); ///Need to move this into the enemy class
-        this.enemies.add(this.ninjabot);
-        this.enemies.add(this.demon1);
-
-
     
        
         //warning when manabar is too low for a special attack
@@ -129,15 +122,15 @@ export class PlayScene extends Phaser.Scene{
 
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4,1000,1,180,200).setScale(0.15);
-        this.university=new Units(this,1200,0,1150,-1,"university",1,2,1000).setScale(1.5);
-        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1,1000,4,180,200,this.playerUid).setScale(1.5);
-        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,3,1000).setScale(1.5);
+        this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
+        this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
+        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
+        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
         this.towers.add(this.building); //Move into unit class
         this.towers.add(this.university);
         this.towers.add(this.pyramid);
         this.towers.add(this.magicstone);
-                 
+
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
         this.sword_in_the_stone.setScale(0.5);
@@ -145,13 +138,8 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.player, this.enemies);
       
-
-        //HUD
-        if(this.single) {
-            let hUD = new HUD(this, this.player, this.player.uid);
-            this.player.setSize(34, 36);
-        }    
-
+        if(this.mode === 'single'){
+            let hud = new HUD(this, this.player, this.playerUid, this.mode)
         //adjust player hit box
         this.player.setSize(34, 36);
         //The enemies  
@@ -165,10 +153,10 @@ export class PlayScene extends Phaser.Scene{
         //this.container.add(this.skill)
         this.enemies.add(this.wolf); ///Need to move this into the enemy class
         this.enemies.add(this.ninjabot);
-    
-        this.newenemyposx=hUD.newenemyposx;
+        }
+        /*this.newenemyposx=hUD.newenemyposx;
         this.newenemyposy=hUD.newenemyposy;
-        console.log(this.newenemyposx)
+        console.log(this.newenemyposx)*/
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -247,7 +235,9 @@ export class PlayScene extends Phaser.Scene{
 
 
     update(time,delta) {
-
+        if(this.GameIsGoing === false){
+            return;
+        }
         //console.log(this.player.mana);
         this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
 
@@ -363,7 +353,24 @@ export class PlayScene extends Phaser.Scene{
                     this.player_scale  ++;
                 }
             }
-            this.manabar.update(time,delta);
+            // this.manabar.update(time,delta);
+        }
+
+        wonGame = ()=>{
+            this.GameIsGoing = false;
+            let countDownText= this.add.text(this.player.x, this.player.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
+        }
+    
+        gameOver = ()=>{
+            this.GameIsGoing = false;
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
+        }
+
+        towerDestroyed = ()=>{
+            let countDownText= this.add.text(this.player.x, this.player.y, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+            countDownText.setOrigin(0.5,0.5); 
         }
         
     }
