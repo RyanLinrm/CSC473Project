@@ -76,7 +76,7 @@ export class PlayScene extends Phaser.Scene{
             this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,this.playerUid);
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,100,200,this.playerUid).setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,this.playerUid).setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -144,8 +144,10 @@ export class PlayScene extends Phaser.Scene{
         //this.container.add(this.skill)
         this.enemies.add(this.wolf); ///Need to move this into the enemy class
         this.enemies.add(this.ninjabot);
-        //this.enemies.add(this.demon1);
-     
+    
+        this.newenemyposx=hUD.newenemyposx;
+        this.newenemyposy=hUD.newenemyposy;
+        console.log(this.newenemyposx)
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);

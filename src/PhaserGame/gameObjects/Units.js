@@ -116,12 +116,12 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         let shortestDistance=1000000000;
         console.log(this.len)
         this.findnearenemy = () =>{
-            for (var i = 0; i < len.siz; i++) {
-                if(this.towers[i].active){
-                let towerdistance=this.distance(tower,this.towers[i]);
-                if (towerdistance<shortestDistance){
-                    shortestDistance=towerdistance;      
-                    this.changetarget(this.towers[i]);}
+            for (var i = 0; i < len; i++) {
+                if(this.enemies[i].active){
+                let enemydistance=this.distance(tower,this.towers[i]);
+                if (enemydistance<shortestDistance){
+                    shortestDistance=enemydistance;      
+                    this.changetarget(this.enemies[i]);}
                 }
             } };  
         if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){
