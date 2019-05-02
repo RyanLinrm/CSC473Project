@@ -49,6 +49,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.setupMovement(scene,this.target);
         this.setVisible = false;
 
+        this.body.immvoable = true;
+
         
 
     }
@@ -74,7 +76,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     EnemyBehavior(enemy,target){
         target=this.target;
-        let player=this.scene.player;
+
         //generate the random movement of enemies
         this.randomMove = () =>{
         const randNumber = Math.floor((Math.random() * 5) + 1);
@@ -120,22 +122,34 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.changetarget(enemy);}
             }
         */
-        if(Math.abs(player.x - enemy.x) < this.attackRange+30 && Math.abs(player.y - enemy.y) < this.attackRange+30){
-            if(player.active && player.uid!=enemy.uid){
-            this.changetarget(this.scene.player);}
-            else{
-                this.findneartower();}
-            }
-        
-        else{     
-            this.findneartower();}
- 
-        if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
-            this.movementSpeed=this.movementSpeed+1;}
+        if( this.scene.otherPlayers !== undefined && Object.keys(this.scene.otherPlayers).length > 0){
+            this.enemyplayers = this.scene.otherPlayers;
+            this.enemyplayers.self = this.scene.player1;
+            this.enemyplayerid = Object.keys(this.scene.otherPlayers);
 
-        if(this.movementSpeed>=player.movementSpeed+10){
+            for( let i = 0; i < this.enemyplayerid.length; i++ ){
+                let player = this.enemyplayers[this.enemyplayerid[i]];
+                if(Math.abs(player.x - enemy.x) < this.attackRange+30 && Math.abs(player.y - enemy.y) < this.attackRange+30){
+                    if(player.active && player.uid!=enemy.uid){
+                        this.changetarget(player);
+                        break;
+                    }
+                    else{
+                        this.findneartower();}
+                }
+        
+                else{     
+                    this.findneartower();}
+            }
+        }
+        else this.findneartower();
+ 
+        /*if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
+            this.movementSpeed=this.movementSpeed+1;}*/
+
+        /*if(this.movementSpeed>=player.movementSpeed+10){
             this.movementSpeed=65;         
-         }
+         }*/
         
         }
         
@@ -243,12 +257,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.play('demon1_up',true);
           
             }
-            if(this.healthPoints<80){
+            if(this.healthPoints<100){
                 this.movementSpeed=120;
                 this.setScale(2);
                 this.bulletscale=0.8;
                 this.attackRate=1;
-            
+                this.cooldown = 50;
             }
         }
         if(this.enemyID===3){

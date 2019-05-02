@@ -81,38 +81,38 @@ export class HUD {
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
            if(scene.player.mana>5){
                 if(unit.texture.key==='wolf'){              
-                    scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,20,99,200,player.uid);
-                   scene.player.mana-=50;
-                   scene.manabar.cutManaBar(50);
-                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wolf',player.uid);
+                    scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
+                    scene.player.mana-=50;
+                    scene.manabar.cutManaBar(50);
+                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wolf',player.uid);
                }
        
                if(unit.texture.key==='ninjabot'){              
-                   scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",player,1,100,0.8,5,180,60,700,player.uid)
-                   scene.player.mana-=25;
-                   scene.manabar.cutManaBar(25)
-                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'ninjabot',player.uid);
+                    scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",player,1,100,0.8,5,180,60,700,player.uid)
+                    scene.player.mana-=25;
+                    scene.manabar.cutManaBar(25)
+                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'ninjabot',player.uid);
                }
                
                if(unit.texture.key==='skull'){              
-                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,600,player.uid).setScale(0.9);
-                   scene.player.mana-=25;
-                   scene.manabar.cutManaBar(25);
-                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,600,player.uid).setScale(0.9);
+                    scene.player.mana-=25;
+                    scene.manabar.cutManaBar(25);
+                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
                }
                if(unit.texture.key==='demon1'){              
-                   scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,600, player.uid).setScale(1.5);
-                   scene.player.mana-=40;
-                   scene.manabar.cutManaBar(40);
-                   if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,600, player.uid).setScale(1.5);
+                    scene.player.mana-=40;
+                    scene.manabar.cutManaBar(40);
+                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
                }
                if(unit.texture.key==='wall'){              
-                scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
-                scene.newenemy.body.immovable=true;
-                scene.newenemy.body.moves=false;
-                scene.player.mana-=20;
-                scene.manabar.cutManaBar(20);
-                if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wall',player.uid);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
+                    scene.newenemy.body.immovable=true;
+                    scene.newenemy.body.moves=false;
+                    scene.player.mana-=20;
+                    scene.manabar.cutManaBar(20);
+                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wall',player.uid);
                 }
                unit.x = originalX;
                unit.y = originalY;

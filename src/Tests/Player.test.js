@@ -215,9 +215,22 @@ test('Testing the update function of the player',()=>{
 });
 
 
+test('Testing if mana decreases after a special attack', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
 
+    player.specialAttack();
+    expect(player.mana).toEqual(990);
+    player.specialAttack();
+    expect(player.mana).toEqual(980);
+})
 
+test('Testing if special attack does not decrease mana when less than 10', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
 
-
-
-
+    for(i = 0; i < 130; i++){
+        player.specialAttack();
+    }
+    expect(player.mana).toEqual(0); //should not be negative
+})

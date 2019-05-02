@@ -42,9 +42,27 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,100,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,100,200,id).setScale(0.8); 
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,100,200,id).setScale(0.6);
         }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
+        if(position.x === 300 && position.y === 300){
+            this.pyramid.assignID(id);
+        }
+        else if(position.x === 1000 && position.y === 300){
+            this.university.assignID(id);
+        }
+        else if(position.x === 300 && position.y === 1000){
+            this.magicstone.assignID(id);
+        }
+        else this.building.assignID(id);
+
+        this.enemyPlayers.add(this.otherPlayers[id]);
+        //this.otherPlayers[id].immovable=true;
+        //assign collider to this new player
+        this.physics.add.overlap(this.damageItems, this.otherPlayers[id],this.bothCollisions);
+        this.physics.add.collider(this.otherPlayers[id], this.CollisionLayer);
+        this.physics.add.collider(this.otherPlayers[id], this.waterLayer);
+        this.physics.add.collider(this.otherPlayers[id], this.enemies);
 
 
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
@@ -99,7 +117,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     addNewEnemy = (x, y, type, playerid) => {
 
         if(type==='wolf'){              
-            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,20,99,200,playerid);
+            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,50,99,200,playerid);
         }
 
         else if(type==='ninjabot'){              
@@ -116,10 +134,14 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
             this.newenemy.body.immovable=true;
             this.newenemy.body.moves=false;
+            /*if(playerid !== this.playerID)
+            this.physics.add.collider(this.newenemy, this.player1);*/
         }
         this.enemies.add(this.newenemy);
 
         this.attackableGroup.add(this.newenemy);
+
+        this.physics.add.overlap(this.enemiesAttacks,this.enemyPlayers,this.bothCollisions);
 
     }
 
@@ -132,7 +154,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
-        console.log(this.seatNumber);
+
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
@@ -144,10 +166,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         //this.player.setVisible(true);
         this.player1.setVisible(true);
         this.player.setVisible(false);
-        this.physics.add.collider(this.player1, this.CollisionLayer);
-        this.physics.add.collider(this.player1, this.waterLayer);
-        //adjust player hit box
-        this.player1.setSize(34, 36);
 
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
         else if(this.seatNumber === 2) this.university.assignID(this.playerID);
@@ -160,6 +178,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        this.cameras.main.startFollow(this.player1);
        this.player.kill();
        this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
+
+       //this.player1.immovable=true;
+        this.physics.add.collider(this.player1, this.CollisionLayer);
+        this.physics.add.collider(this.player1, this.waterLayer);
+        this.physics.add.collider(this.player1, this.enemies);
+
+       this.enemyPlayers.add(this.player1);
+       //player collide handler with damage item
+       this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
 
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {
@@ -288,7 +315,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         })
 
         //add in collider
-        let ref = database.ref(`Games/${this.gameRoom}/Players/`);
+        /*let ref = database.ref(`Games/${this.gameRoom}/Players/`);
         ref.on('child_added',snapShot=> {
             this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
             for( let pid in this.otherPlayers ){
@@ -296,7 +323,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 this.physics.add.collider(this.otherPlayers[pid], this.CollisionLayer);
                 this.physics.add.collider(this.otherPlayers[pid], this.waterLayer);
             }
-        });
+        });*/
 
         this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,gameRoomDB);
 
