@@ -2,18 +2,18 @@ import Phaser from 'phaser';
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 
 export class HUD {
-    constructor(scene) {
+    constructor(scene, player, uid) {
         //Mana and Health Bars
         //Stauts bars : hp with a front bar and backing bar
         scene.emptybar = new emptyBar(scene, 130,scene.game.renderer.height- 21).setDepth(2);
         scene.emptybar.setScrollFactor(0);
-        scene.hpbar = new HpBar(scene, 130,scene.game.renderer.height- 20, 'hp', scene.player.healthPoints).setDepth(3);
+        scene.hpbar = new HpBar(scene, 130,scene.game.renderer.height- 20, 'hp', player.healthPoints, player.uid).setDepth(3);
         scene.hpbar.setScrollFactor(0);
 
         //Mana bar
         scene.emptybar2 = new emptyBar(scene, 130,scene.game.renderer.height- 51).setDepth(2);
         scene.emptybar2.setScrollFactor(0);
-        scene.manabar = new ManaBar(scene, 130,scene.game.renderer.height- 50, 'mana', scene.player.mana).setDepth(3);
+        scene.manabar = new ManaBar(scene, 130,scene.game.renderer.height- 50, 'mana', player.mana, player.uid).setDepth(3);
         scene.manabar.setScrollFactor(0);
         //Mana and Health Bars
 
