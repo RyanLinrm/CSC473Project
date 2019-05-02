@@ -25,8 +25,9 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
-
-            }
+                this.destroy = ()=>{};
+            },
+           
         }
     },
 
@@ -34,6 +35,10 @@ const phaserMock = {
         this.sys = {
             updateList:{add:()=>{}},
             displayList:{add:()=>{}}
+        };
+
+        this.hpbar = {
+            cutHPBar: ()=>{}
         };
 
         this.physics = {
