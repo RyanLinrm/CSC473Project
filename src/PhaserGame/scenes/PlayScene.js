@@ -90,8 +90,8 @@ export class PlayScene extends Phaser.Scene{
         this.towers = this.add.group(); 
         this.towers.removeCallback = (tower)=>{
             
-            if(tower.tower_ID === this.seatNumber){
-                this.towerDestroyed(tower.tower_ID);
+            if(tower.uid === this.playerUid){
+                this.towerDestroyed(tower.uid);
             }
             else{
                 console.log(this.towers.getLength());
