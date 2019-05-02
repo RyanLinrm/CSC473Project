@@ -6,7 +6,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-
         this.characterId=characterId;
         this.uid = uid;
         // this.setOrigin(0,0);
@@ -107,15 +106,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
  
             this.count=time;
         }   
-        else{
-            if(time>this.count+500)
+    
+        if(time>this.count+100)
             {this.tint=0xffffff;
              this.canbeAttacked=true;
             }
             
 
         }
-    }
+    
 
     setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
         super.setVelocity(x,y);
@@ -157,7 +156,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     update(time){
         this.isInjured(time);
-        //console.log(this.healthPoints)
+      //  console.log(this.healthPoints)
         this.beingAttacked=false;
         //Player Update Function
         this.player_movement();
