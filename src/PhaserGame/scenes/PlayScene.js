@@ -40,7 +40,7 @@ export class PlayScene extends Phaser.Scene{
 
     create(uid, multi){
         this.playerUid = uid;
-        if(multi !== null) this.mode = multi;
+        if(multi !== undefined) this.mode = multi;
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
        
@@ -122,10 +122,10 @@ export class PlayScene extends Phaser.Scene{
 
         //adding buildings for each player
         
-        this.building=new Units(this,1200,1200,1150,1099,"building1",1,4,1000,1,180,200).setScale(0.15);
-        this.university=new Units(this,1200,0,1150,-1,"university",1,2,1000).setScale(1.5);
-        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1,1000,4,180,200).setScale(1.5);
-        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,3,1000).setScale(1.5);
+        this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
+        this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
+        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
+        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
         this.towers.add(this.building); //Move into unit class
         this.towers.add(this.university);
         this.towers.add(this.pyramid);
