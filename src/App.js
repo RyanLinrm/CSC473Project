@@ -6,7 +6,7 @@ import './App.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
-
+import Tutorial from './Tutorial'
 import * as firebase from 'firebase';
 
 class App extends Component {
@@ -21,6 +21,7 @@ class App extends Component {
       showbuttons: false,
       infobutton: true,
       signInName: null,
+      showTutorial: false
     };
 
     
@@ -56,6 +57,13 @@ class App extends Component {
   showMultiPlayerHandler = () => {
     this.setState({ 
       showmulti: !this.state.showmulti,
+      showbuttons: !this.state.showbuttons,
+      infobutton: !this.state.infobutton});
+  }
+
+  showTutorialHandler = () => {
+    this.setState({ 
+      showTutorial: !this.state.showTutorial,
       showbuttons: !this.state.showbuttons,
       infobutton: !this.state.infobutton});
   }
@@ -114,7 +122,7 @@ class App extends Component {
 
             <Row className="form-group">
               <Col>
-                <Button className="col-md-2" variant="info">Tutorial</Button>
+                <Button onClick={this.showTutorialHandler} className="col-md-2" variant="info">Tutorial</Button>
               </Col>
             </Row>
 
@@ -136,6 +144,12 @@ class App extends Component {
         </div>
       )}  
 
+    {this.state.showTutorial && (
+      <div>
+        <Tutorial />
+        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        </div>
+    )}
 
 
       {this.state.showsingle && (
