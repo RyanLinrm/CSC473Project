@@ -1,6 +1,6 @@
 import PlayerScene, { PlayScene } from '../PhaserGame/scenes/PlayScene';
 import Phaser from 'phaser';
-import {Enemy} from "../gameObjects/Enemy";
+import { Enemy } from "../PhaserGame/gameObjects/StatusBar";
 jest.mock('phaser');
 jest.mock('../PhaserGame/scenes/PlayScene');
 
@@ -52,4 +52,39 @@ test('Testing the changetarget function in enemy class', ()=>{
 });
 
 
+test('Testing if takeDamage correctly decrease the damage', ()=>{
 
+    newEnemy.takeDamage(20);
+    expect(newEnemy.healthPoints).toEqual(80);
+    newEnemy.takeDamage(10);
+    expect(newEnemy.healthPoints).toEqual(70);
+    newEnemy.takeDamage(1);
+    expect(newEnemy.healthPoints).toEqual(69);
+    newEnemy.takeDamage(5);
+    expect(newEnemy.healthPoints).toEqual(64);
+    newEnemy.takeDamage(0);
+    expect(newEnemy.healthPoints).toEqual(64);
+ 
+});
+
+test('Testing if takeDamage calls kill function when enemy hp is less than 0', ()=>{
+ 
+    newEnemy.kill = jest.fn();
+    newEnemy.takeDamage(105);
+    expect(newEnemy.healthPoints).toEqual(-5);
+    expect(newEnemy.kill).toBeCalledTimes(1);
+
+});
+
+test('Testing if collision funciton correctly works', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+
+    player.takeDamage = jest.fn();
+    player.collision();
+
+    expect(player.beingAttacked).toEqual(true);
+    expect(player.canbeAttacked).toEqual(false);
+    expect(player.takeDamage).toBeCalledTimes(1);
+
+});
