@@ -7,6 +7,9 @@ import Phaser from 'phaser';
 export class Player extends Phaser.Physics.Arcade.Sprite{
     /**
      * 
+     * sets up the player object. calls createWeapon and createSpecialWeapon
+     * adds the sprite to the scene
+     * 
      * @param {Phaser.Scene} scene - The Scene that the player is going to be in
      * @param {number} x - The X axis position of the player in the scene
      * @param {number} y - The Y axis poistion of the player in the scene
@@ -161,12 +164,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     }
 
+    /**
+     * collision function that is called when a collision occurs to the player. 
+     * calls the takeDamage function and prevents the beingAttacked
+     */
     collision(){
         this.takeDamage(5);
         this.beingAttacked=true;
         this.canbeAttacked=false;
     }
 
+    /**
+     * changes tint and canbeAttacked based on the time passed into the funciton
+     * if beingAttacked is true it tints the player red and sets the count ot the current count
+     * 
+     * @param {number} time - the time that is used to determine how long the player should be tinted
+     */
     isInjured(time){
         if(this.beingAttacked===true){
             this.tint=0xff0000;
@@ -182,18 +195,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
         }
     
-
+        /**
+         * overrides the setVelocity funciton of Phaser.Physics.Arcade.Sprite which calls the setNonZeroVelocity funciton 
+         * sets teh velocity to the x and y passed into the function
+         * 
+         * @param {number} x - x velocity
+         * @param {number} y - y velocity
+         */
     setVelocity(x,y){ //Jest was calling super.setVelocity instead of the overridden setVelocity so I changed the function to seperate the new logic
         super.setVelocity(x,y);
         this.setNonZeroVelocity(x,y);
     }
 
 
+    /**
+     * takes x and y as parameter and sets the nonZeroVelocity property of the player to the x and y if and only if either x and y not zero
+     * 
+     * @param {number} x - x velocity
+     * @param {number} y - y velocity
+     */
     setNonZeroVelocity(x,y){ 
         if (x != 0 || y != 0){
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
     }
+
+    /**
+     * calling this function is for the animation of the movement of the player
+     * the animation plays based upon the direction that the player is moving or the velocity
+     */
     player_movement(){
         //Player Update Function
         if(this.characterId===0){
@@ -221,6 +251,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
    
    }
 
+   /**
+    * update method that gets called by the playscene 60 times a second
+    * handles isInjured and player animation
+    * 
+    * @param {number} time - time that gets passed by Phaser when update is called
+    */
     update(time){
         this.isInjured(time);
       //  console.log(this.healthPoints)

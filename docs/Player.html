@@ -52,6 +52,11 @@
 
 
 
+<div class="description">
+    <p>sets up the player object. calls createWeapon and createSpecialWeapon
+adds the sprite to the scene</p>
+</div>
+
 
 
 
@@ -477,7 +482,94 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line124">line 124</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line125">line 125</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="collision"><span class="type-signature"></span>collision<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>collision function that is called when a collision occurs to the player. 
+calls the takeDamage function and prevents the beingAttacked</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line171">line 171</a>
     </li></ul></dd>
     
 
@@ -614,7 +706,7 @@ Creates a group of bullets that is used when the player is attacked.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line52">line 52</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line55">line 55</a>
     </li></ul></dd>
     
 
@@ -751,7 +843,143 @@ creates the attack function and removeWeapon funciton for the player</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line115">line 115</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="isInjured"><span class="type-signature"></span>isInjured<span class="signature">(time)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>changes tint and canbeAttacked based on the time passed into the funciton
+if beingAttacked is true it tints the player red and sets the count ot the current count</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the time that is used to determine how long the player should be tinted</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line183">line 183</a>
     </li></ul></dd>
     
 
@@ -837,7 +1065,94 @@ creates the attack function and removeWeapon funciton for the player</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line144">line 144</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line145">line 145</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="player_movement"><span class="type-signature"></span>player_movement<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>calling this function is for the animation of the movement of the player
+the animation plays based upon the direction that the player is moving or the velocity</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line227">line 227</a>
     </li></ul></dd>
     
 
@@ -926,7 +1241,7 @@ It also sets the specialAttack funciton to null</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line101">line 101</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -1012,7 +1327,324 @@ It also sets the specialAttack funciton to null</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line134">line 134</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line135">line 135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setNonZeroVelocity"><span class="type-signature"></span>setNonZeroVelocity<span class="signature">(x, y)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>takes x and y as parameter and sets the nonZeroVelocity property of the player to the x and y if and only if either x and y not zero</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>x velocity</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>y velocity</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="setVelocity"><span class="type-signature"></span>setVelocity<span class="signature">(x, y)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>overrides the setVelocity funciton of Phaser.Physics.Arcade.Sprite which calls the setNonZeroVelocity funciton 
+sets teh velocity to the x and y passed into the function</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>x velocity</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>y velocity</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line205">line 205</a>
     </li></ul></dd>
     
 
@@ -1101,7 +1733,7 @@ The behavior of the attack is shooting bullets diagonally</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line66">line 66</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -1237,7 +1869,143 @@ If the ending healthpoints is less than 0 it calls the kill function</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line155">line 155</a>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line156">line 156</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(time)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>update method that gets called by the playscene 60 times a second
+handles isInjured and player animation</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>time that gets passed by Phaser when update is called</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Player.js.html">Player.js</a>, <a href="Player.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -1287,7 +2055,7 @@ If the ending healthpoints is less than 0 it calls the kill function</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 04 2019 16:39:03 GMT-0500 (GMT-05:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 04 2019 17:01:06 GMT-0500 (GMT-05:00)
 </footer>
 
 <script> prettyPrint(); </script>
