@@ -1,0 +1,14 @@
+.prev{
+    float: left;
+}
+.next{
+    float: right;
+}
+
+.center{
+    float: center;
+}
+
+.box{
+    display: inline-block;
+}
