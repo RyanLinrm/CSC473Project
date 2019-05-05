@@ -7,7 +7,7 @@ import { Enemy } from './Enemy';
 export class Units extends Phaser.Physics.Arcade.Sprite  {
 // init the units properties
     
-    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='235'){
+    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233'){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -32,9 +32,11 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.healthPoints=healthPoints;
         this.speed=speed;
         this.range=range;
-        
+        this.targetlist=[];
         this.target=scene.player;
+
         this.uid = uid;
+
         this.playersTower = false;
         this.setPlayersTower = ()=>{
             this.playersTower = true;
@@ -49,9 +51,9 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         //console.log("Helo " + x + " " + y);
         this.building_bar = new HpBar(scene,barx ,bary,'hp',this.healthPoints);
     }
-    create(){
-        //new Enemy(this.scene,500,500,'dragonrider','dragonrider_01');
-
+      
+    changetarget(newtarget){
+        this.target=newtarget;
     }
 
     assignID(uid){
@@ -121,8 +123,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         return distance;
     }
     towerAttack(tower,target,time){
-        this.enemies=this.scene.enemies.getChildren();
-        let len = this.scene.enemies.getLength()
+/*
         let shortestDistance=1000000000;
         this.findnearenemy = () =>{
             for (var i = 0; i < len; i++) {
@@ -132,7 +133,20 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
                     shortestDistance=enemydistance;      
                     this.changetarget(this.enemies[i]);}
                 }
-            } };  
+            } };  */
+       
+        if( this.scene.otherPlayers !== undefined && Object.keys(this.scene.otherPlayers).length > 0){
+            this.enemyplayers = this.scene.otherPlayers;
+            this.enemyplayers.self = this.scene.player1;
+            this.enemyplayerid = Object.keys(this.scene.otherPlayers);
+    
+            for( let i = 0; i < this.enemyplayerid.length; i++ ){
+                let player = this.enemyplayers[this.enemyplayerid[i]];
+                if(Math.abs(player.x - tower.x) < this.Range && Math.abs(player.y - tower.y) < this.Range){
+                    if(player.active && player.uid!=tower.uid){
+                         this.changetarget(player);}
+                        }}
+        }     
         if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){
         if(target.uid!=tower.uid){
             let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
@@ -141,10 +155,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
             let vY = (target.y - tower.y)/distance;
             if(this.timeCycle < time){
                 this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
-                this.timeCycle = time + tower.cooldown ;}
-        }
-    }
-    }
+                this.timeCycle = time + tower.cooldown ;
+            }
+        }}
+}
     update(time){
         this.isInjured(time);
         this.beingAttacked=false;

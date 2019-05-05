@@ -12,6 +12,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.university=scene.university;
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
+        this.sword_in_the_stone=scene.sword_in_the_stone;
         this.towers=[this.pyramid,this.university,this.magicstone,this.building];
         this.setOrigin(0,0);
         this.enemyID=enemyID;
@@ -110,6 +111,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //set up the findneartower function which finds the nearest tower to attack
         let shortestDistance=1000000000;
         this.findneartower = () =>{
+            if(this.scene.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
+                this.changetarget(this.sword_in_the_stone);}
         for (var i = 0; i < 4; i++) {
             if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
             let towerdistance=this.distance(enemy,this.towers[i]);
@@ -144,13 +147,25 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             }
         }
         else this.findneartower();
- 
-        /*if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
-            this.movementSpeed=this.movementSpeed+1;}*/
+        
+        if(this.scene.mode === 'single'){
+            let player=this.scene.player;
+            if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
+                this.movementSpeed=this.movementSpeed+1;}
 
-        /*if(this.movementSpeed>=player.movementSpeed+10){
-            this.movementSpeed=65;         
-         }*/
+            if(this.movementSpeed>=player.movementSpeed+20){
+                this.movementSpeed=65;         
+         }
+            if(Math.abs(this.scene.player.x - enemy.x) < this.attackRange+40 && Math.abs(this.scene.player.y - enemy.y) < this.attackRange+40){
+                if(this.scene.player.active && this.scene.player.uid!=enemy.uid){
+                this.changetarget(this.scene.player);
+        }
+        else{
+            this.findneartower();}
+        }
+    }
+    
+ 
         
         }
         
@@ -269,7 +284,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         if(this.enemyID===3){
             this.bulletTexture="shoot8";
             this.bulletscale=0.6;
-            this.cooldown=100;
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('skull_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){

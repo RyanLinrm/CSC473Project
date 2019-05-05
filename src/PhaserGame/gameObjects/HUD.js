@@ -100,13 +100,13 @@ export class HUD {
                }
                
                if(unit.texture.key==='skull'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,600,player.uid).setScale(0.9);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
                     scene.player.mana-=25;
                     scene.manabar.cutManaBar(25);
                     if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
                }
                if(unit.texture.key==='demon1'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,600, player.uid).setScale(1.5);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
                     scene.player.mana-=40;
                     scene.manabar.cutManaBar(40);
                     if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);

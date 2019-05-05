@@ -74,14 +74,15 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,this.bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
-        let playerStartingPos = this.startingPosFromTowerNum(1);
+        const randNumber = Math.floor((Math.random() * 4) + 1);
+        let playerStartingPos = this.startingPosFromTowerNum(randNumber);
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'single');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'single').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'123').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -122,8 +123,7 @@ export class PlayScene extends Phaser.Scene{
         //adding buildings for each player
 
         //adding resrouces to the middle 
-        this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
-        this.sword_in_the_stone.setScale(0.5);
+  
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.player, this.enemies);
@@ -131,23 +131,54 @@ export class PlayScene extends Phaser.Scene{
         this.player.setSize(30, 30);
         if(this.mode === 'single'){
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
+            this.sword_in_the_stone.setScale(0.5);
+            this.sword_in_the_stone.uid=this.player.uid;
+            this.towers.add(this.sword_in_the_stone);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,4,180,200).setScale(0.15);
             this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200,'single').setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
-            this.towers.add(this.building); //Move into unit class
-            this.towers.add(this.university);
-            this.towers.add(this.pyramid);
-            this.towers.add(this.magicstone);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,4,180,200).setScale(1.5);
+
             //The enemies  
-            this.wolf = new Enemy(this, 200, 200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99,200,'single');
-            this.ninjabot= new Enemy(this, 300, 350, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700,'single') ;
-            //this.container= this.add.container(200, 200);
-            //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
-            //this.container.add(this.skill)
-            this.enemies.add(this.wolf); ///Need to move this into the enemy class
-            this.enemies.add(this.ninjabot);
+            this.skull0=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+            this.skull1=new Enemy(this,100,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+            this.skull2=new Enemy(this,150,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+            this.skull3=new Enemy(this,200,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+            this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+
+            this.demon0=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+            this.demon1=new Enemy(this,100,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+            this.demon2=new Enemy(this,150,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+            this.demon3=new Enemy(this,200,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+            this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+
+            this.enemies.add(this.demon0);
+            this.enemies.add(this.demon1);
+            this.enemies.add(this.demon2);
+            this.enemies.add(this.demon3);
+            this.enemies.add(this.demon4);
+            this.enemies.add(this.skull0);
+            this.enemies.add(this.skull1);
+            this.enemies.add(this.skull2);
+            this.enemies.add(this.skull3);
+            this.enemies.add(this.skull4);
         }
+        if(this.mode === 'multi'){
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,3,180,200).setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
+            this.sword_in_the_stone.setScale(0.5);
+            this.physics.add.collider(this.enemies, this.waterLayer);
+
+      
+        }
+        this.towers.add(this.building); 
+        this.towers.add(this.university);
+        this.towers.add(this.pyramid);
+        this.towers.add(this.magicstone);
  
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
@@ -178,9 +209,7 @@ export class PlayScene extends Phaser.Scene{
         //Assign collider objects
         this.physics.add.collider(this.player, this.CollisionLayer);
         this.physics.add.collider(this.player, this.waterLayer);
-        this.physics.add.collider(this.enemies, this.waterLayer);
         this.physics.add.collider(this.enemies, this.CollisionLayer);
-  
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
  

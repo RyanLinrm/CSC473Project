@@ -29,10 +29,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
         this.spritekey = data.chartype;
-        this.pyramiduid=data.pyramiduid;
-        this.buildinguid=data.buildinguid;
-        this.magicstoneuid=data.magicstoneuid;
-        this.universityuid=data.universityuid;
+   
     }
 
 
@@ -50,19 +47,19 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
         if(position.x === 300 && position.y === 300){
-            //this.pyramid.assignID(id);
-            this.pyramiduid=id;
+            this.pyramid.assignID(id);
+         
         }
         else if(position.x === 1000 && position.y === 300){
-            //this.university.assignID(id);
-            this.universityuid=id;
+            this.university.assignID(id);
+   
         }
         else if(position.x === 300 && position.y === 1000){
-           // this.magicstone.assignID(id);
-            this.magicstoneuid=id;
+            this.magicstone.assignID(id);
+
         }
-        else //this.building.assignID(id);
-             this.buildinguid=id;
+        else this.building.assignID(id);
+         
  
         this.enemyPlayers.add(this.otherPlayers[id]);
         //this.otherPlayers[id].immovable=true;
@@ -133,7 +130,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         }
         
         else if(type==='skull'){              
-            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,600,playerid).setScale(0.9);
+            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
             this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,200,0.7,2,200,70,600, playerid).setScale(1.5);
@@ -156,17 +153,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     create() {
         //this.spritekey = "bomber";
         super.create(this.playerID, 'multi');
-        if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200,this.pyramiduid).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,1000,2,this.universityuid).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,3,180,200,this.buildinguid).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,4,this.magicstoneuid).setScale(1.5);
-            this.towers.add(this.building); //Move into unit class
-            this.towers.add(this.university);
-            this.towers.add(this.pyramid);
-            this.towers.add(this.magicstone);
-         
-        }
+   
       
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
@@ -186,10 +173,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.player.setVisible(false);
 
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
+   
         else if(this.seatNumber === 2) this.university.assignID(this.playerID);
+     
         else if(this.seatNumber === 3) this.building.assignID(this.playerID);
+   
         else this.magicstone.assignID(this.playerID);
-      
+     
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
 
