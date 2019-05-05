@@ -1,4 +1,32 @@
-//Play scene for our basic playground
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scenes/PlayScene.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scenes/PlayScene.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//Play scene for our basic playground
 //All the functions and character added in this file will be temporary
 //just for demo
 //Use scene list to generate keyword
@@ -131,7 +159,7 @@ export class PlayScene extends Phaser.Scene{
          */
         this.bothCollisions = (objectA,objectB)=>{
             
-            if(objectA.active && objectB.active){
+            if(objectA.active &amp;&amp; objectB.active){
                 if(objectA.uid !== objectB.uid){
                 objectA.collision();
                 objectB.collision();
@@ -177,7 +205,7 @@ export class PlayScene extends Phaser.Scene{
             }
             else{
                 console.log(this.towers.getLength());
-                if(this.towers.getLength() === 1 && this.GameIsGoing === true){
+                if(this.towers.getLength() === 1 &amp;&amp; this.GameIsGoing === true){
                     this.wonGame();
                 }
             }
@@ -339,9 +367,9 @@ export class PlayScene extends Phaser.Scene{
         //Handler character getting attacked by enemy, cooldown 3s
 
     /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
-            if(this.canBeAttacked < time){
+            if(this.canBeAttacked &lt; time){
                // console.log('got hit!');
-                if (enemy.active && player.active ){
+                if (enemy.active &amp;&amp; player.active ){
                     player.takeDamage(enemy.ATK);
                     console.log(player.healthPoints);
                     this.hpbar.cutHPBar(enemy.ATK);
@@ -370,7 +398,7 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(this.player.movementSpeed);
  
             }
-            if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.mana >= 5)
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar) &amp;&amp; this.player.mana >= 5)
             {
                 this.player.attack();
 
@@ -379,11 +407,11 @@ export class PlayScene extends Phaser.Scene{
                 this.manabar.cutManaBar(2);*/
             }
 
-            if(this.keyboard.W.isUp && this.keyboard.S.isUp){
+            if(this.keyboard.W.isUp &amp;&amp; this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
 
             }
-            if(this.keyboard.A.isUp && this.keyboard.D.isUp){
+            if(this.keyboard.A.isUp &amp;&amp; this.keyboard.D.isUp){
                 this.player.setVelocityX(0);
 
             }
@@ -400,34 +428,34 @@ export class PlayScene extends Phaser.Scene{
             }*/
             //speed up the movement 
 
-            if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
+            if(this.player.mana>= 10 &amp;&amp; Phaser.Input.Keyboard.JustDown(this.Qbar)){
                 this.player.specialAttack();
                 this.manabar.cutManaBar(10);
                 
             }
-            if(this.player.mana< 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
+            if(this.player.mana&lt; 10 &amp;&amp; Phaser.Input.Keyboard.JustDown(this.Qbar)){
                 this.manawarning.setVisible(true);            
             }
             if(this.player.mana > 10){
                 this.manawarning.setVisible(false);
             }
 
-            if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.W.isDown)
             {
                 this.player.setVelocityY(-(3*this.player.movementSpeed));
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.A.isDown)
             {
                 this.player.setVelocityX(-(3*this.player.movementSpeed));
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.S.isDown)
             {
                 this.player.setVelocityY(3*this.player.movementSpeed);
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.D.isDown)
             {
                 this.player.setVelocityX(3*this.player.movementSpeed);
                 this.player.mana-=0.1;
@@ -487,3 +515,26 @@ export class PlayScene extends Phaser.Scene{
     }
         
     }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Game.html">Game</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 04 2019 21:58:50 GMT-0500 (GMT-05:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
