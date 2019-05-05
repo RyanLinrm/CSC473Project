@@ -410,7 +410,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     }
     /**
      * Intializes the weapon of the enempy so that the enemy can shoot.
-     * It reates the bullets which is added to the scene.
+     * It creates the bullets which is added to the scene.
      * Including the basicattack function and removeDefense funciton for the enemy.
      * @param {Phaser.Scene} scene - The scene that the enemy is inside that is used to create the bullet group
      */

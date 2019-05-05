@@ -20,7 +20,7 @@ const cooldown=0;
 const uid="233";
 
 const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
-
+// still need to add more to it and fix the testing errors
 test('Testing enemy class constructer correctly and intializes a new enemy wolf', ()=>{
 
     expect(newEnemy).toBeDefined();
