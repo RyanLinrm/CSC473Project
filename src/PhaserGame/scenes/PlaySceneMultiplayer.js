@@ -188,7 +188,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        this.cameras.main.startFollow(this.player1);
        this.player.kill();
        this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
-
+       this.manabar=this.hUD.manabar;
        //this.player1.immovable=true;
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);

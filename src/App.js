@@ -21,6 +21,7 @@ class App extends Component {
       showbuttons: false,
       infobutton: true,
       signInName: null,
+      gameType: "single"
     };
 
     
@@ -50,6 +51,7 @@ class App extends Component {
     this.setState({ 
       showsingle: !this.state.showsingle,
       showbuttons: !this.state.showbuttons,
+      gameType:"single",
       infobutton: !this.state.infobutton});
   }
   
@@ -57,6 +59,7 @@ class App extends Component {
     this.setState({ 
       showmulti: !this.state.showmulti,
       showbuttons: !this.state.showbuttons,
+      gameType:"multiplayer",
       infobutton: !this.state.infobutton});
   }
 
@@ -82,11 +85,11 @@ class App extends Component {
 
   render() {
    
-    let gameClass = this.state.showGame ? '' : 'hidden';
-    let buttonText = this.state.showGame ? 'Sign In' : 'Play';
+    let gameClass = !this.state.showbuttons ? '' : 'hidden';
     let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
     ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
   ];
+
 
     return (
       <div className="App ">
@@ -136,18 +139,21 @@ class App extends Component {
         </div>
       )}  
 
+      <div className={gameClass}>
+        <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
+      </div>
 
 
       {this.state.showsingle && (
         <div>
-        <Game name={"singleplayer"}/>
+         
         <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
 
       {this.state.showmulti && (
         <div>
-       <Game name={"multiplayer"}/>
+          
         <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}

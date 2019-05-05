@@ -1,4 +1,32 @@
-//Play scene for our basic playground
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scenes/PlayScene.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scenes/PlayScene.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//Play scene for our basic playground
 //All the functions and character added in this file will be temporary
 //just for demo
 //Use scene list to generate keyword
@@ -131,7 +159,7 @@ export class PlayScene extends Phaser.Scene{
          */
         this.bothCollisions = (objectA,objectB)=>{
             
-            if(objectA.active && objectB.active){
+            if(objectA.active &amp;&amp; objectB.active){
                 if(objectA.uid !== objectB.uid){
                 objectA.collision();
                 objectB.collision();
@@ -148,15 +176,14 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
 
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
-        const randNumber = Math.floor((Math.random() * 4) + 1);
-        let playerStartingPos = this.startingPosFromTowerNum(randNumber);
+        let playerStartingPos = this.startingPosFromTowerNum(1);
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,this.playerUid);
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,this.playerUid).setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -178,7 +205,7 @@ export class PlayScene extends Phaser.Scene{
             }
             else{
                 console.log(this.towers.getLength());
-                if(this.towers.getLength() === 1 && this.GameIsGoing === true){
+                if(this.towers.getLength() === 1 &amp;&amp; this.GameIsGoing === true){
                     this.wonGame();
                 }
             }
@@ -193,133 +220,55 @@ export class PlayScene extends Phaser.Scene{
         this.manawarning.setScrollFactor(0);
         this.manawarning.setVisible(false)
 
-      /*
+      
         //Mini Map
 
         //create a sample minimap ---needs to change to dynamic
-
-        this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 240, 300).setZoom(0.2).setName('mini');
+      /*  this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 300, 300).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;  
-        this.minimap.scrollY = 600; */
+        this.minimap.scrollY = 500; */
 
+        this.timer = this.add.text(550,65,'Timer:'+ Math.trunc(this.time)).setDepth(3);
+        this.timer.setScrollFactor(0);
 
         //adding buildings for each player
-
-        //adding resrouces to the middle 
-  
-        this.player.setCollideWorldBounds(true);
-        this.physics.add.collider(this.enemies, this.enemies);
-        this.physics.add.collider(this.player, this.enemies);
-        //adjust player hit box
-        this.player.setSize(30, 30);
-        if(this.mode === 'single'){
-  
-            this.hud = new HUD(this, this.player, this.playerUid, this.mode)
-            this.manabar=this.hud.manabar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
-            this.sword_in_the_stone.setScale(0.5);
-            this.sword_in_the_stone.uid=this.player.uid;
-            this.towers.add(this.sword_in_the_stone);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,4,180,200).setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,4,180,200).setScale(1.5);
-
-            //The enemies are in four different towers.
-            this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-            this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-            this.wolf2=new Enemy(this, 1000,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-            this.wolf3=new Enemy(this, 950,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-            this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-
-            
-            this.ninjabot0=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-            this.ninjabot1=new Enemy(this, 950,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-            this.ninjabot2=new Enemy(this, 900,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-            this.ninjabot3=new Enemy(this, 850,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-            this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-
-            this.skull0=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-            this.skull1=new Enemy(this,100,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-            this.skull2=new Enemy(this,150,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-            this.skull3=new Enemy(this,200,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-            this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-
-            this.demon0=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-            this.demon1=new Enemy(this,100,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-            this.demon2=new Enemy(this,150,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-            this.demon3=new Enemy(this,200,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-            this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-
-            this.enemies.add(this.demon0);
-            this.enemies.add(this.demon1);
-            this.enemies.add(this.demon2);
-            this.enemies.add(this.demon3);
-            this.enemies.add(this.demon4);
-
-            this.enemies.add(this.skull0);
-            this.enemies.add(this.skull1);
-            this.enemies.add(this.skull2);
-            this.enemies.add(this.skull3);
-            this.enemies.add(this.skull4);
-
-            this.enemies.add(this.wolf0);
-            this.enemies.add(this.wolf1);
-            this.enemies.add(this.wolf2);
-            this.enemies.add(this.wolf3);
-            this.enemies.add(this.wolf4);
-
-            this.enemies.add(this.ninjabot0);
-            this.enemies.add(this.ninjabot1);
-            this.enemies.add(this.ninjabot2);
-            this.enemies.add(this.ninjabot3);
-            this.enemies.add(this.ninjabot4);
-            // if all the enemy towers are destoryed, you win the game
-            // if sword_in_the_stone is destoryed or the player's hp is below 0
-            // you lsoe the game
-            if(this.sword_in_the_stone.healthPoints<0 || this.player.healthPoints<0){
-                
-                this.scene.start(CST.SCENES.GAMEOVER);
-            }
-            //generate new enemy wave every Couple Of Seconds 
-            this.timecycle=0;
-            this.createEnemies = (time) =>{
-       
-                if(this.timeCycle < time){
-                    this.wolf=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-                    this.ninjabot=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-                    this.skull=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-                    this.demon=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
-                    this.enemies.add(this.wolf);
-                    this.enemies.add(this.ninjabot);
-                    this.enemies.add(this.skull);
-                    this.enemies.add(this.demon);
-                    this.timeCycle = time +500;
-                }
-                
-            };  
-            
-        }
-        if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,3,180,200).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone").setScale(0.5);
-            //need to create some reward event
-            if(this.sword_in_the_stone.active===false){
-
-            }
-            this.physics.add.collider(this.enemies, this.waterLayer);
-
-      
-        }
-        this.towers.add(this.building); 
+        
+        this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
+        this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
+        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
+        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
+        this.towers.add(this.building); //Move into unit class
         this.towers.add(this.university);
         this.towers.add(this.pyramid);
         this.towers.add(this.magicstone);
- 
+
+        //adding resrouces to the middle 
+        this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
+        this.sword_in_the_stone.setScale(0.5);
+        this.player.setCollideWorldBounds(true);
+        this.physics.add.collider(this.enemies, this.enemies);
+        this.physics.add.collider(this.player, this.enemies);
+      
+        if(this.mode === 'single'){
+            let hud = new HUD(this, this.player, this.playerUid, this.mode)
+        //adjust player hit box
+        this.player.setSize(34, 36);
+        //The enemies  
+        this.wolf = new Enemy(this, 200, 200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99,200,this.playerUid);
+        this.ninjabot= new Enemy(this, 300, 350, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700,this.playerUid) ;
+  
+        
+        //this.container= this.add.container(200, 200);
+        //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
+   
+        //this.container.add(this.skill)
+        this.enemies.add(this.wolf); ///Need to move this into the enemy class
+        this.enemies.add(this.ninjabot);
+        }
+        /*this.newenemyposx=hUD.newenemyposx;
+        this.newenemyposy=hUD.newenemyposy;
+        console.log(this.newenemyposx)*/
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -349,7 +298,9 @@ export class PlayScene extends Phaser.Scene{
         //Assign collider objects
         this.physics.add.collider(this.player, this.CollisionLayer);
         this.physics.add.collider(this.player, this.waterLayer);
+        this.physics.add.collider(this.enemies, this.waterLayer);
         this.physics.add.collider(this.enemies, this.CollisionLayer);
+  
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
  
@@ -376,7 +327,6 @@ export class PlayScene extends Phaser.Scene{
         this.canAttack = 0; //If the enemy can be attacked
 
         this.player_scale = 2;
-
     }
 
     /**
@@ -411,20 +361,15 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
-        this.createEnemies(time);
-        console.log(this.player.mana);
-        this.hud.update(time,this.player,this);
-        if(this.player.mana<=1000){
-        this.player.mana+=delta/1000;
-        this.manabar.regenManaBar(delta/1000);}
-     
-     
+        //console.log(this.player.mana);
+        this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
+
         //Handler character getting attacked by enemy, cooldown 3s
 
     /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
-            if(this.canBeAttacked < time){
+            if(this.canBeAttacked &lt; time){
                // console.log('got hit!');
-                if (enemy.active && player.active ){
+                if (enemy.active &amp;&amp; player.active ){
                     player.takeDamage(enemy.ATK);
                     console.log(player.healthPoints);
                     this.hpbar.cutHPBar(enemy.ATK);
@@ -453,20 +398,20 @@ export class PlayScene extends Phaser.Scene{
                 this.player.setVelocityX(this.player.movementSpeed);
  
             }
-            if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.player.mana >= 5)
+            if (Phaser.Input.Keyboard.JustDown(this.spacebar) &amp;&amp; this.player.mana >= 5)
             {
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.player.mana -= 2;
-                this.manabar.cutManaBar(2);
+                /*this.player.mana -= 2;
+                this.manabar.cutManaBar(2);*/
             }
 
-            if(this.keyboard.W.isUp && this.keyboard.S.isUp){
+            if(this.keyboard.W.isUp &amp;&amp; this.keyboard.S.isUp){
                 this.player.setVelocityY(0);
 
             }
-            if(this.keyboard.A.isUp && this.keyboard.D.isUp){
+            if(this.keyboard.A.isUp &amp;&amp; this.keyboard.D.isUp){
                 this.player.setVelocityX(0);
 
             }
@@ -483,34 +428,34 @@ export class PlayScene extends Phaser.Scene{
             }*/
             //speed up the movement 
 
-            if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
+            if(this.player.mana>= 10 &amp;&amp; Phaser.Input.Keyboard.JustDown(this.Qbar)){
                 this.player.specialAttack();
                 this.manabar.cutManaBar(10);
                 
             }
-            if(this.player.mana< 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
+            if(this.player.mana&lt; 10 &amp;&amp; Phaser.Input.Keyboard.JustDown(this.Qbar)){
                 this.manawarning.setVisible(true);            
             }
             if(this.player.mana > 10){
                 this.manawarning.setVisible(false);
             }
 
-            if(this.keyboard.SHIFT.isDown&this.keyboard.W.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.W.isDown)
             {
                 this.player.setVelocityY(-(3*this.player.movementSpeed));
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.A.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.A.isDown)
             {
                 this.player.setVelocityX(-(3*this.player.movementSpeed));
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.S.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.S.isDown)
             {
                 this.player.setVelocityY(3*this.player.movementSpeed);
                 this.player.mana-=0.1;
             }
-            if(this.keyboard.SHIFT.isDown&this.keyboard.D.isDown)
+            if(this.keyboard.SHIFT.isDown&amp;this.keyboard.D.isDown)
             {
                 this.player.setVelocityX(3*this.player.movementSpeed);
                 this.player.mana-=0.1;
@@ -570,3 +515,26 @@ export class PlayScene extends Phaser.Scene{
     }
         
     }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Game.html">Game</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat May 04 2019 21:58:50 GMT-0500 (GMT-05:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

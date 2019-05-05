@@ -1,20 +1,51 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+/**
+     * Enemy class
+     * The class where the properties of the enemy units are generated.
+     * Including enemy behavior, enemy attacking,auto target finding and
+     * several other standard functions.
+     */
 export class Enemy extends Phaser.Physics.Arcade.Sprite{
+    /**
+     * 
+     * sets up the Enemy object. calls createAttack, setupMovement.
+     * Prepare the behavior and properties of enemy to be later add the scene.
+     * 
+     * @param {Phaser.Scene} scene - The Scene that the Enemy is going to be in
+     * @param {number} x - The X axis position of the Enemy in the scene
+     * @param {number} y - The Y axis poistion of the Enemy in the scene
+     * @param {string} key - The key of the Enemy object for phaser
+     * @param {string} textureName - The name of the texture that is used for the Enemy
+     * @param {number} enemyID - The specific Enemy type of the Enemy
+     * @param {number} healthPoints - The health that the Enemy will have in the game
+     * @param {number} attackRate - The speed of the bullets that the Enemy will shoot
+     * @param {number} ATK - The attack power that the Enemy has.
+     * @param {number} attackRange - The range that the Enemy can attack a target
+     * @param {number} movementSpeed - The speed that the Enemy moves 
+     * @param {number} cooldown - The cooldown restriction that the Enemy can perform next attack
+     * @param {string} uid - The unique id of Enemy object which is same as the player who created the enemy.
+     */
     constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
+        this.setOrigin(0,0);
         this.building=scene.building;
         this.university=scene.university;
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
+
+        /**
+         * The array that has the list of the towers
+         * @name Enemy#towers
+         * @type array
+         */
         this.towers=[this.pyramid,this.university,this.magicstone,this.building];
-        this.setOrigin(0,0);
         this.enemyID=enemyID;
         this.timeCycle=0;
         this.cooldown=cooldown;
@@ -22,6 +53,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.createAttack(scene);
         //enable body in physics game
         scene.physics.world.enableBody(this);
+        /**
+         * true or false that says if the Enemy is being attacked
+         * @name Player#beingAttacked
+         * @type boolean
+         */
         this.beingAttacked=false;
         this.bulletscale=0.15;
         //Health
@@ -181,7 +217,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
        
         if( this.healthPoints <= 0 ){
             this.kill();
-            this.scene.dropitem();
 
         }
     }
