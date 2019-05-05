@@ -114,6 +114,12 @@ class App extends Component {
       }
     
   }
+
+  shouldgamestart = () => {
+    if(this.state.showGame && !this.state.showLeaderboard && !this.state.showGame){
+      return true;
+    }
+  }
   
 
   render() {
@@ -171,11 +177,12 @@ class App extends Component {
         <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}  
-
+    {!this.state.showLeaderboard && this.state.showGame &&(
       <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       </div>
-
+    )
+    }
 
       {this.state.showsingle && (
         <div>
