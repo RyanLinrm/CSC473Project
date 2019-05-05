@@ -5,10 +5,13 @@ import * as firebase from 'firebase';
 
 export class HUD {
     constructor(scene, player, uid, gamemode, room) {
+        this.gamemode=gamemode;
+        this.scene=scene;
         if(gamemode === 'multi'){
             this.ref = firebase.database();
             this.roomkey = room;
             this.ref.ref(`Games/${this.roomkey}`).child(`enemy`).child(uid).set({x:-1, y:-1, type:'wolf', ownerid: uid});
+
         }
         //Mana and Health Bars
         //Stauts bars : hp with a front bar and backing bar
@@ -29,7 +32,8 @@ export class HUD {
             140, scene.game.renderer.height/2 * 4 , 0x000000).setInteractive();
 
         sideHUD.setScrollFactor(0);
-
+        this.timer = scene.add.text(0,60,'Timer:'+ Math.trunc(scene.time),{ fontFamily: 'Georgia', fontSize: 17, color: '#ffffff' });
+        this.timer.setScrollFactor(0);    
         let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
         let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
         
@@ -134,6 +138,15 @@ export class HUD {
             y: yval,
             type: enemytype,
             ownerid: playerid});
+    }
+    update(time,player,scene){
+
+        if(player.beingAttacked===true){
+                scene.hpbar.cutHPBar(5);             
+            }
+
+        this.timer.setText( 'Timer: ' + Math.trunc(time/1000));
+
     }
 
 }

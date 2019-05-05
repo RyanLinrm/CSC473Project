@@ -1,5 +1,6 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
+import {HUD} from "../gameObjects/HUD";
 export class Player extends Phaser.Physics.Arcade.Sprite{
     constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid='233'){
         super(scene,x,y,key,textureName,movementSpeed);
@@ -89,6 +90,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     takeDamage(damage){
         if(this.canbeAttacked===true){
         this.healthPoints = this.healthPoints - damage;
+        
        }
 
         if( this.healthPoints <= 0 ){

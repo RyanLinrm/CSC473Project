@@ -36,7 +36,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.movementSpeed=movementSpeed;
         //this.demonskill=scene.add.sprite(40, 0, 'a2_01')
         //this.demonskill.play('ab2');
-       // this.scene.physics.world.enableBody(this.demonskill);
+        //this.scene.physics.world.enableBody(this.demonskill);
         //Attack power
         this.ATK = ATK;
         
@@ -101,6 +101,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //if the enemy collide with other enemy or player, it will move to other direction
         this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
+      
       /*  this.scene.physics.add.overlap(enemy, this.scene.CollisionLayer, (enemy,CollisionLayer)=>{
             enemy.setVelocityX(-200);
             enemy.setVelocityY(200);

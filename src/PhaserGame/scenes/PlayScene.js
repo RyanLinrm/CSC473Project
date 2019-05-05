@@ -108,17 +108,16 @@ export class PlayScene extends Phaser.Scene{
         this.manawarning.setScrollFactor(0);
         this.manawarning.setVisible(false)
 
-      
+      /*
         //Mini Map
 
         //create a sample minimap ---needs to change to dynamic
-      /*  this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 300, 300).setZoom(0.2).setName('mini');
+
+        this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 240, 300).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;  
-        this.minimap.scrollY = 500; */
+        this.minimap.scrollY = 600; */
 
-        this.timer = this.add.text(550,65,'Timer:'+ Math.trunc(this.time)).setDepth(3);
-        this.timer.setScrollFactor(0);
 
         //adding buildings for each player
         
@@ -139,7 +138,7 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.player, this.enemies);
       
         if(this.mode === 'single'){
-            let hud = new HUD(this, this.player, this.playerUid, this.mode)
+            this.hud = new HUD(this, this.player, this.playerUid, this.mode)
         //adjust player hit box
         this.player.setSize(34, 36);
         //The enemies  
@@ -238,9 +237,9 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
+        this.hud.update(time,this.player,this);
         //console.log(this.player.mana);
-        this.timer.setText( 'Timer: ' + Math.trunc(time/1000))
-
+     
         //Handler character getting attacked by enemy, cooldown 3s
 
     /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
