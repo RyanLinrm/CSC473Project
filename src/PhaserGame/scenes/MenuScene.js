@@ -65,21 +65,11 @@ export class MenuScene extends Phaser.Scene{
         });
 
 
-        startButton.on("pointerup", ()=>{
-            
-          //  this.sound.play("beginsound");
-        //    bgmusic.stop();
 
-            this.scene.start(CST.SCENES.PLAY);
-        });
+        this.startSingleplayer = () => this.scene.start(CST.SCENES.CHAR);
+        this.startMultiplayer = () => this.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
 
-        multiplayerStartButton.on("pointerup", ()=>{
-            this.scene.start(CST.SCENES.WAIT);
-            /*this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
-                playerID : generate(10),
-                roomkey : "Game1"
-            });*/
-          });
+  
 
     }
 }

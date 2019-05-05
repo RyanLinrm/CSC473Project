@@ -28,9 +28,25 @@ export class PlayScene extends Phaser.Scene{
      */
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
+
+    /**
+     * The scene type "Multiplayer" or "Single"
+     *
+     * @name Player#sceneType
+     * @type String
+     */
         this.sceneType = "Single";
+
+    /**
+     * The positionOfThePlayer on the board. 1 is top left 2 top right 3 bottom left 4 is bottom right
+     *
+     * @name Player#seatNumber
+     * @type number
+     */
         this.seatNumber = 1;
         this.single = true;
+
+///////////////////////////////////////////COMBINE IT WITH this.sceneType/////////////////////////////
         this.mode = 'single';
     }
 
@@ -50,6 +66,13 @@ export class PlayScene extends Phaser.Scene{
      * @param {string} data 
      */
     init(data){
+
+    /**
+     * The spriteKey corresponding to the type of player the player is (Rider,Bomber etc)
+     *
+     * @name Player#spritekey
+     * @type number
+     */
         this.spritekey = data
     }
 
@@ -60,14 +83,32 @@ export class PlayScene extends Phaser.Scene{
      * @param {string} multi 
      */
     create(uid, multi){
+
+    /**
+     * The uID of the player
+     *
+     * @name Player#playerUid
+     * @type number
+     */        
         this.playerUid = uid;
         if(multi !== undefined) this.mode = multi;
         //Create an enemygroup with runChildUpdate set to true. Every enem y added to this group will have its update function then called. 
         //Without this groupt the update funciton would not be called for the enemies
        
-        this.updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
-        this.updateSprite = (sprite) => this.updatingSpriteGroup.add(sprite); //adds sprite to updating group
+        let updatingSpriteGroup = this.add.group({runChildUpdate: true}); //Sprites that should run their own update function
 
+        
+        /**
+         * (Function is created by the create function) 
+         * 
+         * adds a sprite to the updatingSpriteGroup which is a group of sprites where the update function of each sprite is called 60 times a second
+         * @param {Phaser.Physics.Arcade.Sprite} sprite - the sprite to add into the group that will update 60 times a second
+         */
+        this.updateSprite = (sprite) => updatingSpriteGroup.add(sprite); //adds sprite to updating group
+
+
+        
+        
         this.attackableGroup = this.add.group({runChildUpdate: true}); 
         //Create Groups for updating andn collision detection;  
         this.enemies = this.add.group(); 

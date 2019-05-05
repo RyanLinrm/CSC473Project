@@ -64,6 +64,10 @@ export class LoadScene extends Phaser.Scene{
         }
     })
 
+    this.removeLoadingBar = ()=>{
+        loadingBar.destroy();
+    }
+
     //add Loading event
 
     this.load.on("progress", (percent)=>{
@@ -76,7 +80,9 @@ export class LoadScene extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start(CST.SCENES.CHAR);
+      //  this.scene.start(CST.SCENES.MENU);
+        this.game.assetsLoaded = true;
+        this.removeLoadingBar();
     }
 
     update(){

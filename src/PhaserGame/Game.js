@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import Phaser from 'phaser';
-
+import {CST} from "./CST"; 
 import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
@@ -15,9 +15,7 @@ import { MULTIPLAYERCHARSELECT } from './scenes/Multiplayercharselect';
 
 export default class Game extends React.Component{
     componentDidMount(){
-        console.log(this.props.name)
-        let game =""
-        if(this.props.name == "singleplayer"){
+        this.inGame = false; 
         let game = new Phaser.Game({
             type: Phaser.AUTO,
             width: window.innerWidth,
@@ -35,35 +33,39 @@ export default class Game extends React.Component{
             ],
             render:{
                 pixelArt: true
-            }
-        });
-    }       
-    else{
-        let game = new Phaser.Game({
-            type: Phaser.AUTO,
-            width: window.innerWidth,
-            height:window.innerHeight/1.15,
-            parent: 'phaser-game',
-            physics: {
-                default: 'arcade',
-                
-                arcade: {
-                    debug: true
-                }
             },
-            scene:[
-               LoadScene2,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
-            ],
-            render:{
-                pixelArt: true
-            }
+            assetsLoaded: false
         });
-    }
+
+        this.startSinglePlayer = function(){
+        
+                game.scene.start(CST.SCENES.CHAR);
+            
+        }
+
+        this.startMultiplayer = function(){
+            
+                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
+            
+        }
+
 
     }
 
     shouldComponentUpdate(){
         return false;
+    }
+
+    componentWillReceiveProps(newProps){
+    
+            if(newProps.gameType === 'single' && newProps.gameShouldStart){
+                console.log(newProps.gameType);
+                this.startSinglePlayer();
+            }
+            else if(newProps.gameShouldStart){
+                this.startMultiplayer();
+                console.log(newProps.gameType);
+            }
     }
 
     render(){
