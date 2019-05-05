@@ -265,7 +265,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      */
     kill(){
     
-        this.destroy();        
+        this.destroy();     
+
+        
     }
 
     /**
@@ -278,8 +280,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.healthPoints = this.healthPoints - damage;
        
         if( this.healthPoints <= 0 ){
-            this.kill();
-
+           
+            if(this.scene.mode ==='single'){
+                this.scene.player.healthPoints+=10;
+                this.sword_in_the_stone.healthPoints+=20;
+                this.scene.hpbar.regenHPBar(10);
+                this.sword_in_the_stone.building_bar.regenHPBar(20);
+                this.kill();}
+            else if(this.scene.mode ==='multi'){
+                this.scene.player1.healthPoints+=20;
+                this.scene.hpbar.regenHPBar(10);
+                this.kill();}
         }
     }
     /**

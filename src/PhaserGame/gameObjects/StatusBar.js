@@ -110,7 +110,7 @@ export class ManaBar extends Phaser.GameObjects.Image{
             this.currentMana = this.currentMana + regenAmount;
         }
         else{
-            console.log('Full Mana!');
+           // console.log('Full Mana!');
         }
     }
 

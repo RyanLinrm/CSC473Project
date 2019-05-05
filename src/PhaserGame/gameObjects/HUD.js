@@ -17,9 +17,9 @@ export class HUD {
         //Stauts bars : hp with a front bar and backing bar
         scene.emptybar = new emptyBar(scene, 130,scene.game.renderer.height- 21).setDepth(2);
         scene.emptybar.setScrollFactor(0);
-        scene.hpbar = new HpBar(scene, 130,scene.game.renderer.height- 20, 'hp', player.healthPoints, player.uid).setDepth(3);
-        scene.hpbar.setScrollFactor(0);
-        scene.hpbar.value=500;
+        this.hpbar = new HpBar(scene, 130,scene.game.renderer.height- 20, 'hp', player.healthPoints, player.uid).setDepth(3);
+        this.hpbar.setScrollFactor(0);
+        this.hpbar.value=500;
 
         //Mana bar
         scene.emptybar2 = new emptyBar(scene, 130,scene.game.renderer.height- 51).setDepth(2);
@@ -84,7 +84,7 @@ export class HUD {
         });
         scene.input.on('dragend', (pointer, unit) => {
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
-           if(scene.player.mana>5){
+           if(scene.player.mana>20){
                 if(unit.texture.key==='wolf'){              
                     scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
                     scene.player.mana-=50;
@@ -143,7 +143,7 @@ export class HUD {
     update(time,player,scene){
 
         if(player.beingAttacked===true){
-                scene.hpbar.cutHPBar(5);             
+            this.hpbar.cutHPBar(5);             
             }
 
         this.timer.setText( 'Timer: ' + Math.trunc(time/1000));
