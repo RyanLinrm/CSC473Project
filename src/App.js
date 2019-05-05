@@ -28,6 +28,7 @@ class App extends Component {
   }
 
   signInHandler = (signInState) => {
+    if(!this.state.showLeaderboard){
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
@@ -45,6 +46,28 @@ class App extends Component {
       });
     }
     this.setState({ showGame: !this.state.showGame });
+  }
+  else{
+    this.setState({
+       showLeaderboard: !this.state.showLeaderboard 
+      });
+    if (signInState === 'signedIn') {
+     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+
+      this.setState({ 
+        signInName:cognitoUser.username
+      });
+       
+       
+     });
+    }
+    else if(signInState == 'signIn'){
+      this.setState({ 
+        signInName:null
+      });
+    }
+    this.setState({ showGame: !this.state.showGame });
+  }
   }
 
   showSinglePlayerHandler = () => {
@@ -81,10 +104,20 @@ class App extends Component {
   }
 
   showLeaderBoardHandler = ()=>{
+    if(this.state.showGame){
     this.setState({ 
       showLeaderboard: !this.state.showLeaderboard,
       showbuttons: !this.state.showbuttons,
       infobutton: !this.state.infobutton});
+    }
+    else{
+      this.setState({ 
+        showLeaderboard: !this.state.showLeaderboard,
+        showGame: !this.state.showGame,
+        infobutton: !this.state.infobutton});
+
+      }
+    
   }
   
 
@@ -98,7 +131,7 @@ class App extends Component {
 
     return (
       <div className="App ">
-        {!this.state.showsingle && !this.state.showmulti &&
+        {!this.state.showsingle && !this.state.showmulti && !this.state.showTutorial &&
           <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
         }
         <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
@@ -140,14 +173,14 @@ class App extends Component {
     {this.state.showLeaderboard && (
         <div>
         <Leaderboard list={leaderBoardList}/>
-        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}  
 
     {this.state.showTutorial && (
       <div>
         <Tutorial />
-        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
     )}
 
@@ -155,14 +188,14 @@ class App extends Component {
       {this.state.showsingle && (
         <div>
         <Game name={"singleplayer"}/>
-        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
 
       {this.state.showmulti && (
         <div>
        <Game name={"multiplayer"}/>
-        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
       {this.state.infobutton &&
