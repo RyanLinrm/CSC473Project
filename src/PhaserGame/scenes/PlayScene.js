@@ -102,8 +102,8 @@ export class PlayScene extends Phaser.Scene{
             }
            
         };
-    
-       
+
+         
         //warning when manabar is too low for a special attack
         this.manawarning = this.add.text(150,73,'low mana').setDepth(3);
         this.manawarning.setScrollFactor(0);
@@ -130,6 +130,7 @@ export class PlayScene extends Phaser.Scene{
         //adjust player hit box
         this.player.setSize(30, 30);
         if(this.mode === 'single'){
+  
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
             this.sword_in_the_stone.setScale(0.5);
@@ -196,6 +197,23 @@ export class PlayScene extends Phaser.Scene{
                 
                 this.scene.start(CST.SCENES.GAMEOVER);
             }
+            //generate new enemy wave every Couple Of Seconds 
+            this.timecycle=0;
+            this.createEnemies = (time) =>{
+       
+                if(this.timeCycle < time){
+                    this.wolf=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
+                    this.ninjabot=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
+                    this.skull=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+                    this.demon=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+                    this.enemies.add(this.wolf);
+                    this.enemies.add(this.ninjabot);
+                    this.enemies.add(this.skull);
+                    this.enemies.add(this.demon);
+                    this.timeCycle = time +500;
+                }
+                
+            };  
             
         }
         if(this.mode === 'multi'){
@@ -204,6 +222,10 @@ export class PlayScene extends Phaser.Scene{
             this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,3,180,200).setScale(0.15);
             this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone").setScale(0.5);
+            //need to create some reward event
+            if(this.sword_in_the_stone.active===false){
+
+            }
             this.physics.add.collider(this.enemies, this.waterLayer);
 
       
@@ -292,9 +314,12 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
-        console.log(this.sword_in_the_stone.healthPoints);
+        this.createEnemies(time);
+        console.log(this.player.mana);
         this.hud.update(time,this.player,this);
-      
+        if(this.player.mana<=1000){
+        this.player.mana+=delta/1000;
+        this.manabar.regenManaBar(delta/1000);}
         //console.log(this.player.mana);
      
         //Handler character getting attacked by enemy, cooldown 3s
@@ -336,8 +361,8 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                /*this.player.mana -= 2;
-                this.manabar.cutManaBar(2);*/
+                this.player.mana -= 2;
+                this.manabar.cutManaBar(2);
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){

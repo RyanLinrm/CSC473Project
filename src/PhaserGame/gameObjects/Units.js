@@ -150,7 +150,6 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){
         if(target.uid!=tower.uid){
             let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
-            let angle = Math.atan((target.y - tower.y)/(target.x - tower.x));
             let vX = (target.x - tower.x)/distance;
             let vY = (target.y - tower.y)/distance;
             if(this.timeCycle < time){

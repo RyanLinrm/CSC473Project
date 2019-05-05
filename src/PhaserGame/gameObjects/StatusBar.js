@@ -46,7 +46,7 @@ export class HpBar extends Phaser.GameObjects.Image{
 
     regenHPBar(regenAmount){
         // regenrate HP bar to display HP regenration effect
-
+   
         if(this.currentHP !== this.value){
             let recoverate = regenAmount / this.value;
 
@@ -63,7 +63,7 @@ export class HpBar extends Phaser.GameObjects.Image{
 
 
 export class ManaBar extends Phaser.GameObjects.Image{
-    constructor(scene,x,y, type='Mana', value=100, uid){
+    constructor(scene,x,y, type='Mana', value=1000, uid){
         super(scene,x,y, 'playermanabar');
 
         //add the hp bar to the display list

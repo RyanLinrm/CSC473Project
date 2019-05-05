@@ -375,6 +375,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/attack/`] = newAttack;
 
             }
+            
 
             if (this.keyboard.W.isUp && this.keyboard.S.isUp) {
                 inputVelocity.y = 0;

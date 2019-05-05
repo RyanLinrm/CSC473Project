@@ -22,8 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.mana = 1000;
         this.healthPoints = healthPoints;
         this.movementSpeed=movementSpeed;
-        //adjust player hit box
-        this.setSize(34, 36);
+
     }
 
     createSpecialWeapon(scene){ //Need to limit range of attack

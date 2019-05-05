@@ -165,15 +165,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
     }
     
- 
-        
+    
         }
         
     
-       
 
     kill(){
-     
+    
         this.destroy();
         
     }
@@ -183,6 +181,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
        
         if( this.healthPoints <= 0 ){
             this.kill();
+            this.scene.dropitem();
+
         }
     }
     
@@ -328,6 +328,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 }
 
     update(time, delta){
+        
         this.isInjured(time);
         this.beingAttacked=false;
         //We can add a check so if the enemy is within a certain distance of a player it can launch an attack.
