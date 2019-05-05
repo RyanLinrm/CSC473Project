@@ -80,7 +80,6 @@ export class LoadScene extends Phaser.Scene{
     }
 
     create(){
-      //  this.scene.start(CST.SCENES.MENU);
         this.game.assetsLoaded = true;
         this.removeLoadingBar();
     }
