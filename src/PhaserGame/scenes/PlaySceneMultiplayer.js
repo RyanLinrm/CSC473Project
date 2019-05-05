@@ -34,6 +34,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
 
     createPlayer = (id,position,velocity) =>{
+      
         console.log("CreatingPlayer");
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
             this.temp = snapShot.val();
@@ -167,6 +168,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         else if(this.spritekey == "rider"){
         this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,500,200,this.playerID).setScale(0.6);
         }
+        this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
         this.player1.setVisible(true);
