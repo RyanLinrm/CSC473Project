@@ -28,6 +28,7 @@ class App extends Component {
   }
 
   signInHandler = (signInState) => {
+    if(!this.state.showLeaderboard){
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
@@ -45,6 +46,28 @@ class App extends Component {
       });
     }
     this.setState({ showGame: !this.state.showGame });
+  }
+  else{
+    this.setState({
+       showLeaderboard: !this.state.showLeaderboard 
+      });
+    if (signInState === 'signedIn') {
+     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+
+      this.setState({ 
+        signInName:cognitoUser.username
+      });
+       
+       
+     });
+    }
+    else if(signInState == 'signIn'){
+      this.setState({ 
+        signInName:null
+      });
+    }
+    this.setState({ showGame: !this.state.showGame });
+  }
   }
 
   showSinglePlayerHandler = () => {
@@ -76,10 +99,20 @@ class App extends Component {
   }
 
   showLeaderBoardHandler = ()=>{
+    if(this.state.showGame){
     this.setState({ 
       showLeaderboard: !this.state.showLeaderboard,
       showbuttons: !this.state.showbuttons,
       infobutton: !this.state.infobutton});
+    }
+    else{
+      this.setState({ 
+        showLeaderboard: !this.state.showLeaderboard,
+        showGame: !this.state.showGame,
+        infobutton: !this.state.infobutton});
+
+      }
+    
   }
   
 
