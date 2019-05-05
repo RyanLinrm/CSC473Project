@@ -6,6 +6,7 @@ import './App.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
+import Tutorial from './Tutorial'
 
 import * as firebase from 'firebase';
 
@@ -21,13 +22,22 @@ class App extends Component {
       showbuttons: false,
       infobutton: true,
       signInName: null,
-      gameType: "single"
+      gameType: "single",
+      showTutorial: false
     };
 
     
   }
 
+  showTutorialHandler = () => {
+    this.setState({ 
+      showTutorial: !this.state.showTutorial,
+      showbuttons: !this.state.showbuttons,
+      infobutton: !this.state.infobutton});
+  }
+
   signInHandler = (signInState) => {
+    if(!this.state.showLeaderboard){
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
@@ -45,6 +55,28 @@ class App extends Component {
       });
     }
     this.setState({ showGame: !this.state.showGame });
+  }
+  else{
+    this.setState({
+       showLeaderboard: !this.state.showLeaderboard 
+      });
+    if (signInState === 'signedIn') {
+     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+
+      this.setState({ 
+        signInName:cognitoUser.username
+      });
+       
+       
+     });
+    }
+    else if(signInState == 'signIn'){
+      this.setState({ 
+        signInName:null
+      });
+    }
+    this.setState({ showGame: !this.state.showGame });
+  }
   }
 
   showSinglePlayerHandler = () => {
@@ -76,10 +108,20 @@ class App extends Component {
   }
 
   showLeaderBoardHandler = ()=>{
+    if(this.state.showGame){
     this.setState({ 
       showLeaderboard: !this.state.showLeaderboard,
       showbuttons: !this.state.showbuttons,
       infobutton: !this.state.infobutton});
+    }
+    else{
+      this.setState({ 
+        showLeaderboard: !this.state.showLeaderboard,
+        showGame: !this.state.showGame,
+        infobutton: !this.state.infobutton});
+
+      }
+    
   }
   
 
@@ -93,7 +135,7 @@ class App extends Component {
 
     return (
       <div className="App ">
-        {!this.state.showsingle && !this.state.showmulti &&
+        {!this.state.showsingle && !this.state.showmulti && !this.state.showTutorial && 
           <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
         }
         <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
@@ -117,7 +159,7 @@ class App extends Component {
 
             <Row className="form-group">
               <Col>
-                <Button className="col-md-2" variant="info">Tutorial</Button>
+                <Button onClick={this.showTutorialHandler} className="col-md-2" variant="info">Tutorial</Button>
               </Col>
             </Row>
 
@@ -139,10 +181,19 @@ class App extends Component {
         </div>
       )}  
 
+    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial &&(
       <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       </div>
+    )
+    }
 
+    {this.state.showTutorial && (
+      <div>
+        <Tutorial />
+        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
+        </div>
+    )}
 
       {this.state.showsingle && (
         <div>
