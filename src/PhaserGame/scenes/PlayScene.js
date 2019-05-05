@@ -78,10 +78,10 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,this.playerUid);
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'single');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,this.playerUid).setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'single').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -120,15 +120,6 @@ export class PlayScene extends Phaser.Scene{
 
 
         //adding buildings for each player
-        
-        this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
-        this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-        this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
-        this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
-        this.towers.add(this.building); //Move into unit class
-        this.towers.add(this.university);
-        this.towers.add(this.pyramid);
-        this.towers.add(this.magicstone);
 
         //adding resrouces to the middle 
         this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
@@ -136,26 +127,28 @@ export class PlayScene extends Phaser.Scene{
         this.player.setCollideWorldBounds(true);
         this.physics.add.collider(this.enemies, this.enemies);
         this.physics.add.collider(this.player, this.enemies);
-      
+        //adjust player hit box
+        this.player.setSize(30, 30);
         if(this.mode === 'single'){
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
-        //adjust player hit box
-        this.player.setSize(34, 36);
-        //The enemies  
-        this.wolf = new Enemy(this, 200, 200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99,200,this.playerUid);
-        this.ninjabot= new Enemy(this, 300, 350, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700,this.playerUid) ;
-  
-        
-        //this.container= this.add.container(200, 200);
-        //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
-   
-        //this.container.add(this.skill)
-        this.enemies.add(this.wolf); ///Need to move this into the enemy class
-        this.enemies.add(this.ninjabot);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,180,200).setScale(0.15);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200,'single').setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
+            this.towers.add(this.building); //Move into unit class
+            this.towers.add(this.university);
+            this.towers.add(this.pyramid);
+            this.towers.add(this.magicstone);
+            //The enemies  
+            this.wolf = new Enemy(this, 200, 200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,20,99,200,'single');
+            this.ninjabot= new Enemy(this, 300, 350, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700,'single') ;
+            //this.container= this.add.container(200, 200);
+            //this.demon1=new Enemy(this,300,300,"demon1","demon1_01",this.player,2,200).setScale(1.5);
+            //this.container.add(this.skill)
+            this.enemies.add(this.wolf); ///Need to move this into the enemy class
+            this.enemies.add(this.ninjabot);
         }
-        /*this.newenemyposx=hUD.newenemyposx;
-        this.newenemyposy=hUD.newenemyposy;
-        console.log(this.newenemyposx)*/
+ 
         //input and phyics
         this.keyboard = this.input.keyboard.addKeys("W, A, S, D, SHIFT");     
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -237,6 +230,7 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
+        console.log(this.player.healthPoints);
         this.hud.update(time,this.player,this);
         //console.log(this.player.mana);
      

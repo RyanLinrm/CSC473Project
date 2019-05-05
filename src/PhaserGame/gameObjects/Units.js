@@ -34,9 +34,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.range=range;
         
         this.target=scene.player;
-
         this.uid = uid;
-
         this.playersTower = false;
         this.setPlayersTower = ()=>{
             this.playersTower = true;

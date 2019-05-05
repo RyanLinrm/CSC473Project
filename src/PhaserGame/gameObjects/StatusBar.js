@@ -12,7 +12,7 @@ export class emptyBar extends Phaser.GameObjects.Image{
 }
 
 export class HpBar extends Phaser.GameObjects.Image{
-    constructor(scene,x,y, type='HP', value=100, uid){
+    constructor(scene,x,y, type='HP', value=500, uid){
         super(scene,x,y, 'playerhpbar');
 
         //add the hp bar to the display list
