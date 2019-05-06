@@ -84,7 +84,7 @@ export class HUD {
         });
         scene.input.on('dragend', (pointer, unit) => {
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
-           if(scene.player.mana>20){
+           if(scene.player.mana>5){
                 if(unit.texture.key==='wolf'){              
                     scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
                     scene.player.mana-=50;

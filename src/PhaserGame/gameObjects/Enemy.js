@@ -286,8 +286,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             if(this.scene.mode ==='single'){
                 if(this.scene.player.active&&this.sword_in_the_stone.active){
                 this.scene.player.healthPoints+=10;
+                this.scene.player.mana+=10;
                 this.sword_in_the_stone.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
+                this.scene.manabar.regenManaBar(10);
                 this.sword_in_the_stone.building_bar.regenHPBar(20);
                 this.kill();}}
             else if(this.scene.mode ==='multi'){
