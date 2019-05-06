@@ -33,6 +33,7 @@ const phaserMock = {
                         y:0
                     }
                 };
+                this.setSize = (a, b) =>{};
             },
            
         }

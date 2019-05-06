@@ -2,8 +2,8 @@ import {Player} from "./Player";
 import { Bullet, sword } from "./Projectiles";
 import { Units } from "./Units";
 export class Melee extends Player{
-    constructor(scene,x,y,key,textureName,healthPoints = 100,movementSpeed=64,uid){
-        super(scene,x,y,key,textureName,healthPoints = 500);
+    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid){
+        super(scene,x,y,key,textureName,characterId, healthPoints, movementSpeed, uid);
         this.movementSpeed=movementSpeed;
         this.scene=scene;
         this.timeAlive = 0;

@@ -1,3 +1,6 @@
+ReactProject/
+ReactProject/amplify
+ReactProject/src
 dist/*.js
 dist/*.map
 dist/*.html
