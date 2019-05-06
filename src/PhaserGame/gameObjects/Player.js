@@ -69,7 +69,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         scene.updateSprite(this); 
         this.createWeapon(scene);
         this.createSpecialWeapon(scene);
-
+        this.stopattack=30;
         /**
          * amount of mana of the player has at the momment
          * @name Player#mana
@@ -90,10 +90,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          * @type number
          */
         this.movementSpeed=movementSpeed;
-
-
-        //adjust player hit box
-        this.setSize(34, 36);
     }
 
     /**
@@ -208,6 +204,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     takeDamage(damage){
         if(this.canbeAttacked===true){
         this.healthPoints = this.healthPoints - damage;
+        
        }
 
         if( this.healthPoints <= 0 ){
@@ -238,8 +235,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
  
             this.count=time;
         }   
-    
-        if(time>this.count+100)
+        if(this.scene.mode==="single") this.stopattack=8;
+        if(time>this.count+this.stopattack)
             {this.tint=0xffffff;
              this.canbeAttacked=true;
             }
