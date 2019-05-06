@@ -7,3 +7,6 @@
 
 * Product owner name：Hongjie Huang
 
+# Documentation
+* https://ryanlinrm.github.io/CSC473Project/
+

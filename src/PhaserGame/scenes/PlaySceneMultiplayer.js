@@ -9,7 +9,7 @@ import { ConsoleLogger } from '@aws-amplify/core';
 import {HUD} from "../gameObjects/HUD";
 import {Enemy} from "../gameObjects/Enemy";
 import spriteAnimations from '../gameObjects/Animations';
-
+import { Units } from "../gameObjects/Units";
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
     constructor() {
         super(CST.SCENES.PLAYMULTIPLAYER);
@@ -29,33 +29,39 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
         this.spritekey = data.chartype;
+   
     }
 
 
     createPlayer = (id,position,velocity) =>{
+      
         console.log("CreatingPlayer");
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
             this.temp = snapShot.val();
         })
         console.log(this.temp);
         if(this.temp == "bomber"){
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,100,64,id);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,500,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,100,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,500,200,id).setScale(0.6);
         }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
         if(position.x === 300 && position.y === 300){
             this.pyramid.assignID(id);
+         
         }
         else if(position.x === 1000 && position.y === 300){
             this.university.assignID(id);
+   
         }
         else if(position.x === 300 && position.y === 1000){
             this.magicstone.assignID(id);
+
         }
         else this.building.assignID(id);
-
+         
+ 
         this.enemyPlayers.add(this.otherPlayers[id]);
         //this.otherPlayers[id].immovable=true;
         //assign collider to this new player
@@ -125,7 +131,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         }
         
         else if(type==='skull'){              
-            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,600,playerid).setScale(0.9);
+            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
             this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,200,0.7,2,200,70,600, playerid).setScale(1.5);
@@ -148,7 +154,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     create() {
         //this.spritekey = "bomber";
         super.create(this.playerID, 'multi');
-
+   
       
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
@@ -157,28 +163,32 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,100,64,this.playerID);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,500,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,100,200,this.playerID).setScale(0.6);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,500,200,this.playerID).setScale(0.6);
         }
+        this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
         this.player1.setVisible(true);
         this.player.setVisible(false);
 
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
+   
         else if(this.seatNumber === 2) this.university.assignID(this.playerID);
+     
         else if(this.seatNumber === 3) this.building.assignID(this.playerID);
+   
         else this.magicstone.assignID(this.playerID);
-
+     
        let countDownText= this.add.text(this.player.x, this.player.y, 5, { fontFamily: 'Arial', fontSize: 700, color: '#ffffff' });
        countDownText.setOrigin(0.5,0.5); 
 
        this.cameras.main.startFollow(this.player1);
        this.player.kill();
        this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
-
+       this.manabar=this.hUD.manabar;
        //this.player1.immovable=true;
         this.physics.add.collider(this.player1, this.CollisionLayer);
         this.physics.add.collider(this.player1, this.waterLayer);
@@ -329,7 +339,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     }
 
-    update(){
+    update(time){
+        this.hUD.update(time,this.player1,this);
         
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
@@ -364,6 +375,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/attack/`] = newAttack;
 
             }
+            
 
             if (this.keyboard.W.isUp && this.keyboard.S.isUp) {
                 inputVelocity.y = 0;
