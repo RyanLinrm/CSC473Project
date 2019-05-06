@@ -11,10 +11,14 @@
 
 .box{
     display: inline-block;
-    width: 100%;
+    width: 90%;
     height: 40%;
 }
  
 .filler{
     height: 40%
+}
+
+.classlist{
+    display: inline-block;
 }

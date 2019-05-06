@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import './Tutorial.css';
 import basicsprite from './tutorialimages/basicsprite.png'
+import charselect from './tutorialimages/characterselect.png'
+import HUD from './tutorialimages/playerHud.png'
+
 export default class Tutorial extends Component {
   state = {
     nextCounter: 0
@@ -37,19 +40,24 @@ export default class Tutorial extends Component {
         {this.state.nextCounter == 1 && (
             <div>
 
-            <h2>use the W, A, S, D buttons to move</h2>
+            <h2>Choose your character wisely</h2>
             <div className='filler'> </div>
             <div className='box'>
             <Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
               Previous{" "}
             </Button>
-            <Button className='next' onClick={this.inccount}>NEXT </Button>
+            <img src={charselect} />
+            <Button className='next' onClick={this.inccount}>NEXT </Button>           
             </div>
-          </div>
+            <ul className='class list'>
+            <li><h3>the bomber class</h3></li>
+            <li><h3>the Rider class</h3></li>
+            </ul>
+            </div>
         )}
         {this.state.nextCounter == 2 && (
           <div>
-          <h2> Earn LeaderBoard Points by destoying other buildings and other players</h2>
+          <h2> Movement </h2>
           <div className='filler'> </div>
           <div className='box'>
           <Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
@@ -61,7 +69,31 @@ export default class Tutorial extends Component {
         )}
         {this.state.nextCounter == 3 && (
           <div>
-          <h2> The Objective of this game is to</h2>
+          <h2> Win Multiplayer by being the last building standing  </h2>
+          <div className='filler'> </div>
+          <div className='box'>
+          <Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          </Button>
+          <Button className='next' onClick={this.inccount}>NEXT </Button>
+          </div>
+        </div>
+        )}
+        {this.state.nextCounter == 4 && (
+          <div>
+          <h2> Movement </h2>
+          <div className='filler'> </div>
+          <div className='box'>
+          <Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          </Button>
+          <Button className='next' onClick={this.inccount}>NEXT </Button>
+          </div>
+        </div>
+        )}
+        {this.state.nextCounter == 5 && (
+          <div>
+          <h2> Drag and drop from your player HUD</h2>
           <div className='filler'> </div>
           <div className='box'>
           <Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
