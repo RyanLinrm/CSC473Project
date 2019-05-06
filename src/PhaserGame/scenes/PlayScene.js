@@ -1,7 +1,3 @@
-//Play scene for our basic playground
-//All the functions and character added in this file will be temporary
-//just for demo
-//Use scene list to generate keyword
 import Phaser from 'phaser';
 
 import { CST } from "../CST";
