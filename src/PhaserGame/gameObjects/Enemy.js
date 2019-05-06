@@ -209,7 +209,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.findneartower = () =>{
             
             if(this.scene.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
-                this.changetarget(this.sword_in_the_stone);}
+                if(this.sword_in_the_stone.active)
+                this.changetarget(this.sword_in_the_stone);
+                else this.changetarget(this.scene.player);}
             for (var i = 0; i < 4; i++) {
                 if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
@@ -282,15 +284,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         if( this.healthPoints <= 0 ){
            
             if(this.scene.mode ==='single'){
+                if(this.scene.player.active&&this.sword_in_the_stone.active){
                 this.scene.player.healthPoints+=10;
                 this.sword_in_the_stone.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
                 this.sword_in_the_stone.building_bar.regenHPBar(20);
-                this.kill();}
+                this.kill();}}
             else if(this.scene.mode ==='multi'){
+                if(this.scene.player1.active){
                 this.scene.player1.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
-                this.kill();}
+                this.kill();}}
         }
     }
     /**
@@ -382,9 +386,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             this.container.add(this.demonskill);  
             this.container.x=this.x;
             this.container.y=this.y;*/
-            if(this.healthPoints<=0){
+           /* if(this.healthPoints<=0){
                 this.container.getChildren().map(child => child.destroy());
-            }
+            }*/
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('demon1_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
