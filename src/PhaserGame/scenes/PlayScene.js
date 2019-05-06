@@ -218,7 +218,7 @@ export class PlayScene extends Phaser.Scene{
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone");
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,50);
             this.sword_in_the_stone.setScale(0.5);
             this.sword_in_the_stone.uid=this.player.uid;
             this.towers.add(this.sword_in_the_stone);
@@ -289,7 +289,7 @@ export class PlayScene extends Phaser.Scene{
                     this.enemies.add(this.ninjabot);
                     this.enemies.add(this.skull);
                     this.enemies.add(this.demon);
-                    this.timecycle = time +3000;
+                    this.timecycle = time +5000;
                 }
                 
             };  

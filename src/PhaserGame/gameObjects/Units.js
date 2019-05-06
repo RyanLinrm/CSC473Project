@@ -206,18 +206,23 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     towerAttack(tower,target,time){
-/*
+
+        let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
+        let vX = (target.x - tower.x)/distance;
+        let vY = (target.y - tower.y)/distance;
         let shortestDistance=1000000000;
+        this.scene.enemies.getChildren().map(child => this.targetlist.push(child));  
+        this.targetlist.push(this.scene.player);
         this.findnearenemy = () =>{
-            for (var i = 0; i < len; i++) {
-                if(this.enemies[i].active){
-                let enemydistance=this.distance(tower,this.towers[i]);
+            for (let i = 0; i < this.targetlist.length; i++) {
+                if(this.targetlist[i].active){
+                let enemydistance=this.distance(tower,this.targetlist[i]);
                 if (enemydistance<shortestDistance){
                     shortestDistance=enemydistance;      
-                    this.changetarget(this.enemies[i]);}
+                    this.changetarget(this.targetlist[i]);}
                 }
-            } };  */
-       
+            } };  
+
         if( this.scene.otherPlayers !== undefined && Object.keys(this.scene.otherPlayers).length > 0){
             this.enemyplayers = this.scene.otherPlayers;
             this.enemyplayers.self = this.scene.player1;
@@ -228,19 +233,25 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
                 if(Math.abs(player.x - tower.x) < this.Range && Math.abs(player.y - tower.y) < this.Range){
                     if(player.active && player.uid!=tower.uid){
                          this.changetarget(player);}
-                        }}
-        }     
-        if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){
-        if(target.uid!=tower.uid){
-            let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
-            let vX = (target.x - tower.x)/distance;
-            let vY = (target.y - tower.y)/distance;
-            if(this.timeCycle < time){
-                this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
-                this.timeCycle = time + tower.cooldown ;
-            }
-        }}
-}
+                    }}
+        }
+        if(this.targetlist.length>0){
+            this.findnearenemy();
+            if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){ 
+                if(target.uid!=tower.uid){
+                    if(this.timeCycle < time){
+                        this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
+                        this.timeCycle = time + tower.cooldown ;}}
+      
+        } 
+       
+       
+        
+        
+        }    
+    }
+        
+
    /**
     * The update method that gets called by the playscene 60 times a second.
     * Handles isInjured and towerAttack.
