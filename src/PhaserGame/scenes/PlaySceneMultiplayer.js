@@ -174,6 +174,17 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.player1.setVisible(true);
         this.player.setVisible(false);
 
+
+
+        let bot1StartingPostion = this.startingPosFromTowerNum(2);
+        let bot1 = new Player(this,bot1StartingPostion.x,bot1StartingPostion.y, "p1", "p1_01.png",0,500,64,2);
+        bot1.becomeBot();
+        bot1.setSize(29, 29);
+        this.updateSprite(bot1);
+
+
+
+
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
    
         else if(this.seatNumber === 2) this.university.assignID(this.playerID);
@@ -405,6 +416,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
 
 
+    }
+
+    wonGame = () => {
+        this.GameIsGoing = false;
+        let countDownText = this.add.text(this.player1.x, this.player1.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+        countDownText.setOrigin(0.5, 0.5);
     }
 
 

@@ -90,6 +90,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          * @type number
          */
         this.movementSpeed=movementSpeed;
+
+
+        /**
+         * value to check if player is a bot and not an actual human
+         * @name Player#isBot
+         * @type boolean
+         */
+        this.isBot = false;
+
+
+    /**
+     * @instance
+     * @memberof Player
+     * @method becomeBot
+     * @description function makes the player into a bot switching its update function to botUpdate. Permanant change for this object
+     */
+        this.becomeBot = ()=>{
+            this.isBot = true;
+            this.update = this.botUpdate.bind(this,scene);
+        }
+      
     }
 
     /**
@@ -312,6 +333,34 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.beingAttacked=false;
         //Player Update Function
         this.player_movement();
+    }
+
+
+    botUpdate(scene,time){
+        let towers = scene.towers;
+        let players = scene.players;
+        let towerDistance = 100;
+
+        let maxDistance = 1000000000;
+        let distance = 0;
+        let closestTower = null;
+        towers.children.entries.forEach((a)=>{
+            let dX = a.x - scene.player1.x;
+            let dY = a.y - scene.player1.y;
+            distance = Math.sqrt((dX * dX) + (dY * dY));
+ 
+            if(distance <= maxDistance){
+                maxDistance = distance;
+                closestTower = a;
+            }
+        });
+
+      if(maxDistance < 250){
+        closestTower.tint = 0x0000ff;
+      }
+      else{
+        closestTower.tint = 0xff0000;
+      }
     }
 
 
