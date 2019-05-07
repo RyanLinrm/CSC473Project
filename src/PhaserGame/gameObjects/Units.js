@@ -230,10 +230,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     
             for( let i = 0; i < this.enemyplayerid.length; i++ ){
                 let player = this.enemyplayers[this.enemyplayerid[i]];
-                if(Math.abs(player.x - tower.x) < this.Range && Math.abs(player.y - tower.y) < this.Range){
-                    if(player.active && player.uid!=tower.uid){
-                         this.changetarget(player);}
-                    }}
+                this.targetlist.push(player)
+                }
+            this.findnearenemy();
+            console.log(this.targetlist)
         }
         if(this.targetlist.length>0){
             this.findnearenemy();
@@ -241,13 +241,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
                 if(target.uid!=tower.uid){
                     if(this.timeCycle < time){
                         this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
-                        this.timeCycle = time + tower.cooldown ;}}
-      
-        } 
-       
-       
-        
-        
+                        this.timeCycle = time + tower.cooldown ;
+                    }
+                }
+            }               
         }    
     }
         

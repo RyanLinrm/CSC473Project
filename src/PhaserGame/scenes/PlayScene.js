@@ -218,7 +218,7 @@ export class PlayScene extends Phaser.Scene{
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,50);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100);
             this.sword_in_the_stone.setScale(0.5);
             this.sword_in_the_stone.uid=this.player.uid;
             this.towers.add(this.sword_in_the_stone);
@@ -227,7 +227,7 @@ export class PlayScene extends Phaser.Scene{
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
             this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,4,180,200).setScale(1.5);
 
-            //The enemies are in four different towers.
+          /*  //The enemies are in four different towers.
             this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf2=new Enemy(this, 1000,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
@@ -275,7 +275,7 @@ export class PlayScene extends Phaser.Scene{
             this.enemies.add(this.ninjabot1);
             this.enemies.add(this.ninjabot2);
             this.enemies.add(this.ninjabot3);
-            this.enemies.add(this.ninjabot4);
+            this.enemies.add(this.ninjabot4);*/
             // if all the enemy towers are destoryed, you win the game
          //generate new enemy wave every Couple Of Seconds 
             this.timecycle=0;
@@ -289,7 +289,7 @@ export class PlayScene extends Phaser.Scene{
                     this.enemies.add(this.ninjabot);
                     this.enemies.add(this.skull);
                     this.enemies.add(this.demon);
-                    this.timecycle = time +5000;
+                    this.timecycle = time +4000;
                 }
                 
             };  
@@ -320,6 +320,7 @@ export class PlayScene extends Phaser.Scene{
         this.Rbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         this.Qbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.Zbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
         //Map
 
         //add in our map
@@ -344,6 +345,7 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.player, this.CollisionLayer);
         this.physics.add.collider(this.player, this.waterLayer);
         this.physics.add.collider(this.enemies, this.CollisionLayer);
+        
         //Map collision debug mode
         this.debugGraphics = this.add.graphics();
  
@@ -370,9 +372,58 @@ export class PlayScene extends Phaser.Scene{
         this.canAttack = 0; //If the enemy can be attacked
 
         this.player_scale = 2;
+        this.cooldowntime = 0;
 
     }
 
+        createUltimate = (time) =>{
+          //  console.log(time);
+             // console.log(this.player.x,this.player.y)
+           
+                this.manabar.cutManaBar(200);
+                this.demonskill=this.add.sprite(this.player.x, this.player.y, 'a2_01').setScale(1.5)
+                this.demonskill.play('ab2');
+                this.enemylist=[];
+                this.dendtime = time + 2000;
+                this.cooldowntime = time + 2001;
+                this.enemies.getChildren().map(child => this.enemylist.push(child));  
+                for (let i = 0; i < this.enemylist.length; i++) {
+                    if (this.enemylist[i].uid!=this.player.uid){
+                        if (Math.abs(this.enemylist[i].x - this.player.x) < 200 && Math.abs(this.enemylist[i].y - this.player.y) < 200){ 
+                        this.enemylist[i].kill();       
+                        }
+                    }
+                }
+            }
+            RoomUltimate = () =>{
+              
+                this.manabar.cutManaBar(200);
+                this.enemylist=[];
+                this.enemies.getChildren().map(child => this.enemylist.push(child));  
+                for (let i = 0; i < this.enemylist.length; i++) {
+                    if (this.enemylist[i].uid!=this.player.uid){
+                        if (Math.abs(this.enemylist[i].x - this.player.x) < 100 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
+                            this.enemylist[i].body.immovable=true;
+                            this.enemylist[i].body.moves=false;
+                            this.enemylist[i].attackRange=0;
+                            this.enemylist[i].tint=0x888C8D;
+                          /*  this.wall1=new Enemy(this,this.enemylist[i].x+20,this.enemylist[i].y+20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall2=new Enemy(this,this.enemylist[i].x-20,this.enemylist[i].y-20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall3=new Enemy(this,this.enemylist[i].x+20,this.enemylist[i].y-20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall4=new Enemy(this,this.enemylist[i].x-20,this.enemylist[i].y+20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall1.body.immovable=true;
+                            this.wall1.body.moves=false;
+                            this.wall2.body.immovable=true;
+                            this.wall2.body.moves=false;
+                            this.wall3.body.immovable=true;
+                            this.wall3.body.moves=false;
+                            this.wall4.body.immovable=true;
+                            this.wall4.body.moves=false;*/
+                        }
+                    }
+                }
+               }  
+                
     /**
      * returns the position the player should start out with depending on the tower they own
      * 
@@ -402,10 +453,11 @@ export class PlayScene extends Phaser.Scene{
      * @param {number} delta 
      */
     update(time,delta) {
+        //console.log(this.player.mana)
+        this.count=0;
         if(this.GameIsGoing === false){
             return;
         }
-        
         // if sword_in_the_stone is destoryed or the player's hp is below 0
         // you lsoe the game       
         if(this.mode==="single"){
@@ -414,8 +466,7 @@ export class PlayScene extends Phaser.Scene{
                 
                 this.scene.start(CST.SCENES.GAMEOVER);
         }}
-        this.createEnemies(time);
-        console.log(this.player.healthPoints)
+       // console.log(this.player.healthPoints)
         this.hud.update(time,this.player,this);
         if(this.player.mana<=1000){
         this.player.mana+=delta/1000;
@@ -523,19 +574,31 @@ export class PlayScene extends Phaser.Scene{
             if (Phaser.Input.Keyboard.JustDown(this.Rbar))
             {   
                 //test on regenerate hp function
-                this.hpbar.regenHPBar(10);
+                //his.hpbar.regenHPBar(10);
 
                 if(this.player_scale === 2){
                     this.player.setScale(this.player_scale);
                     this.player_scale  --;
+                    this.player.movementSpeed=200;
                 }
                 else{
                     this.player.setScale(this.player_scale);
                     this.player_scale  ++;
+                    this.player.movementSpeed=150;
                 }
             }
-            // this.manabar.update(time,delta);
-        }
+            if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
+            {  
+                this.createUltimate(time);
+            }
+            if (Phaser.Input.Keyboard.JustDown(this.Zbar))
+            {  
+                this.RoomUltimate();
+            }
+            if(this.dendtime < time){
+                this.demonskill.destroy();
+            }
+    }
 
     /**
      * @instance
