@@ -10,16 +10,86 @@ import {HUD} from "../gameObjects/HUD";
 import {Enemy} from "../gameObjects/Enemy";
 import spriteAnimations from '../gameObjects/Animations';
 import { Units } from "../gameObjects/Units";
+
+/**
+ * PlaySceneMultiplayer - extends Phaser.Scene
+ * The main scene where the multiplayer game plays out. Has connetions to the firebase where the multiplayer data synchronizes. 
+ */
 export class PlaySceneMultiplayer extends PlayScene{ //The difference here is that everything is going to be rendered based on the database 
+    
+    /**
+     * creates the class memebers needed for the multiplayer scene calls the constructor of the playscene
+     */
     constructor() {
         super(CST.SCENES.PLAYMULTIPLAYER);
+
+    /**
+     * The key is the path in the database and the value is what that path should be in the database.
+     * anything inside updates will be updates in the update function and then deleted
+     * Updates to the database 60 times a second
+     *
+     * @name Player#updates
+     * @type object
+     */
         this.updates = {};
+
+    /**
+     * Object that contains all the player objects for the players
+     * key is the ID of the player and the value is the actual player sprite in phaser
+     * 
+     * @name Player#otherPlayers
+     * @type object
+     */
         this.otherPlayers = {};
+
+    /**
+     * Scene type. 
+     * 
+     * @name Player#sceneType
+     * @type string
+     */
         this.sceneType = "Multiplayer";
+
+    /**
+     * varible which tells if the current user is the creator of the multiplayer game.
+     * 
+     * @name Player#isCreator
+     * @type boolean
+     */
         this.isCreator = false;
+
+    /**
+     * if the game is currently going for the actual player
+     * 
+     * @name Player#GameIsGoing
+     * @type boolean
+     */
         this.GameIsGoing = false; 
+
+    /**
+     * the seatnumber which corresponds to the position in the game and id associated with the leaderboard
+     * 
+     * @name Player#seatNumber
+     * @type number
+     */
         this.seatNumber = -1;
 
+    /**
+     * the number of bots this current user should create in their game
+     * 
+     * @name Player#bots
+     * @type number
+     */
+        this.bots = 0;
+
+    /**
+     * the array should contain only strings which correspond to paths in the database where a listener is currently active
+     * any database listener created should also have the path added to this array
+     * when the game ends all the listeners in the array are turned off
+     * 
+     * @name Player#databaseListners
+     * @type array
+     */
         this.databaseListners = [];
         //Checking who is the HostID   
     }
@@ -29,6 +99,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.gameRoom = data.roomkey;
         this.seatNumber = data.seatNumber;
         this.spritekey = data.chartype;
+        this.bots = 3;
    
     }
 
@@ -120,6 +191,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/inGame`).off();
     }
 
+    createBotAt = (towerNumber)=>{
+        let playerPos = this.startingPosFromTowerNum(towerNumber);
+        let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_01.png",0,500,64,"bot" + towerNumber);
+        bot.becomeBot();
+        this.updateSprite(bot);
+    }
+
     addNewEnemy = (x, y, type, playerid) => {
 
         if(type==='wolf'){              
@@ -176,13 +254,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
 
 
-        let bot1StartingPostion = this.startingPosFromTowerNum(2);
-        let bot1 = new Player(this,bot1StartingPostion.x,bot1StartingPostion.y, "p1", "p1_01.png",0,500,64,2);
-        bot1.becomeBot();
-        bot1.setSize(29, 29);
-        this.updateSprite(bot1);
-
-
 
 
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
@@ -208,6 +279,14 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        this.enemyPlayers.add(this.player1);
        //player collide handler with damage item
        this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
+
+
+        if (this.bots > 0) {
+            for (let i = 1; i <= this.bots; i++) {
+                console.log(5 - i);
+                this.createBotAt(5 - i);
+            }
+        }
 
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {
