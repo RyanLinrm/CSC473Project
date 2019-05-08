@@ -95,11 +95,54 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     init(data){
+
+    /**
+     * The id of the player
+     *
+     * @name Player#playerID
+     * @type number
+     */
         this.playerID = data.playerID;
+
+    /**
+     * The id of the player
+     *
+     * @name Player#gameRoom
+     * @type number
+     */
         this.gameRoom = data.roomkey;
+
+    /**
+     * The seatnumber of the player in the game
+     *
+     * @name Player#seatNumber
+     * @type number
+     */
         this.seatNumber = data.seatNumber;
+
+    /**
+     * The spritekey of the player
+     *
+     * @name Player#spritekey
+     * @type number
+     */
         this.spritekey = data.chartype;
-        this.bots = 3;
+
+    /**
+     * The bots in the game
+     *
+     * @name Player#bots
+     * @type number
+     */
+        this.bots = 0;
+
+    /**
+     * The amount of players in the game
+     *
+     * @name Player#players
+     * @type number
+     */
+        this.players = data.numOfPlayers;
    
     }
 
@@ -281,12 +324,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
 
 
-        if (this.bots > 0) {
-            for (let i = 1; i <= this.bots; i++) {
-                console.log(5 - i);
-                this.createBotAt(5 - i);
-            }
-        }
 
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {

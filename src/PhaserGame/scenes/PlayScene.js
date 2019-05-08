@@ -70,6 +70,14 @@ export class PlayScene extends Phaser.Scene{
      * @type number
      */
         this.spritekey = data
+
+    /**
+     * The amount of players in the game
+     *
+     * @name Player#players
+     * @type number
+     */
+        this.players = 1;
     }
 
     /**

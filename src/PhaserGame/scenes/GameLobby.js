@@ -168,7 +168,8 @@ export class GameLobby extends Phaser.Scene {
                     roomkey : this.roomkeys,
                     seatNumber: this.seatNumber,
                     chartype: this.playertype,
-                    numOfBots: this.botToCreate
+                    numOfBots: this.botToCreate,
+                    numOfPlayers: seat
                 });
                 this.ref.child(key).off();
             }
@@ -178,7 +179,8 @@ export class GameLobby extends Phaser.Scene {
                     roomkey : this.roomkeys,
                     seatNumber: this.seatNumber,
                     chartype: this.playertype,
-                    numOfBots: this.botToCreate
+                    numOfBots: this.botToCreate,
+                    numOfPlayers: seat
                 });
                 this.ref.child(key).off();
             }
