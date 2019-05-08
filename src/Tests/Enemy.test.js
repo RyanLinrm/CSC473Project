@@ -1,14 +1,17 @@
 import PlayerScene, { PlayScene } from '../PhaserGame/scenes/PlayScene';
 import Phaser from 'phaser';
+import {Player} from "../PhaserGame/gameObjects/Player";
+import {Units} from "../PhaserGame/gameObjects/Player";
 import { Enemy } from "../PhaserGame/gameObjects/StatusBar";
 jest.mock('phaser');
 jest.mock('../PhaserGame/gameObjects/Player');
 jest.mock('../PhaserGame/gameObjects/Units');
-const x=100;
-const y=100;
+const x=0;
+const y=0;
+const scene=new PlayScene();
 const textureName="wolf";
-let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
-let tower =new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200);
+const player = new Player(scene,300,300, "p1", "p1_01.png",100, 64,'233');
+const tower = new Units(scene,0,0,100,-1,"pyramid",1,1000,4,180,200);
 const target=player;
 const enemyID=0;
 const healthPoints=100;
@@ -55,6 +58,14 @@ test('Testing the changetarget function in enemy class', ()=>{
     let correctTarget=tower;
     //test wheather the target is changed to tower
     expect(newEnemy.target).toBe(correctTarget);
+});
+
+test('Testing the distance function in enemy class', ()=>{
+
+    const otherEnemy = new Enemy(scene,0,0,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+ 
+    shortestpath=newEnemy.distance(newEnemy,otherEnemy);
+    expect(shortestpath).toBe(0);
 });
 
 
