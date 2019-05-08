@@ -1,9 +1,10 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const createUser = `mutation CreateUser($input: CreateUserInput!) {
-  createUser(input: $input) {
+export const createGameUser = `mutation CreateGameUser($input: CreateGameUserInput!) {
+  createGameUser(input: $input) {
     id
+    sub
     username
     bestTime
     lastTime
@@ -13,9 +14,10 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   }
 }
 `;
-export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
-  updateUser(input: $input) {
+export const updateGameUser = `mutation UpdateGameUser($input: UpdateGameUserInput!) {
+  updateGameUser(input: $input) {
     id
+    sub
     username
     bestTime
     lastTime
@@ -25,45 +27,10 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   }
 }
 `;
-export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
-  deleteUser(input: $input) {
+export const deleteGameUser = `mutation DeleteGameUser($input: DeleteGameUserInput!) {
+  deleteGameUser(input: $input) {
     id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const createGamer = `mutation CreateGamer($input: CreateGamerInput!) {
-  createGamer(input: $input) {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const updateGamer = `mutation UpdateGamer($input: UpdateGamerInput!) {
-  updateGamer(input: $input) {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const deleteGamer = `mutation DeleteGamer($input: DeleteGamerInput!) {
-  deleteGamer(input: $input) {
-    id
+    sub
     username
     bestTime
     lastTime

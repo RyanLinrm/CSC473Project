@@ -1,57 +1,22 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = `subscription OnCreateUser {
-  onCreateUser {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const onUpdateUser = `subscription OnUpdateUser {
-  onUpdateUser {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const onDeleteUser = `subscription OnDeleteUser {
-  onDeleteUser {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const onCreateGamer = `subscription OnCreateGamer(
+export const onCreateGameUser = `subscription OnCreateGameUser(
   $id: ID
+  $sub: String
   $username: String
   $bestTime: Int
   $lastTime: Int
-  $bestScore: Int
 ) {
-  onCreateGamer(
+  onCreateGameUser(
     id: $id
+    sub: $sub
     username: $username
     bestTime: $bestTime
     lastTime: $lastTime
-    bestScore: $bestScore
   ) {
     id
+    sub
     username
     bestTime
     lastTime
@@ -61,21 +26,22 @@ export const onCreateGamer = `subscription OnCreateGamer(
   }
 }
 `;
-export const onUpdateGamer = `subscription OnUpdateGamer(
+export const onUpdateGameUser = `subscription OnUpdateGameUser(
   $id: ID
+  $sub: String
   $username: String
   $bestTime: Int
   $lastTime: Int
-  $bestScore: Int
 ) {
-  onUpdateGamer(
+  onUpdateGameUser(
     id: $id
+    sub: $sub
     username: $username
     bestTime: $bestTime
     lastTime: $lastTime
-    bestScore: $bestScore
   ) {
     id
+    sub
     username
     bestTime
     lastTime
@@ -85,21 +51,22 @@ export const onUpdateGamer = `subscription OnUpdateGamer(
   }
 }
 `;
-export const onDeleteGamer = `subscription OnDeleteGamer(
+export const onDeleteGameUser = `subscription OnDeleteGameUser(
   $id: ID
+  $sub: String
   $username: String
   $bestTime: Int
   $lastTime: Int
-  $bestScore: Int
 ) {
-  onDeleteGamer(
+  onDeleteGameUser(
     id: $id
+    sub: $sub
     username: $username
     bestTime: $bestTime
     lastTime: $lastTime
-    bestScore: $bestScore
   ) {
     id
+    sub
     username
     bestTime
     lastTime

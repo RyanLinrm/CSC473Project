@@ -1,9 +1,10 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const getUser = `query GetUser($id: ID!) {
-  getUser(id: $id) {
+export const getGameUser = `query GetGameUser($id: ID!) {
+  getGameUser(id: $id) {
     id
+    sub
     username
     bestTime
     lastTime
@@ -13,45 +14,15 @@ export const getUser = `query GetUser($id: ID!) {
   }
 }
 `;
-export const listUsers = `query ListUsers(
-  $filter: ModelUserFilterInput
+export const listGameUsers = `query ListGameUsers(
+  $filter: TableGameUserFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listGameUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      username
-      bestTime
-      lastTime
-      bestScore
-      lastScore
-      lastChar
-    }
-    nextToken
-  }
-}
-`;
-export const getGamer = `query GetGamer($id: ID!) {
-  getGamer(id: $id) {
-    id
-    username
-    bestTime
-    lastTime
-    bestScore
-    lastScore
-    lastChar
-  }
-}
-`;
-export const listGamers = `query ListGamers(
-  $filter: TableGamerFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listGamers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
+      sub
       username
       bestTime
       lastTime
