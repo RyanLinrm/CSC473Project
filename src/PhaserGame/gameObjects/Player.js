@@ -110,6 +110,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.isBot = true;
             this.update = this.botUpdate.bind(this,scene);
         }
+
+        /**
+         * value from the scene that tells the player what type of scene we are in. 
+         * @name Player#mode
+         * @type string
+         */
+        this.mode = scene.mode;
       
     }
 
@@ -255,8 +262,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
             this.tint=0xff0000;
  
             this.count=time;
-        }   
-        if(this.scene.mode==="single") this.stopattack=8;
+        }  
+        if(this.mode==="single") this.stopattack=8;
         if(time>this.count+this.stopattack)
             {this.tint=0xffffff;
              this.canbeAttacked=true;

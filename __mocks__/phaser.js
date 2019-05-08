@@ -54,7 +54,11 @@ const phaserMock = {
                 enableBody: ()=>{}
             },
             add:{
-                group: ()=>{}
+                group: ()=>{
+                    return {
+                        get:() => ({shoot:jest.fn()})
+                    };
+                }
             }
         };
 

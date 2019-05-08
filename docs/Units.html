@@ -463,7 +463,7 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameObjects_Units.js.html">gameObjects/Units.js</a>, <a href="gameObjects_Units.js.html#line30">line 30</a>
+        <a href="gameObjects_Units.js.html">gameObjects/Units.js</a>, <a href="gameObjects_Units.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -491,8 +491,6 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
 
 
 
-
-
     
     </div>
 
@@ -500,13 +498,6 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
 
     
 
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="Units.html">Units</a></dt>
-            <dd></dd>
-        </dl>
     
 
     
@@ -876,8 +867,6 @@ Mainly used in the multi player scene to assign player uid to the tower</p>
 
 
 
-
-
         
             
 
@@ -1014,8 +1003,6 @@ This Function updates the newtarget object to be the new target.</p>
 
 
 
-
-
         
             
 
@@ -1030,7 +1017,7 @@ This Function updates the newtarget object to be the new target.</p>
 
 
 <div class="description">
-    <p>collision function that is called when a collision occurs to the unit.
+    <p>collision function that is called when a collision occurs to the unit. 
 calls the takeDamage function and change being attacked status to true.</p>
 </div>
 
@@ -1085,8 +1072,6 @@ calls the takeDamage function and change being attacked status to true.</p>
 
     
 </dl>
-
-
 
 
 
@@ -1242,8 +1227,6 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 
-
-
         
             
 
@@ -1331,8 +1314,6 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 
-
-
         
             
 
@@ -1347,9 +1328,9 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 <div class="description">
-    <p>Function that uses Phaser.Math.Distance.Between built-in function to find
-the distance between tower and target.This function return the distance
-between these two objects so we can future compare to find the target with
+    <p>Function that uses Phaser.Math.Distance.Between built-in function to find 
+the distance between tower and target.This function return the distance 
+between these two objects so we can future compare to find the target with 
 the shortest distance</p>
 </div>
 
@@ -1476,8 +1457,6 @@ the shortest distance</p>
 
     
 </dl>
-
-
 
 
 
@@ -1632,8 +1611,6 @@ if beingAttacked is true it tints the unit red and sets the count ot the current
 
 
 
-
-
         
             
 
@@ -1648,8 +1625,7 @@ if beingAttacked is true it tints the unit red and sets the count ot the current
 
 
 <div class="description">
-    <p>Function to remove the unit so we can handle other things related to the death such as stop the attack.<br>
-Also, for the towers, if the player's tower is killed, he/she lost the game, if only one tower remains,
+    <p>Function to remove the unit so we can handle other things related to the death such as stop the attack.<br>Also, for the towers, if the player's tower is killed, he/she lost the game, if only one tower remains,
 the player who owns the tower wins the game.</p>
 </div>
 
@@ -1704,8 +1680,6 @@ the player who owns the tower wins the game.</p>
 
     
 </dl>
-
-
 
 
 
@@ -1792,8 +1766,6 @@ the player who owns the tower wins the game.</p>
 
     
 </dl>
-
-
 
 
 
@@ -1930,8 +1902,6 @@ If the ending healthpoints is less than 0 it calls the kill function</p>
 
     
 </dl>
-
-
 
 
 
@@ -2133,8 +2103,6 @@ When the attack range,cooldown are fine, the tower is ready to attack the target
 
 
 
-
-
         
             
 
@@ -2243,7 +2211,7 @@ Handles isInjured and towerAttack.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameObjects_Units.js.html">gameObjects/Units.js</a>, <a href="gameObjects_Units.js.html#line250">line 250</a>
+        <a href="gameObjects_Units.js.html">gameObjects/Units.js</a>, <a href="gameObjects_Units.js.html#line258">line 258</a>
     </li></ul></dd>
     
 
@@ -2253,8 +2221,6 @@ Handles isInjured and towerAttack.</p>
 
     
 </dl>
-
-
 
 
 
@@ -2289,13 +2255,13 @@ Handles isInjured and towerAttack.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="Units.html">Units</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Units.html">Units</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Mon May 06 2019 14:48:46 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 08 2019 16:55:24 GMT-0500 (GMT-05:00)
 </footer>
 
 <script> prettyPrint(); </script>
