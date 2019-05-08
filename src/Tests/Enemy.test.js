@@ -1,15 +1,16 @@
 import PlayerScene, { PlayScene } from '../PhaserGame/scenes/PlayScene';
 import Phaser from 'phaser';
 import {Player} from "../PhaserGame/gameObjects/Player";
-import {Units} from "../PhaserGame/gameObjects/Player";
-import { Enemy } from "../PhaserGame/gameObjects/StatusBar";
+import {Units} from "../PhaserGame/gameObjects/Units";
+import { Enemy } from "../PhaserGame/gameObjects/Enemy";
 jest.mock('phaser');
 jest.mock('../PhaserGame/gameObjects/Player');
 jest.mock('../PhaserGame/gameObjects/Units');
 const x=0;
 const y=0;
 const scene=new PlayScene();
-const textureName="wolf";
+const key="wolf";
+const textureName="wolf_01";
 const player = new Player(scene,300,300, "p1", "p1_01.png",100, 64,'233');
 const tower = new Units(scene,0,0,100,-1,"pyramid",1,1000,4,180,200);
 const target=player;
@@ -27,8 +28,8 @@ const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints
 test('Testing enemy class constructer correctly and intializes a new enemy wolf', ()=>{
 
     expect(newEnemy).toBeDefined();
-    expect(newEnemy.x).toBe(x);
-    expect(newEnemy.y).toBe(y);
+    expect(newEnemy.x).toBe(0);
+    expect(newEnemy.y).toBe(0);
     expect(newEnemy.textureName).toBe("wolf");
     expect(newEnemy.target).toBe(player);
     expect(newEnemy.enemyID).toBe(enemyID);

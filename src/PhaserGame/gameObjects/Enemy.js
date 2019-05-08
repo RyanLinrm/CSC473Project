@@ -33,7 +33,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-        this.setOrigin(0,0);
+        //this.setOrigin(0,0);
         this.building=scene.building;
         this.university=scene.university;
         this.pyramid=scene.pyramid;

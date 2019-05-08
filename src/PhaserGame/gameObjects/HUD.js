@@ -112,8 +112,8 @@ export class HUD {
                }
                if(unit.texture.key==='demon1'){              
                     scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
-                    scene.player.mana-=200;
-                    this.manabar.cutManaBar(200);
+                    scene.player.mana-=50;
+                    this.manabar.cutManaBar(50);
                     if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
                }
                if(unit.texture.key==='wall'){              

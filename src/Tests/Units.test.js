@@ -1,6 +1,6 @@
-import {Units} from "../PhaserGame/gameObjects/Player";
+import {Units} from "../PhaserGame/gameObjects/Units";
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
-import { Player } from "../PhaserGame/gameObjects/StatusBar";
+import { Player } from "../PhaserGame/gameObjects/Player";
 const scene=new PlayScene();
 const x=0;
 const y=0;
@@ -13,15 +13,15 @@ const speed=1;
 const range=180;
 const cooldown=100;
 const uid="233";
-
+const player = new Player(scene,300,300, "p1", "p1_01.png",100, 64,'233');
 const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
 test('Testing Units class constructer correctly and intializes a new Units tower', ()=>{
 
     expect(tower).toBeDefined();
-    expect(tower.x).toBe(x);
-    expect(tower.y).toBe(y);
-    expect(tower.barx).toBe(barx);
-    expect(tower.bary).toBe(bary);
+    expect(tower.x).toBe(0);
+    expect(tower.y).toBe(0);
+    expect(tower.barx).toBe(0);
+    expect(tower.bary).toBe(0);
     expect(tower.name).toBe("tower");
     expect(tower.type).toBe(type);
     expect(tower.healthPoints).toBe(healthPoints);
