@@ -373,19 +373,18 @@ export class PlayScene extends Phaser.Scene{
 
         this.player_scale = 2;
         this.cooldowntime = 0;
+        this.stopcooldown = 0;
 
     }
 
         createUltimate = (time) =>{
-          //  console.log(time);
-             // console.log(this.player.x,this.player.y)
-           
-                this.manabar.cutManaBar(200);
-                this.demonskill=this.add.sprite(this.player.x, this.player.y, 'a2_01').setScale(1.5)
+            //player ability to destory enemies near the range
+                this.manabar.cutManaBar(300);
+                this.demonskill=this.add.sprite(this.player.x, this.player.y, 'a2_01').setScale(1.8)
                 this.demonskill.play('ab2');
                 this.enemylist=[];
-                this.dendtime = time + 2000;
-                this.cooldowntime = time + 2001;
+                this.destroytime = time + 1000;
+                this.cooldowntime = time + 10000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
                     if (this.enemylist[i].uid!=this.player.uid){
@@ -395,34 +394,46 @@ export class PlayScene extends Phaser.Scene{
                     }
                 }
             }
-            RoomUltimate = () =>{
-              
+        RoomUltimate = (time) =>{
+            //player ability to stop near enemies' actions 
+                this.stoplist=[];
                 this.manabar.cutManaBar(200);
                 this.enemylist=[];
+                this.wallList=[];
+                this.stoptime=time+5000;
+                this.stopcooldown = time + 6000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
                     if (this.enemylist[i].uid!=this.player.uid){
-                        if (Math.abs(this.enemylist[i].x - this.player.x) < 100 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
+                        if (Math.abs(this.enemylist[i].x - this.player.x) < 150 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
+                            this.wall1=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y+25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall2=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y-25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall3=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y-25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall4=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y+25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                        
+                            this.stoplist.push(this.enemylist[i]);
+                            this.wallList.push(this.wall1);
+                            this.wallList.push(this.wall2);
+                            this.wallList.push(this.wall3);
+                            this.wallList.push(this.wall4);
+                        
                             this.enemylist[i].body.immovable=true;
                             this.enemylist[i].body.moves=false;
                             this.enemylist[i].attackRange=0;
                             this.enemylist[i].tint=0x888C8D;
-                          /*  this.wall1=new Enemy(this,this.enemylist[i].x+20,this.enemylist[i].y+20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall2=new Enemy(this,this.enemylist[i].x-20,this.enemylist[i].y-20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall3=new Enemy(this,this.enemylist[i].x+20,this.enemylist[i].y-20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall4=new Enemy(this,this.enemylist[i].x-20,this.enemylist[i].y+20,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall1.body.immovable=true;
-                            this.wall1.body.moves=false;
-                            this.wall2.body.immovable=true;
-                            this.wall2.body.moves=false;
-                            this.wall3.body.immovable=true;
-                            this.wall3.body.moves=false;
-                            this.wall4.body.immovable=true;
-                            this.wall4.body.moves=false;*/
-                        }
-                    }
-                }
-               }  
+                            this.checkstop=() =>{
+                                for (let j=0; j < this.wallList.length; j++){
+                                    this.wallList[j].destroy();
+                                }
+                                for (let i = 0; i < this.stoplist.length; i++) {
+                                    if(this.stoplist[i].active){
+                                    this.stoplist[i].body.immovable=false;
+                                    this.stoplist[i].body.moves=true;
+                                    this.stoplist[i].attackRange=100;
+                                    this.stoplist[i].tint=0xffffff;}                            
+                                                }}}}
+                    }}
+                   
                 
     /**
      * returns the position the player should start out with depending on the tower they own
@@ -591,12 +602,16 @@ export class PlayScene extends Phaser.Scene{
             {  
                 this.createUltimate(time);
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Zbar))
+            if (Phaser.Input.Keyboard.JustDown(this.Zbar)&& this.stopcooldown<time)
             {  
-                this.RoomUltimate();
+                this.RoomUltimate(time);
             }
-            if(this.dendtime < time){
+            if(this.destroytime < time){
                 this.demonskill.destroy();
+            }
+            if(this.stoptime < time){
+                this.checkstop();
+            
             }
     }
 
