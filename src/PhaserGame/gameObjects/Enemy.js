@@ -27,7 +27,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} cooldown - The cooldown restriction that the Enemy can perform next attack
      * @param {string} uid - The unique id of Enemy object which is same as the player who created the enemy.
      */
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233'){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233', selfID='233'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -39,6 +39,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
+        this.selfID = selfID;
 
         /**
          * The array that has the list of the towers
@@ -106,6 +107,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
 
     }
+
+    assignSelfID(id){
+        this.selfID = id;
+    }
+
      /**
       * Function to assign new target to the enemy object
       * The default target is assigned when the player is created
@@ -182,7 +188,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             enemy.setPosition(target.x+randomdist,target.y-randomdist); 
             break;
           case 3:
-           enemy.setPosition(target.x-randomdist,target.y+randomdist); 
+           enemy.setPosition(target.x-randomdist,target.y+randomdist);
             break;
           case 4:
            enemy.setPosition(target.x-randomdist,target.y-randomdist); 

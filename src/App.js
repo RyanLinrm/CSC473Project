@@ -41,7 +41,7 @@ class App extends Component {
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
-
+      console.log(cognitoUser);
       this.setState({ 
         signInName:cognitoUser.username
       });
@@ -49,7 +49,7 @@ class App extends Component {
        
      });
     }
-    else if(signInState == 'signIn'){
+    else if(signInState === 'signIn'){
       this.setState({ 
         signInName:null
       });
@@ -62,7 +62,7 @@ class App extends Component {
       });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
-
+      console.log(cognitoUser);
       this.setState({ 
         signInName:cognitoUser.username
       });
@@ -70,7 +70,7 @@ class App extends Component {
        
      });
     }
-    else if(signInState == 'signIn'){
+    else if(signInState === 'signIn'){
       this.setState({ 
         signInName:null
       });

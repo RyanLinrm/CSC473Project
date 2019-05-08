@@ -108,6 +108,19 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
+        let playerStatus = `Games/${this.gameRoom}/Players/${id}/status`;
+        firebase.database().ref(playerStatus).on('child_changed', (snapShot) =>{
+            let newStatus = snapShot.val();
+            let type = snapShot.key;
+
+            if(type === 'hp'){
+                if(newStatus <= 0){
+                    this.otherPlayers[id].kill();
+                }
+            }
+            
+        })
+
         this.databaseListners.push(movementDataDB,attackDB,inGameDB);
     }
 
@@ -252,7 +265,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 velocity: {x: 0, y:0}
             },
             inGame: true,     
-            playerType: this.spritekey
+            playerType: this.spritekey,
+            status:{
+                hp: this.player1.healthPoints,
+                mana: this.player1.mana
+            }
         });
         
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
