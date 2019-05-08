@@ -7,6 +7,8 @@ export class HUD {
     constructor(scene, player, uid, gamemode, room) {
         this.gamemode=gamemode;
         this.scene=scene;
+        this.draggable=true;
+        this.dragCd=0;
         if(gamemode === 'multi'){
             this.ref = firebase.database();
             this.roomkey = room;
@@ -61,7 +63,6 @@ export class HUD {
         let hud = scene.add.rectangle(scene.game.renderer.width / 2, scene.game.renderer.height,
             scene.game.renderer.width , 140, 0x000000).setInteractive();
 
-
         hud.setScrollFactor(0);
         let unit1 = scene.add.sprite(scene.game.renderer.width*0.25, scene.game.renderer.height-35, "ninjabot").setScrollFactor(0).setInteractive();
         let unit2 = scene.add.sprite(scene.game.renderer.width*0.35, scene.game.renderer.height-35, "wolf").setScrollFactor(0).setInteractive();
@@ -69,8 +70,9 @@ export class HUD {
         let unit4 = scene.add.sprite(scene.game.renderer.width*0.55, scene.game.renderer.height-35, "demon1").setScrollFactor(0).setInteractive();
         let unit5 = scene.add.sprite(scene.game.renderer.width*0.65, scene.game.renderer.height-35, "wall").setScrollFactor(0).setInteractive().setScale(0.4);
         
-       
-
+      
+    
+        if(this.draggable){
         scene.input.setDraggable([unit1, unit2, unit3,unit4,unit5]);
         var originalX;
         var originalY;
@@ -82,9 +84,12 @@ export class HUD {
             unit.x = dragX;
             unit.y = dragY;
         });
+        
+        
+      
         scene.input.on('dragend', (pointer, unit) => {
+            if(player.mana>=200 && player.active){
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
-           if(scene.player.mana>20){
                 if(unit.texture.key==='wolf'){              
                     scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
                     scene.player.mana-=50;
@@ -107,8 +112,8 @@ export class HUD {
                }
                if(unit.texture.key==='demon1'){              
                     scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
-                    scene.player.mana-=40;
-                    this.manabar.cutManaBar(40);
+                    scene.player.mana-=200;
+                    this.manabar.cutManaBar(200);
                     if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
                }
                if(unit.texture.key==='wall'){              
@@ -122,16 +127,16 @@ export class HUD {
                unit.x = originalX;
                unit.y = originalY;
                scene.enemies.add(scene.newenemy);
-       
                scene.attackableGroup.add(scene.newenemy);
        
-           }});
-        //Bottom HUD
-    }
+     } });}
+        //1Bottom HUD
+     }
 
     setPlayerHealth = (playerNumber,health)=>{
         this.playerHealthLabels[playerNumber - 1].setText(`${health}/500`); //setsThePlayer health label to the given health value
     }
+
 
     updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) =>{
         this.ref.ref(`Games/${this.roomkey}/enemy/${playerid}`).update({ 
@@ -142,6 +147,7 @@ export class HUD {
     }
     update(time,player,scene){
 
+ 
         if(player.beingAttacked===true){
             this.hpbar.cutHPBar(5);             
             }

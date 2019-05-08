@@ -96,14 +96,6 @@ class App extends Component {
   }
 
   startingpage = () => {
-    /*this.setState({
-      showGame:true,
-      showsingle:false,
-      showmulti:false,  
-      hideButton:true,
-      showbuttons: true,
-      infobutton: true   
-    })*/
     window.location.reload();
   }
 
@@ -117,8 +109,7 @@ class App extends Component {
     else{
       this.setState({ 
         showLeaderboard: !this.state.showLeaderboard,
-        showGame: !this.state.showGame,
-        infobutton: !this.state.infobutton});
+        showGame: !this.state.showGame});
 
       }
     
@@ -191,7 +182,7 @@ class App extends Component {
     {this.state.showTutorial && (
       <div>
         <Tutorial />
-        <Button className='back' onClick={this.startingpage} variant="secondary">Back</Button>
+        <Button className='back' onClick={this.startingpage} variant="secondary">Home</Button>
         </div>
     )}
 
@@ -208,7 +199,7 @@ class App extends Component {
         <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
-      {this.state.infobutton &&
+      {this.state.infobutton && this.state.showGame && !this.state.showLeaderboard &&
       <Button className="infobutton" variant="secondary">Info</Button>
       }
       </div>
