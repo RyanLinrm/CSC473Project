@@ -14,8 +14,8 @@ const phaserMock = {
                 })
             });
 
-            this.setActive = () =>{};
-            this.setVisible = () =>{};
+            this.setActive = jest.fn();
+            this.setVisible = jest.fn();
             this.setPosition = ()=>{};
             this.setAngle = ()=>{};
             this.setCrop = () =>{};
@@ -54,7 +54,11 @@ const phaserMock = {
                 enableBody: ()=>{}
             },
             add:{
-                group: ()=>{}
+                group: ()=>{
+                    return {
+                        get:() => ({shoot:jest.fn()})
+                    };
+                }
             }
         };
 

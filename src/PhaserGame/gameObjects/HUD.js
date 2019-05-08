@@ -3,7 +3,23 @@ import {Enemy} from "../gameObjects/Enemy";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 import * as firebase from 'firebase';
 
+    /**
+     * The HUD class.
+     * This class is used in the playscene to create the heads up display for the class
+     * this class was created in order to create seperate the things that are specific to the heads up display
+     */
 export class HUD {
+
+    /**
+     * 
+     * sets up the hud using the data passed. 
+     * 
+     * @param {PlayScene} scene - the scene where the hud should go
+     * @param {Player} player - the main player of the scene
+     * @param {string} uid - the uid
+     * @param {string} gamemode - the type of game "single" or "multi"
+     * @param {*} room - the room id
+     */
     constructor(scene, player, uid, gamemode, room) {
         this.gamemode=gamemode;
         this.scene=scene;
@@ -37,24 +53,21 @@ export class HUD {
         sideHUD.setScrollFactor(0);
         this.timer = scene.add.text(0,60,'Timer:'+ Math.trunc(scene.time),{ fontFamily: 'Georgia', fontSize: 17, color: '#ffffff' });
         this.timer.setScrollFactor(0);    
+
+
+
         let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
         let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
+        player1Health.setOrigin(0.5); player1Health.setScrollFactor(0);
+        this.playerHealthLabels = [player1Health];
+
+        for(let i = 1; i < scene.players; i++){
+            let player = scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
+            let playerHealth = scene.add.text(35, scene.game.renderer.height /5 * (i+1) + 30, '500/500', { fontSize: 15, color: '#FF0000' });
+            playerHealth.setScrollFactor(0); playerHealth.setOrigin(0.5);
+            this.playerHealthLabels.push(playerHealth);
+        }
         
-        let player2 = scene.add.sprite(35, scene.game.renderer.height /5 * 2, "p1").setScrollFactor(0).setInteractive();
-        let player2Health = scene.add.text(35, scene.game.renderer.height /5 * 2 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
-
-        let player3 = scene.add.sprite(35, scene.game.renderer.height/ 5 * 3, "p1").setScrollFactor(0).setInteractive();
-        let player3Health = scene.add.text(35, scene.game.renderer.height/ 5 * 3 + 30, '500/500', { fontSize: 15, color: '#FF0000'});
-
-        let player4 = scene.add.sprite(35, scene.game.renderer.height/ 5 * 4, "p1").setScrollFactor(0).setInteractive();
-        let player4Health = scene.add.text(35, scene.game.renderer.height/ 5 * 4 + 30, '500/500', { fontSize: 15, color: '#FF0000'});
-
-        this.playerHealthLabels = [player1Health,player2Health,player3Health,player4Health];
-
-        player1Health.setOrigin(0.5); player2Health.setOrigin(0.5); 
-        player3Health.setOrigin(0.5); player4Health.setOrigin(0.5);
-        player1Health.setScrollFactor(0); player2Health.setScrollFactor(0); 
-        player3Health.setScrollFactor(0); player4Health.setScrollFactor(0);
         //Side HUD
 
         this.setPlayerHealth(1,400);

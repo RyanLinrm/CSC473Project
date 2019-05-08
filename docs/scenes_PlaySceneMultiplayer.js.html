@@ -1,4 +1,32 @@
-import Phaser from 'phaser';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: scenes/PlaySceneMultiplayer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: scenes/PlaySceneMultiplayer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Phaser from 'phaser';
 import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
 import {Rider} from "../gameObjects/Rider";
@@ -95,54 +123,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     init(data){
-
-    /**
-     * The id of the player
-     *
-     * @name Player#playerID
-     * @type number
-     */
         this.playerID = data.playerID;
-
-    /**
-     * The id of the player
-     *
-     * @name Player#gameRoom
-     * @type number
-     */
         this.gameRoom = data.roomkey;
-
-    /**
-     * The seatnumber of the player in the game
-     *
-     * @name Player#seatNumber
-     * @type number
-     */
         this.seatNumber = data.seatNumber;
-
-    /**
-     * The spritekey of the player
-     *
-     * @name Player#spritekey
-     * @type number
-     */
         this.spritekey = data.chartype;
-
-    /**
-     * The bots in the game
-     *
-     * @name Player#bots
-     * @type number
-     */
-        this.bots = 0;
-
-    /**
-     * The amount of players in the game
-     *
-     * @name Player#players
-     * @type number
-     */
-        this.players = data.numOfPlayers;
+        this.bots = 3;
    
     }
 
@@ -161,15 +146,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,500,200,id).setScale(0.6);
         }
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
-        if(position.x === 300 && position.y === 300){
+        if(position.x === 300 &amp;&amp; position.y === 300){
             this.pyramid.assignID(id);
          
         }
-        else if(position.x === 1000 && position.y === 300){
+        else if(position.x === 1000 &amp;&amp; position.y === 300){
             this.university.assignID(id);
    
         }
-        else if(position.x === 300 && position.y === 1000){
+        else if(position.x === 300 &amp;&amp; position.y === 1000){
             this.magicstone.assignID(id);
 
         }
@@ -324,6 +309,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
 
 
+        if (this.bots > 0) {
+            for (let i = 1; i &lt;= this.bots; i++) {
+                console.log(5 - i);
+                this.createBotAt(5 - i);
+            }
+        }
 
        let creatorDB = `Games/${this.gameRoom}/creator`;
        database.ref(creatorDB).once("value", (snapShot) => {
@@ -446,7 +437,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(`Games/${this.gameRoom}/enemy`).on('child_changed', snapShot=>{
             let newenemyinfo = snapShot.val();
 
-            if( newenemyinfo.x >= 0 && newenemyinfo.y >= 0 && newenemyinfo.ownerid !== this.playerID ){
+            if( newenemyinfo.x >= 0 &amp;&amp; newenemyinfo.y >= 0 &amp;&amp; newenemyinfo.ownerid !== this.playerID ){
                 this.addNewEnemy( newenemyinfo.x, newenemyinfo.y, newenemyinfo.type, newenemyinfo.ownerid );
             }
         })
@@ -472,7 +463,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
 
-        if (this.GameIsGoing && this.player1.active) {
+        if (this.GameIsGoing &amp;&amp; this.player1.active) {
 
 
             if (this.keyboard.SHIFT.isDown) {
@@ -504,10 +495,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
             
 
-            if (this.keyboard.W.isUp && this.keyboard.S.isUp) {
+            if (this.keyboard.W.isUp &amp;&amp; this.keyboard.S.isUp) {
                 inputVelocity.y = 0;
             }
-            if (this.keyboard.A.isUp && this.keyboard.D.isUp) {
+            if (this.keyboard.A.isUp &amp;&amp; this.keyboard.D.isUp) {
                 inputVelocity.x = 0;
             }
 
@@ -552,4 +543,26 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             firebase.database().ref(path).off();
         });
     }
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Units.html">Units</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed May 08 2019 16:55:24 GMT-0500 (GMT-05:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
