@@ -27,25 +27,37 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
+                
                 this.setCollideWorldBounds=()=>{};
-               
+             
                 this.destroy = ()=>{};
                 this.body = {
+        
                     velocity:{
                         x:0,
                         y:0
-                    }
+                    },
+
                 };
                 this.setSize = (a, b) =>{};
-                this.x=()=>{};
-                this.y=()=>{};
+                
             },
            
         }
     },
+    /*
+    Math:{
+            Distance: function(){
+                this.Between=(a,b,c,d)=>{}
+            }
+        },
+              */
+            
 
+        
+        
+    
     Scene: function(){
-
         this.enemyTowers= {
             add:()=>{}
         }
@@ -65,10 +77,12 @@ const phaserMock = {
             },
             add:{
                 group: ()=>{},
-                add:()=>{}
-            }
+                add:()=>{},
+               
+            },
+      
         };
-
+    
         this.updateSprite = ()=>{};
        
     }

@@ -26,11 +26,11 @@ const uid="233";
 const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
 // still need to add more to it and fix the testing errors
 test('Testing enemy class constructer correctly and intializes a new enemy wolf', ()=>{
+    const x=0;
+    const y=0;
+    const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
 
     expect(newEnemy).toBeDefined();
-    expect(newEnemy.x).toBe(0);
-    expect(newEnemy.y).toBe(0);
-    expect(newEnemy.textureName).toBe("wolf");
     expect(newEnemy.target).toBe(player);
     expect(newEnemy.enemyID).toBe(enemyID);
     expect(newEnemy.healthPoints).toBe(healthPoints);
@@ -39,7 +39,7 @@ test('Testing enemy class constructer correctly and intializes a new enemy wolf'
     expect(newEnemy.attackRange).toBe(attackRange);
     expect(newEnemy.movementSpeed).toBe(movementSpeed);
     expect(newEnemy.cooldown).toBe(cooldown);
-    expect(newEnemy.uid).toBe("233");
+    expect(newEnemy.uid).toBeDefined();
     expect(newEnemy.createAttack).toBeDefined();
     expect(newEnemy.removeDefense).toBeDefined();
     expect(newEnemy.beingAttacked).toBeDefined();
@@ -121,6 +121,19 @@ test('Testing if isInjured function correctly work (changes tint and count) whil
 
     newEnemy.isInjured(6000);
     expect(newEnemy.tint).toEqual(0xffffff);
+    
+});
+
+test('Testing if createAttack correctly initialized the  weapons for the enemy',()=>{
+    const newScene = new PlayScene();
+    newScene.physics.add.group = jest.fn();
+    const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+    newEnemy.basicattack = undefined; newEnemy.removeDefense = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
+
+    newEnemy.createAttack(newScene);
+    expect(newScene.physics.add.group).toBeCalledTimes(1);
+    expect(newEnemy.basicattack).toBeDefined();
+    expect(newEnemy.removeDefense).toBeDefined();
     
 });
 

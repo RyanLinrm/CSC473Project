@@ -461,7 +461,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          */
         this.removeDefense = ()=>{ //destroys the weapon used
             this.bullets.destroy();
-            this.attack = null;
+            this.basicattack = null;
         };    
 
     }

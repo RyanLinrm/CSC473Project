@@ -16,19 +16,15 @@ const uid="233";
 const player = new Player(scene,300,300, "p1", "p1_01.png",100, 64,'233');
 const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
 test('Testing Units class constructer correctly and intializes a new Units tower', ()=>{
-
+ 
+    const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     expect(tower).toBeDefined();
-    expect(tower.x).toBe(0);
-    expect(tower.y).toBe(0);
-    expect(tower.barx).toBe(0);
-    expect(tower.bary).toBe(0);
-    expect(tower.name).toBe("tower");
     expect(tower.type).toBe(type);
     expect(tower.healthPoints).toBe(healthPoints);
     expect(tower.speed).toBe(speed);
     expect(tower.range).toBe(range);
     expect(tower.cooldown).toBe(cooldown);
-    expect(tower.uid).toBe("233");
+    expect(tower.uid).toBeDefined();
     expect(tower.createDefense).toBeDefined();
     expect(tower.removeDefense).toBeDefined();
     expect(tower.beingAttacked).toBeDefined();
@@ -39,10 +35,10 @@ test('Testing Units class constructer correctly and intializes a new Units tower
 test('Testing the changetarget function in Units class', ()=>{
 
     const newtarget =tower;
-
+    tower.target=player;
     //test wheather the current target is player 
     expect(tower.target).toBe(player);
-
+    
     tower.changetarget(newtarget);
     let correctTarget=tower;
     //test wheather the target is changed to tower
@@ -52,7 +48,7 @@ test('Testing the changetarget function in Units class', ()=>{
 test('Testing the distance function in Units class', ()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
     const player = new Player(new PlayScene(),0,0, "p1", "p1_01.png",1,hP, movementSpeed,id);
- 
+
     shortestpath=tower.distance(tower,player);
     expect(shortestpath).toBe(0);
 });
@@ -119,18 +115,19 @@ test('Testing if createDefense correctly initialized the  weapons for the tower'
     const newScene = new PlayScene();
     newScene.physics.add.group = jest.fn();
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
-    tower.attack = undefined; tower.removeWeapon = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
+    tower.defend = undefined; tower.removeDefense = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
 
-    player.createDefense(newScene);
+    tower.createDefense(newScene);
     expect(newScene.physics.add.group).toBeCalledTimes(1);
-    expect(tower.attack).toBeDefined();
-    expect(tower.removeWeapon).toBeDefined();
+    expect(tower.defend).toBeDefined();
+    expect(tower.removeDefense).toBeDefined();
     
 });
 
 test('Testing the update function of the Units class',()=>{
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     tower.isInjured = jest.fn();
+    tower.towerAttack=jest.fn();
 
     tower.update(1000);
     expect(tower.isInjured).toBeCalledTimes(1);

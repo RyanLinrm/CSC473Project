@@ -180,7 +180,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
          */
         this.removeDefense = ()=>{ //destroys the weapon used
             this.bullets.destroy();
-            this.attack = null;
+            this.defend = null;
         };    
 
     }
