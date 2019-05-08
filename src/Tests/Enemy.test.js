@@ -64,9 +64,10 @@ test('Testing the changetarget function in enemy class', ()=>{
 test('Testing the distance function in enemy class', ()=>{
 
     const otherEnemy = new Enemy(scene,0,0,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
- 
-    shortestpath=newEnemy.distance(newEnemy,otherEnemy);
-    expect(shortestpath).toBe(0);
+    newEnemy.distance=jest.fn();
+    let shortestpath=newEnemy.distance(newEnemy,otherEnemy);
+    
+    expect(newEnemy.distance).toBeCalledTimes(1);
 });
 
 
@@ -123,6 +124,205 @@ test('Testing if isInjured function correctly work (changes tint and count) whil
     expect(newEnemy.tint).toEqual(0xffffff);
     
 });
+test('Testing if enemymovement works when the enemyid is 0', ()=>{
+    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    enemy.enemyID = 0;
+    enemy.play = jest.fn();
+   
+    //velocity.x > 0 & velocity.y > 0
+    enemy.body.velocity.x = 10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(1);
+    expect(enemy.play.mock.calls[0][0]).toBe("wolf_down");
+    expect(enemy.play.mock.calls[0][1]).toBe(true);
+
+   //velocity.x < 0 & velocity.y < 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = -10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(2);
+    expect(enemy.play.mock.calls[1][0]).toBe("wolf_up");
+    expect(enemy.play.mock.calls[1][1]).toBe(true);
+
+
+   //velocity.x < 0 & velocity.y > 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(3);
+    expect(enemy.play.mock.calls[2][0]).toBe("wolf_left");
+    expect(enemy.play.mock.calls[2][1]).toBe(true);
+
+   //velocity.x > 0 & velocity.y < 0
+   enemy.body.velocity.x = 10;
+   enemy.body.velocity.y = -10;
+   enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(4);
+    expect(enemy.play.mock.calls[3][0]).toBe("wolf_right");
+    expect(enemy.play.mock.calls[3][1]).toBe(true);
+});
+test('Testing if enemymovement works when the enemyid is 0', ()=>{
+    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    enemy.enemyID = 0;
+    enemy.play = jest.fn();
+   
+    //velocity.x > 0 & velocity.y > 0
+    enemy.body.velocity.x = 10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(1);
+    expect(enemy.play.mock.calls[0][0]).toBe("wolf_down");
+    expect(enemy.play.mock.calls[0][1]).toBe(true);
+
+   //velocity.x < 0 & velocity.y < 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = -10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(2);
+    expect(enemy.play.mock.calls[1][0]).toBe("wolf_up");
+    expect(enemy.play.mock.calls[1][1]).toBe(true);
+
+
+   //velocity.x < 0 & velocity.y > 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(3);
+    expect(enemy.play.mock.calls[2][0]).toBe("wolf_left");
+    expect(enemy.play.mock.calls[2][1]).toBe(true);
+
+   //velocity.x > 0 & velocity.y < 0
+   enemy.body.velocity.x = 10;
+   enemy.body.velocity.y = -10;
+   enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(4);
+    expect(enemy.play.mock.calls[3][0]).toBe("wolf_right");
+    expect(enemy.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if enemymovement works when the enemyid is 1', ()=>{
+    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    enemy.enemyID = 1;
+    enemy.play = jest.fn();
+   
+    //velocity.x > 0 & velocity.y > 0
+    enemy.body.velocity.x = 10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(1);
+    expect(enemy.play.mock.calls[0][0]).toBe("ninjabot_down");
+    expect(enemy.play.mock.calls[0][1]).toBe(true);
+
+   //velocity.x < 0 & velocity.y < 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = -10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(2);
+    expect(enemy.play.mock.calls[1][0]).toBe("ninjabot_up");
+    expect(enemy.play.mock.calls[1][1]).toBe(true);
+
+
+   //velocity.x < 0 & velocity.y > 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(3);
+    expect(enemy.play.mock.calls[2][0]).toBe("ninjabot_left");
+    expect(enemy.play.mock.calls[2][1]).toBe(true);
+
+   //velocity.x > 0 & velocity.y < 0
+   enemy.body.velocity.x = 10;
+   enemy.body.velocity.y = -10;
+   enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(4);
+    expect(enemy.play.mock.calls[3][0]).toBe("ninjabot_right");
+    expect(enemy.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if enemymovement works when the enemyid is 2', ()=>{
+    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    enemy.enemyID = 2;
+    enemy.play = jest.fn();
+   
+    //velocity.x > 0 & velocity.y > 0
+    enemy.body.velocity.x = 10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(1);
+    expect(enemy.play.mock.calls[0][0]).toBe("demon1_down");
+    expect(enemy.play.mock.calls[0][1]).toBe(true);
+
+   //velocity.x < 0 & velocity.y < 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = -10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(2);
+    expect(enemy.play.mock.calls[1][0]).toBe("demon1_up");
+    expect(enemy.play.mock.calls[1][1]).toBe(true);
+
+
+   //velocity.x < 0 & velocity.y > 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(3);
+    expect(enemy.play.mock.calls[2][0]).toBe("demon1_left");
+    expect(enemy.play.mock.calls[2][1]).toBe(true);
+
+   //velocity.x > 0 & velocity.y < 0
+   enemy.body.velocity.x = 10;
+   enemy.body.velocity.y = -10;
+   enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(4);
+    expect(enemy.play.mock.calls[3][0]).toBe("demon1_right");
+    expect(enemy.play.mock.calls[3][1]).toBe(true);
+});
+
+test('Testing if enemymovement works when the enemyid is 3', ()=>{
+    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    enemy.enemyID = 3;
+    enemy.play = jest.fn();
+   
+    //velocity.x > 0 & velocity.y > 0
+    enemy.body.velocity.x = 10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(1);
+    expect(enemy.play.mock.calls[0][0]).toBe("skull_down");
+    expect(enemy.play.mock.calls[0][1]).toBe(true);
+
+   //velocity.x < 0 & velocity.y < 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = -10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(2);
+    expect(enemy.play.mock.calls[1][0]).toBe("skull_up");
+    expect(enemy.play.mock.calls[1][1]).toBe(true);
+
+
+   //velocity.x < 0 & velocity.y > 0
+    enemy.body.velocity.x = -10;
+    enemy.body.velocity.y = 10;
+    enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(3);
+    expect(enemy.play.mock.calls[2][0]).toBe("skull_left");
+    expect(enemy.play.mock.calls[2][1]).toBe(true);
+
+   //velocity.x > 0 & velocity.y < 0
+   enemy.body.velocity.x = 10;
+   enemy.body.velocity.y = -10;
+   enemy.enemymovement();
+    expect(enemy.play).toBeCalledTimes(4);
+    expect(enemy.play.mock.calls[3][0]).toBe("skull_right");
+    expect(enemy.play.mock.calls[3][1]).toBe(true);
+});
+
 
 test('Testing if createAttack correctly initialized the  weapons for the enemy',()=>{
     const newScene = new PlayScene();

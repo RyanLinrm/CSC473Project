@@ -27,7 +27,7 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
-                
+             
                 this.setCollideWorldBounds=()=>{};
              
                 this.destroy = ()=>{};
@@ -45,13 +45,12 @@ const phaserMock = {
            
         }
     },
-    /*
     Math:{
-            Distance: function(){
-                this.Between=(a,b,c,d)=>{}
-            }
-        },
-              */
+        Distance:{
+            Between: (a,b,c,d)=>{},
+        }
+    },
+              
             
 
         
@@ -69,7 +68,7 @@ const phaserMock = {
         this.hpbar = {
             cutHPBar: ()=>{}
         };
-
+        this
         this.physics = {
             world:{
                 enableBody: ()=>{},

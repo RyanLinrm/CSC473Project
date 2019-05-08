@@ -453,7 +453,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             bullet.speed=this.attackRate;
             scene.enemiesAttacks.add(bullet);
             bullet.shoot(this.uid,this,target,true);
-            bullet.setPosition(this.x+26,this.y+40);
+            bullet.setPosition(this.x,this.y);
             bullet.setTexture(this.bulletTexture).setScale(this.bulletscale).setSize(32,30);
         };
         /**

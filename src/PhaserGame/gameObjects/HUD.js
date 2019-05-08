@@ -130,7 +130,7 @@ export class HUD {
                scene.attackableGroup.add(scene.newenemy);
        
      } });}
-        //1Bottom HUD
+        //Bottom HUD
      }
 
     setPlayerHealth = (playerNumber,health)=>{

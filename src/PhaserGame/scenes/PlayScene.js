@@ -372,7 +372,7 @@ export class PlayScene extends Phaser.Scene{
         this.stopcooldown = 0;
 
     }
-
+    
         createUltimate = (time) =>{
             //player ability to destory enemies near the range
                 this.manabar.cutManaBar(300);
@@ -426,7 +426,7 @@ export class PlayScene extends Phaser.Scene{
                                     this.stoplist[i].body.immovable=false;
                                     this.stoplist[i].body.moves=true;
                                     this.stoplist[i].attackRange=100;
-                                    this.stoplist[i].tint=0xffffff;}                            
+                                    this.stoplist[i].tint=0xffb3b3;}                            
                                                 }}}}
                     }}
                    
@@ -597,20 +597,26 @@ export class PlayScene extends Phaser.Scene{
             if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
             {  
                 this.createUltimate(time);
+            
             }
             if (Phaser.Input.Keyboard.JustDown(this.Zbar)&& this.stopcooldown<time)
             {  
                 this.RoomUltimate(time);
+                this.stop=true;
             }
             if(this.destroytime < time){
                 this.demonskill.destroy();
             }
-            if(this.stoptime < time){
+            if(this.stoptime < time && this.stop){
                 this.checkstop();
             
             }
-    }
+   
+}
 
+       
+  
+    
     /**
      * @instance
      * @memberof PlayScene

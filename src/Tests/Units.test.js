@@ -45,12 +45,23 @@ test('Testing the changetarget function in Units class', ()=>{
     expect(tower.target).toBe(correctTarget);
 });
 
+test('Testing the assignID function in Units class', ()=>{
+
+    const newid ="123";
+    
+    tower.assignID(newid);
+    let correctID="123";
+    //test wheather the new id is assigned to tower
+    expect(tower.uid).toBe(correctID);
+});
+
 test('Testing the distance function in Units class', ()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
     const player = new Player(new PlayScene(),0,0, "p1", "p1_01.png",1,hP, movementSpeed,id);
-
-    shortestpath=tower.distance(tower,player);
-    expect(shortestpath).toBe(0);
+    const tower = new Units(new PlayScene(),0,0,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
+    tower.distance=jest.fn();
+    let shortestpath=tower.distance(tower,player);
+    expect(tower.distance).toBeCalledTimes(1);
 });
 
 test('Testing if takeDamage correctly decrease the damage in Units class', ()=>{
