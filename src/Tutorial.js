@@ -9,30 +9,45 @@ import otherHealth from './tutorialimages/playerhealt.png'
 import rider from './tutorialimages/riderclass.png'
 import shooter from './tutorialimages/shooter.png'
 
-export default class Tutorial extends Component {
+/**
+* Tutorial class
+*/
+class Tutorial extends Component {
+  /**
+   * @param {integer} Counter want the page not to be static so counter just keeps track of what step in the page you are on
+   */
   state = {
-    nextCounter: 0
+    Counter: 0
   };
 //  <img src={HUD}/>
  // <img src={status}/>
  // <img src={otherHealth}/>
 
+ /**
+ *when we click(next), it execute this instruction to tell the page to move on to the next set of tutorial elements
+ */
   inccount = () => {
     this.setState({
-      nextCounter: this.state.nextCounter + 1
+      Counter: this.state.Counter + 1
     });
   };
-
+  /**
+   * when we click(prev), it execute this instruction to tell the page to move on to the previous set of tutorial elements
+   */
   deccounter = () => {
     this.setState({
-      nextCounter: this.state.nextCounter - 1
+      Counter: this.state.Counter - 1
     });
   };
+  
+  /**
+   * standard react render method where all the aspects of the website can be displayed
+   */
   render() {
     return (
       <div>
 
-        {this.state.nextCounter == 0 && (
+        {this.state.Counter == 0 && (
           <div>
             <h2> The aim of the game is survival</h2>
             <div className='filler'> </div>
@@ -45,7 +60,7 @@ export default class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.nextCounter == 1 && (
+        {this.state.Counter == 1 && (
             <div>
 
             <h2>Character Selection</h2>
@@ -100,7 +115,7 @@ export default class Tutorial extends Component {
            
             </div>
         )}
-        {this.state.nextCounter == 2 && (
+        {this.state.Counter == 2 && (
           <div>
           <h2> Movement </h2>
           <div className='filler'> </div>
@@ -112,7 +127,7 @@ export default class Tutorial extends Component {
           </div>
         </div>
         )}
-        {this.state.nextCounter == 3 && (
+        {this.state.Counter == 3 && (
           <div>
           <h2> Win Multiplayer by being the last building standing  </h2>
           <div className='filler'> </div>
@@ -124,7 +139,7 @@ export default class Tutorial extends Component {
           </div>
         </div>
         )}
-        {this.state.nextCounter == 4 && (
+        {this.state.Counter == 4 && (
           <div>
           <h2> opposing health </h2>
           <div className='filler'> </div>
@@ -136,7 +151,7 @@ export default class Tutorial extends Component {
           </div>
         </div>
         )}
-        {this.state.nextCounter == 5 && (
+        {this.state.Counter == 5 && (
           <div>
           <h2> Drag and drop from your player HUD</h2>
           <div className='filler'> </div>
@@ -152,3 +167,5 @@ export default class Tutorial extends Component {
     );
   }
 }
+
+export default Tutorial;
