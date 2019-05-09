@@ -46,3 +46,15 @@ test('Testing removeWeapon for Rider', ()=>{
     expect(destroyMock).toBeCalledTimes(1);
     expect(rider.attack).toBe(null);
 });
+
+test('Testing the update function for Rider',()=>{
+    const rider = new Rider(new PlayScene(),300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
+    rider.isInjured = jest.fn();
+    rider.player_movement = jest.fn();
+
+    rider.update(1000);
+    expect(rider.isInjured).toBeCalledTimes(1);
+    expect(rider.player_movement).toBeCalledTimes(1);
+    expect(rider.isInjured.mock.calls[0][0]).toBe(1000);
+    expect(rider.beingAttacked).toEqual(false);
+});
