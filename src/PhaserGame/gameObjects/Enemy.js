@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+import * as firebase from 'firebase';
     /**
      * The Enemy class.
      * The class where the properties of the enemy units are generated.
@@ -40,6 +41,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
+        this.gameroom = '';
 
         /**
          * The array that has the list of the towers
@@ -108,8 +110,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     }
 
-    assignSelfID(id){
+    assignSelfID(id,key){
         this.selfID = id;
+        this.gameroom = key;
     }
 
      /**
@@ -280,8 +283,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     /**
      * Function to remove the enemy so we can handle other things related to the death such as stop the attack    
      */
-    kill(){
-    
+    kill(firstDeath=true){
+        if(this.gameroom !== '' && firstDeath){
+            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                alive: false
+            })
+        };
         this.destroy();     
 
         
@@ -313,6 +320,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.scene.player1.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
                 this.kill();}}*/
+                else{
+                    this.kill();
+                }
         }
     }
     /**
