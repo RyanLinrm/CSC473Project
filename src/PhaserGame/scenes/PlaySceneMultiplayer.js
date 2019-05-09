@@ -92,6 +92,9 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.databaseListners = [];
         //Checking who is the HostID   
+
+        this.otherenemies = {};
+        this.mybuddies = {};
     }
 
     init(data){
@@ -222,6 +225,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
+        /*
         let playerStatus = `Games/${this.gameRoom}/Players/${id}/status`;
         firebase.database().ref(playerStatus).on('child_changed', (snapShot) =>{
             let newStatus = snapShot.val();
@@ -233,7 +237,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 }
             }
             
-        })
+        })*/
 
         this.databaseListners.push(movementDataDB,attackDB,inGameDB);
     }
@@ -254,7 +258,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.updateSprite(bot);
     }
 
-    addNewEnemy = (x, y, type, playerid) => {
+    addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
             this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,50,99,200,playerid);
@@ -274,9 +278,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
             this.newenemy.body.immovable=true;
             this.newenemy.body.moves=false;
-            /*if(playerid !== this.playerID)
-            this.physics.add.collider(this.newenemy, this.player1);*/
         }
+
+        this.newenemy.assignSelfID(enemyid, this.gameRoom);
+        this.otherenemies[enemyid] = this.newenemy;
+
         this.enemies.add(this.newenemy);
 
         this.attackableGroup.add(this.newenemy);
@@ -442,16 +448,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(playerDB).on("child_removed", (snapShot) => {
             this.removePlayer(snapShot.key);
         });
-       
-        /*Just to prevent game crashing caused by game master leaving the room, will add in futher implement later */
-        let gameRoomDB = `Games/${this.gameRoom}`;
-        database.ref(gameRoomDB).on('child_removed', (snapShot) =>{
-            
-            if(!snapShot.val().Playsers){
-                database.ref(`Games/${this.gameRoom}`).remove();
-            }
-        });
-        /** */
+
 
         window.addEventListener('beforeunload', (event) => {
 
@@ -460,26 +457,36 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         });
         
         //check if otherplayer has placed a new enemy on the map
-        firebase.database().ref(`Games/${this.gameRoom}/enemy`).on('child_changed', snapShot=>{
+        let dragdataDB = `Games/${this.gameRoom}/dragdata`;
+        firebase.database().ref(dragdataDB).on('child_changed', snapShot=>{
             let newenemyinfo = snapShot.val();
 
             if( newenemyinfo.x >= 0 && newenemyinfo.y >= 0 && newenemyinfo.ownerid !== this.playerID ){
-                this.addNewEnemy( newenemyinfo.x, newenemyinfo.y, newenemyinfo.type, newenemyinfo.ownerid );
+                this.addNewEnemy( newenemyinfo.x, newenemyinfo.y, newenemyinfo.type, newenemyinfo.ownerid, newenemyinfo.enemyid );
             }
         })
 
-        //add in collider
-        /*let ref = database.ref(`Games/${this.gameRoom}/Players/`);
-        ref.on('child_added',snapShot=> {
-            this.physics.add.overlap(this.damageItems, this.player1, this.bothCollisions);
-            for( let pid in this.otherPlayers ){
-                this.physics.add.overlap(this.damageItems, this.otherPlayers[pid],this.bothCollisions);
-                this.physics.add.collider(this.otherPlayers[pid], this.CollisionLayer);
-                this.physics.add.collider(this.otherPlayers[pid], this.waterLayer);
-            }
-        });*/
+        //check if the enemy dies, if so async to all players
+        let enemyDB = `Games/${this.gameRoom}/enemies`;
+        firebase.database().ref(enemyDB).on('child_changed', snapShot=>{
+            let enemyinfo = snapShot.val();
+            let enemyid = snapShot.key;
+            console.log(enemyid);
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,gameRoomDB);
+            if(!enemyinfo.alive){
+                if(this.mybuddies[enemyid]){
+                    this.mybuddies[enemyid].kill(false);
+                }
+                else if(this.otherenemies[enemyid]){
+                    this.otherenemies[enemyid].kill(false);
+                }
+            }
+            
+            //firebase.database().ref(enemyDB).child(enemyid).remove();
+            
+        })
+
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB);
 
     }
 

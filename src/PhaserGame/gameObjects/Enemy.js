@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+import * as firebase from 'firebase';
     /**
      * The Enemy class.
      * The class where the properties of the enemy units are generated.
@@ -41,6 +42,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
         this.singleplayer=scene.player;
+        this.gameroom = '';
+      
         /**
          * The array that has the list of the towers
          * @name Enemy#towers
@@ -116,8 +119,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 
     }
 
-    assignSelfID(id){
+    assignSelfID(id,key){
         this.selfID = id;
+        this.gameroom = key;
     }
 
      /**
@@ -288,8 +292,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     /**
      * Function to remove the enemy so we can handle other things related to the death such as stop the attack    
      */
-    kill(){
-    
+    kill(firstDeath=true){
+        if(this.gameroom !== '' && firstDeath){
+            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                alive: false
+            })
+        };
         this.destroy();     
 
         
@@ -304,27 +312,26 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     takeDamage(damage){
         this.healthPoints = this.healthPoints - damage;
        
-        if( this.healthPoints <= 0 ){     
-      
-            if(this.mode ==='single'){
-                if(this.singleplayer.active&&this.sword_in_the_stone.active){
-                    this.singleplayer.healthPoints+=20;
-                    this.singleplayer.mana+=15;
-                    this.sword_in_the_stone.healthPoints+=20;
-                    this.scene.hpbar.regenHPBar(20);
-                    this.scene.manabar.regenManaBar(15);
-                    this.sword_in_the_stone.building_bar.regenHPBar(20);
-                    this.kill();   
-                }}
-        
-            
-            
-      
-            else if(this.mode ==='multi'){
-             //   if(this.scene.player1.active){
-             //   this.scene.player1.healthPoints+=20;
-             //   this.scene.hpbar.regenHPBar(10);
-                this.kill();}
+        if( this.healthPoints <= 0 ){
+           
+            if(this.scene.mode ==='single'){
+                if(this.scene.player.active&&this.sword_in_the_stone.active){
+                this.scene.player.healthPoints+=20;
+                this.scene.player.mana+=15;
+                this.sword_in_the_stone.healthPoints+=20;
+                this.scene.hpbar.regenHPBar(20);
+                this.scene.manabar.regenManaBar(15);
+                this.sword_in_the_stone.building_bar.regenHPBar(20);
+                this.kill();}}
+            /*
+            else if(this.scene.mode ==='multi'){
+                if(this.scene.player1.active){
+                this.scene.player1.healthPoints+=20;
+                this.scene.hpbar.regenHPBar(10);
+                this.kill();}}*/
+                else{
+                    this.kill();
+                }
         }
     }
     

@@ -28,7 +28,10 @@ export class HUD {
         if(gamemode === 'multi'){
             this.ref = firebase.database();
             this.roomkey = room;
-            this.ref.ref(`Games/${this.roomkey}`).child(`enemy`).child(uid).set({x:-1, y:-1, type:'wolf', ownerid: uid});
+            this.ref.ref(`Games/${this.roomkey}`).child(`dragdata`).child(uid).set({
+                x: -1, y: -1, type: 'wolf', ownerid: uid, enemyid: '123'
+            });
+            this.ref.ref(`Games/${this.roomkey}`).child(`enemies`).set({});
 
         }
         //Mana and Health Bars
@@ -107,27 +110,43 @@ export class HUD {
                     scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
                     scene.player.mana-=50;
                     this.manabar.cutManaBar(50);
-                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wolf',player.uid);
+                    if(gamemode === 'multi'){
+                        let enemyid = this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wolf',player.uid);
+                        scene.newenemy.assignSelfID(enemyid, this.roomkey);
+                        scene.mybuddies[enemyid] = scene.newenemy;
+                    }
                }
        
                if(unit.texture.key==='ninjabot'){              
                     scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",player,1,100,0.8,5,180,60,700,player.uid)
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25)
-                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'ninjabot',player.uid);
+                    if(gamemode === 'multi'){
+                        let enemyid = this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'ninjabot',player.uid);
+                        scene.newenemy.assignSelfID(enemyid, this.roomkey);
+                        scene.mybuddies[enemyid] = scene.newenemy;
+                    }
                }
                
                if(unit.texture.key==='skull'){              
                     scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25);
-                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
+                    if(gamemode === 'multi'){
+                        let enemyid = this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'skull',player.uid);
+                        scene.newenemy.assignSelfID(enemyid, this.roomkey);
+                        scene.mybuddies[enemyid] = scene.newenemy;
+                    }
                }
                if(unit.texture.key==='demon1'){              
                     scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
-                    scene.player.mana-=50;
+                    scene.player.mana-=50
                     this.manabar.cutManaBar(50);
-                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
+                    if(gamemode === 'multi'){
+                        let enemyid = this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'demon1',player.uid);
+                        scene.newenemy.assignSelfID(enemyid, this.roomkey);
+                        scene.mybuddies[enemyid] = scene.newenemy;
+                    }
                }
                if(unit.texture.key==='wall'){              
                     scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
@@ -135,7 +154,11 @@ export class HUD {
                     scene.newenemy.body.moves=false;
                     scene.player.mana-=20;
                     this.manabar.cutManaBar(20);
-                    if(gamemode === 'multi') this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wall',player.uid);
+                    if(gamemode === 'multi'){
+                        let enemyid = this.updateDragToOtherPlayers(pointer.worldX,pointer.worldY,'wall',player.uid);
+                        scene.newenemy.assignSelfID(enemyid, this.roomkey);
+                        scene.mybuddies[enemyid] = scene.newenemy;
+                    }
                 }
                unit.x = originalX;
                unit.y = originalY;
@@ -151,12 +174,25 @@ export class HUD {
     }
 
 
-    updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) =>{
-        this.ref.ref(`Games/${this.roomkey}/enemy/${playerid}`).update({ 
+    updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) => {
+        //store enemy into database to keep track
+        let key = this.ref.ref(`Games/${this.roomkey}/enemies`).push({
+            ownerid: playerid,
+            alive: true,
+            killerid: ''
+        });
+        let enemyid = key.key;
+        
+        //save the information of the new enemy into database for other players to generate on their local machine
+        this.ref.ref(`Games/${this.roomkey}/dragdata/${playerid}`).update({ 
             x: xval,
             y: yval,
             type: enemytype,
-            ownerid: playerid});
+            ownerid: playerid,
+            enemyid: enemyid});
+        
+        return enemyid;
+    
     }
     update(time,player,scene){
 
