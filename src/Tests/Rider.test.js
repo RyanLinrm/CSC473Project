@@ -30,3 +30,19 @@ test('Testing createWeapon for Rider',()=>{
     expect(rider.attack).toBeDefined();
     expect(rider.removeWeapon).toBeDefined();
 });
+
+test('Testing removeWeapon for Rider', ()=>{
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let rider = new Rider(scene,300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
+
+    rider.removeWeapon();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(rider.attack).toBe(null);
+});
