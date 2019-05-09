@@ -138,7 +138,7 @@ export class PlayScene extends Phaser.Scene{
             if(objectA.active && objectB.active){
                 if(objectA.uid !== objectB.uid){
                 objectA.collision();
-                objectB.collision();
+                objectB.collision(objectA.uid);
                 }
                  
             }

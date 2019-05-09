@@ -95,6 +95,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.otherenemies = {};
         this.mybuddies = {};
+    
+    /**
+     * the score in number of the player
+     * @name PlaySceneMultiplayer#score
+     * @type Number
+     */
+        this.score = 0;
     }
 
     init(data){
@@ -108,7 +115,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.playerID = data.playerID;
 
     /**
-     * The id of the player
+     * The id of the game room
      *
      * @name Player#gameRoom
      * @type number
@@ -127,7 +134,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * The spritekey of the player
      *
      * @name Player#spritekey
-     * @type number
+     * @type String
      */
         this.spritekey = data.chartype;
 
@@ -224,20 +231,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
 
         });
-
-        /*
-        let playerStatus = `Games/${this.gameRoom}/Players/${id}/status`;
-        firebase.database().ref(playerStatus).on('child_changed', (snapShot) =>{
-            let newStatus = snapShot.val();
-            let type = snapShot.key;
-
-            if(type === 'hp'){
-                if(newStatus <= 0){
-                    this.otherPlayers[id].kill();
-                }
-            }
-            
-        })*/
 
         this.databaseListners.push(movementDataDB,attackDB,inGameDB);
     }
@@ -398,11 +391,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 velocity: {x: 0, y:0}
             },
             inGame: true,     
-            playerType: this.spritekey,
-            status:{
-                hp: this.player1.healthPoints,
-                mana: this.player1.mana
-            }
+            playerType: this.spritekey
         });
         
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
@@ -466,12 +455,16 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
         })
 
-        //check if the enemy dies, if so async to all players
+        //check if the enemy dies, if so async to all players and meanwhile getting score
         let enemyDB = `Games/${this.gameRoom}/enemies`;
         firebase.database().ref(enemyDB).on('child_changed', snapShot=>{
             let enemyinfo = snapShot.val();
             let enemyid = snapShot.key;
-            console.log(enemyid);
+            
+            if( enemyinfo.killerid === this.playerID ){
+                this.score += 50;
+                console.log(this.score);
+            }
 
             if(!enemyinfo.alive){
                 if(this.mybuddies[enemyid]){
@@ -570,7 +563,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.GameIsGoing = false;
         this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
-        this.scene.start(CST.SCENES.GAMEOVER);
+        this.scene.start(CST.SCENES.GAMEOVER, {
+            playerID : this.playerID,
+            roomkey : this.gameRoom,
+            chartype: this.spritekey,
+            score: this.score
+        });
         this.databaseListners.forEach((path)=>{
             console.log(path);
             firebase.database().ref(path).off();

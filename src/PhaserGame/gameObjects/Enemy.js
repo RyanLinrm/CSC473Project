@@ -292,16 +292,21 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     /**
      * Function to remove the enemy so we can handle other things related to the death such as stop the attack    
      */
-    kill(firstDeath=true){
+    kill(firstDeath=true, attackeruid){
         if(this.gameroom !== '' && firstDeath){
-            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
-                alive: false
+            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).transaction( snapShot =>{
+                firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                    alive: false,
+                    killerid: attackeruid
+                })
             })
+            /*firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                alive: false
+            })*/
         };
         this.destroy();     
-
         
-    }
+    } 
 
     /**
      * Function to damage the enemy by the the given number supplied to the funciton
@@ -309,7 +314,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * 
      * @param {number} damage - the amount of damage the enemy should take
      */
-    takeDamage(damage){
+    takeDamage(damage, attackeruid){
         this.healthPoints = this.healthPoints - damage;
        
         if( this.healthPoints <= 0 ){
@@ -330,7 +335,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.scene.hpbar.regenHPBar(10);
                 this.kill();}}*/
                 else{
-                    this.kill();
+                    this.kill(true, attackeruid);
                 }
         }
     }
@@ -339,8 +344,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true
      */
-    collision(){
-        this.takeDamage(20);
+    collision( attackeruid ){
+        this.takeDamage(20,attackeruid);
         this.beingAttacked=true;
   
     }
