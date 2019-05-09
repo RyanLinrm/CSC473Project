@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Tutorial.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Tutorial.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from "react";
+import { Button } from "react-bootstrap";
+import './Tutorial.css';
+import basicsprite from './tutorialimages/basicsprite.png'
+import charselect from './tutorialimages/characterselect.png'
+import HUD from './tutorialimages/playerHud.png'
+import status from './tutorialimages/healthandmana.png'
+import otherHealth from './tutorialimages/playerhealt.png'
+import rider from './tutorialimages/riderclass.png'
+import shooter from './tutorialimages/shooter.png'
+
+/**
+* Tutorial class
+*/
+class Tutorial extends Component {
+  /**
+   * @param {integer} Counter want the page not to be static so counter just keeps track of what step in the page you are on
+   */
+  state = {
+    Counter: 0
+  };
+//  &lt;img src={HUD}/>
+ // &lt;img src={status}/>
+ // &lt;img src={otherHealth}/>
+
+ /**
+ *when we click(next), it execute this instruction to tell the page to move on to the next set of tutorial elements
+ */
+  inccount = () => {
+    this.setState({
+      Counter: this.state.Counter + 1
+    });
+  };
+  /**
+   * when we click(prev), it execute this instruction to tell the page to move on to the previous set of tutorial elements
+   */
+  deccounter = () => {
+    this.setState({
+      Counter: this.state.Counter - 1
+    });
+  };
+  
+  /**
+   * standard react render method where all the aspects of the website can be displayed
+   */
+  render() {
+    return (
+      &lt;div>
+
+        {this.state.Counter == 0 &amp;&amp; (
+          &lt;div>
+            &lt;h2> The aim of the game is survival&lt;/h2>
+            &lt;div className='filler'> &lt;/div>
+            &lt;div className='box'>
+            &lt;Button className="prev" variant="btn btn-light">
+              Previous{" "}
+            &lt;/Button>
+            &lt;img src={basicsprite}/>
+            &lt;Button className='next' onClick={this.inccount}>NEXT &lt;/Button>
+            &lt;/div>
+          &lt;/div>
+        )}
+        {this.state.Counter == 1 &amp;&amp; (
+            &lt;div>
+
+            &lt;h2>Character Selection&lt;/h2>
+            &lt;div className='filler'> &lt;/div>
+            &lt;div className='box'>
+            &lt;Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+              Previous{" "}
+            &lt;/Button>
+            &lt;img src={charselect} />
+            &lt;Button className='next' onClick={this.inccount}>NEXT &lt;/Button>           
+            &lt;h4>At the start of the game you are told to choose your charcater. choose wisely as you are unable to 
+              change charcater classes in the instance of the game &lt;/h4>
+              &lt;h2>class stats&lt;/h2>
+            &lt;table align="center">
+              &lt;tr>
+                &lt;th>class name:&lt;/th>
+                &lt;th className='rider'>&lt;h3>Rider Class&lt;/h3>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>Shooter Class&lt;/h3>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>attack photo:&lt;/th>
+                &lt;th className='rider' >&lt;img src={rider}/>&lt;/th>
+                &lt;th className='shooter'>&lt;img src={shooter}/>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>attack description:&lt;/th>
+                &lt;th className='rider'>&lt;h4>shoot out a sludge from behind&lt;/h4>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>shoot&lt;/h3>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>Starting Health:&lt;/th>
+                &lt;th className='rider'>&lt;h4>150&lt;/h4>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>100&lt;/h3>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>Starting mana:&lt;/th>
+                &lt;th className='rider'>&lt;h4>100&lt;/h4>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>150&lt;/h3>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>Speed in single player:&lt;/th>
+                &lt;th className='rider'>&lt;h4>100&lt;/h4>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>150&lt;/h3>&lt;/th>
+              &lt;/tr>
+              &lt;tr>
+                &lt;th>Speed in multiplayer player:&lt;/th>
+                &lt;th className='rider'>&lt;h4>100&lt;/h4>&lt;/th>
+                &lt;th className='shooter'>&lt;h3>150&lt;/h3>&lt;/th>
+              &lt;/tr>
+            &lt;/table>
+           &lt;/div>
+           
+            &lt;/div>
+        )}
+        {this.state.Counter == 2 &amp;&amp; (
+          &lt;div>
+          &lt;h2> Movement &lt;/h2>
+          &lt;div className='filler'> &lt;/div>
+          &lt;div className='box'>
+          &lt;Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          &lt;/Button>
+          &lt;Button className='next' onClick={this.inccount}>NEXT &lt;/Button>
+          &lt;/div>
+        &lt;/div>
+        )}
+        {this.state.Counter == 3 &amp;&amp; (
+          &lt;div>
+          &lt;h2> Win Multiplayer by being the last building standing  &lt;/h2>
+          &lt;div className='filler'> &lt;/div>
+          &lt;div className='box'>
+          &lt;Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          &lt;/Button>
+          &lt;Button className='next' onClick={this.inccount}>NEXT &lt;/Button>
+          &lt;/div>
+        &lt;/div>
+        )}
+        {this.state.Counter == 4 &amp;&amp; (
+          &lt;div>
+          &lt;h2> opposing health &lt;/h2>
+          &lt;div className='filler'> &lt;/div>
+          &lt;div className='box'>
+          &lt;Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          &lt;/Button>
+          &lt;Button className='next' onClick={this.inccount}>NEXT &lt;/Button>
+          &lt;/div>
+        &lt;/div>
+        )}
+        {this.state.Counter == 5 &amp;&amp; (
+          &lt;div>
+          &lt;h2> Drag and drop from your player HUD&lt;/h2>
+          &lt;div className='filler'> &lt;/div>
+          &lt;div className='box'>
+          &lt;Button onClick={this.deccounter} className="prev" variant="btn btn-dark">
+            Previous{" "}
+          &lt;/Button>
+          &lt;Button className='next' variant='light'>NEXT &lt;/Button>
+          &lt;/div>
+        &lt;/div>
+        )}
+      &lt;/div>
+    );
+  }
+}
+
+export default Tutorial;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 09 2019 10:37:54 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
