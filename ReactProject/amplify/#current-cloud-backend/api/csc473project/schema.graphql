@@ -1,7 +1,0 @@
-
-type Player @model{
-  id: ID!
-  x: Float!
-  y: Float!
-}
-

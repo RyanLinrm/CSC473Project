@@ -92,7 +92,9 @@ test('Testing if collision funciton correctly works', ()=>{
 
 test('Testing if isInjured function correctly work (changes tint and count) while being attacked', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
-    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    let scene = new PlayScene();
+    scene.mode = 'single';
+    const player = new Player(scene,300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
 
     player.beingAttacked = true;
     player.isInjured(560);
@@ -217,7 +219,11 @@ test('Testing the update function of the player',()=>{
 
 test('Testing if mana decreases after a special attack', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    let scene = new PlayScene();
+    scene.damageItems = {
+        add: jest.fn()
+    };
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
 
     player.specialAttack();
     expect(player.mana).toEqual(990);
@@ -227,10 +233,79 @@ test('Testing if mana decreases after a special attack', ()=>{
 
 test('Testing if special attack does not decrease mana when less than 10', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
-    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    let scene = new PlayScene();
+    scene.damageItems = {
+        add: jest.fn()
+    };
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
 
-    for(i = 0; i < 130; i++){
+    for(let i = 0; i < 130; i++){
         player.specialAttack();
     }
     expect(player.mana).toEqual(0); //should not be negative
+})
+
+test('Testing the removeSpecialWeapon function', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let scene = new PlayScene();
+
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+
+    player.removeSpecialWeapon();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(player.specialAttack).toBe(null);
+
+})
+
+
+test('Testing the attack function', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let scene = new PlayScene();
+
+    scene.damageItems = {
+        add: jest.fn()
+    };
+
+    let shootMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            get:() => ({shoot:shootMock})
+        };
+    }
+    
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+
+    player.attack();
+    expect(scene.damageItems.add).toBeCalledTimes(1);
+    expect(shootMock).toBeCalledTimes(1);
+
+})
+
+test('Testing the removeWeapon function', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let scene = new PlayScene();
+
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+
+    player.removeWeapon();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(player.attack).toBe(null);
+
 })

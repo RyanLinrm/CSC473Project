@@ -1,7 +1,11 @@
+ReactProject/
+ReactProject/amplify
+ReactProject/src
 dist/*.js
 dist/*.map
 dist/*.html
 .cache
+coverage
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*

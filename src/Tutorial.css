@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css?family=Faster+One");
+.prev {
+  float: left;
+}
+.next {
+  float: right;
+}
+
+.center {
+  float: center;
+}
+
+.box {
+  display: inline-block;
+  width: 90%;
+  height: 40%;
+}
+
+.filler {
+  height: 40%;
+}
+
+.classlist {
+  display: inline-block;
+}
+
+table img {
+  height: 150px;
+  width: 350px;
+}
+table,
+th,
+td {
+  border: 1px solid black;
+  padding: 15px;
+}
+
+.rider {
+  background-color: blue;
+  color: white;
+}
+
+.shooter {
+  color: white;
+  background-color: orange;
+}
+
+h2 {
+  font-family: "Faster One", cursive;
+}
+
+#Hud {
+  height: 600px;
+}
+.directHUD {
+  width: 75%;
+}
+

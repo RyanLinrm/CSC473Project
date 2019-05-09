@@ -19,7 +19,7 @@ export default function HomeNavbar(props){
                 </Nav>
                 
                 <Nav  >
-                <Navbar.Brand href="#home">React Phaser Game</Navbar.Brand>
+                <Navbar.Brand onClick={startingpage}>React Phaser Game</Navbar.Brand>
                 </Nav>
                
                 <Nav >
@@ -31,4 +31,8 @@ export default function HomeNavbar(props){
     );
 
 
+}
+
+function startingpage () {
+    window.location.reload();
 }
