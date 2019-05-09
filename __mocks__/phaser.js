@@ -40,7 +40,11 @@ const phaserMock = {
 
                 };
                 this.setSize = (a, b) =>{};
+                this.setVelocityX = ( velocityValue ) => { };
                 
+                this.play = (key, loop) => {
+                    return key;
+                };
             },
            
         }
@@ -69,7 +73,6 @@ const phaserMock = {
         this.hpbar = {
             cutHPBar: ()=>{}
         };
-        this
         this.physics = {
             world:{
                 enableBody: ()=>{},
@@ -86,7 +89,15 @@ const phaserMock = {
               
             }
         };
-    
+        this.anims = {
+            create: ( animationConfig ) =>{
+                return animationConfig;
+            },
+            generateFrameNames: (spritename, configObject) => {
+                return configObject;
+            },
+        }
+
         this.updateSprite = ()=>{};
        
     }

@@ -244,7 +244,6 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
                 this.targetlist.push(player)
                 }
             this.findnearenemy();
-           
         }
         if(this.targetlist.length>0){
             this.findnearenemy();
