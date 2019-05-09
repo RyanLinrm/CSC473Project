@@ -163,45 +163,6 @@ test('Testing if enemymovement works when the enemyid is 0', ()=>{
     expect(enemy.play.mock.calls[3][0]).toBe("wolf_right");
     expect(enemy.play.mock.calls[3][1]).toBe(true);
 });
-test('Testing if enemymovement works when the enemyid is 0', ()=>{
-    const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
-
-    enemy.enemyID = 0;
-    enemy.play = jest.fn();
-   
-    //velocity.x > 0 & velocity.y > 0
-    enemy.body.velocity.x = 10;
-    enemy.body.velocity.y = 10;
-    enemy.enemymovement();
-    expect(enemy.play).toBeCalledTimes(1);
-    expect(enemy.play.mock.calls[0][0]).toBe("wolf_down");
-    expect(enemy.play.mock.calls[0][1]).toBe(true);
-
-   //velocity.x < 0 & velocity.y < 0
-    enemy.body.velocity.x = -10;
-    enemy.body.velocity.y = -10;
-    enemy.enemymovement();
-    expect(enemy.play).toBeCalledTimes(2);
-    expect(enemy.play.mock.calls[1][0]).toBe("wolf_up");
-    expect(enemy.play.mock.calls[1][1]).toBe(true);
-
-
-   //velocity.x < 0 & velocity.y > 0
-    enemy.body.velocity.x = -10;
-    enemy.body.velocity.y = 10;
-    enemy.enemymovement();
-    expect(enemy.play).toBeCalledTimes(3);
-    expect(enemy.play.mock.calls[2][0]).toBe("wolf_left");
-    expect(enemy.play.mock.calls[2][1]).toBe(true);
-
-   //velocity.x > 0 & velocity.y < 0
-   enemy.body.velocity.x = 10;
-   enemy.body.velocity.y = -10;
-   enemy.enemymovement();
-    expect(enemy.play).toBeCalledTimes(4);
-    expect(enemy.play.mock.calls[3][0]).toBe("wolf_right");
-    expect(enemy.play.mock.calls[3][1]).toBe(true);
-});
 
 test('Testing if enemymovement works when the enemyid is 1', ()=>{
     const enemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
@@ -336,4 +297,52 @@ test('Testing if createAttack correctly initialized the  weapons for the enemy',
     expect(newEnemy.removeDefense).toBeDefined();
     
 });
+test('Testing the removeDefense function in enemy class', ()=>{
+    let scene = new PlayScene();
 
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+    newEnemy.removeDefense();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(newEnemy.basicattack).toBe(null);
+
+})
+/*
+test('Testing the defend function in enemy class', ()=>{
+    let scene = new PlayScene();
+
+    scene.enemiesAttacks = {
+        add: jest.fn()
+    };
+
+    let shootMock = jest.fn();
+    let setTextureMock =jest.fn();
+    let setScaleMock= jest.fn();
+    let setPositionMock= jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            get:() => ({shoot:shootMock,
+                        setScale:setScaleMock,
+                        setPosition:setPositionMock,
+                        setTexture:setTextureMock,
+                      })
+            
+        };
+    }
+    
+    let newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+
+    newEnemy.basicattack();
+    expect(scene.enemiesAttacks.add).toBeCalledTimes(1);
+    expect(shootMock).toBeCalledTimes(1);
+
+})
+*/

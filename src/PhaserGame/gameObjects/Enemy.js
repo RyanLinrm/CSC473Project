@@ -271,7 +271,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
 
-            if(this.movementSpeed>=player.movementSpeed+20){
+            if(this.movementSpeed>=player.movementSpeed+10){
                 this.movementSpeed=65;         
          }
             if(Math.abs(this.scene.player.x - enemy.x) < this.attackRange+40 && Math.abs(this.scene.player.y - enemy.y) < this.attackRange+40){
@@ -317,15 +317,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                     this.kill();   
                 }}
         
-            }
             
-            /*
+            
+      
             else if(this.mode ==='multi'){
-                if(this.scene.player1.active){
-                this.scene.player1.healthPoints+=20;
-                this.scene.hpbar.regenHPBar(10);
-                this.kill();}}*/
+             //   if(this.scene.player1.active){
+             //   this.scene.player1.healthPoints+=20;
+             //   this.scene.hpbar.regenHPBar(10);
+                this.kill();}
         }
+    }
     
     /**
      * collision function that is called when a collision occurs to the enemy. 
@@ -492,7 +493,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     enemyAttack(enemy,target,time){
-
+        if(target.active&&target.uid!=enemy.uid){
          if (Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < enemy.attackRange){
             let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
             let vX = (target.x - enemy.x)/distance;
@@ -500,7 +501,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             if(this.timeCycle < time){
             this.basicattack({x: vX,y: vY});
             this.timeCycle = time + this.cooldown ;}
-    }
+    }}
 }
 
    /**

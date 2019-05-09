@@ -8,7 +8,7 @@ const phaserMock = {
     
     GameObjects: {
         Image: function(){
-            
+
             this.setTexture = () => ({
                 setScale: () => ({
                     setSize: jest.fn()

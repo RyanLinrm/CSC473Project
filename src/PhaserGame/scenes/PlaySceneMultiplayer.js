@@ -183,7 +183,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.physics.add.collider(this.otherPlayers[id], this.CollisionLayer);
         this.physics.add.collider(this.otherPlayers[id], this.waterLayer);
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
-
+        this.player1.setCollideWorldBounds(true);
 
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
