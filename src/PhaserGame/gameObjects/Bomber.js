@@ -5,6 +5,7 @@ export class Bomber extends Player{
         super(scene,x,y,key,textureName,characterId,healthPoints,movementSpeed,uid);
         this.movementSpeed=movementSpeed;
         this.characterId=characterId;
+        this.beingAttacked=false;
         this.healthPoints=healthPoints;
         this.uid=uid;
     }

@@ -8,8 +8,7 @@ export class Rider extends Player{
         this.beingAttacked=false;
         this.healthPoints=healthPoints;
         this.uid=uid;
-    }
-    
+    } 
 
     createWeapon(scene) {
         this.bullets = scene.physics.add.group({ classType: Posion, runChildUpdate: true });
@@ -17,12 +16,11 @@ export class Rider extends Player{
             let bullet = this.bullets.get();
             scene.children.add(bullet);
             bullet.place(this,this.uid);
-
         };
-
-    this.removeWeapon = () => { //destroys the weapon used
-        this.bullets.destroy();
-        this.attack = null;
+        
+        this.removeWeapon = () => { //destroys the weapon used
+            this.bullets.destroy();
+            this.attack = null;
         };
 
     }
