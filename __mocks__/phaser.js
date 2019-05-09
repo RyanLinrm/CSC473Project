@@ -5,9 +5,10 @@
 
 
 const phaserMock = {
+    
     GameObjects: {
         Image: function(){
-            
+
             this.setTexture = () => ({
                 setScale: () => ({
                     setSize: jest.fn()
@@ -26,12 +27,17 @@ const phaserMock = {
     Physics: {
         Arcade:{
             Sprite: function(){
+             
+                this.setCollideWorldBounds=()=>{};
+             
                 this.destroy = ()=>{};
                 this.body = {
+        
                     velocity:{
                         x:0,
                         y:0
-                    }
+                    },
+
                 };
                 this.setSize = (a, b) =>{};
                 this.setVelocityX = ( velocityValue ) => { };
@@ -43,8 +49,22 @@ const phaserMock = {
            
         }
     },
+    Math:{
+        Distance:{
+            Between: (a,b,c,d)=>{},
+        }
+    },
+              
+            
 
+        
+        
+    
     Scene: function(){
+        this.enemyTowers= {
+            add:()=>{}
+        };
+        this.player={};
         this.sys = {
             updateList:{add:()=>{}},
             displayList:{add:()=>{}}
@@ -53,20 +73,22 @@ const phaserMock = {
         this.hpbar = {
             cutHPBar: ()=>{}
         };
-
         this.physics = {
             world:{
-                enableBody: ()=>{}
+                enableBody: ()=>{},
+                enable:()=>{}
             },
             add:{
                 group: ()=>{
                     return {
                         get:() => ({shoot:jest.fn()})
                     };
-                }
+     
+            },
+      
+              
             }
         };
-
         this.anims = {
             create: ( animationConfig ) =>{
                 return animationConfig;
@@ -77,6 +99,7 @@ const phaserMock = {
         }
 
         this.updateSprite = ()=>{};
+       
     }
 }
 

@@ -34,15 +34,16 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-        this.setOrigin(0,0);
+        //this.setOrigin(0,0);
         this.building=scene.building;
         this.university=scene.university;
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
+        this.singleplayer=scene.player;
         this.gameroom = '';
-
+      
         /**
          * The array that has the list of the towers
          * @name Enemy#towers
@@ -74,9 +75,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * @type number
          */
         this.bulletscale=0.15;
-        //Health
-        this.healthPoints = healthPoints;
         
+        /**
+         * value from the scene that tells the enemy what type of scene we are in. 
+         * @name Enemy#mode
+         * @type string
+         */
+        this.mode = scene.mode;
+        //Health
+        this.healthPoints = healthPoints; 
+        this.tintcolor=0xffffff;
+        this.tint=this.tintcolor;
         /**
          * The bullet texture of the Enemy 
          * @name Enemy#bulletTexture
@@ -225,7 +234,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         let shortestDistance=1000000000;
         this.findneartower = () =>{
             
-            if(this.scene.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
+            if(this.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
                 if(this.sword_in_the_stone.active)
                 this.changetarget(this.sword_in_the_stone);
                 else this.changetarget(this.scene.player);}
@@ -261,12 +270,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else this.findneartower();
         
-        if(this.scene.mode === 'single'){
+        if(this.mode === 'single'){
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
 
-            if(this.movementSpeed>=player.movementSpeed+20){
+            if(this.movementSpeed>=player.movementSpeed+10){
                 this.movementSpeed=65;         
          }
             if(Math.abs(this.scene.player.x - enemy.x) < this.attackRange+40 && Math.abs(this.scene.player.y - enemy.y) < this.attackRange+40){
@@ -325,6 +334,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 }
         }
     }
+    
     /**
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true
@@ -348,7 +358,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else{
             if(time>this.count+1000)
-            {this.tint=0xffffff;}
+            {this.tint=this.tintcolor;}
 
         }
     }
@@ -469,7 +479,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             bullet.speed=this.attackRate;
             scene.enemiesAttacks.add(bullet);
             bullet.shoot(this.uid,this,target,true);
-            bullet.setPosition(this.x+26,this.y+40);
+            bullet.setPosition(this.x,this.y);
             bullet.setTexture(this.bulletTexture).setScale(this.bulletscale).setSize(32,30);
         };
         /**
@@ -477,7 +487,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          */
         this.removeDefense = ()=>{ //destroys the weapon used
             this.bullets.destroy();
-            this.attack = null;
+            this.basicattack = null;
         };    
 
     }
@@ -490,7 +500,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     enemyAttack(enemy,target,time){
-
+        if(target.active&&target.uid!=enemy.uid){
          if (Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < enemy.attackRange){
             let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
             let vX = (target.x - enemy.x)/distance;
@@ -498,7 +508,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             if(this.timeCycle < time){
             this.basicattack({x: vX,y: vY});
             this.timeCycle = time + this.cooldown ;}
-    }
+    }}
 }
 
    /**

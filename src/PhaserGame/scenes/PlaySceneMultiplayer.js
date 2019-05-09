@@ -186,7 +186,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.physics.add.collider(this.otherPlayers[id], this.CollisionLayer);
         this.physics.add.collider(this.otherPlayers[id], this.waterLayer);
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
-
+        this.player1.setCollideWorldBounds(true);
 
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
@@ -492,7 +492,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     update(time){
         this.hUD.update(time,this.player1,this);
-        
+        this.changeEnemyColor(this.player1,time);
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
 

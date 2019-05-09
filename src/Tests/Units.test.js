@@ -1,6 +1,6 @@
-import {Units} from "../PhaserGame/gameObjects/Player";
+import {Units} from "../PhaserGame/gameObjects/Units";
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
-import { Player } from "../PhaserGame/gameObjects/StatusBar";
+import { Player } from "../PhaserGame/gameObjects/Player";
 const scene=new PlayScene();
 const x=0;
 const y=0;
@@ -13,22 +13,18 @@ const speed=1;
 const range=180;
 const cooldown=100;
 const uid="233";
-
+const player = new Player(scene,300,300, "p1", "p1_01.png",100, 64,'233');
 const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
 test('Testing Units class constructer correctly and intializes a new Units tower', ()=>{
-
+ 
+    const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     expect(tower).toBeDefined();
-    expect(tower.x).toBe(x);
-    expect(tower.y).toBe(y);
-    expect(tower.barx).toBe(barx);
-    expect(tower.bary).toBe(bary);
-    expect(tower.name).toBe("tower");
     expect(tower.type).toBe(type);
     expect(tower.healthPoints).toBe(healthPoints);
     expect(tower.speed).toBe(speed);
     expect(tower.range).toBe(range);
     expect(tower.cooldown).toBe(cooldown);
-    expect(tower.uid).toBe("233");
+    expect(tower.uid).toBeDefined();
     expect(tower.createDefense).toBeDefined();
     expect(tower.removeDefense).toBeDefined();
     expect(tower.beingAttacked).toBeDefined();
@@ -39,22 +35,33 @@ test('Testing Units class constructer correctly and intializes a new Units tower
 test('Testing the changetarget function in Units class', ()=>{
 
     const newtarget =tower;
-
+    tower.target=player;
     //test wheather the current target is player 
     expect(tower.target).toBe(player);
-
+    
     tower.changetarget(newtarget);
     let correctTarget=tower;
     //test wheather the target is changed to tower
     expect(tower.target).toBe(correctTarget);
 });
 
+test('Testing the assignID function in Units class', ()=>{
+
+    const newid ="123";
+    
+    tower.assignID(newid);
+    let correctID="123";
+    //test wheather the new id is assigned to tower
+    expect(tower.uid).toBe(correctID);
+});
+
 test('Testing the distance function in Units class', ()=>{
     const hP = 53; const movementSpeed = 42; const id = "abc";
     const player = new Player(new PlayScene(),0,0, "p1", "p1_01.png",1,hP, movementSpeed,id);
- 
-    shortestpath=tower.distance(tower,player);
-    expect(shortestpath).toBe(0);
+    const tower = new Units(new PlayScene(),0,0,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
+    tower.distance=jest.fn();
+    let shortestpath=tower.distance(tower,player);
+    expect(tower.distance).toBeCalledTimes(1);
 });
 
 test('Testing if takeDamage correctly decrease the damage in Units class', ()=>{
@@ -119,18 +126,66 @@ test('Testing if createDefense correctly initialized the  weapons for the tower'
     const newScene = new PlayScene();
     newScene.physics.add.group = jest.fn();
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
-    tower.attack = undefined; tower.removeWeapon = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
+    tower.defend = undefined; tower.removeDefense = undefined; //since it gets called in the constructor. Setting it to undefined for this unit test
 
-    player.createDefense(newScene);
+    tower.createDefense(newScene);
     expect(newScene.physics.add.group).toBeCalledTimes(1);
-    expect(tower.attack).toBeDefined();
-    expect(tower.removeWeapon).toBeDefined();
+    expect(tower.defend).toBeDefined();
+    expect(tower.removeDefense).toBeDefined();
     
 });
+
+test('Testing the removeDefense function in units class', ()=>{
+    let scene = new PlayScene();
+
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
+
+
+    tower.removeDefense();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(tower.defend).toBe(null);
+
+})
+/*
+test('Testing the defend function in units class', ()=>{
+    let scene = new PlayScene();
+
+    scene.towerShooting = {
+        add: jest.fn()
+    };
+    let shootMock = jest.fn();
+    let setTextureMock =jest.fn();
+    let setPositionMock= jest.fn();
+    let setScaleMock= jest.fn();
+    scene.physics.add.group = ()=>{
+        return {
+            get:() => ({shoot:shootMock,
+                        setPosition:setPositionMock,
+                        setScale:setScaleMock,
+                        setTexture:setTextureMock})
+            
+        };
+    }
+    let tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
+
+    tower.defend();
+    expect(scene.towerShooting.add).toBeCalledTimes(1);
+    expect(shootMock).toBeCalledTimes(1);
+
+})*/
 
 test('Testing the update function of the Units class',()=>{
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     tower.isInjured = jest.fn();
+    tower.towerAttack=jest.fn();
 
     tower.update(1000);
     expect(tower.isInjured).toBeCalledTimes(1);
