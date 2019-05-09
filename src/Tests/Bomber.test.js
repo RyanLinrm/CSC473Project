@@ -13,4 +13,20 @@ test('Testing Bomber constructor',()=>{
     expect(bomber.movementSpeed).toBe(movementSpeed);
     expect(bomber.uid).toBe(id);
     expect(bomber.beingAttacked).toBeFalsy();
+    expect(bomber.createWeapon).toBeDefined();
+    expect(bomber.removeWeapon).toBeDefined();
 });
+
+test('Testing createWeapon for Bomber',()=>{
+    const hP = 42; const movementSpeed = 30; const id = "483";
+    const newScene = new PlayScene();
+    newScene.physics.add.group = jest.fn();
+    const bomber = new Bomber(new PlayScene(),300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
+    bomber.attack = undefined; bomber.removeWeapon = undefined;
+
+    bomber.createWeapon(newScene);
+    expect(newScene.physics.add.group).toBeCalledTimes(1);
+    expect(bomber.attack).toBeDefined();
+    expect(bomber.removeWeapon).toBeDefined();
+});
+
