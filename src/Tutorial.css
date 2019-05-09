@@ -1,48 +1,58 @@
-@import url('https://fonts.googleapis.com/css?family=Faster+One');
-.prev{
-    float: left;
+@import url("https://fonts.googleapis.com/css?family=Faster+One");
+.prev {
+  float: left;
 }
-.next{
-    float: right;
-}
-
-.center{
-    float: center;
+.next {
+  float: right;
 }
 
-.box{
-    display: inline-block;
-    width: 90%;
-    height: 40%;
-}
- 
-.filler{
-    height: 40%
+.center {
+  float: center;
 }
 
-.classlist{
-    display: inline-block;
+.box {
+  display: inline-block;
+  width: 90%;
+  height: 40%;
+}
+
+.filler {
+  height: 40%;
+}
+
+.classlist {
+  display: inline-block;
 }
 
 table img {
-    height: 150px;
-    width: 350px;
+  height: 150px;
+  width: 350px;
 }
-table, th, td {
-    border: 1px solid black;
-    padding: 15px;
+table,
+th,
+td {
+  border: 1px solid black;
+  padding: 15px;
 }
 
 .rider {
-    background-color: blue;
-    color: white
+  background-color: blue;
+  color: white;
 }
 
 .shooter {
-    color: white;
-    background-color: orange
+  color: white;
+  background-color: orange;
 }
 
 h2 {
-    font-family: 'Faster One', cursive;
+  font-family: "Faster One", cursive;
 }
+
+#Hud {
+  height: 600px;
+}
+.directHUD {
+  width: 75%;
+}
+
