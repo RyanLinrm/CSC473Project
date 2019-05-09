@@ -49,3 +49,16 @@ test('Testing removeWeapon for Bomber', ()=>{
     expect(bomber.attack).toBe(null);
 
 });
+
+test('Testing the update function Bomber',()=>{
+    const hP = 42; const movementSpeed = 30; const id = "483";
+    const bomber = new Bomber(new PlayScene(),300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
+    bomber.isInjured = jest.fn();
+    bomber.player_movement = jest.fn();
+
+    bomber.update(1000);
+    expect(bomber.isInjured).toBeCalledTimes(1);
+    expect(bomber.player_movement).toBeCalledTimes(1);
+    expect(bomber.isInjured.mock.calls[0][0]).toBe(1000);
+    expect(bomber.beingAttacked).toEqual(false);
+});
