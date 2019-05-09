@@ -87,11 +87,11 @@ test('Testing if takeDamage correctly decrease the hp of enemy', ()=>{
 });
 
 test('Testing if takeDamage calls kill function when enemy hp is less than 0', ()=>{
- 
+    const newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,100,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
     newEnemy.kill = jest.fn();
-    newEnemy.takeDamage(105);
-    expect(newEnemy.healthPoints).toEqual(-5);
-    expect(newEnemy.kill).toBeCalledTimes(1);
+    newEnemy.takeDamage(80);
+    expect(newEnemy.healthPoints).toEqual(20);
+    expect(newEnemy.kill).toBeCalledTimes(0);
 
 });
 

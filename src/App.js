@@ -7,8 +7,12 @@ import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
 import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
 import Tutorial from './Tutorial'
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import * as queries from './graphql/queries';
+import * as mutations from './graphql/mutations';
 
 import * as firebase from 'firebase';
+import { config } from 'aws-sdk/global';
 
 class App extends Component {
   constructor(props) {
@@ -40,7 +44,34 @@ class App extends Component {
     if(!this.state.showLeaderboard){
     this.setState({ showbuttons: !this.state.showbuttons });
     if (signInState === 'signedIn') {
-     Auth.currentAuthenticatedUser().then((cognitoUser)=>{
+      Auth.currentAuthenticatedUser().then( async (cognitoUser)=>{
+        
+        const uid = cognitoUser.attributes.sub;
+
+        const User = await API.graphql(graphqlOperation(queries.listGameUsers, 
+            {filter:{ sub: { eq: uid } } }))
+            .then( async (data)=>{
+          
+              if(data.data.listGameUsers.items.length === 0){
+              
+                const newGamer = {
+                  sub: uid,
+                  username: cognitoUser.username,
+                  bestTime: 0,
+                  lastTime: 0,
+                  bestScore: 0,
+                  lastScore: 0,
+                  lastChar: 'none'
+                }
+          
+                try{
+                  const newgamer = await API.graphql(graphqlOperation(mutations.createGameUser, {input: newGamer}));
+                  console.log(newgamer);
+                }catch(err){
+                  console.log('error ',err);
+                }
+              }
+        });
 
       this.setState({ 
         signInName:cognitoUser.username
@@ -49,7 +80,7 @@ class App extends Component {
        
      });
     }
-    else if(signInState == 'signIn'){
+    else if(signInState === 'signIn'){
       this.setState({ 
         signInName:null
       });
@@ -62,7 +93,7 @@ class App extends Component {
       });
     if (signInState === 'signedIn') {
      Auth.currentAuthenticatedUser().then((cognitoUser)=>{
-
+      console.log(cognitoUser);
       this.setState({ 
         signInName:cognitoUser.username
       });
@@ -70,7 +101,7 @@ class App extends Component {
        
      });
     }
-    else if(signInState == 'signIn'){
+    else if(signInState === 'signIn'){
       this.setState({ 
         signInName:null
       });

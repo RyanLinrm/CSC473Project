@@ -201,6 +201,8 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * Function to let the tower shoot correct target if the target is in its attack range.
      * The attack of the tower will have a cooldown that is assigned to it.
      * When the attack range,cooldown are fine, the tower is ready to attack the target.
+     * The target is the one that is nearest to the tower which is found from the findnearenemy
+     * function inside towerAttack.
      * @param {object} tower - The tower that we will perform the attack function.
      * @param {object} target - The target that the tower will attack.
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
@@ -213,6 +215,15 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         let shortestDistance=1000000000;
         this.scene.enemies.getChildren().map(child => this.targetlist.push(child));  
         this.targetlist.push(this.scene.player);
+        /**      
+         * (Function is created by the TowerAttack function) 
+         * 
+         * Findneartower finds the nearest enemy or player to attack from the targetlist that we 
+         * generated. The function will call distance function to find the target that is nearest 
+         * to the tower, and assign it to be new target, which will be future attacked if it is 
+         * within the attack range of the tower.
+         */ 
+
         this.findnearenemy = () =>{
             for (let i = 0; i < this.targetlist.length; i++) {
                 if(this.targetlist[i].active){

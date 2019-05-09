@@ -1,27 +1,42 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const createTodo = `mutation CreateTodo($input: CreateTodoInput!) {
-  createTodo(input: $input) {
+export const createGameUser = `mutation CreateGameUser($input: CreateGameUserInput!) {
+  createGameUser(input: $input) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;
-export const updateTodo = `mutation UpdateTodo($input: UpdateTodoInput!) {
-  updateTodo(input: $input) {
+export const updateGameUser = `mutation UpdateGameUser($input: UpdateGameUserInput!) {
+  updateGameUser(input: $input) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;
-export const deleteTodo = `mutation DeleteTodo($input: DeleteTodoInput!) {
-  deleteTodo(input: $input) {
+export const deleteGameUser = `mutation DeleteGameUser($input: DeleteGameUserInput!) {
+  deleteGameUser(input: $input) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;

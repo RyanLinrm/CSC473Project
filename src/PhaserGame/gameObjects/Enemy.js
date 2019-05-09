@@ -27,7 +27,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} cooldown - The cooldown restriction that the Enemy can perform next attack
      * @param {string} uid - The unique id of Enemy object which is same as the player who created the enemy.
      */
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233'){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233', selfID='233'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
@@ -39,7 +39,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
-        
+        this.selfID = selfID;
+        this.singleplayer=scene.player;
         /**
          * The array that has the list of the towers
          * @name Enemy#towers
@@ -71,6 +72,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * @type number
          */
         this.bulletscale=0.15;
+        
+        /**
+         * value from the scene that tells the enemy what type of scene we are in. 
+         * @name Enemy#mode
+         * @type string
+         */
+        this.mode = scene.mode;
         //Health
         this.healthPoints = healthPoints; 
         this.tintcolor=0xffffff;
@@ -107,6 +115,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
 
     }
+
+    assignSelfID(id){
+        this.selfID = id;
+    }
+
      /**
       * Function to assign new target to the enemy object
       * The default target is assigned when the player is created
@@ -183,7 +196,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             enemy.setPosition(target.x+randomdist,target.y-randomdist); 
             break;
           case 3:
-           enemy.setPosition(target.x-randomdist,target.y+randomdist); 
+           enemy.setPosition(target.x-randomdist,target.y+randomdist);
             break;
           case 4:
            enemy.setPosition(target.x-randomdist,target.y-randomdist); 
@@ -217,7 +230,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         let shortestDistance=1000000000;
         this.findneartower = () =>{
             
-            if(this.scene.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
+            if(this.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
                 if(this.sword_in_the_stone.active)
                 this.changetarget(this.sword_in_the_stone);
                 else this.changetarget(this.scene.player);}
@@ -253,7 +266,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else this.findneartower();
         
-        if(this.scene.mode === 'single'){
+        if(this.mode === 'single'){
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
@@ -291,25 +304,29 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     takeDamage(damage){
         this.healthPoints = this.healthPoints - damage;
        
-        if( this.healthPoints <= 0 ){
-           
-            if(this.scene.mode ==='single'){
-                if(this.scene.player.active&&this.sword_in_the_stone.active){
-                this.scene.player.healthPoints+=20;
-                this.scene.player.mana+=15;
-                this.sword_in_the_stone.healthPoints+=20;
-                this.scene.hpbar.regenHPBar(20);
-                this.scene.manabar.regenManaBar(15);
-                this.sword_in_the_stone.building_bar.regenHPBar(20);
-                this.kill();}}
+        if( this.healthPoints <= 0 ){     
+      
+            if(this.mode ==='single'){
+                if(this.singleplayer.active&&this.sword_in_the_stone.active){
+                    this.singleplayer.healthPoints+=20;
+                    this.singleplayer.mana+=15;
+                    this.sword_in_the_stone.healthPoints+=20;
+                    this.scene.hpbar.regenHPBar(20);
+                    this.scene.manabar.regenManaBar(15);
+                    this.sword_in_the_stone.building_bar.regenHPBar(20);
+                    this.kill();   
+                }}
+        
+            }
+            
             /*
-            else if(this.scene.mode ==='multi'){
+            else if(this.mode ==='multi'){
                 if(this.scene.player1.active){
                 this.scene.player1.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
                 this.kill();}}*/
         }
-    }
+    
     /**
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true

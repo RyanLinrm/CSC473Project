@@ -70,6 +70,14 @@ export class PlayScene extends Phaser.Scene{
      * @type number
      */
         this.spritekey = data
+
+    /**
+     * The amount of players in the game
+     *
+     * @name Player#players
+     * @type number
+     */
+        this.players = 1;
     }
 
     /**
@@ -218,10 +226,10 @@ export class PlayScene extends Phaser.Scene{
             this.sword_in_the_stone.setScale(0.5);
             this.sword_in_the_stone.uid=this.player.uid;
             this.towers.add(this.sword_in_the_stone);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,4,180,200).setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,4,180,200).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
 
           /*  //The enemies are in four different towers.
             this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
@@ -292,10 +300,10 @@ export class PlayScene extends Phaser.Scene{
             
         }
         if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,4,180,200).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,1000).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,3,180,200).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,100,4,180,200).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,100).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,100,3,180,200).setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,100).setScale(1.5);
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone").setScale(0.5);
             //need to create some reward event
             if(this.sword_in_the_stone.active===false){
@@ -382,6 +390,13 @@ export class PlayScene extends Phaser.Scene{
             }
         }      
     }}
+        /**
+         * Function to create the ultimate ability for player. The player can press t key and cost 
+         * certain amount of his/her mana, and the the enemies that near certain range within the 
+         * player will all be killed. The ability will have a cooldwon restriction.
+         * 
+         * @param {number} time 
+         */
         createUltimate = (time) =>{
             //player ability to destory enemies near the range
                 this.manabar.cutManaBar(300);
@@ -398,7 +413,15 @@ export class PlayScene extends Phaser.Scene{
                         }
                     }
                 }
-            }
+        }
+         /**
+         * Function to create the other ultimate ability for player. The player can press z key and cost 
+         * certain amount of his/her mana, and the the enemies that near certain range within the 
+         * player will all be stopped, enemies can not move nor attack within certain amount of time.
+         * The ability has a cooldown as well.
+         * 
+         * @param {number} time 
+         */
         RoomUltimate = (time) =>{
             //player ability to stop near enemies' actions 
                 this.stoplist=[];
@@ -436,8 +459,12 @@ export class PlayScene extends Phaser.Scene{
                                     this.stoplist[i].body.moves=true;
                                     this.stoplist[i].attackRange=100;
                                     this.stoplist[i].tint=0xffb3b3;}                            
-                                                }}}}
-                    }}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                    
                 
     /**

@@ -1,27 +1,78 @@
 // eslint-disable
 // this is an auto generated file. This will be overwritten
 
-export const onCreateTodo = `subscription OnCreateTodo {
-  onCreateTodo {
+export const onCreateGameUser = `subscription OnCreateGameUser(
+  $id: ID
+  $sub: String
+  $username: String
+  $bestTime: Int
+  $lastTime: Int
+) {
+  onCreateGameUser(
+    id: $id
+    sub: $sub
+    username: $username
+    bestTime: $bestTime
+    lastTime: $lastTime
+  ) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;
-export const onUpdateTodo = `subscription OnUpdateTodo {
-  onUpdateTodo {
+export const onUpdateGameUser = `subscription OnUpdateGameUser(
+  $id: ID
+  $sub: String
+  $username: String
+  $bestTime: Int
+  $lastTime: Int
+) {
+  onUpdateGameUser(
+    id: $id
+    sub: $sub
+    username: $username
+    bestTime: $bestTime
+    lastTime: $lastTime
+  ) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;
-export const onDeleteTodo = `subscription OnDeleteTodo {
-  onDeleteTodo {
+export const onDeleteGameUser = `subscription OnDeleteGameUser(
+  $id: ID
+  $sub: String
+  $username: String
+  $bestTime: Int
+  $lastTime: Int
+) {
+  onDeleteGameUser(
+    id: $id
+    sub: $sub
+    username: $username
+    bestTime: $bestTime
+    lastTime: $lastTime
+  ) {
     id
-    name
-    description
+    sub
+    username
+    bestTime
+    lastTime
+    bestScore
+    lastScore
+    lastChar
   }
 }
 `;

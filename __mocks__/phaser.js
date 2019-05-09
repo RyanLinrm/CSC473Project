@@ -15,8 +15,8 @@ const phaserMock = {
                 })
             });
 
-            this.setActive = () =>{};
-            this.setVisible = () =>{};
+            this.setActive = jest.fn();
+            this.setVisible = jest.fn();
             this.setPosition = ()=>{};
             this.setAngle = ()=>{};
             this.setCrop = () =>{};
@@ -59,7 +59,8 @@ const phaserMock = {
     Scene: function(){
         this.enemyTowers= {
             add:()=>{}
-        }
+        };
+        this.player={};
         this.sys = {
             updateList:{add:()=>{}},
             displayList:{add:()=>{}}
@@ -75,11 +76,15 @@ const phaserMock = {
                 enable:()=>{}
             },
             add:{
-                group: ()=>{},
-                add:()=>{},
-               
+                group: ()=>{
+                    return {
+                        get:() => ({shoot:jest.fn()})
+                    };
+     
             },
       
+              
+            }
         };
     
         this.updateSprite = ()=>{};

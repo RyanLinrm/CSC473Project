@@ -43,6 +43,13 @@ export class GameLobby extends Phaser.Scene {
          * @type String
          */
         this.playerID = generate(10);
+
+        /**
+         * number of bots the player should create when the game starts. 
+         * @name GameLobby#botToCreate
+         * @type number
+         */
+        this.botToCreate = 0;
     }
     
     /**
@@ -160,7 +167,9 @@ export class GameLobby extends Phaser.Scene {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
                     seatNumber: this.seatNumber,
-                    chartype: this.playertype
+                    chartype: this.playertype,
+                    numOfBots: this.botToCreate,
+                    numOfPlayers: seat
                 });
                 this.ref.child(key).off();
             }
@@ -169,7 +178,9 @@ export class GameLobby extends Phaser.Scene {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
                     seatNumber: this.seatNumber,
-                    chartype: this.playertype
+                    chartype: this.playertype,
+                    numOfBots: this.botToCreate,
+                    numOfPlayers: seat
                 });
                 this.ref.child(key).off();
             }

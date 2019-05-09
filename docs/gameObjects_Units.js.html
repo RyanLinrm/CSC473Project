@@ -208,7 +208,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
          */
         this.removeDefense = ()=>{ //destroys the weapon used
             this.bullets.destroy();
-            this.attack = null;
+            this.defend = null;
         };    
 
     }
@@ -229,23 +229,39 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * Function to let the tower shoot correct target if the target is in its attack range.
      * The attack of the tower will have a cooldown that is assigned to it.
      * When the attack range,cooldown are fine, the tower is ready to attack the target.
+     * The target is the one that is nearest to the tower which is found from the findnearenemy
+     * function inside towerAttack.
      * @param {object} tower - The tower that we will perform the attack function.
      * @param {object} target - The target that the tower will attack.
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     towerAttack(tower,target,time){
-/*
+
+        let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
+        let vX = (target.x - tower.x)/distance;
+        let vY = (target.y - tower.y)/distance;
         let shortestDistance=1000000000;
+        this.scene.enemies.getChildren().map(child => this.targetlist.push(child));  
+        this.targetlist.push(this.scene.player);
+        /**      
+         * (Function is created by the TowerAttack function) 
+         * 
+         * Findneartower finds the nearest enemy or player to attack from the targetlist that we 
+         * generated. The function will call distance function to find the target that is nearest 
+         * to the tower, and assign it to be new target, which will be future attacked if it is 
+         * within the attack range of the tower.
+         */ 
+
         this.findnearenemy = () =>{
-            for (var i = 0; i &lt; len; i++) {
-                if(this.enemies[i].active){
-                let enemydistance=this.distance(tower,this.towers[i]);
+            for (let i = 0; i &lt; this.targetlist.length; i++) {
+                if(this.targetlist[i].active){
+                let enemydistance=this.distance(tower,this.targetlist[i]);
                 if (enemydistance&lt;shortestDistance){
                     shortestDistance=enemydistance;      
-                    this.changetarget(this.enemies[i]);}
+                    this.changetarget(this.targetlist[i]);}
                 }
-            } };  */
-       
+            } };  
+
         if( this.scene.otherPlayers !== undefined &amp;&amp; Object.keys(this.scene.otherPlayers).length > 0){
             this.enemyplayers = this.scene.otherPlayers;
             this.enemyplayers.self = this.scene.player1;
@@ -253,22 +269,25 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     
             for( let i = 0; i &lt; this.enemyplayerid.length; i++ ){
                 let player = this.enemyplayers[this.enemyplayerid[i]];
-                if(Math.abs(player.x - tower.x) &lt; this.Range &amp;&amp; Math.abs(player.y - tower.y) &lt; this.Range){
-                    if(player.active &amp;&amp; player.uid!=tower.uid){
-                         this.changetarget(player);}
-                        }}
-        }     
-        if (Math.abs(target.x - tower.x) &lt; this.range &amp;&amp; Math.abs(target.y - tower.y) &lt; this.range){
-        if(target.uid!=tower.uid){
-            let distance = Math.sqrt(Math.pow(target.x - tower.x, 2) + Math.pow(target.y - tower.y, 2));
-            let vX = (target.x - tower.x)/distance;
-            let vY = (target.y - tower.y)/distance;
-            if(this.timeCycle &lt; time){
-                this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
-                this.timeCycle = time + tower.cooldown ;
-            }
-        }}
-}
+                this.targetlist.push(player)
+                }
+            this.findnearenemy();
+           
+        }
+        if(this.targetlist.length>0){
+            this.findnearenemy();
+            if (Math.abs(target.x - tower.x) &lt; this.range &amp;&amp; Math.abs(target.y - tower.y) &lt; this.range){ 
+                if(target.uid!=tower.uid){
+                    if(this.timeCycle &lt; time){
+                        this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
+                        this.timeCycle = time + tower.cooldown ;
+                    }
+                }
+            }               
+        }    
+    }
+        
+
    /**
     * The update method that gets called by the playscene 60 times a second.
     * Handles isInjured and towerAttack.
@@ -293,13 +312,13 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="Units.html">Units</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Units.html">Units</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Mon May 06 2019 14:48:46 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Wed May 08 2019 21:44:24 GMT-0400 (GMT-04:00)
 </footer>
 
 <script> prettyPrint(); </script>

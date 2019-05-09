@@ -55,19 +55,20 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} cooldown - The cooldown restriction that the Enemy can perform next attack
      * @param {string} uid - The unique id of Enemy object which is same as the player who created the enemy.
      */
-    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233'){
+    constructor(scene,x,y,key,textureName,target,enemyID=null,healthPoints = 50,attackRate=0.8,ATK=5,attackRange=180,movementSpeed=60,cooldown=600,uid='233', selfID='233'){
         super(scene,x,y,key,textureName,target);
 
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
-        this.setOrigin(0,0);
+        //this.setOrigin(0,0);
         this.building=scene.building;
         this.university=scene.university;
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
-
+        this.selfID = selfID;
+        this.singleplayer=scene.player;
         /**
          * The array that has the list of the towers
          * @name Enemy#towers
@@ -99,9 +100,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * @type number
          */
         this.bulletscale=0.15;
-        //Health
-        this.healthPoints = healthPoints;
         
+        /**
+         * value from the scene that tells the enemy what type of scene we are in. 
+         * @name Enemy#mode
+         * @type string
+         */
+        this.mode = scene.mode;
+        //Health
+        this.healthPoints = healthPoints; 
+        this.tintcolor=0xffffff;
+        this.tint=this.tintcolor;
         /**
          * The bullet texture of the Enemy 
          * @name Enemy#bulletTexture
@@ -134,6 +143,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
 
     }
+
+    assignSelfID(id){
+        this.selfID = id;
+    }
+
      /**
       * Function to assign new target to the enemy object
       * The default target is assigned when the player is created
@@ -210,7 +224,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             enemy.setPosition(target.x+randomdist,target.y-randomdist); 
             break;
           case 3:
-           enemy.setPosition(target.x-randomdist,target.y+randomdist); 
+           enemy.setPosition(target.x-randomdist,target.y+randomdist);
             break;
           case 4:
            enemy.setPosition(target.x-randomdist,target.y-randomdist); 
@@ -219,10 +233,18 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
            enemy.setPosition(target.x,target.y); 
             break;
         } };    
-        //if the enemy collide with other enemy or player, it will move to other direction
-        this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
+      /*  //if the enemy collide with other enemy or player, it will move to other direction
+        this.scene.physics.world.collide(enemy, target, (enemy,target)=>{
+            if (target.uid!=enemy.uid){
+                this.randomMove();}
+            else if (target.uid===enemy.uid){
+                enemy.body.immovable=false;
+               // enemy.body.moves=true;
+            }
+            },null,this);*/
+       
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
-      
+        this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
   
         /**      
          * (Function is created by the EnemyBehavior function) 
@@ -236,10 +258,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         let shortestDistance=1000000000;
         this.findneartower = () =>{
             
-            if(this.scene.mode === 'single' &amp;&amp; this.sword_in_the_stone.uid!=enemy.uid){
+            if(this.mode === 'single' &amp;&amp; this.sword_in_the_stone.uid!=enemy.uid){
                 if(this.sword_in_the_stone.active)
                 this.changetarget(this.sword_in_the_stone);
                 else this.changetarget(this.scene.player);}
+
             for (var i = 0; i &lt; 4; i++) {
                 if(this.towers[i].active &amp;&amp; this.towers[i].uid!=enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
@@ -271,7 +294,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else this.findneartower();
         
-        if(this.scene.mode === 'single'){
+        if(this.mode === 'single'){
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) &lt; this.attackRange &amp;&amp; Math.abs(target.y - enemy.y) &lt; this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
@@ -309,22 +332,29 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     takeDamage(damage){
         this.healthPoints = this.healthPoints - damage;
        
-        if( this.healthPoints &lt;= 0 ){
-           
-            if(this.scene.mode ==='single'){
-                if(this.scene.player.active&amp;&amp;this.sword_in_the_stone.active){
-                this.scene.player.healthPoints+=10;
-                this.sword_in_the_stone.healthPoints+=20;
-                this.scene.hpbar.regenHPBar(10);
-                this.sword_in_the_stone.building_bar.regenHPBar(20);
-                this.kill();}}
-            else if(this.scene.mode ==='multi'){
+        if( this.healthPoints &lt;= 0 ){     
+      
+            if(this.mode ==='single'){
+                if(this.singleplayer.active&amp;&amp;this.sword_in_the_stone.active){
+                    this.singleplayer.healthPoints+=20;
+                    this.singleplayer.mana+=15;
+                    this.sword_in_the_stone.healthPoints+=20;
+                    this.scene.hpbar.regenHPBar(20);
+                    this.scene.manabar.regenManaBar(15);
+                    this.sword_in_the_stone.building_bar.regenHPBar(20);
+                    this.kill();   
+                }}
+        
+            }
+            
+            /*
+            else if(this.mode ==='multi'){
                 if(this.scene.player1.active){
                 this.scene.player1.healthPoints+=20;
                 this.scene.hpbar.regenHPBar(10);
-                this.kill();}}
+                this.kill();}}*/
         }
-    }
+    
     /**
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true
@@ -348,7 +378,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else{
             if(time>this.count+1000)
-            {this.tint=0xffffff;}
+            {this.tint=this.tintcolor;}
 
         }
     }
@@ -469,7 +499,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             bullet.speed=this.attackRate;
             scene.enemiesAttacks.add(bullet);
             bullet.shoot(this.uid,this,target,true);
-            bullet.setPosition(this.x+26,this.y+40);
+            bullet.setPosition(this.x,this.y);
             bullet.setTexture(this.bulletTexture).setScale(this.bulletscale).setSize(32,30);
         };
         /**
@@ -477,7 +507,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          */
         this.removeDefense = ()=>{ //destroys the weapon used
             this.bullets.destroy();
-            this.attack = null;
+            this.basicattack = null;
         };    
 
     }
@@ -530,13 +560,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="Units.html">Units</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Units.html">Units</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Mon May 06 2019 14:48:46 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Wed May 08 2019 21:44:24 GMT-0400 (GMT-04:00)
 </footer>
 
 <script> prettyPrint(); </script>

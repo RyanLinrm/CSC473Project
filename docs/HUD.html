@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: emptyBar</title>
+    <title>JSDoc: Class: HUD</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: emptyBar</h1>
+    <h1 class="page-title">Class: HUD</h1>
 
     
 
@@ -28,11 +28,11 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>emptyBar<span class="signature">(scene, x, y)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>HUD<span class="signature">(scene, player, uid, gamemode, room)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Class that generate a empty backing status bar on the screen, thus we can make
-the status bars in the game to have the cutting or reducing effect by cropping the
-front bar.</p></div>
+            <div class="class-description"><p>The HUD class.
+This class is used in the playscene to create the heads up display for the class
+this class was created in order to create seperate the things that are specific to the heads up display</p></div>
         
     
 </header>
@@ -47,7 +47,7 @@ front bar.</p></div>
     
 
     
-    <h4 class="name" id="emptyBar"><span class="type-signature"></span>new emptyBar<span class="signature">(scene, x, y)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="HUD"><span class="type-signature"></span>new HUD<span class="signature">(scene, player, uid, gamemode, room)</span><span class="type-signature"></span></h4>
     
 
     
@@ -55,7 +55,7 @@ front bar.</p></div>
 
 
 <div class="description">
-    <p>Generate and display an empty bar on the game screen with giving x and y value</p>
+    <p>sets up the hud using the data passed.</p>
 </div>
 
 
@@ -97,7 +97,7 @@ front bar.</p></div>
             <td class="type">
             
                 
-<span class="param-type">phaser.Scene</span>
+<span class="param-type"><a href="PlayScene.html">PlayScene</a></span>
 
 
             
@@ -107,20 +107,20 @@ front bar.</p></div>
 
             
 
-            <td class="description last"><p>the phaser scene which the instance of this class will appears on</p></td>
+            <td class="description last"><p>the scene where the hud should go</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>x</code></td>
+                <td class="name"><code>player</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type"><a href="Player.html">Player</a></span>
 
 
             
@@ -130,20 +130,20 @@ front bar.</p></div>
 
             
 
-            <td class="description last"><p>the x position value on the game screen</p></td>
+            <td class="description last"><p>the main player of the scene</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>y</code></td>
+                <td class="name"><code>uid</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">string</span>
 
 
             
@@ -153,7 +153,53 @@ front bar.</p></div>
 
             
 
-            <td class="description last"><p>the y position value on the game screen</p></td>
+            <td class="description last"><p>the uid</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>gamemode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the type of game &quot;single&quot; or &quot;multi&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>room</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the room id</p></td>
         </tr>
 
     
@@ -194,7 +240,7 @@ front bar.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gameObjects_StatusBar.js.html">gameObjects/StatusBar.js</a>, <a href="gameObjects_StatusBar.js.html#line16">line 16</a>
+        <a href="gameObjects_HUD.js.html">gameObjects/HUD.js</a>, <a href="gameObjects_HUD.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -235,7 +281,7 @@ front bar.</p></div>
         <h3 class="subsection-title">Classes</h3>
 
         <dl>
-            <dt><a href="emptyBar.html">emptyBar</a></dt>
+            <dt><a href="HUD.html">HUD</a></dt>
             <dd></dd>
         </dl>
     
