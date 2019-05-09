@@ -30,3 +30,22 @@ test('Testing createWeapon for Bomber',()=>{
     expect(bomber.removeWeapon).toBeDefined();
 });
 
+test('Testing removeWeapon for Bomber', ()=>{
+    const hP = 42; const movementSpeed = 30; const id = "483";
+    let scene = new PlayScene();
+
+    let destroyMock = jest.fn();
+
+    scene.physics.add.group = ()=>{
+        return {
+            destroy:destroyMock
+        };
+    }
+    
+    let bomber = new Bomber(scene,300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
+
+    bomber.removeWeapon();
+    expect(destroyMock).toBeCalledTimes(1);
+    expect(bomber.attack).toBe(null);
+
+});
