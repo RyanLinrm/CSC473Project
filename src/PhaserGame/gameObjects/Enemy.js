@@ -39,7 +39,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.pyramid=scene.pyramid;
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
-
+        
         /**
          * The array that has the list of the towers
          * @name Enemy#towers
@@ -72,8 +72,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          */
         this.bulletscale=0.15;
         //Health
-        this.healthPoints = healthPoints;
-        
+        this.healthPoints = healthPoints; 
+        this.tintcolor=0xffffff;
+        this.tint=this.tintcolor;
         /**
          * The bullet texture of the Enemy 
          * @name Enemy#bulletTexture
@@ -332,7 +333,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         else{
             if(time>this.count+1000)
-            {this.tint=0xffffff;}
+            {this.tint=this.tintcolor;}
 
         }
     }

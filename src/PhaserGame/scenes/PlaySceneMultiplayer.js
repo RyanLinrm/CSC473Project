@@ -341,7 +341,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     update(time){
         this.hUD.update(time,this.player1,this);
-        
+        this.changeEnemyColor(this.player1,time);
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
 

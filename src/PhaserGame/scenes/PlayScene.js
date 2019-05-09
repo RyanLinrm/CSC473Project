@@ -372,7 +372,16 @@ export class PlayScene extends Phaser.Scene{
         this.stopcooldown = 0;
 
     }
-    
+        changeEnemyColor=(player,time)=>{
+            let enemiestochange=[]
+            this.enemies.getChildren().map(child => enemiestochange.push(child)); 
+            for (let i = 0; i < enemiestochange.length; i++) {
+                if(enemiestochange[i].uid!=player.uid){
+                    if( enemiestochange[i].tint!=0xffb3b3){
+                        enemiestochange[i].tintcolor=0xffb3b3;              
+            }
+        }      
+    }}
         createUltimate = (time) =>{
             //player ability to destory enemies near the range
                 this.manabar.cutManaBar(300);
@@ -478,7 +487,7 @@ export class PlayScene extends Phaser.Scene{
         if(this.player.mana<=1000){
         this.player.mana+=delta/1000;
         this.manabar.regenManaBar(delta/1000);}
-     
+        this.changeEnemyColor(this.player,time);
      
         //Handler character getting attacked by enemy, cooldown 3s
 
