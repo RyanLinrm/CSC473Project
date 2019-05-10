@@ -199,9 +199,7 @@ export class PlayScene extends Phaser.Scene{
 
       /*
         //Mini Map
-
         //create a sample minimap ---needs to change to dynamic
-
         this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 240, 300).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;  
