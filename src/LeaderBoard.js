@@ -8,7 +8,8 @@ export default class Leaderboard extends Component{
     constructor(props){
         super(props);
         this.state = {
-            userinfo:[]
+            userinfo:[],
+            sorted: 'time'
         };
         this.entries = [];
 
@@ -27,14 +28,15 @@ export default class Leaderboard extends Component{
         });
     }
 
-    renderBasicFormat() {
+    SortedByTime() {
         let userList = this.state.userinfo;
         let leaderBoardList = [];
+        let entries = [];
 
-        userList.sort( (a, b) => (a.bestTime < b.bestTime ) ? 1 : -1 );
+        userList.sort( (a, b) => (a.bestTime > b.bestTime ) ? 1 : -1 );
 
         for( let i = 0; i < userList.length; i++ ){
-            let temp = [ i+1, userList[i].username, userList[i].bestScore, userList[i].bestTime ];
+            let temp = [ i+1, userList[i].username, userList[i].bestScore, userList[i].bestTime, userList[i].lastChar ];
             leaderBoardList.push(temp);
         }
         
@@ -43,21 +45,57 @@ export default class Leaderboard extends Component{
                                 <td>{element[0]}</td>
                                 <td>{element[1]}</td>
                                 <td>{element[2]}</td>
-                                <td>{element[3]}</td>
+                                <td>{element[3]} s</td>
+                                <td>{element[4]}</td>
                               </tr> ; 
     
-            this.entries.push(newEntry);
+            entries.push(newEntry);
         });
+
+        return entries;
+    }
+
+    SortedByScore() {
+        let userList = this.state.userinfo;
+        let leaderBoardList = [];
+        let entries = [];
+
+        userList.sort( (a, b) => (a.bestScore < b.bestScore ) ? 1 : -1 );
+
+        for( let i = 0; i < userList.length; i++ ){
+            let temp = [ i+1, userList[i].username, userList[i].bestScore, userList[i].bestTime, userList[i].lastChar ];
+            leaderBoardList.push(temp);
+        }
+        
+        leaderBoardList.forEach( element => {
+            let newEntry =    <tr key={element[0]}>
+                                <td>{element[0]}</td>
+                                <td>{element[1]}</td>
+                                <td>{element[2]}</td>
+                                <td>{element[3]} s</td>
+                                <td>{element[4]}</td>
+                              </tr> ; 
+    
+            entries.push(newEntry);
+        });
+
+        return entries;
     }
 
     render(){
+        if(this.state.sorted === 'time'){
+            this.entries = this.SortedByTime();
+        }
+        else if(this.state.sorted === 'score'){
+            this.entries = this.SortedByScore();
+        }
+        else console.log('there is an error');
 
-        this.renderBasicFormat();
         return (
             <Container>
                 <Container>
                     <h1>Leaderboard</h1>
-                    <h3>TOP 10 Players!</h3>
+                    <h4>TOP 10 Players!</h4>
                 </Container>
                 <Table striped bordered hover>
                     <thead>
@@ -66,12 +104,17 @@ export default class Leaderboard extends Component{
                             <th>Player</th>
                             <th>Score</th>
                             <th>Fastest Time</th>
+                            <th>Character</th>
                         </tr>
                     </thead>
                     <tbody>
                         {this.entries}
                     </tbody>
                 </Table>
+                <button className="btn btn-outline-success"
+                     onClick={()=>this.setState({sorted:'time'})}>Best Time</button>
+                <button className="btn btn-outline-success" 
+                    onClick={()=>this.setState({sorted:'score'})}>Best Score</button>
             </Container>
         );
     }
