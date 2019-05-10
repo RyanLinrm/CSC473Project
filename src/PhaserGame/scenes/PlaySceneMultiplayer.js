@@ -28,7 +28,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * anything inside updates will be updates in the update function and then deleted
      * Updates to the database 60 times a second
      *
-     * @name Player#updates
+     * @name PlaySceneMultiplayer#updates
      * @type object
      */
         this.updates = {};
@@ -37,7 +37,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * Object that contains all the player objects for the players
      * key is the ID of the player and the value is the actual player sprite in phaser
      * 
-     * @name Player#otherPlayers
+     * @name PlaySceneMultiplayer#otherPlayers
      * @type object
      */
         this.otherPlayers = {};
@@ -45,7 +45,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * Scene type. 
      * 
-     * @name Player#sceneType
+     * @name PlaySceneMultiplayer#sceneType
      * @type string
      */
         this.sceneType = "Multiplayer";
@@ -53,7 +53,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * varible which tells if the current user is the creator of the multiplayer game.
      * 
-     * @name Player#isCreator
+     * @name PlaySceneMultiplayer#isCreator
      * @type boolean
      */
         this.isCreator = false;
@@ -61,7 +61,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * if the game is currently going for the actual player
      * 
-     * @name Player#GameIsGoing
+     * @name PlaySceneMultiplayer#GameIsGoing
      * @type boolean
      */
         this.GameIsGoing = false; 
@@ -69,7 +69,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * the seatnumber which corresponds to the position in the game and id associated with the leaderboard
      * 
-     * @name Player#seatNumber
+     * @name PlaySceneMultiplayer#seatNumber
      * @type number
      */
         this.seatNumber = -1;
@@ -77,7 +77,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * the number of bots this current user should create in their game
      * 
-     * @name Player#bots
+     * @name PlaySceneMultiplayer#bots
      * @type number
      */
         this.bots = 0;
@@ -87,13 +87,24 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * any database listener created should also have the path added to this array
      * when the game ends all the listeners in the array are turned off
      * 
-     * @name Player#databaseListners
+     * @name PlaySceneMultiplayer#databaseListners
      * @type array
      */
         this.databaseListners = [];
         //Checking who is the HostID   
 
+    /**
+     * The object that contains all the enemies summons by other players
+     * @name PlaySceneMultiplayer#otherenemies
+     * @type Object
+     */
         this.otherenemies = {};
+    
+    /**
+     * The object that contains all the enemies summons by youself
+     * @name PlaySceneMultiplayer#mybuddies
+     * @type Object
+     */
         this.mybuddies = {};
     
     /**

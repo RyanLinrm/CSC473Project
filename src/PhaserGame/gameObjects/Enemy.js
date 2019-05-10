@@ -290,7 +290,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         
     
     /**
-     * Function to remove the enemy so we can handle other things related to the death such as stop the attack    
+     * Function to remove the enemy so we can handle other things related to the death such as stop the attack 
+     * also when in the multiplayer mode it will detect which player kills this enemy
+     * @param {Boolean} firstDeath - determine if this is the first time the method get called so we don't duplicate the database action
+     * @param {String} attackeruid - the uid of the player who attacks the enemy
+     *    
      */
     kill(firstDeath=true, attackeruid){
         if(this.gameroom !== '' && firstDeath){
@@ -313,6 +317,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * If the ending healthpoints is less than 0 it calls the kill function
      * 
      * @param {number} damage - the amount of damage the enemy should take
+     * @param {String} attackeruid - the uid of the player who attacks this enemy
      */
     takeDamage(damage, attackeruid){
         this.healthPoints = this.healthPoints - damage;
@@ -343,6 +348,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     /**
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true
+     * 
+     * @param {String} attackeruid - the uid of the player who attacks this enemy
      */
     collision( attackeruid ){
         this.takeDamage(20,attackeruid);

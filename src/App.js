@@ -180,9 +180,9 @@ class App extends Component {
   render() {
    
     let gameClass = !this.state.showbuttons ? '' : 'hidden';
-    let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
+    /*let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
     ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
-  ];
+  ];*/
 
 
     return (
@@ -228,7 +228,7 @@ class App extends Component {
 
     {this.state.showLeaderboard && (
         <div>
-        <Leaderboard list={leaderBoardList}/>
+        <Leaderboard />
         <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}  
