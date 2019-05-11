@@ -26,6 +26,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
+
+        /**
+         * The spawnPosition of the player
+         * This is where the player will respawn 
+         * 
+         * @name Player#spawnPosition
+         * @type object
+         */
+        this.spawnPosition = {'x':x,'y':y};
+
         /**
          * The specific character type of the player
          * 
@@ -230,7 +240,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
       this.setActive(false);
       this.setVisible(false);
+
+      if(this.scene.mode === 'multi'){
+            setTimeout(this.respawn, 5000 );
+      }
       
+
     }
 
     /**
@@ -373,6 +388,21 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.player_movement();
     }
 
+    respawn = ()=>{
+        this.x = this.spawnPosition.x;
+        this.y = this.spawnPosition.y;
+        this.nonZeroVelocity = {x:0,y:1};
+        this.beingAttacked=false;
+        this.canbeAttacked=true;
+        this.healthPoints = this.scene.startingPlayerHealth;
+
+        if (this.scene.mode === 'multi') {
+            this.scene.setHealthInDB(this.scene.startingPlayerHealth);
+        }
+
+        this.setActive(true);
+        this.setVisible(true);
+    }
 
     botUpdate(scene,time){
         let towers = scene.towers;
