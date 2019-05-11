@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Faster+One");
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+
 .prev {
   float: left;
 }
@@ -56,3 +58,10 @@ h2 {
   width: 75%;
 }
 
+h4 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+ul li h3 {
+  font-family: 'Press Start 2P', cursive;
+}

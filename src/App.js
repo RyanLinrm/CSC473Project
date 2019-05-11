@@ -241,7 +241,7 @@ class App extends Component {
     }
 
     {this.state.showTutorial && (
-      <div>
+      <div className='Tutorial' align="center">
         <Tutorial />
         <Button className='back' onClick={this.startingpage} variant="secondary">Home</Button>
         </div>

@@ -499,6 +499,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.changeEnemyColor(this.player1,time);
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
+        //added this in so that they get some score for score for survival time
+        this.score= this.score + .002
 
         if (this.GameIsGoing && this.player1.active) {
 
