@@ -40,7 +40,7 @@ export class HUD {
         scene.emptybar.setScrollFactor(0);
         this.hpbar = new HpBar(scene, 130,scene.game.renderer.height- 20, 'hp', player.healthPoints, player.uid).setDepth(3);
         this.hpbar.setScrollFactor(0);
-        this.hpbar.value=500;
+        this.hpbar.value=scene.startingPlayerHealth;
 
         //Mana bar
         scene.emptybar2 = new emptyBar(scene, 130,scene.game.renderer.height- 51).setDepth(2);

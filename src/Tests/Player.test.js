@@ -351,3 +351,17 @@ test('Testing the removeWeapon function', ()=>{
     expect(player.attack).toBe(null);
 
 })
+
+test('Testing the kill function when mode is single', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    player.handleRespawn = jest.fn();
+    player.setActive = jest.fn();
+    player.setVisible = jest.fn();
+
+    player.kill();
+    expect(player.setActive).toBeCalledTimes(1);
+    expect(player.setVisible).toBeCalledTimes(1);
+    expect(player.handleRespawn).toBeCalledTimes(0);
+
+})
