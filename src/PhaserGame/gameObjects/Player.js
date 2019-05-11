@@ -26,7 +26,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
 
-
         /**
          * The spawnPosition of the player
          * This is where the player will respawn 
@@ -234,7 +233,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     /**
-     * Removes a player so we can handle other things related to the death such as removing the wepopn    
+     * Sets the players active and visible property to false. Effectively removing them from the game.
+     * If the scene is a multiplayer scene the player respawns after 5 seconds 
      */
     kill(){
 
@@ -242,10 +242,46 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
       this.setVisible(false);
 
       if(this.scene.mode === 'multi'){
-            setTimeout(this.respawn, 5000 );
-      }
-      
+          if (this.user && this.scene.GameIsGoing) {
+              var countDownText = this.scene.add.text(this.scene.game.renderer.width / 2, this.scene.game.renderer.height / 2, `Respawning in: 5`, { fontFamily: 'Arial', fontSize: 50, color: '#ffffff' });
+              countDownText.setScrollFactor(0);
+              countDownText.setOrigin(0.5, 0.5);
 
+
+              var tintOverlay = this.scene.add.rectangle(this.scene.game.renderer.width / 2, this.scene.game.renderer.height / 2,
+                  this.scene.game.renderer.width, this.scene.game.renderer.height, 0x000000);
+
+              tintOverlay.setScrollFactor(0);
+              tintOverlay.alpha = 0.5;
+              tintOverlay.setDepth(4);
+          }
+
+          let time = 6;
+
+          let updateCountDown = () => {
+
+              if (time === 0) {
+                  this.respawn();
+                
+                  if (tintOverlay !== undefined && countDownText !== undefined) {
+                      tintOverlay.destroy();
+                      countDownText.destroy();
+                  }
+              }
+              else {
+                  time--;
+                  
+                  if(countDownText !== undefined){
+                    countDownText.setText(`Respawning in: ${time}`);
+                  }
+                  
+                  setTimeout(updateCountDown, 1000);
+              }
+
+          }
+          updateCountDown();
+    
+      }
     }
 
     /**

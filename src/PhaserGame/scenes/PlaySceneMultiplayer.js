@@ -184,7 +184,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
             this.temp = snapShot.val();
         })
-        console.log(this.temp);
+        
         if(this.temp == "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,id);
         }
@@ -347,7 +347,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
 
 
-
         if(this.seatNumber === 1) this.pyramid.assignID(this.playerID);
    
         else if(this.seatNumber === 2) this.university.assignID(this.playerID);
@@ -360,7 +359,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        countDownText.setOrigin(0.5,0.5); 
 
        this.cameras.main.startFollow(this.player1);
-       this.player.kill();
+       this.player.destroy();
        this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
        this.manabar=this.hUD.manabar;
        //this.player1.immovable=true;

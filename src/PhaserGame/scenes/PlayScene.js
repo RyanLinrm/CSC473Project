@@ -24,7 +24,7 @@ export class PlayScene extends Phaser.Scene{
      */
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
-
+        
     /**
      * The scene type "Multiplayer" or "Single"
      *
@@ -389,6 +389,7 @@ export class PlayScene extends Phaser.Scene{
         this.cooldowntime = 0;
         this.stopcooldown = 0;
 
+            
     }
      
         changeEnemyColor=(player,time)=>{
