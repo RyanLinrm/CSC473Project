@@ -57,16 +57,16 @@ export class HUD {
         this.timer = scene.add.text(0,60,'Timer:'+ Math.trunc(scene.time),{ fontFamily: 'Georgia', fontSize: 17, color: '#ffffff' });
         this.timer.setScrollFactor(0);    
 
-
+        this.startingPlayerHealth = scene.startingPlayerHealth;
 
         let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
-        let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, '500/500', { fontSize: 15, color: '#FF0000' });
+        let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
         player1Health.setOrigin(0.5); player1Health.setScrollFactor(0);
         this.playerHealthLabels = [player1Health];
 
         for(let i = 1; i < scene.players; i++){
             let player = scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
-            let playerHealth = scene.add.text(35, scene.game.renderer.height /5 * (i+1) + 30, '500/500', { fontSize: 15, color: '#FF0000' });
+            let playerHealth = scene.add.text(35, scene.game.renderer.height /5 * (i+1) + 30,  `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
             playerHealth.setScrollFactor(0); playerHealth.setOrigin(0.5);
             this.playerHealthLabels.push(playerHealth);
         }
@@ -169,7 +169,7 @@ export class HUD {
      }
 
     setPlayerHealth = (playerNumber,health)=>{
-        this.playerHealthLabels[playerNumber - 1].setText(`${health}/500`); //setsThePlayer health label to the given health value
+        this.playerHealthLabels[playerNumber - 1].setText(`${health}/${this.startingPlayerHealth}`); //setsThePlayer health label to the given health value
     }
 
 

@@ -113,6 +113,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @type Number
      */
         this.score = 0;
+
+        this.startingPlayerHealth = 100;
     }
 
     init(data){
@@ -165,13 +167,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.players = data.numOfPlayers;
 
-    /**
-     * The starting health of players in the game
-     *
-     * @name Player#startingPlayerHealth
-     * @type number
-     */
-        this.startingPlayerHealth = 500;
 
     /**
      * The current player that is drawn onto the scene
@@ -191,10 +186,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         })
         console.log(this.temp);
         if(this.temp == "bomber"){
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,500,64,id);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,500,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
@@ -338,10 +333,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,500,64,this.playerID);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,500,200,this.playerID).setScale(0.6);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
         this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
@@ -475,7 +470,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
-
+        let playerHealthPath = `Games/${this.gameRoom}/Players/${this.playerID}/health`;
+        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
+            let health = snapShot.val();
+            this.hUD.setPlayerHealth(this.seatNumber,health);
+            
+        });
 
 
         firebase.database().ref(playerDB).on("child_removed", (snapShot) => {
@@ -523,7 +523,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
         })
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB);
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB,playerHealthPath);
 
     }
 
@@ -617,5 +617,9 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             console.log(path);
             firebase.database().ref(path).off();
         });
+    }
+
+    setHealthInDB = (health)=>{
+        this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/health`] = health;
     }
 }

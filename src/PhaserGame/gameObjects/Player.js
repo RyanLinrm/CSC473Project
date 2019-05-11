@@ -123,6 +123,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          * @type string
          */
         this.mode = scene.mode;
+
+        this.scene = scene;
       
     }
 
@@ -225,8 +227,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * Removes a player so we can handle other things related to the death such as removing the wepopn    
      */
     kill(){
-        console.log(this);
-        this.destroy();
+
+      this.setActive(false);
+      this.setVisible(false);
+      
     }
 
     /**
@@ -236,14 +240,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * @param {number} damage - the amount of damage the player should take
      */
     takeDamage(damage){
-        if(this.canbeAttacked===true){
-        this.healthPoints = this.healthPoints - damage;
-        
-       }
 
-        if( this.healthPoints <= 0 ){
+        if (this.canbeAttacked === true) {
+            this.healthPoints = this.healthPoints - damage;
+        }
+
+        if (this.scene.mode === 'multi') {
+            this.scene.setHealthInDB(this.healthPoints);
+        }
+
+        if (this.healthPoints <= 0) {
             this.kill();
         }
+
 
     }
 
@@ -264,7 +273,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * calls the takeDamage function and prevents the beingAttacked
      */
     collision(){
-        
+
         if(this.user){
             this.takeDamage(5);
         }

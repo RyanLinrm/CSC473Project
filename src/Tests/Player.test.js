@@ -77,6 +77,35 @@ test('Testing if takeDamage calls kill when damage is less than 0', ()=>{
 
 });
 
+test('Testing if takeDamage calls setHealthInDatabase when mode of the scene is multi', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+
+    let scene = new PlayScene();
+    scene.mode = 'multi';
+    scene.setHealthInDB = jest.fn();
+
+    const player = new Player(scene,300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.kill = jest.fn();
+    player.takeDamage(105);
+
+    expect(scene.setHealthInDB).toBeCalledTimes(1);
+
+});
+
+test('Testing if takeDamage doesnt call setHealthInDatabase when mode of the scene is single', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+
+    let scene = new PlayScene();
+    scene.setHealthInDB = jest.fn();
+
+    const player = new Player(scene,300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.kill = jest.fn();
+    player.takeDamage(105);
+
+    expect(scene.setHealthInDB).toBeCalledTimes(0);
+
+});
+
 test('Testing if collision funciton correctly works', ()=>{
     const hP = 100; const movementSpeed = 42; const id = "abc";
     const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
@@ -87,6 +116,19 @@ test('Testing if collision funciton correctly works', ()=>{
     expect(player.beingAttacked).toEqual(true);
     expect(player.canbeAttacked).toEqual(false);
     expect(player.takeDamage).toBeCalledTimes(1);
+
+});
+
+test('Testing if collision funciton correctly works when the player isnt the user', ()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    const player = new Player(new PlayScene(),300,300, "p1", "p1_01.png",1,hP, movementSpeed,id);
+    player.user = false;
+    player.takeDamage = jest.fn();
+    player.collision();
+
+    expect(player.beingAttacked).toEqual(true);
+    expect(player.canbeAttacked).toEqual(false);
+    expect(player.takeDamage).toBeCalledTimes(0);
 
 });
 
