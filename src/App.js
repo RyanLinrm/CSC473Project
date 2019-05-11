@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Game from './PhaserGame/Game';
 import Leaderboard from './LeaderBoard.js';
 import HomeNavBar from './HomeNavBar.js';
+import GameLobby from './GameLobby.js';
 import './App.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';

@@ -5,10 +5,10 @@ import * as firebase from 'firebase';
 import { ConsoleLogger } from '@aws-amplify/core';
 
 /**
- * GameLobby - extends Phaser.Scene
+ * GameRoom - extends Phaser.Scene
  * The scene where players create and join gameroom. 
  */
-export class GameLobby extends Phaser.Scene {
+export class GameRoom extends Phaser.Scene {
     /**
      * creates the scene and assign a key of this scene to phaser scene
      * and creates ref, GameState, seatNumber, playerID property
@@ -18,35 +18,35 @@ export class GameLobby extends Phaser.Scene {
 
         /**
          * General reference on the Game path in databse.
-         * @name GameLobby#ref
+         * @name GameRoom#ref
          * @type firebase.database.Reference
          */
         this.ref = firebase.database().ref("Games");
 
         /**
          * Numerical representation of the state of game and the number of players in the room
-         * @name GameLobby#GameState
+         * @name GameRoom#GameState
          * @type Object
          */
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
 
         /**
          * Seat number of the player, will be passed to the actual game scene to assign seat for player on the map
-         * @name GameLobby#seatNumber
+         * @name GameRoom#seatNumber
          * @type Integer
          */
         this.seatNumber = -1;
 
         /**
          * Player's ID used to keep track of the player and distinguish among players
-         * @name GameLobby#playerID
+         * @name GameRoom#playerID
          * @type String
          */
         this.playerID = generate(10);
 
         /**
          * number of bots the player should create when the game starts. 
-         * @name GameLobby#botToCreate
+         * @name GameRoom#botToCreate
          * @type number
          */
         this.botToCreate = 0;
@@ -60,7 +60,7 @@ export class GameLobby extends Phaser.Scene {
 
         /**
          * The type of character that's chosen by the player before join the lobby
-         * @name GameLobby#playertype
+         * @name GameRoom#playertype
          * @type String
          */
         this.playertype = data;

@@ -7,7 +7,7 @@ import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
 import { LoadScene2 } from "./scenes/LoadScene2";
-import { GameLobby } from "./scenes/GameLobby";
+import { GameRoom } from "./scenes/GameRoom";
 import { GameOverScene } from "./scenes/GameOverScene";
 import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 import {CharSelectScene} from "./scenes/CharSelectScene"
