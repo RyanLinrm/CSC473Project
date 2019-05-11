@@ -97,9 +97,21 @@ const phaserMock = {
                 return configObject;
             },
         }
-
+        this.load = {
+            image:(loadimage)=>{
+                return loadimage;
+            },
+            atlas:(loadatlas)=>{
+                return loadatlas;
+            },
+            audio:(loadaudio)=>{
+                return loadaudio;
+            },
+        },
         this.updateSprite = ()=>{};
-       
+        this.create= ()=>{};
+        this.preload= ()=>{};
+        this.update= ()=>{};
     }
 }
 

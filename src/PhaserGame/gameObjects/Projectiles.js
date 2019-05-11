@@ -12,7 +12,7 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.timeAlive = 0;
         this.shootRange=200;
     }
-    //111
+
 
     collision(){
         this.setActive(false);
@@ -191,7 +191,7 @@ export class sword extends Phaser.GameObjects.Image {
         if(this.timeAlive > 0){
           this.setVisible(false);
           this.setActive(false);
-        //  this.destroy();
+          //this.destroy();
           //this.bullets.clear(true);
           //this.bullets.getChildren().map(child => child.destroy());
         };
