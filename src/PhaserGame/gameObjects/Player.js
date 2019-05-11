@@ -91,6 +91,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          */
         this.movementSpeed=movementSpeed;
 
+        /**
+         * tells if the player is a user
+         * @name Player#user
+         * @type boolean
+         */
+        this.user = true;
 
         /**
          * value to check if player is a bot and not an actual human
@@ -242,11 +248,27 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     /**
+     * function to set the the health of the player
+     */
+    setHealth(health){
+        
+        this.healthPoints = health;
+            
+        if( this.healthPoints <= 0 ){
+            this.kill();
+        }
+    }
+
+    /**
      * collision function that is called when a collision occurs to the player. 
      * calls the takeDamage function and prevents the beingAttacked
      */
     collision(){
-        this.takeDamage(5);
+        
+        if(this.user){
+            this.takeDamage(5);
+        }
+        
         this.beingAttacked=true;
         this.canbeAttacked=false;
     }

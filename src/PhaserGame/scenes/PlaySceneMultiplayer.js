@@ -164,12 +164,27 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @type number
      */
         this.players = data.numOfPlayers;
+
+    /**
+     * The starting health of players in the game
+     *
+     * @name Player#startingPlayerHealth
+     * @type number
+     */
+        this.startingPlayerHealth = 500;
+
+    /**
+     * The current player that is drawn onto the scene
+     *
+     * @name Player#currentplayerCount
+     * @type number
+     */
+        this.currentplayerCount = 1;
    
     }
 
 
     createPlayer = (id,position,velocity) =>{
-      
         console.log("CreatingPlayer");
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
             this.temp = snapShot.val();
@@ -181,20 +196,26 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         else if (this.temp == "rider"){
         this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,500,200,id).setScale(0.6);
         }
+        this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
         if(position.x === 300 && position.y === 300){
             this.pyramid.assignID(id);
-         
+            this.otherPlayers[id].towerPosition = 1;
         }
         else if(position.x === 1000 && position.y === 300){
             this.university.assignID(id);
+            this.otherPlayers[id].towerPosition = 2;
    
         }
         else if(position.x === 300 && position.y === 1000){
             this.magicstone.assignID(id);
+            this.otherPlayers[id].towerPosition = 3;
 
         }
-        else this.building.assignID(id);
+        else {
+            this.building.assignID(id);
+            this.otherPlayers[id].towerPosition = 4;
+        };
          
  
         this.enemyPlayers.add(this.otherPlayers[id]);
@@ -243,7 +264,17 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
-        this.databaseListners.push(movementDataDB,attackDB,inGameDB);
+        let playerHealthPath = `Games/${this.gameRoom}/Players/${id}/health`;
+        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
+            let health = snapShot.val();
+            let player = this.otherPlayers[id];
+            player.setHealth(health);
+            console.log(this);
+            this.hUD.setPlayerHealth(player.towerPosition,health);
+            
+        });
+
+        this.databaseListners.push(movementDataDB,attackDB,inGameDB,playerHealthPath);
     }
 
     removePlayer = (id)=>{
@@ -391,6 +422,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         });
         
         let playerIDDB = `Games/${this.gameRoom}/Players/${this.playerID}`;
+        //SETTING the player datatype
         database.ref(playerIDDB).set({
             movementData: {
                 pos: this.startingPosFromTowerNum(this.seatNumber),
@@ -401,10 +433,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x: 0, y:0}
             },
+            health: this.startingPlayerHealth,
             inGame: true,     
             playerType: this.spritekey
         });
-        
+
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
         database.ref(seatNumberDB).set({ //CreateTowerInDatabase
             HP: 100,

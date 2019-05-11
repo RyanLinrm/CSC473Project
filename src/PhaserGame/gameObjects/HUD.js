@@ -71,9 +71,8 @@ export class HUD {
             this.playerHealthLabels.push(playerHealth);
         }
         
-        //Side HUD
+      
 
-        this.setPlayerHealth(1,400);
 
         //BottomHUD
         let hud = scene.add.rectangle(scene.game.renderer.width / 2, scene.game.renderer.height,
