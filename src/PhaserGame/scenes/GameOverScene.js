@@ -32,20 +32,39 @@ export class GameOverScene extends Phaser.Scene{
         buttonCursor.setVisible(false);
 
 
-        let anothergame = this.add.text(width/2, height/2+250, 'Play Again?', { fontFamily: 'Arial', fontSize: 60, color: '#ffffff' });
-        anothergame.setInteractive();
+        this.add.text(width/2, height/2+250, 'Play Again?', { fontFamily: 'Arial', fontSize: 40, color: '#ffffff' });
 
-        anothergame.on("pointerup", () => {
+        let anothersingle = this.add.text(width/2-200, height/2+300, 'single player', { fontFamily: 'Arial', fontSize: 30, color: '#ffffff' });
+        anothersingle.setInteractive();
+
+        anothersingle.on("pointerup", () => {
             this.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
           });
 
-        anothergame.on("pointerover", ()=>{
+        anothersingle.on("pointerover", ()=>{
             buttonCursor.setVisible(true);
-            buttonCursor.x = anothergame.x - 60;
-            buttonCursor.y = anothergame.y + 30;
+            buttonCursor.x = anothersingle.x - 20;
+            buttonCursor.y = anothersingle.y + 20;
         });
 
-        anothergame.on("pointerout", ()=>{
+        anothersingle.on("pointerout", ()=>{
+            buttonCursor.setVisible(false);
+        });
+
+        let anothermulti = this.add.text(width/2+200, height/2+300, 'Multiplayer', { fontFamily: 'Arial', fontSize: 30, color: '#ffffff' });
+        anothermulti.setInteractive();
+
+        anothermulti.on("pointerup", () => {
+            this.scene.start(CST.SCENES.CHAR);
+          });
+
+        anothermulti.on("pointerover", ()=>{
+            buttonCursor.setVisible(true);
+            buttonCursor.x = anothermulti.x - 20;
+            buttonCursor.y = anothermulti.y + 20;
+        });
+
+        anothermulti.on("pointerout", ()=>{
             buttonCursor.setVisible(false);
         });
 
