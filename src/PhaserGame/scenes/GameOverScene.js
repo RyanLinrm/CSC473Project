@@ -38,7 +38,7 @@ export class GameOverScene extends Phaser.Scene{
         anothersingle.setInteractive();
 
         anothersingle.on("pointerup", () => {
-            this.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
+            this.scene.start(CST.SCENES.CHAR);
           });
 
         anothersingle.on("pointerover", ()=>{
@@ -55,7 +55,7 @@ export class GameOverScene extends Phaser.Scene{
         anothermulti.setInteractive();
 
         anothermulti.on("pointerup", () => {
-            this.scene.start(CST.SCENES.CHAR);
+            this.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
           });
 
         anothermulti.on("pointerover", ()=>{
