@@ -24,7 +24,7 @@ export class PlayScene extends Phaser.Scene{
      */
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
-
+        
     /**
      * The scene type "Multiplayer" or "Single"
      *
@@ -41,6 +41,14 @@ export class PlayScene extends Phaser.Scene{
      */
         this.seatNumber = 1;
         this.single = true;
+
+        /**
+         * The starting health of players in the game
+         *
+         * @name Player#startingPlayerHealth
+         * @type number
+         */
+        this.startingPlayerHealth = 500;
 
 ///////////////////////////////////////////COMBINE IT WITH this.sceneType/////////////////////////////
         this.mode = 'single';
@@ -157,10 +165,10 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,this.startingPlayerHealth,150,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -381,6 +389,7 @@ export class PlayScene extends Phaser.Scene{
         this.cooldowntime = 0;
         this.stopcooldown = 0;
 
+            
     }
      
         changeEnemyColor=(player,time)=>{
