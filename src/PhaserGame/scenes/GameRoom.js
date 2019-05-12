@@ -65,35 +65,6 @@ export class GameRoom extends Phaser.Scene {
          */
         this.playertype = data;
     } 
-
-    /**
-     * createGame is a function that creates a game room by pushing the creator's player id and the game state or seats
-     * into the firebase
-     */
-    createGame (){
-        console.log('creating a game!');
-
-        let currentGame = {
-            creator: {
-                uid: this.playerID,
-                userName: this.playerID
-            },
-            seat: this.GameState.OPEN
-        };
-
-        let key = this.ref.push();
-        this.roomkeys = key.key;
-        this.seatNumber = 1;
-        key.set(currentGame, (error)=>{
-            if(error){
-                console.log("error");
-            }else {
-                console.log('created game',key);
-                key.onDisconnect().remove();
-            }
-        });
-        this.createbutton(this.roomkeys);
-    }
     
     /**
      * createButton method takes in parameter key which is the key of the game room and 
@@ -117,42 +88,6 @@ export class GameRoom extends Phaser.Scene {
     }
 
     /**
-     * joinGame method takes in a parameter which is the room key and allow player to join that game
-     * @param {String} key - the string key of the game room
-     */
-    joinGame(key) {
-        console.log('joining game', key);
-
-        let childref = this.ref.child(key);
-        childref.transaction( (snapShot) =>{
-        
-            childref.once('value', snapShot =>{
-                let game = snapShot.val();
-                let val = game.seat;
-                if( game.seat !== 4 ){
-                    let val = game.seat + 1;
-                    this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
-                    let joiner = {
-                        uid: this.playerID,
-                        userName: this.playerID
-                    }
-
-                    childref.update( {seat : val} );
-                    childref.push(joiner);
-                }
-                else{
-                    alert('Full Room! Sorry, an error appears, reload page now');
-                    window.location.reload();
-                }
-                })
-        }/*, (err, commit, snapShot) =>{
-            if(commit){
-                console.log(snapShot.val());
-            }
-        } */)
-    }
-
-    /**
      * litsenGame function takes in a parameter of the key of the game room
      * and it listen to the stage changing in that room: if the seat in the room is full
      * which is 4, or if the game master has pressed the start button, the game will begins
@@ -162,7 +97,7 @@ export class GameRoom extends Phaser.Scene {
         this.ref.child(key).on('value', snapShot=>{
             let seat = snapShot.val().seat;
 
-            if( seat === this.GameState.FULL ){
+            /*if( seat === this.GameState.FULL ){
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
@@ -172,8 +107,9 @@ export class GameRoom extends Phaser.Scene {
                     numOfPlayers: seat
                 });
                 this.ref.child(key).off();
-            }
-            else if(snapShot.val().start){
+            }*/
+            //else 
+            if(snapShot.val().start){
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
                     roomkey : this.roomkeys,
@@ -202,33 +138,7 @@ export class GameRoom extends Phaser.Scene {
         this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
 
 
-        this.ref.once('value', snapShot => {
-            let gamerooms = snapShot.val();
-            
-            if( !gamerooms ){
-                this.createGame();
-            }
-            
-            else {
-                let keys = Object.keys(gamerooms);
-
-                for( let i = 0; i < keys.length; i++ ){
-
-                    if( gamerooms[keys[i]].seat < 4 && !gamerooms[keys[i]].start ){
-
-                        this.roomkeys = keys[i];
-                        this.joinGame(this.roomkeys);
-                        break;
-                    }
-                    else if(i === keys.length - 1){
-                        this.createGame();
-                        break;
-                    }
-                };
-            }
-        }).then( snapShot =>{
-            this.litsenGame(this.roomkeys);
-        });
+        this.litsenGame(this.roomkeys);
  
     }
 }

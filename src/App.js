@@ -35,14 +35,15 @@ class App extends Component {
     this.state = {
       showGame:false, 
       showsingle:false,
-      showmulti:false,
+      showGL:false,
       showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
       infobutton: true,
       signInName: null,
       gameType: "single",
-      showTutorial: false
+      showTutorial: false,
+      signInID: ''
     };
 
     
@@ -93,7 +94,8 @@ class App extends Component {
         });
 
       this.setState({ 
-        signInName:cognitoUser.username
+        signInName:cognitoUser.username,
+        signInID: uid
       });
        
        
@@ -139,13 +141,12 @@ class App extends Component {
       infobutton: !this.state.infobutton});
   }
     /**
-   * called to set bool the multiplayer state to true, remove buttons from page and tell phaser that you want to play multiplayer
+   * called to set bool the GameLobby state to true, remove buttons from page and goes to the game lobby
    */
-  showMultiPlayerHandler = () => {
+  showGameLobbyHandler = () => {
     this.setState({ 
-      showmulti: !this.state.showmulti,
+      showGL: !this.state.showGL,
       showbuttons: !this.state.showbuttons,
-      gameType:"multiplayer",
       infobutton: !this.state.infobutton});
   }
   /** 
@@ -188,7 +189,7 @@ class App extends Component {
 
     return (
       <div className="App ">
-        {!this.state.showsingle && !this.state.showmulti && !this.state.showTutorial && 
+        {!this.state.showsingle && !this.state.showGL && !this.state.showTutorial && 
           <HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
         }
         <Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
@@ -206,7 +207,7 @@ class App extends Component {
 
             <Row className="form-group">
               <Col>
-                <Button className="col-md-2" onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer</Button>
+                <Button className="col-md-2" onClick={this.showGameLobbyHandler} variant="primary">Game Lobby</Button>
               </Col>
             </Row>
 
@@ -234,7 +235,7 @@ class App extends Component {
         </div>
       )}  
 
-    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial &&(
+    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL && (
       <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       </div>
@@ -255,10 +256,10 @@ class App extends Component {
         </div>
       )}
 
-      {this.state.showmulti && (
+      {this.state.showGL && (
         <div>
-          
-        <Button onClick={this.startingpage} variant="secondary">Back</Button>
+          <GameLobby uid={this.state.signInID} username={this.state.signInName} />
+          <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}
       {this.state.infobutton && this.state.showGame && !this.state.showLeaderboard &&
