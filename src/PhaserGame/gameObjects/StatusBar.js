@@ -110,7 +110,6 @@ export class HpBar extends Phaser.GameObjects.Image{
      */
     regenHPBar(regenAmount){
         // regenrate HP bar to display HP regenration effect
-   
         if(this.currentHP !== this.value){
             let recoverate = regenAmount / this.value;
 
@@ -122,6 +121,15 @@ export class HpBar extends Phaser.GameObjects.Image{
         else{
             console.log('Full HP!');
         }
+    }
+
+    /**
+     * Method that resets to the bar to its state at creation
+     */
+    resetBar(){
+        this.cutWith = this.width;
+        this.currentHP = this.value;
+        this.setCrop(0,0,this.width,this.height);
     }
 }
 
