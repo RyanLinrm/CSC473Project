@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
+import Game from './PhaserGame/Game';
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
 import * as firebase from 'firebase';
+import {generate} from 'randomstring';
 
+/**
+ * GameLobby - extends react component
+ * The scene where players create and join game room
+ *
+ */
 export default class GameLobby extends Component{
     constructor(props){
         super(props);
         this.gameref = firebase.database().ref('Games');
+
+        let name = props.username;
+        let uid = props.uid;
+
+        if(name === null || uid === null){
+            uid = generate(10);
+            name = uid;
+        }
         this.state = {
             gamerooms: {},
             noroom: true,
             roomkey: '',
             seatNumber: -1,
-            username: props.username,
-            uid: props.uid,
+            username: name,
+            uid: uid,
             gotoroom: false
         }
 
@@ -28,6 +43,10 @@ export default class GameLobby extends Component{
         this.getRooms();
     }
 
+    /**
+     * update the state of all the game room to display on this page
+     *
+     */
     getRooms() {
         this.gameref.once('value', snapShot =>{
             let gamerooms = snapShot.val();
@@ -76,7 +95,7 @@ export default class GameLobby extends Component{
             }
         });
 
-
+        this.setRedirect();
     }
 
     /**
@@ -89,10 +108,10 @@ export default class GameLobby extends Component{
         
             childref.once('value', snapShot =>{
                 let game = snapShot.val();
-                let val = game.seat;
+                //let val = game.seat;
                 if( game.seat !== 4 ){
                     let val = game.seat + 1;
-                    this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
+                    //this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
                     let joiner = {
                         uid: this.state.uid,
                         userName: this.state.username
@@ -100,17 +119,24 @@ export default class GameLobby extends Component{
 
                     childref.update( {seat : val} );
                     childref.push(joiner);
+
+                    this.setState({roomkey: roomid,
+                        seatNumber: val})
                 }
                 else{
                     alert('Full Room! Sorry, an error appears, reload page now');
                     window.location.reload();
                 }
                 })
-        }/*, (err, commit, snapShot) =>{
-            if(commit){
-                console.log(snapShot.val());
-            }
-        } */)
+                
+                this.setRedirect();
+        })
+
+    }
+
+    setRedirect = () => {
+        this.redirect = true;
+        this.setState({...this.state});
     }
 
     renderRoomList() {
@@ -123,20 +149,29 @@ export default class GameLobby extends Component{
             roomList.push(this.state.gamerooms[roomKeys[i]])
         }
 
-        let JSXoutList = roomList.map( (room) =>{
+        let JSXoutList = roomList.map( (room) =>
             <div className='text-center' key={room.id}>
                 <div>
                     <h6>Room ID: {room.id}</h6>
                     <button onClick={()=>this.joinGameHandler(room.id)}>Join</button>
                 </div>
             </div>
-        })
+        )
+
+        return JSXoutList;
     }
 
     render(){
-        console.log(this.state);
+        
+        let gamelist = this.renderRoomList();
+
         return(
             <div>
+                {!this.state.gotoroom && (
+                    <Game gameType={'multi'} gameShouldStart={true}
+                        gamerid={this.state.uid} username={this.state.username}
+                        roomid={this.state.roomkey} seat={this.state.seatNumber}/>
+                )}
                 <div className='text-center'>
                     <h1 className='text-center'>Game Lobby</h1>
                     <h3 className='text-center'>Game Rooms:</h3>
@@ -146,12 +181,12 @@ export default class GameLobby extends Component{
                         </div>
                     )
                     }
-                    {!this.state.noroom && (
-                        <div className='text-center'>
-                            <h6>a room</h6>
-                        </div>   
-                    )}
+                    {gamelist}
+
                     <button onClick={()=>this.createGame()}>Create Room</button>
+                </div>
+                <div className='text-center'>
+                    <button onClick={()=>this.getRooms()}>refresh</button>
                 </div>
             </div>
         )

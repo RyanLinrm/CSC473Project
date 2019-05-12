@@ -43,7 +43,7 @@ class App extends Component {
       signInName: null,
       gameType: "single",
       showTutorial: false,
-      signInID: ''
+      signInID: null
     };
 
     

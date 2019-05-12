@@ -6,7 +6,7 @@ import { ConsoleLogger } from '@aws-amplify/core';
 
 /**
  * GameRoom - extends Phaser.Scene
- * The scene where players create and join gameroom. 
+ * The scene where players all set into a game room
  */
 export class GameRoom extends Phaser.Scene {
     /**

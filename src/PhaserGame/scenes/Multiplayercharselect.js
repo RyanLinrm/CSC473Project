@@ -29,6 +29,13 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     );
   }
 
+  init(data){
+    this.playerID = data.uid;
+    this.username = data.username;
+    this.roomkey = data.roomkey;
+    this.seatNumber = data.seatNumber;
+  }
+
   create() {
     let a = this.add
       .image(0, 0, "key1")
@@ -59,11 +66,23 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     bomberchar.setInteractive();
 
     Riderchar.on("pointerup", () => {
-      this.scene.start(CST.SCENES.WAIT, "rider");
+      this.scene.start(CST.SCENES.WAIT, {
+        playerID : this.playerID,
+        username: this.username,
+        roomkey : this.roomkey,
+        seatNumber: this.seatNumber,
+        playerType: "rider"
+    });
     });
 
     bomberchar.on("pointerup", () => {
-        this.scene.start(CST.SCENES.WAIT, "bomber");
+        this.scene.start(CST.SCENES.WAIT, {
+          playerID : this.playerID,
+          username: this.username,
+          roomkey : this.roomkey,
+          seatNumber: this.seatNumber,
+          playerType: "bomber"
+      });
       });
   }
 }

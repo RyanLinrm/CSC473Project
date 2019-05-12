@@ -65,9 +65,18 @@ export default class Game extends React.Component{
           * 
           * 
           * this function starts the multiplayer player scene in phaser
+          * @param {String} uid - the unique ID of this player
+          * @param {String} username - the login username of this player
+          * @param {String} roomid - the unique ID of this game room
+          * @param {String} seatNumber - the seat number of this player in the room
           */
-        this.startMultiplayer = function(){
-                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
+        this.startMultiplayer = function(uid, username, roomid, seatNumber){
+                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT, {
+                    playerID : uid,
+                    username: username,
+                    roomkey : roomid,
+                    seatNumber: seatNumber,
+                });
         }
     }
 
@@ -95,9 +104,10 @@ export default class Game extends React.Component{
                 console.log(newProps.gameType);
                 this.startSinglePlayer();
             }
-            else if(newProps.gameShouldStart){
-                this.startMultiplayer();
-                console.log(newProps.gameType);
+            else if(newProps.gameType === 'multi' && newProps.gameShouldStart){
+                this.startMultiplayer( newProps.gamerid, newProps.username,
+                        newProps.roomid, newProps.seat);
+                console.log(`${newProps.gamerid}, ${newProps.username}, ${newProps.roomid}, ${newProps.seat}`);
             }
     }
 
