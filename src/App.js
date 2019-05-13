@@ -149,10 +149,10 @@ class App extends Component {
    * called to set bool the GameLobby state to true, remove buttons from page and goes to the game lobby
    */
   showGameLobbyHandler = () => {
-    this.setState({ 
-      showGL: !this.state.showGL,
-      showbuttons: !this.state.showbuttons,
-      infobutton: !this.state.infobutton});
+      this.setState({ 
+        showGL: !this.state.showGL,
+        showbuttons: !this.state.showbuttons,
+        infobutton: !this.state.infobutton})
   }
   /** 
    * function to reset all the toggle buttons and page to the original state
@@ -182,15 +182,14 @@ class App extends Component {
   }
 
   goToMultiHandler = (roomkey, seatNumber) =>{
-    console.log(roomkey, seatNumber);
     this.setState({
-    showmulti: !this.state.showmulti,
-      showbuttons: !this.state.showbuttons,
+      showGL: !this.state.showGL,
+      showmulti: !this.state.showmulti,
       gameType: 'multi',
       multiObject:{
         roomkey: roomkey,
         seatNumber: seatNumber
-      }
+      },
     });
   }
   
@@ -203,7 +202,15 @@ class App extends Component {
     /*let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
     ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
   ];*/
-
+    if(this.state.showsingle || this.state.showmulti){
+      return (
+        <div className={gameClass}>
+        <Game gameType={this.state.gameType} gameShouldStart={true}
+          gamerid={this.state.signInID} username={this.state.signInName} 
+          roomid={this.state.multiObject.roomkey} seat={this.state.multiObject.seatNumber} />
+      </div>)
+    }
+    else 
     return (
       <div className="App ">
         {!this.state.showsingle && !this.state.showGL && !this.state.showTutorial && 
@@ -252,21 +259,28 @@ class App extends Component {
         </div>
       )}  
 
-    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&
-      !this.state.showmulti && (
+    {this.state.showGL && (
+        <div>
+          <GameLobby uid={this.state.signInID} username={this.state.signInName} 
+            handler={this.goToMultiHandler}/>
+          <Button onClick={this.startingpage} variant="secondary">Back</Button>
+        </div>
+      )}
+
+    {/*!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&(
       <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       </div>
-    )
+    )*/
     }
 
-    {/*!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&
-      !this.state.showsingle && (
+    {/*!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&(
       <div className={gameClass}>
-        <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
+        <Game gameType={this.state.gameType} gameShouldStart={true}
+          gamerid={this.state.signInID} username={this.state.signInName} 
+          roomid={this.state.multiObject.roomkey} seat={this.state.multiObject.seatNumber} />
       </div>
-    )
-      */}
+    )*/}
 
     {this.state.showTutorial && (
       <div>
@@ -282,13 +296,6 @@ class App extends Component {
         </div>
       )}
 
-      {this.state.showGL && (
-        <div>
-          <GameLobby uid={this.state.signInID} username={this.state.signInName} 
-            handler={this.goToMultiHandler}/>
-          <Button onClick={this.startingpage} variant="secondary">Back</Button>
-        </div>
-      )}
       {this.state.infobutton && this.state.showGame && !this.state.showLeaderboard &&
       <Button className="infobutton" variant="secondary">Info</Button>
       }

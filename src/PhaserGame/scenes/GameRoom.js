@@ -71,7 +71,7 @@ export class GameRoom extends Phaser.Scene {
          * @name GameRoom#playertype
          * @type String
          */
-        this.playertype = data.playertype;
+        this.playertype = data.playerType;
     } 
     
     /**

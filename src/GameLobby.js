@@ -169,31 +169,23 @@ export default class GameLobby extends Component{
         
         return(
             <div>
-                {this.state.gotoroom && (
-                    <Game gameType={this.gametype} gameShouldStart={this.state.gotoroom}
-                        gamerid={this.state.uid} username={this.state.username}
-                        roomid={this.state.roomkey} seat={this.state.seatNumber}/>
-                )}
-                {!this.state.gotoroom && (
-                    <div>
-                        <div className='text-center'>
-                            <h1 className='text-center'>Game Lobby</h1>
-                            <h3 className='text-center'>Game Rooms:</h3>
-                            {this.state.noroom && (
+                <div>
+                    <div className='text-center'>
+                        <h1 className='text-center'>Game Lobby</h1>
+                        <h3 className='text-center'>Game Rooms:</h3>
+                        {this.state.noroom && (
                                 <div className='text-center'>
                                     <h5>There is no any game room yet, let's create one</h5>
                                 </div>
                             )
                             }
                             {gamelist}
-
                             <button onClick={()=>this.createGame()}>Create Room</button>
                         </div>
                         <div className='text-center'>
                             <button onClick={()=>this.getRooms()}>refresh</button>
-                        </div>
                     </div>
-                )}
+                </div>
             </div>
         )
     }
