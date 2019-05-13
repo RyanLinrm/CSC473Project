@@ -11,7 +11,7 @@ import Tutorial from './Tutorial'
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
-
+import {generate} from 'randomstring';
 import * as firebase from 'firebase';
 import { config } from 'aws-sdk/global';
 
@@ -44,12 +44,13 @@ class App extends Component {
       signInName: null,
       gameType: "single",
       showTutorial: false,
-      signInID: null,
       multiObject:{
         roomkey: '',
         seatNumber: -1
       }
     };
+    this.username = '';
+    this.uid = '';
     this.goToMultiHandler = this.goToMultiHandler.bind(this)
     
   }
@@ -100,8 +101,9 @@ class App extends Component {
 
       this.setState({ 
         signInName:cognitoUser.username,
-        signInID: uid
       });
+      this.username = cognitoUser.username;
+      this.uid = uid;
        
        
      });
@@ -110,6 +112,9 @@ class App extends Component {
       this.setState({ 
         signInName:null
       });
+      let temp = generate(10);
+      this.username = temp;
+      this.uid = temp;
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -123,7 +128,8 @@ class App extends Component {
       this.setState({ 
         signInName:cognitoUser.username
       });
-       
+       this.username = cognitoUser.username;
+       this.uid = cognitoUser.attributes.sub;
        
      });
     }
@@ -131,6 +137,9 @@ class App extends Component {
       this.setState({ 
         signInName:null
       });
+      let temp = generate(10);
+      this.username = temp;
+      this.uid = temp;
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -206,7 +215,7 @@ class App extends Component {
       return (
         <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={true}
-          gamerid={this.state.signInID} username={this.state.signInName} 
+          gamerid={this.uid} username={this.username} 
           roomid={this.state.multiObject.roomkey} seat={this.state.multiObject.seatNumber} />
       </div>)
     }
@@ -261,7 +270,7 @@ class App extends Component {
 
     {this.state.showGL && (
         <div>
-          <GameLobby uid={this.state.signInID} username={this.state.signInName} 
+          <GameLobby uid={this.uid} username={this.username} 
             handler={this.goToMultiHandler}/>
           <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
