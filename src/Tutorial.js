@@ -12,6 +12,12 @@ import shooter from "./tutorialimages/shooter.png";
 import useHUD from "./tutorialimages/usehud.gif";
 import spriteMovement from './tutorialimages/movement.gif'
 import spriteAttack from './tutorialimages/attack.gif'
+import singlemainbuilding from './tutorialimages/mainbuilding.png' 
+import gameover from './tutorialimages/gameover.png'
+import lowcenter from './tutorialimages/lowhealthbuilding.png'
+import lowhealth from './tutorialimages/lowhealth.png'
+import building from './tutorialimages/building.png'
+import spawn from './tutorialimages/spawn.png'
 /**
  * Tutorial class
  */
@@ -132,10 +138,10 @@ class Tutorial extends Component {
                 <tr>
                   <th><h6>Speed in single player:</h6></th>
                   <th className="rider">
-                    <h4> </h4>
+                    <h3>150</h3>
                   </th>
                   <th className="shooter">
-                    <h3>150</h3>
+                    <h3>100</h3>
                   </th>
                 </tr>
                 <tr>
@@ -144,7 +150,7 @@ class Tutorial extends Component {
                     <h3>100</h3>
                   </th>
                   <th className="shooter">
-                    <h3>150</h3>
+                    <h3>100</h3>
                   </th>
                 </tr>
               </Table>
@@ -206,6 +212,21 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
+              <img src={singlemainbuilding} />
+              <h2>Defend the center building from attacking enemies</h2>
+              <img src={status} />
+              <h2>keep an eye on your health and manabar</h2>
+              <img src={building} />
+              <h2>destroy buildings on the outside for extra points</h2>
+              <br />
+              <div>
+                <img src={lowcenter} />
+                <img src={lowhealth} />
+              </div>
+              <br />
+              <h2>you lose when you die and your center building dies</h2>
+              <br />
+              <img src={gameover} />
             </div>
           </div>
         )}
@@ -224,6 +245,17 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
+              <img src={spawn} />
+              <h2>defend the building you spawn closest to</h2>
+              <img src={status} />
+              <h2>keep an eye on your health and manabar</h2>
+              <br />
+              <img src={lowhealth} />        
+                <h2>when you die there's a respawn cooldowntime</h2>
+              <br />
+              <h2>Gameover when building destroyed</h2>
+              <br />
+              <img src={gameover} />
             </div>
           </div>
         )}
@@ -243,6 +275,7 @@ class Tutorial extends Component {
                 NEXT{" "}
               </Button>
               <img src={otherHealth}/>
+              <h2>view opposing players health with the HUD on left</h2>
             </div>
           </div>
         )}
