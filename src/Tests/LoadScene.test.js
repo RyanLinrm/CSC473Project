@@ -39,12 +39,12 @@ test('Testing if init/preload/create are defined',()=>{
 
 test('Testing if init/preload/create are called',()=>{
     let newloadscene=new LoadScene();
-    newloadscene.preload = jest.fn();
+   // newloadscene.preload = jest.fn();
     newloadscene.init = jest.fn();
     newloadscene.create = jest.fn();
-    
+    newloadscene.preload();
     expect(newloadscene.init).toBeCalledTimes(0);
-    expect(newloadscene.preload).toBeCalledTimes(0);
+  //  expect(newloadscene.preload).toBeCalledTimes(0);
     expect(newloadscene.create).toBeCalledTimes(0);
 });
 

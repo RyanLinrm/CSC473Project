@@ -25,6 +25,7 @@ export class HUD {
         this.scene=scene;
         this.draggable=true;
         this.dragCd=0;
+        scene.player=player;
         if(gamemode === 'multi'){
             this.ref = firebase.database();
             this.roomkey = room;

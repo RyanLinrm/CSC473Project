@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
 import { emptyBar, HpBar, ManaBar } from "./StatusBar";
-import { Enemy } from './Enemy';
+import * as firebase from 'firebase';
 
 /**
  * Units Class. The class that defines and applies the properties of the towers that created.
@@ -27,7 +27,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * @param {string} uid - The unique id of the unit object.
      */
     
-    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233'){
+    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233',selfID='233'){
         super(scene,x,y,name,type);
         if (this.type=1){
             this.tower=true;
@@ -45,8 +45,9 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         this.speed=speed;
         this.range=range;
         this.cooldown=cooldown;
-        
+        this.selfID=selfID;
         this.createDefense(scene);
+        this.gameroom = '';
         /**
          * True or false that says if the unit is being attacked
          * @name Units#beingAttacked
@@ -107,9 +108,9 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * collision function that is called when a collision occurs to the unit. 
      * calls the takeDamage function and change being attacked status to true.
      */
-    collision(){
+    collision(attackeruid){
         this.building_bar.cutHPBar(5);
-        this.takeDamage(5);
+        this.takeDamage(5,attackeruid);
         this.beingAttacked=true;
     }
     /**
@@ -135,21 +136,30 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * Also, for the towers, if the player's tower is killed, he/she lost the game, if only one tower remains,
      * the player who owns the tower wins the game.
      */
-    kill(){
-        this.destroy();
-    }
-
+    kill(firstDeath=true, attackeruid){
+        if(this.gameroom !== '' && firstDeath){
+            firebase.database().ref(`Games/${this.gameroom}/Towers/${this.selfID}`).transaction( snapShot =>{
+                firebase.database().ref(`Games/${this.gameroom}/Towers/${this.selfID}`).update({
+                    alive: false,
+                    killerid: attackeruid
+                })
+            })
+      
+        };
+        this.destroy();     
+        
+    } 
     /**
      * Function to damage the unit by the the given number supplied to the funciton
      * If the ending healthpoints is less than 0 it calls the kill function
      * 
      * @param {number} damage - the amount of damage the unit should take
      */
-    takeDamage(damage){
+    takeDamage(damage,attackeruid){
         this.healthPoints = this.healthPoints - damage;
        
         if( this.healthPoints <= 0 ){
-            this.kill();
+            this.kill(true,attackeruid);
 
         }
     }
@@ -248,7 +258,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         if(this.targetlist.length>0){
             this.findnearenemy();
             if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){ 
-                if(target.uid!=tower.uid){
+                if(target.active && target.uid!=tower.uid){
                     if(this.timeCycle < time){
                         this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
                         this.timeCycle = time + tower.cooldown ;

@@ -5,7 +5,7 @@ jest.mock('phaser');
 let scene = new PlayScene();
 
 
-test('Testing if load scene loads a image',()=>{
+test('Testing if load scene loads a image in loadscene2',()=>{
     const path="'key', `${process.env.PUBLIC_URL}/assets/title_bg.jpg`"
     let newimage = scene.load.image(path);
 
@@ -13,7 +13,7 @@ test('Testing if load scene loads a image',()=>{
 
 });
 
-test('Testing if load scene loads an atlas',()=>{
+test('Testing if load scene loads an atlas in loadscene2',()=>{
     const path="'key', atlaspath"
 
     let newatlas = scene.load.atlas(path);
@@ -22,14 +22,14 @@ test('Testing if load scene loads an atlas',()=>{
 
 });
 
-test('Testing if load scene loads an audio',()=>{
+test('Testing if load scene loads an audio in loadscene2',()=>{
     const path="'key', audiopath"
     let newaudio = scene.load.audio(path);
 
     expect(newaudio).toBe("'key', audiopath");
 
 });
-test('Testing if init/preload/create are defined',()=>{
+test('Testing if init/preload/create are defined in loadscene2',()=>{
     let newloadscene=new LoadScene();
  
     expect(newloadscene.init).toBeDefined();
@@ -37,7 +37,7 @@ test('Testing if init/preload/create are defined',()=>{
     expect(newloadscene.create).toBeDefined();
 });
 
-test('Testing if init/preload/create are called',()=>{
+test('Testing if init/preload/create are called in loadscene2',()=>{
     let newloadscene=new LoadScene();
     newloadscene.preload = jest.fn();
     newloadscene.init = jest.fn();

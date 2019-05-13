@@ -158,6 +158,7 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.towerShooting,this.enemyPlayers,this.bothCollisions);
         this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,this.bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
+        this.physics.add.overlap(this.enemiesAttacks,this.enemies,this.bothCollisions);
 
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
         const randNumber = Math.floor((Math.random() * 4) + 1);
@@ -228,64 +229,64 @@ export class PlayScene extends Phaser.Scene{
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid);
             this.sword_in_the_stone.setScale(0.5);
-            this.sword_in_the_stone.uid=this.player.uid;
+
             this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
             this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
             this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
-
+/*
             //The enemies are in four different towers.
             this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf2=new Enemy(this, 1000,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf3=new Enemy(this, 950,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
-            this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            //this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
 
             
             this.ninjabot0=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot1=new Enemy(this, 950,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot2=new Enemy(this, 900,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot3=new Enemy(this, 850,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
-            this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
+            //this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
 
             this.skull0=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull1=new Enemy(this,100,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull2=new Enemy(this,150,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull3=new Enemy(this,200,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
-            this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            //this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
 
             this.demon0=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon1=new Enemy(this,100,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon2=new Enemy(this,150,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon3=new Enemy(this,200,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
-            this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            //this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
 
             this.enemies.add(this.demon0);
             this.enemies.add(this.demon1);
             this.enemies.add(this.demon2);
             this.enemies.add(this.demon3);
-            this.enemies.add(this.demon4);
+            //this.enemies.add(this.demon4);
 
             this.enemies.add(this.skull0);
             this.enemies.add(this.skull1);
             this.enemies.add(this.skull2);
             this.enemies.add(this.skull3);
-            this.enemies.add(this.skull4);
+            //this.enemies.add(this.skull4);
 
             this.enemies.add(this.wolf0);
             this.enemies.add(this.wolf1);
             this.enemies.add(this.wolf2);
             this.enemies.add(this.wolf3);
-            this.enemies.add(this.wolf4);
+            //this.enemies.add(this.wolf4);
 
             this.enemies.add(this.ninjabot0);
             this.enemies.add(this.ninjabot1);
             this.enemies.add(this.ninjabot2);
             this.enemies.add(this.ninjabot3);
-            this.enemies.add(this.ninjabot4);
-
+            //this.enemies.add(this.ninjabot4);
+*/
             this.timecycle=0;
            /**
             * Function to generate new enemy wave every Couple Of Seconds 
@@ -303,7 +304,7 @@ export class PlayScene extends Phaser.Scene{
                     this.enemies.add(this.ninjabot);
                     this.enemies.add(this.skull);
                     this.enemies.add(this.demon);
-                    this.timecycle = time +4000;
+                    this.timecycle = time +5000;
                 }
                 
             };  
@@ -421,7 +422,7 @@ export class PlayScene extends Phaser.Scene{
                 for (let i = 0; i < this.enemylist.length; i++) {
                     if (this.enemylist[i].uid!=this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 200 && Math.abs(this.enemylist[i].y - this.player.y) < 200){ 
-                        this.enemylist[i].kill();       
+                        this.enemylist[i].kill(true,this.playerUid);       
                         }
                     }
                 }
