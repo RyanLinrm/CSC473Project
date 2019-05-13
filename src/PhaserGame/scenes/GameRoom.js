@@ -23,26 +23,6 @@ export class GameRoom extends Phaser.Scene {
          */
         this.ref = firebase.database().ref("Games");
 
-        /**
-         * Numerical representation of the state of game and the number of players in the room
-         * @name GameRoom#GameState
-         * @type Object
-         */
-        this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
-
-        /**
-         * Seat number of the player, will be passed to the actual game scene to assign seat for player on the map
-         * @name GameRoom#seatNumber
-         * @type Integer
-         */
-        this.seatNumber = -1;
-
-        /**
-         * Player's ID used to keep track of the player and distinguish among players
-         * @name GameRoom#playerID
-         * @type String
-         */
-        this.playerID = generate(10);
 
         /**
          * number of bots the player should create when the game starts. 
@@ -54,16 +34,44 @@ export class GameRoom extends Phaser.Scene {
     
     /**
      * init is a phaser scene function will it initialize a scene
-     * @param {String} data - the type of character
+     * @param {String} data - props from game lobby containing user and game room data
      */
     init(data){
+
+        /**
+         * Player's ID used to keep track of the player and distinguish among players
+         * @name GameRoom#playerID
+         * @type String
+         */
+        this.playerID = data.playerID
+
+        /**
+         * Player's user name
+         * @name GameRoom#username
+         * @type String
+         */
+        this.username = data.username
+
+        /**
+         * ID of the game room
+         * @name GameRoom#roomkey
+         * @type String
+         */
+        this.roomkey = data.roomkey
+
+        /**
+         * Seat number of the player, will be passed to the actual game scene to assign seat for player on the map
+         * @name GameRoom#seatNumber
+         * @type Integer
+         */
+        this.seatNumber = data.seatNumber;
 
         /**
          * The type of character that's chosen by the player before join the lobby
          * @name GameRoom#playertype
          * @type String
          */
-        this.playertype = data;
+        this.playertype = data.playertype;
     } 
     
     /**
@@ -112,7 +120,8 @@ export class GameRoom extends Phaser.Scene {
             if(snapShot.val().start){
                 this.scene.start(CST.SCENES.PLAYMULTIPLAYER, {
                     playerID : this.playerID,
-                    roomkey : this.roomkeys,
+                    username : this.username,
+                    roomkey : this.roomkey,
                     seatNumber: this.seatNumber,
                     chartype: this.playertype,
                     numOfBots: this.botToCreate,
@@ -137,8 +146,10 @@ export class GameRoom extends Phaser.Scene {
         let info2 = this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
         this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
 
-
-        this.litsenGame(this.roomkeys);
+        if(this.seatNumber === 1){
+            this.createbutton(this.roomkey);
+        }
+        this.litsenGame(this.roomkey);
  
     }
 }

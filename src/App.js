@@ -22,7 +22,7 @@ class App extends Component {
       /**
   * @param {Bool} showGame toggle for the sign in feature
   * @param {Bool} showsingle toggle for the single player feature (when true single player should be displayed)
-  * @param {Bool} showmulti toggle for the multiplayer feature (when true multiplayer should be displayed)
+  * @param {Bool} showGL toggle for the multiplayer feature (when true multiplayer should be displayed)
   * @param {Bool} showLeaderboard when true the leaderboard is shown
   * @param {Bool} showbuttons takes the multiplayer, single player, tutorial buttons off the screen when we show game or leaderboards
   * @param {Bool} infobutton toggles the info button at the bottom on and off
@@ -36,6 +36,7 @@ class App extends Component {
       showGame:false, 
       showsingle:false,
       showGL:false,
+      showmulti: false,
       showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
@@ -43,9 +44,13 @@ class App extends Component {
       signInName: null,
       gameType: "single",
       showTutorial: false,
-      signInID: null
+      signInID: null,
+      multiObject:{
+        roomkey: '',
+        seatNumber: -1
+      }
     };
-
+    this.goToMultiHandler = this.goToMultiHandler.bind(this)
     
   }
   /**
@@ -175,6 +180,19 @@ class App extends Component {
       }
     
   }
+
+  goToMultiHandler = (roomkey, seatNumber) =>{
+    console.log(roomkey, seatNumber);
+    this.setState({
+    showmulti: !this.state.showmulti,
+      showbuttons: !this.state.showbuttons,
+      gameType: 'multi',
+      multiObject:{
+        roomkey: roomkey,
+        seatNumber: seatNumber
+      }
+    });
+  }
   
   /**
    * standard react render method where all the aspects of the website can be displayed
@@ -185,7 +203,6 @@ class App extends Component {
     /*let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
     ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
   ];*/
-
 
     return (
       <div className="App ">
@@ -235,12 +252,21 @@ class App extends Component {
         </div>
       )}  
 
-    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL && (
+    {!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&
+      !this.state.showmulti && (
       <div className={gameClass}>
         <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       </div>
     )
     }
+
+    {/*!this.state.showLeaderboard && this.state.showGame && !this.state.showTutorial && !this.state.showGL &&
+      !this.state.showsingle && (
+      <div className={gameClass}>
+        <Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
+      </div>
+    )
+      */}
 
     {this.state.showTutorial && (
       <div>
@@ -258,7 +284,8 @@ class App extends Component {
 
       {this.state.showGL && (
         <div>
-          <GameLobby uid={this.state.signInID} username={this.state.signInName} />
+          <GameLobby uid={this.state.signInID} username={this.state.signInName} 
+            handler={this.goToMultiHandler}/>
           <Button onClick={this.startingpage} variant="secondary">Back</Button>
         </div>
       )}

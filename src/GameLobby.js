@@ -33,6 +33,8 @@ export default class GameLobby extends Component{
             gotoroom: false
         }
 
+        this.gametype = 'multi'
+
         /**
          * Numerical representation of the state of game and the number of players in the room
          * @name GameLobby#GameState
@@ -95,7 +97,7 @@ export default class GameLobby extends Component{
             }
         });
 
-        this.setRedirect();
+        this.setRedirect(key.key, 1);
     }
 
     /**
@@ -122,6 +124,8 @@ export default class GameLobby extends Component{
 
                     this.setState({roomkey: roomid,
                         seatNumber: val})
+
+                        this.setRedirect(roomid, val);
                 }
                 else{
                     alert('Full Room! Sorry, an error appears, reload page now');
@@ -129,14 +133,12 @@ export default class GameLobby extends Component{
                 }
                 })
                 
-                this.setRedirect();
         })
 
     }
 
-    setRedirect = () => {
-        this.redirect = true;
-        this.setState({...this.state});
+    setRedirect(roomkey, seat) {
+        this.props.handler(roomkey,seat);
     }
 
     renderRoomList() {
@@ -164,30 +166,34 @@ export default class GameLobby extends Component{
     render(){
         
         let gamelist = this.renderRoomList();
-
+        
         return(
             <div>
-                {!this.state.gotoroom && (
-                    <Game gameType={'multi'} gameShouldStart={true}
+                {this.state.gotoroom && (
+                    <Game gameType={this.gametype} gameShouldStart={this.state.gotoroom}
                         gamerid={this.state.uid} username={this.state.username}
                         roomid={this.state.roomkey} seat={this.state.seatNumber}/>
                 )}
-                <div className='text-center'>
-                    <h1 className='text-center'>Game Lobby</h1>
-                    <h3 className='text-center'>Game Rooms:</h3>
-                    {this.state.noroom && (
+                {!this.state.gotoroom && (
+                    <div>
                         <div className='text-center'>
-                            <h5>There is no any game room yet, let's create one</h5>
-                        </div>
-                    )
-                    }
-                    {gamelist}
+                            <h1 className='text-center'>Game Lobby</h1>
+                            <h3 className='text-center'>Game Rooms:</h3>
+                            {this.state.noroom && (
+                                <div className='text-center'>
+                                    <h5>There is no any game room yet, let's create one</h5>
+                                </div>
+                            )
+                            }
+                            {gamelist}
 
-                    <button onClick={()=>this.createGame()}>Create Room</button>
-                </div>
-                <div className='text-center'>
-                    <button onClick={()=>this.getRooms()}>refresh</button>
-                </div>
+                            <button onClick={()=>this.createGame()}>Create Room</button>
+                        </div>
+                        <div className='text-center'>
+                            <button onClick={()=>this.getRooms()}>refresh</button>
+                        </div>
+                    </div>
+                )}
             </div>
         )
     }
