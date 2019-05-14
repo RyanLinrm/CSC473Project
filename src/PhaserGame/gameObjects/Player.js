@@ -244,7 +244,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
       this.setVisible(false);
 
       if(this.scene.mode === 'multi'){
-          this.scene.handlePlayerKill( this.uid, attackeruid );
+          //this.scene.handlePlayerKill( this.uid, attackeruid );
           this.handleRespawn();
       }
 
