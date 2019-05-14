@@ -130,7 +130,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * The id of the game room
      *
      * @name Player#gameRoom
-     * @type number
+     * @type String
      */
         this.gameRoom = data.roomkey;
 
@@ -263,7 +263,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             let health = snapShot.val();
             let player = this.otherPlayers[id];
             player.setHealth(health);
-            console.log(this);
+            //console.log(this);
             this.hUD.setPlayerHealth(player.towerPosition,health);
             
         });
@@ -332,10 +332,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,this.playerID);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0
+                                    ,this.startingPlayerHealth,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1
+                                    ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
         this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
@@ -475,6 +477,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
         });
 
+        /*let ScoreDB = `Games/${this.gameRoom}/playerScore`;
+        firebase.database().ref(ScoreDB).child(this.playerID).set({
+            score: 0,
+            killid: ''
+        })*/
+
 
         firebase.database().ref(playerDB).on("child_removed", (snapShot) => {
             this.removePlayer(snapShot.key);
@@ -505,7 +513,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
             if( enemyinfo.killerid === this.playerID ){
                 this.score += 50;
-                console.log(this.score);
+                this.hUD.setScore(this.score);
             }
 
             if(!enemyinfo.alive){
@@ -517,11 +525,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 }
             }
             
-            //firebase.database().ref(enemyDB).child(enemyid).remove();
+            firebase.database().ref(enemyDB).child(enemyid).remove();
             
         })
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB,playerHealthPath);
+        //getting score by killing ohter players
+        /*firebase.database().ref(ScoreDB).on('child_changed', snapShot=>{
+            let playerdata = snapShot.val();
+            if(playerdata.killid === this.playerID){
+                this.score += 100;
+            }
+        })*/
+
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB
+            ,dragdataDB,enemyDB,playerHealthPath);
 
     }
 
@@ -598,7 +615,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let countDownText = this.add.text(this.player1.x, this.player1.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
         countDownText.setOrigin(0.5, 0.5);
     }
-
+    
 
 
     towerDestroyed = (TowerID)=>{
@@ -620,4 +637,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     setHealthInDB = (health)=>{
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/health`] = health;
     }
+
+    /*handlePlayerKill( playerid, killerid ){
+        this.updates[`Games/${this.gameRoom}/playerScore/${playerid}/killid`] = killerid;
+    }*/
 }

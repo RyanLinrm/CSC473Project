@@ -57,6 +57,11 @@ export class HUD {
         this.timer = scene.add.text(0,60,'Timer:'+ Math.trunc(scene.time),{ fontFamily: 'Georgia', fontSize: 17, color: '#ffffff' });
         this.timer.setScrollFactor(0);    
 
+        if(gamemode === 'multi'){
+            this.scoreShow = scene.add.text(0,80,'Score: 0',{ fontFamily: 'Georgia', fontSize: 17, color: '#ffffff' });
+            this.scoreShow.setScrollFactor(0);
+        }
+
         this.startingPlayerHealth = scene.startingPlayerHealth;
 
         let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
@@ -170,6 +175,10 @@ export class HUD {
 
     setPlayerHealth = (playerNumber,health)=>{
         this.playerHealthLabels[playerNumber - 1].setText(`${health}/${this.startingPlayerHealth}`); //setsThePlayer health label to the given health value
+    }
+
+    setScore = ( newscore ) => {
+        this.scoreShow.setText('Score: '+ `${newscore}`);
     }
 
 

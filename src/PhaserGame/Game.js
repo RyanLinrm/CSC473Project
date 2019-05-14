@@ -82,64 +82,6 @@ export default class Game extends React.Component{
                 seatNumber: seatNumber,
             });
     }
-    /**
-     * @instance
-     * @memberof Game
-     * @method componentDidMount
-     * @description method that is called by react. The phaser game is created here
-     */
-    /*componentDidMount(){
-        let game = new Phaser.Game({
-            type: Phaser.AUTO,
-            width: window.innerWidth,
-            height:window.innerHeight/1.15,
-            parent: 'phaser-game',
-            physics: {
-                default: 'arcade',
-                
-                arcade: {
-                    debug: false
-                }
-            },
-            scene:[
-               LoadScene,MenuScene,PlayScene,GameRoom,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
-            ],
-            render:{
-                pixelArt: true
-            },
-            assetsLoaded: false
-        });
-
-         /**
-          * (function created when react calls componentDidMount)
-          * 
-          * 
-          * this function starts the single player scene in phaser
-          */
-        /*this.startSinglePlayer = function(){
-                game.scene.start(CST.SCENES.CHAR);
-        }
-
-         /**
-          * (function created when react calls componentDidMount)
-          * 
-          * 
-          * this function starts the multiplayer player scene in phaser
-          * @param {String} uid - the unique ID of this player
-          * @param {String} username - the login username of this player
-          * @param {String} roomid - the unique ID of this game room
-          * @param {String} seatNumber - the seat number of this player in the room
-          */
-        /*this.startMultiplayer = function(uid, username, roomid, seatNumber){
-                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT, {
-                    playerID : uid,
-                    username: username,
-                    roomkey : roomid,
-                    seatNumber: seatNumber,
-                });
-        }
-    }
-
 
     /**
      * @instance
