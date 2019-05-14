@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: GameLobby.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: GameLobby.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { Component } from 'react';
+import Game from './PhaserGame/Game';
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import * as queries from './graphql/queries';
+import * as mutations from './graphql/mutations';
+import * as firebase from 'firebase';
+import {generate} from 'randomstring';
+
+/**
+ * GameLobby - extends react component
+ * The scene where players create and join game room
+ *
+ */
+export default class GameLobby extends Component{
+    constructor(props){
+        super(props);
+        this.gameref = firebase.database().ref('Games');
+
+        let name = props.username;
+        let uid = props.uid;
+        
+        this.state = {
+            gamerooms: {},
+            noroom: true,
+            roomkey: '',
+            seatNumber: -1,
+            username: name,
+            uid: uid,
+            gotoroom: false
+        }
+
+        this.gametype = 'multi'
+
+        /**
+         * Numerical representation of the state of game and the number of players in the room
+         * @name GameLobby#GameState
+         * @type Object
+         */
+        this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
+
+        this.getRooms();
+    }
+
+    /**
+     * update the state of all the game room to display on this page
+     *
+     */
+    getRooms() {
+        this.gameref.once('value', snapShot =>{
+            let gamerooms = snapShot.val();
+            
+            if(gamerooms){
+                let keys = Object.keys(gamerooms);
+                let rooms = {};
+                for( let i = 0; i &lt; keys.length; i++ ){
+                    if(!gamerooms[keys[i]].start &amp;&amp; gamerooms[keys[i]].seat ){
+                        rooms[keys[i]] = gamerooms[keys[i]]
+                    }
+                }
+                this.setState({gamerooms:{...rooms}, noroom: false}); 
+            }
+            else{
+                this.setState({noroom: true});
+            }
+        })
+    }
+
+    /**
+     * createGame is a function that creates a game room by pushing the creator's player id and the game state or seats
+     * into the firebase
+     */
+    createGame (){
+        console.log('creating a game!');
+
+        let currentGame = {
+            creator: {
+                uid: this.state.uid,
+                userName: this.state.username
+            },
+            seat: this.GameState.OPEN
+        };
+
+        let key = this.gameref.push();
+        this.setState({roomkey: key.key,
+            seatNumber: 1})
+
+        key.set(currentGame, (error)=>{
+            if(error){
+                console.log("error");
+            }else {
+                console.log('created game',key);
+                key.onDisconnect().remove();
+            }
+        });
+
+        this.setRedirect(key.key, 1);
+    }
+
+    /**
+     * joinGame method takes in a parameter which is the room key and allow player to join that game
+     * @param {String} roomid- the string key of the game room
+     */
+    joinGameHandler(roomid) {
+        let childref = this.gameref.child(roomid);
+        childref.transaction( (snapShot) =>{
+        
+            childref.once('value', snapShot =>{
+                let game = snapShot.val();
+                //let val = game.seat;
+                if( game.seat !== 4 ){
+                    let val = game.seat + 1;
+                    //this.seatNumber = val; //Need a way to know the order of the seat which determines which side of the map people are on. 
+                    let joiner = {
+                        uid: this.state.uid,
+                        userName: this.state.username
+                    }
+
+                    childref.update( {seat : val} );
+                    childref.push(joiner);
+
+                    this.setState({roomkey: roomid,
+                        seatNumber: val})
+
+                        this.setRedirect(roomid, val);
+                }
+                else{
+                    alert('Full Room! Sorry, an error appears, reload page now');
+                    window.location.reload();
+                }
+                })
+                
+        })
+
+    }
+
+    setRedirect(roomkey, seat) {
+        this.props.handler(roomkey,seat);
+    }
+
+    renderRoomList() {
+        let roomKeys = Object.keys(this.state.gamerooms);
+        let roomList = [];
+
+        for( let i = 0; i &lt; roomKeys.length; i++ ){
+            
+            this.state.gamerooms[roomKeys[i]].id = roomKeys[i];
+            roomList.push(this.state.gamerooms[roomKeys[i]])
+        }
+
+        let JSXoutList = roomList.map( (room) =>
+            &lt;div className='text-center' key={room.id}>
+                &lt;div>
+                    &lt;h6>Room ID: {room.id}&lt;/h6>
+                    &lt;button onClick={()=>this.joinGameHandler(room.id)}>Join&lt;/button>
+                &lt;/div>
+            &lt;/div>
+        )
+
+        return JSXoutList;
+    }
+
+    render(){
+        
+        let gamelist = this.renderRoomList();
+        
+        return(
+            &lt;div>
+                &lt;div>
+                    &lt;div className='text-center'>
+                        &lt;h1 className='text-center'>Game Lobby&lt;/h1>
+                        &lt;h3 className='text-center'>Game Rooms:&lt;/h3>
+                        {this.state.noroom &amp;&amp; (
+                                &lt;div className='text-center'>
+                                    &lt;h5>There is no any game room yet, let's create one&lt;/h5>
+                                &lt;/div>
+                            )
+                            }
+                            {gamelist}
+                            &lt;button onClick={()=>this.createGame()}>Create Room&lt;/button>
+                        &lt;/div>
+                        &lt;div className='text-center'>
+                            &lt;button onClick={()=>this.getRooms()}>refresh&lt;/button>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        )
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
