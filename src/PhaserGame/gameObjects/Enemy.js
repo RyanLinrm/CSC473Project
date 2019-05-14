@@ -49,7 +49,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * @name Enemy#towers
          * @type array
          */
-        this.towers=[this.pyramid,this.university,this.magicstone,this.building, this.sword_in_the_stone];
+        this.towers=[this.pyramid,this.university,this.magicstone,this.building];
         this.enemyID=enemyID;
         /**
          * The counts that compares to time to check the enemy can attack
@@ -269,6 +269,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         else this.findneartower();
         
         if(this.mode === 'single'){
+            this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
@@ -378,7 +379,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //movement for wolf
         if(this.enemyID===0){
             this.bulletTexture="shoot5";
-            if(this.healthPoints>=100){
+            if(this.healthPoints>=110){
                 if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                     this.play('wolf_down',true);
                 }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -441,7 +442,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.play('demon1_up',true);
           
             }
-            if(this.healthPoints<100){
+            if(this.healthPoints<120){
                 this.movementSpeed=120;
                 this.setScale(2);
                 this.bulletscale=0.8;

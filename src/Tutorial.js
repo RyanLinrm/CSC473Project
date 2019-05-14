@@ -61,7 +61,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 1 && (
+        {this.state.Counter === 1 && (
           <div>
             <h2>Character Selection</h2>
             <div className="filler"> </div>
@@ -151,7 +151,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 2 && (
+        {this.state.Counter === 2 && (
           <div>
             <h2> Movement </h2>
             <div className="filler"> </div>
@@ -169,7 +169,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 3 && (
+        {this.state.Counter === 3 && (
           <div>
             <h2> Single Player Objective</h2>
             <div className="filler"> </div>
@@ -187,7 +187,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 4 && (
+        {this.state.Counter === 4 && (
           <div>
             <h2> Multiplayer Objective</h2>
             <div className="filler"> </div>
@@ -205,7 +205,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 5 && (
+        {this.state.Counter === 5 && (
           <div>
             <h2> opposing health </h2>
             <div className="filler"> </div>
@@ -224,7 +224,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 6 && (
+        {this.state.Counter === 6 && (
           <div>
             <h2> Drag and drop from your player HUD members</h2>
             <div className="box">

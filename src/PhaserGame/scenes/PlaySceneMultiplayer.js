@@ -214,14 +214,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
          
  
         this.enemyPlayers.add(this.otherPlayers[id]);
+   
         //this.otherPlayers[id].immovable=true;
         //assign collider to this new player
         this.physics.add.overlap(this.damageItems, this.otherPlayers[id],this.bothCollisions);
         this.physics.add.collider(this.otherPlayers[id], this.CollisionLayer);
         this.physics.add.collider(this.otherPlayers[id], this.waterLayer);
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
+        this.physics.add.collider(this.enemies, this.waterLayer);
+        this.physics.add.collider(this.enemies, this.CollisionLayer);
         this.player1.setCollideWorldBounds(true);
+        
 
+        
+        this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
             let dataChanged = snapShot.val();
@@ -291,18 +297,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
-            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,50,99,200,playerid);
+            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
         }
 
         else if(type==='ninjabot'){              
-            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,100,0.8,5,180,60,700,playerid)
+            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,180,0.8,5,180,60,700,playerid)
         }
         
         else if(type==='skull'){              
             this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
-            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,200,0.7,2,200,70,600, playerid).setScale(1.5);
+            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
         }
         else if(type==='wall'){              
             this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
@@ -324,7 +330,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     create() {
         //this.spritekey = "bomber";
         super.create(this.playerID, 'multi');
-   
+        this.pyramid.assignSelfID(1,this.gameRoom);
+        this.university.assignSelfID(2,this.gameRoom);
+        this.magicstone.assignSelfID(3,this.gameRoom);
+        this.building.assignSelfID(4,this.gameRoom);
+        this.sword_in_the_stone.assignSelfID(5,this.gameRoom);
         this.useUltimate=false;
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
@@ -435,13 +445,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
         database.ref(seatNumberDB).set({ //CreateTowerInDatabase
             HP: 100,
+            alive: true,
             owner: this.playerID ,
             killerid: ''
         });
 
-        let sword_in_stone =`Games/${this.gameRoom}/Towers/5`;
-        database.ref(sword_in_stone).set({
+        let sword_in_stoneDB =`Games/${this.gameRoom}/Towers/5`;
+        database.ref(sword_in_stoneDB).set({
             HP:100,
+            alive: true,
             killerid: ''
         });
         
@@ -532,15 +544,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(towerDB).on('child_changed', snapShot=>{
             let towerinfo = snapShot.val();
             let towerid = snapShot.key;
-            let towernb =towerinfo.seatNumber;
+    
             
-            if( towerinfo.killerid === this.playerID ){
+            if( towerinfo.killerid === this.playerID){
                 this.score += 1000;
-                console.log(this.score);}
-            if(towernb===5 && towerinfo.killerid === this.playerID){
-
+            
+            }
+           
+            if(towerid==='5' && towerinfo.killerid === this.playerID){
+                this.score+=500;
                 this.useUltimate=true;
             }
+            
 
         
             
@@ -548,16 +563,21 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
         })
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB,playerHealthPath,towerDB);
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,sword_in_stoneDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB,playerHealthPath,towerDB);
 
     }
 
     update(time,delta){
-        console.log(this.player1.mana)
+      //  console.log(this.player1.mana)
         this.hUD.update(time,this.player1,this);
+        if(this.useUltimate===true){
+            this.add.text(500, 615, "You have won the ultimate ability!", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+            this.add.text(500, 645, "Press E to destroy nearby enemies.", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+
+        }
         if(this.player1.mana<=1000){
             this.player1.mana+=delta/1000;
-            this.manabar.regenManaBar(delta/1000);}
+            this.manabar.regenManaBar((delta/1000)*2);}
         this.changeEnemyColor(this.player1,time);
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
@@ -611,7 +631,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
         
         if(this.useUltimate===true){
-        if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
+        if (Phaser.Input.Keyboard.JustDown(this.Ebar) && this.cooldowntime< time)
         {  
             this.Ultimate(time);
         

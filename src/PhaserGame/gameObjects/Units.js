@@ -103,6 +103,10 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     assignID(uid){
         this.uid = uid;
     }
+    assignSelfID(id,key){
+        this.selfID = id;
+        this.gameroom = key;
+    }
 
     /**
      * collision function that is called when a collision occurs to the unit. 

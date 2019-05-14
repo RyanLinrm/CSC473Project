@@ -38,8 +38,7 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     a.x = window.innerWidth / 2;
     a.y = window.innerHeight / 2;
 
-    this.add.text(this.game.renderer.width / 2 - 85, 90, "choose your warrior");
-
+    this.add.text(this.game.renderer.width / 2 - 605, 90, "Choose Your Warrior", { fontSize: 100, color: '#ffffff' });
     let Riderchar = this.add
       .image(
         this.game.renderer.width / 2 - 90,

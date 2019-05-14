@@ -236,7 +236,7 @@ export class PlayScene extends Phaser.Scene{
             this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
             this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
-/*
+
             //The enemies are in four different towers.
             this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
@@ -286,7 +286,7 @@ export class PlayScene extends Phaser.Scene{
             this.enemies.add(this.ninjabot2);
             this.enemies.add(this.ninjabot3);
             //this.enemies.add(this.ninjabot4);
-*/
+
             this.timecycle=0;
            /**
             * Function to generate new enemy wave every Couple Of Seconds 
@@ -311,17 +311,14 @@ export class PlayScene extends Phaser.Scene{
             
         }
         if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,100,4,180,200).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,100).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,100,3,180,200).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,100).setScale(1.5);
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone").setScale(0.5);
-            //need to create some reward event
-            if(this.sword_in_the_stone.active===false){
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,2000,1,200,100).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,2000,1,200,100).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,2000,1,200,100).setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1,2000,1,200,100).setScale(1.5);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,500,1,190,100).setScale(0.5);
 
-            }
             this.physics.add.collider(this.enemies, this.waterLayer);
-
+           
       
         }
         this.towers.add(this.building); 
@@ -336,6 +333,7 @@ export class PlayScene extends Phaser.Scene{
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         this.Qbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.Zbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        this.Ebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         //Map
 
         //add in our map
