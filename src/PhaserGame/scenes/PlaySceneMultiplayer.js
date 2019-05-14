@@ -114,7 +114,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.score = 0;
 
-        this.startingPlayerHealth = 200;
+        this.startingPlayerHealth = 400;
     }
 
     init(data){
@@ -335,6 +335,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.building.assignSelfID(4,this.gameRoom);
         this.sword_in_the_stone.assignSelfID(5,this.gameRoom);
         this.useUltimate=false;
+        this.showUltText=false;
+        //this.showUltTexttime=0;
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
@@ -561,6 +563,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             if(towerid==='5' && towerinfo.killerid === this.playerID){
                 this.score+=500;
                 this.useUltimate=true;
+                this.showUltText = true;
             }
             
 
@@ -586,9 +589,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     update(time,delta){
       //  console.log(this.player1.mana)
         this.hUD.update(time,this.player1,this);
-        if(this.useUltimate===true){
+        if(this.showUltText){
             this.add.text(500, 615, "You have won the ultimate ability!", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
             this.add.text(500, 645, "Press E to destroy nearby enemies.", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+            this.showUltText = false;
 
         }
         if(this.player1.mana<=1000){

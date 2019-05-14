@@ -314,7 +314,7 @@ export class PlayScene extends Phaser.Scene{
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,2000,1,200,100).setScale(1.5);
             this.university=new Units(this,1200,0,1150,-1,"university",1,2000,1,200,100).setScale(1.5);
             this.building=new Units(this,1200,1200,1150,1099,"building1",1,2000,1,200,100).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1,2000,1,200,100).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,2000,1,200,100).setScale(1.5);
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,500,1,190,100).setScale(0.5);
 
             this.physics.add.collider(this.enemies, this.waterLayer);
@@ -360,13 +360,13 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.enemies, this.CollisionLayer);
         
         //Map collision debug mode
-        this.debugGraphics = this.add.graphics();
+        /*this.debugGraphics = this.add.graphics();
  
         Mymap.renderDebug(this.debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 128), 
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) 
-          });
+          });*/
 
 
 
