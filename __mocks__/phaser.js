@@ -144,6 +144,22 @@ const phaserMock = {
                 addKey: jest.fn()
             }
         };
+        this.load = {
+            image:(loadimage)=>{
+                return loadimage;
+            },
+            atlas:(loadatlas)=>{
+                return loadatlas;
+            },
+            audio:(loadaudio)=>{
+                return loadaudio;
+            },
+        },
+        this.updateSprite = ()=>{};
+        this.create= ()=>{};
+        this.preload= ()=>{};
+        this.update= ()=>{};
+    
 
     },
 
@@ -152,8 +168,8 @@ const phaserMock = {
             KeyCodes: {
                 SPACE: 'val'
             }
-        }
-    },
+        }},
+        
 
     Display:{
         Color:jest.fn()

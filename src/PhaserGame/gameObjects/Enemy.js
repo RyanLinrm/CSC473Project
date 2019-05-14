@@ -114,7 +114,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.setupMovement(scene,this.target);
         this.setVisible = false;
         this.body.immvoable = true;
-
+        this.setCollideWorldBounds(true);
         
 
     }
@@ -234,12 +234,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         let shortestDistance=1000000000;
         this.findneartower = () =>{
             
-            if(this.mode === 'single' && this.sword_in_the_stone.uid!=enemy.uid){
-                if(this.sword_in_the_stone.active)
-                this.changetarget(this.sword_in_the_stone);
-                else this.changetarget(this.scene.player);}
-
-            for (var i = 0; i < 4; i++) {
+  
+            //this.scene.enemies.getChildren().map(child => this.towers.push(child));  
+          //  this.towers.push(this.scene.player)
+            for (var i = 0; i < this.towers.length; i++) {
                 if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
                      if (towerdistance<shortestDistance){
@@ -271,24 +269,19 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         else this.findneartower();
         
         if(this.mode === 'single'){
+            this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
 
-            if(this.movementSpeed>=player.movementSpeed+10){
-                this.movementSpeed=65;         
-         }
-            if(Math.abs(this.scene.player.x - enemy.x) < this.attackRange+40 && Math.abs(this.scene.player.y - enemy.y) < this.attackRange+40){
-                if(this.scene.player.active && this.scene.player.uid!=enemy.uid){
-                this.changetarget(this.scene.player);
-        }
-        else{
-            this.findneartower();}
-        }
-    } 
-}
-        
-    
+            if(this.movementSpeed>=player.movementSpeed-10){
+                this.movementSpeed=65;}
+            if(Math.abs(player.x - enemy.x) < this.attackRange+20 && Math.abs(player.y - enemy.y) < this.attackRange+20){
+                if(player.active&&player.uid!=enemy.uid)
+                this.changetarget(player);}
+                else{     
+                    this.findneartower();}}}
+           
     /**
      * Function to remove the enemy so we can handle other things related to the death such as stop the attack 
      * also when in the multiplayer mode it will detect which player kills this enemy
@@ -386,7 +379,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //movement for wolf
         if(this.enemyID===0){
             this.bulletTexture="shoot5";
-            if(this.healthPoints>=100){
+            if(this.healthPoints>=110){
                 if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                     this.play('wolf_down',true);
                 }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -449,7 +442,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.play('demon1_up',true);
           
             }
-            if(this.healthPoints<100){
+            if(this.healthPoints<120){
                 this.movementSpeed=120;
                 this.setScale(2);
                 this.bulletscale=0.8;

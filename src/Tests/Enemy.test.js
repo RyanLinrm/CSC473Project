@@ -315,7 +315,7 @@ test('Testing the removeDefense function in enemy class', ()=>{
 
 })
 /*
-test('Testing the defend function in enemy class', ()=>{
+test('Testing the basicattack function in enemy class', ()=>{
     let scene = new PlayScene();
 
     scene.enemiesAttacks = {
@@ -326,13 +326,14 @@ test('Testing the defend function in enemy class', ()=>{
     let setTextureMock =jest.fn();
     let setScaleMock= jest.fn();
     let setPositionMock= jest.fn();
-
+    let setSizeMock= jest.fn();
     scene.physics.add.group = ()=>{
         return {
             get:() => ({shoot:shootMock,
                         setScale:setScaleMock,
                         setPosition:setPositionMock,
                         setTexture:setTextureMock,
+                        setSize:setSizeMock,
                       })
             
         };
@@ -344,5 +345,19 @@ test('Testing the defend function in enemy class', ()=>{
     expect(scene.enemiesAttacks.add).toBeCalledTimes(1);
     expect(shootMock).toBeCalledTimes(1);
 
-})
-*/
+})*/
+
+
+test('Testing the update function of the enemy class',()=>{
+    let newEnemy = new Enemy(scene,x,y,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+    newEnemy.isInjured = jest.fn();
+    newEnemy.enemymovement=jest.fn();
+    newEnemy.moveEnemy=jest.fn();
+    newEnemy.enemyAttack=jest.fn();
+    newEnemy.update(1000);
+    expect(newEnemy.isInjured).toBeCalledTimes(1);
+    expect(newEnemy.isInjured.mock.calls[0][0]).toBe(1000);
+    expect(newEnemy.moveEnemy).toBeDefined();
+    expect(newEnemy.enemymovement).toBeDefined();
+    expect(newEnemy.enemyAttack).toBeDefined();
+});

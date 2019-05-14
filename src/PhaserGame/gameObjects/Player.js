@@ -445,7 +445,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         if(this.user){
             this.scene.hUD.hpbar.resetBar();
         }
-        if (this.scene.mode === 'multi') {
+        if (this.scene.mode === 'multi'&& this.scene.GameIsGoing) {
             this.scene.setHealthInDB(this.scene.startingPlayerHealth);
         }
 
