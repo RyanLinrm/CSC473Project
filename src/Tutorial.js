@@ -10,6 +10,8 @@ import otherHealth from "./tutorialimages/playerhealt.png";
 import rider from "./tutorialimages/riderclass.png";
 import shooter from "./tutorialimages/shooter.png";
 import useHUD from "./tutorialimages/usehud.gif";
+import spriteMovement from './tutorialimages/movement.gif'
+import spriteAttack from './tutorialimages/attack.gif'
 /**
  * Tutorial class
  */
@@ -61,7 +63,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter === 1 && (
+        {this.state.Counter == 1 && (
           <div>
             <h2>Character Selection</h2>
             <div className="filler"> </div>
@@ -78,23 +80,21 @@ class Tutorial extends Component {
                 NEXT{" "}
               </Button>
               <h4>
-                At the start of the game you are told to choose your charcater.
-                choose wisely as you are unable to change charcater classes in
-                the instance of the game{" "}
+                Choose You Character wisely
               </h4>
               <h2>class stats</h2>
               <Table align="center">
                 <tr>
-                  <th>class name:</th>
+                  <th><h6>class name:</h6></th>
                   <th className="rider">
                     <h3>Rider Class</h3>
                   </th>
                   <th className="shooter">
-                    <h3>Shooter Class</h3>
+                    <h3><h6>Shooter Class</h6></h3>
                   </th>
                 </tr>
                 <tr>
-                  <th>attack photo:</th>
+                  <th><h6>attack photo:</h6></th>
                   <th className="rider">
                     <img src={rider} />
                   </th>
@@ -103,34 +103,34 @@ class Tutorial extends Component {
                   </th>
                 </tr>
                 <tr>
-                  <th>attack description:</th>
+                  <th><h6>attack description:</h6></th>
                   <th className="rider">
-                    <h4>shoot out a sludge from behind</h4>
+                    <h3>shoot out a sludge from behind</h3>
                   </th>
                   <th className="shooter">
                     <h3>shoot</h3>
                   </th>
                 </tr>
                 <tr>
-                  <th>Starting Health:</th>
+                  <th><h6>Starting Health:</h6></th>
                   <th className="rider">
-                    <h4>150</h4>
+                    <h3>150</h3>
                   </th>
                   <th className="shooter">
                     <h3>100</h3>
                   </th>
                 </tr>
                 <tr>
-                  <th>Starting mana:</th>
+                  <th><h6>Starting mana:</h6></th>
                   <th className="rider">
-                    <h4>100</h4>
+                    <h3>100</h3>
                   </th>
                   <th className="shooter">
                     <h3>150</h3>
                   </th>
                 </tr>
                 <tr>
-                  <th>Speed in single player:</th>
+                  <th><h6>Speed in single player:</h6></th>
                   <th className="rider">
                     <h4> </h4>
                   </th>
@@ -139,9 +139,9 @@ class Tutorial extends Component {
                   </th>
                 </tr>
                 <tr>
-                  <th>Speed in multiplayer player:</th>
+                  <th><h6>Speed in multiplayer player:</h6></th>
                   <th className="rider">
-                    <h4>100</h4>
+                    <h3>100</h3>
                   </th>
                   <th className="shooter">
                     <h3>150</h3>
@@ -151,7 +151,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter === 2 && (
+        {this.state.Counter == 2 && (
           <div>
             <h2> Movement </h2>
             <div className="filler"> </div>
@@ -166,10 +166,32 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
+              <img src={spriteMovement} />
+              <table>
+                <th>
+                  <tr><h3>A key to move left</h3></tr>
+                </th>
+                <th>
+                  <tr><h3>W key to move up</h3></tr>
+                </th>
+                <th>
+                  <tr><h3>D key to move right</h3></tr>
+                </th>
+                <th>
+                  <tr><h3>S key to move down</h3></tr>
+                </th>
+              </table>
+              <br />
+              <img src={spriteAttack} />
+              <table>
+                <th>
+                  <tr><h3>Space bar to attack</h3></tr>
+                </th>
+              </table>
             </div>
           </div>
         )}
-        {this.state.Counter === 3 && (
+        {this.state.Counter == 3 && (
           <div>
             <h2> Single Player Objective</h2>
             <div className="filler"> </div>
@@ -187,7 +209,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter === 4 && (
+        {this.state.Counter == 4 && (
           <div>
             <h2> Multiplayer Objective</h2>
             <div className="filler"> </div>
@@ -205,7 +227,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter === 5 && (
+        {this.state.Counter == 5 && (
           <div>
             <h2> opposing health </h2>
             <div className="filler"> </div>
@@ -224,7 +246,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter === 6 && (
+        {this.state.Counter == 6 && (
           <div>
             <h2> Drag and drop from your player HUD members</h2>
             <div className="box">
@@ -244,18 +266,18 @@ class Tutorial extends Component {
               <img className="directHUD" src={HUD} />
               <Table className="directHUD" align="center">
                 <tr>
-                  <th>robot</th>
-                  <th>wolf</th>
-                  <th>skeletor</th>
-                  <th>demon</th>
-                  <th>wall</th>
+                  <th><h5>robot</h5></th>
+                  <th><h5>wolf</h5></th>
+                  <th><h5>skeletor</h5></th>
+                  <th><h5>demon</h5></th>
+                  <th><h5>wall</h5></th>
                 </tr>
                 <tr>
-                  <th>attack players and towers</th>
-                  <th>attack players and towers</th>
-                  <th>attack players and towers</th>
-                  <th>attack players and towers</th>
-                  <th>Blocks players path and attacks</th>
+                  <th><h5>attack players and towers</h5></th>
+                  <th><h5>attack players and towers</h5></th>
+                  <th><h5>attack players and towers</h5></th>
+                  <th><h5>attack players and towers</h5></th>
+                  <th><h5>Blocks players path and attacks</h5></th>
                 </tr>
               </Table>
             </div>
