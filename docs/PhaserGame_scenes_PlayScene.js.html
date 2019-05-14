@@ -52,7 +52,7 @@ export class PlayScene extends Phaser.Scene{
      */
     constructor(sceneKey = CST.SCENES.PLAY){
         super({key:sceneKey});
-
+        
     /**
      * The scene type "Multiplayer" or "Single"
      *
@@ -69,6 +69,14 @@ export class PlayScene extends Phaser.Scene{
      */
         this.seatNumber = 1;
         this.single = true;
+
+        /**
+         * The starting health of players in the game
+         *
+         * @name Player#startingPlayerHealth
+         * @type number
+         */
+        this.startingPlayerHealth = 500;
 
 ///////////////////////////////////////////COMBINE IT WITH this.sceneType/////////////////////////////
         this.mode = 'single';
@@ -166,7 +174,7 @@ export class PlayScene extends Phaser.Scene{
             if(objectA.active &amp;&amp; objectB.active){
                 if(objectA.uid !== objectB.uid){
                 objectA.collision();
-                objectB.collision();
+                objectB.collision(objectA.uid);
                 }
                  
             }
@@ -178,6 +186,7 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.overlap(this.towerShooting,this.enemyPlayers,this.bothCollisions);
         this.physics.add.overlap(this.enemiesAttacks,this.enemyTowers,this.bothCollisions);
         this.physics.add.overlap(this.towerShooting,this.enemies,this.bothCollisions);
+        this.physics.add.overlap(this.enemiesAttacks,this.enemies,this.bothCollisions);
 
         //this.physics.add.overlap(this.damageItems,this.enemyPlayers,bothCollisions);
         const randNumber = Math.floor((Math.random() * 4) + 1);
@@ -185,10 +194,10 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,this.startingPlayerHealth,150,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,500,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -209,7 +218,7 @@ export class PlayScene extends Phaser.Scene{
                 this.towerDestroyed(tower.uid);
             }
             else{
-                console.log(this.towers.getLength());
+               // console.log(this.towers.getLength());
                 if(this.towers.getLength() === 1 &amp;&amp; this.GameIsGoing === true){
                     this.wonGame();
                 }
@@ -227,9 +236,7 @@ export class PlayScene extends Phaser.Scene{
 
       /*
         //Mini Map
-
         //create a sample minimap ---needs to change to dynamic
-
         this.minimap = this.cameras.add(this.game.renderer.width - 255, 0, 240, 300).setZoom(0.2).setName('mini');
         this.minimap.setBackgroundColor(0x002244);
         this.minimap.scrollX = 600;  
@@ -250,9 +257,9 @@ export class PlayScene extends Phaser.Scene{
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid);
             this.sword_in_the_stone.setScale(0.5);
-            this.sword_in_the_stone.uid=this.player.uid;
+
             this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
             this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
@@ -263,50 +270,50 @@ export class PlayScene extends Phaser.Scene{
             this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf2=new Enemy(this, 1000,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             this.wolf3=new Enemy(this, 950,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
-            this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            //this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
 
             
             this.ninjabot0=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot1=new Enemy(this, 950,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot2=new Enemy(this, 900,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
             this.ninjabot3=new Enemy(this, 850,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
-            this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
+            //this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
 
             this.skull0=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull1=new Enemy(this,100,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull2=new Enemy(this,150,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             this.skull3=new Enemy(this,200,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
-            this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            //this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
 
             this.demon0=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon1=new Enemy(this,100,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon2=new Enemy(this,150,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             this.demon3=new Enemy(this,200,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
-            this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            //this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
 
             this.enemies.add(this.demon0);
             this.enemies.add(this.demon1);
             this.enemies.add(this.demon2);
             this.enemies.add(this.demon3);
-            this.enemies.add(this.demon4);
+            //this.enemies.add(this.demon4);
 
             this.enemies.add(this.skull0);
             this.enemies.add(this.skull1);
             this.enemies.add(this.skull2);
             this.enemies.add(this.skull3);
-            this.enemies.add(this.skull4);
+            //this.enemies.add(this.skull4);
 
             this.enemies.add(this.wolf0);
             this.enemies.add(this.wolf1);
             this.enemies.add(this.wolf2);
             this.enemies.add(this.wolf3);
-            this.enemies.add(this.wolf4);
+            //this.enemies.add(this.wolf4);
 
             this.enemies.add(this.ninjabot0);
             this.enemies.add(this.ninjabot1);
             this.enemies.add(this.ninjabot2);
             this.enemies.add(this.ninjabot3);
-            this.enemies.add(this.ninjabot4);
+            //this.enemies.add(this.ninjabot4);
 
             this.timecycle=0;
            /**
@@ -325,24 +332,21 @@ export class PlayScene extends Phaser.Scene{
                     this.enemies.add(this.ninjabot);
                     this.enemies.add(this.skull);
                     this.enemies.add(this.demon);
-                    this.timecycle = time +4000;
+                    this.timecycle = time +5000;
                 }
                 
             };  
             
         }
         if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,100,4,180,200).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,100).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,100,3,180,200).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,100).setScale(1.5);
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone").setScale(0.5);
-            //need to create some reward event
-            if(this.sword_in_the_stone.active===false){
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,2000,1,200,100).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,2000,1,200,100).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,2000,1,200,100).setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,2000,1,200,100).setScale(1.5);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,500,1,190,100).setScale(0.5);
 
-            }
             this.physics.add.collider(this.enemies, this.waterLayer);
-
+           
       
         }
         this.towers.add(this.building); 
@@ -357,6 +361,7 @@ export class PlayScene extends Phaser.Scene{
         this.Tbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
         this.Qbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
         this.Zbar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+        this.Ebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
         //Map
 
         //add in our map
@@ -383,13 +388,13 @@ export class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.enemies, this.CollisionLayer);
         
         //Map collision debug mode
-        this.debugGraphics = this.add.graphics();
+        /*this.debugGraphics = this.add.graphics();
  
         Mymap.renderDebug(this.debugGraphics, {
             tileColor: null,
             collidingTileColor: new Phaser.Display.Color(243, 134, 48, 128), 
             faceColor: new Phaser.Display.Color(40, 39, 37, 255) 
-          });
+          });*/
 
 
 
@@ -411,6 +416,7 @@ export class PlayScene extends Phaser.Scene{
         this.cooldowntime = 0;
         this.stopcooldown = 0;
 
+            
     }
      
         changeEnemyColor=(player,time)=>{
@@ -442,7 +448,7 @@ export class PlayScene extends Phaser.Scene{
                 for (let i = 0; i &lt; this.enemylist.length; i++) {
                     if (this.enemylist[i].uid!=this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) &lt; 200 &amp;&amp; Math.abs(this.enemylist[i].y - this.player.y) &lt; 200){ 
-                        this.enemylist[i].kill();       
+                        this.enemylist[i].kill(true,this.playerUid);       
                         }
                     }
                 }
@@ -726,8 +732,7 @@ export class PlayScene extends Phaser.Scene{
         countDownText.setOrigin(0.5, 0.5);
     }
         
-    }
-</code></pre>
+    }</code></pre>
         </article>
     </section>
 
@@ -737,13 +742,13 @@ export class PlayScene extends Phaser.Scene{
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 09 2019 10:37:54 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
