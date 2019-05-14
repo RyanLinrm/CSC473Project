@@ -114,7 +114,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.score = 0;
 
-        this.startingPlayerHealth = 200;
+        this.startingPlayerHealth =250;
     }
 
     init(data){

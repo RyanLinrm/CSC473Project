@@ -166,7 +166,7 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,this.startingPlayerHealth,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,this.startingPlayerHealth,100,'123');
             break;
             case "rider":
             this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
@@ -232,10 +232,10 @@ export class PlayScene extends Phaser.Scene{
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid);
             this.sword_in_the_stone.setScale(0.5);
 
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,500,4,180,200).setScale(0.15);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,500).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,500,4,180,200).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,500,4,180,200).setScale(1.5);
 
             //The enemies are in four different towers.
             this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
@@ -311,10 +311,10 @@ export class PlayScene extends Phaser.Scene{
             
         }
         if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,2000,1,200,100).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,2000,1,200,100).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,2000,1,200,100).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1,2000,1,200,100).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,1000,1,200,100).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,1000,1,200,100).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,1000,1,200,100).setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,1000,1,200,100).setScale(1.5);
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,500,1,190,100).setScale(0.5);
 
             this.physics.add.collider(this.enemies, this.waterLayer);
@@ -571,8 +571,8 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.player.mana -= 2;
-                this.manabar.cutManaBar(2);
+                this.player.mana -= 10;
+                this.manabar.cutManaBar(10);
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
