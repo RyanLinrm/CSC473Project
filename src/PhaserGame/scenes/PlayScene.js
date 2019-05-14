@@ -232,10 +232,10 @@ export class PlayScene extends Phaser.Scene{
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid,this.player.uid,"sword_in_the_stone.svg");
             this.sword_in_the_stone.setScale(0.5);
 
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200,'123','123','sprite0').setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,200,4,180,200,'234','234',"university.png").setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200,'345','345','pyramid.png').setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200,'456','456','magicstones.png').setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,200,4,180,200).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
 
 
             //The enemies are in four different towers.
