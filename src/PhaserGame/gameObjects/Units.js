@@ -27,8 +27,8 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
      * @param {string} uid - The unique id of the unit object.
      */
     
-    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233',selfID='233'){
-        super(scene,x,y,name,type);
+    constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233',selfID='233',frame){
+        super(scene,x,y,name,frame);
         if (this.type=1){
             this.tower=true;
         }

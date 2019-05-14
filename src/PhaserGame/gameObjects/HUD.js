@@ -112,7 +112,7 @@ export class HUD {
             if(player.mana>=100 && player.active){
             //   scene.add.sprite(pointer.worldX, pointer.worldY, unit.texture.key);
                 if(unit.texture.key==='wolf'){              
-                    scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "Wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
+                    scene.newenemy =new Enemy(scene, pointer.worldX, pointer.worldY, "wolf", "wolf_01.png",player,0,200,0.1,5,50,99,200,player.uid);
                     scene.player.mana-=50;
                     this.manabar.cutManaBar(50);
                     if(gamemode === 'multi'){
@@ -123,7 +123,7 @@ export class HUD {
                }
        
                if(unit.texture.key==='ninjabot'){              
-                    scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_1.png",player,1,100,0.8,5,180,60,700,player.uid)
+                    scene.newenemy=new Enemy(scene, pointer.worldX, pointer.worldY, "ninjabot", "ninjabot_01.png",player,1,100,0.8,5,180,60,700,player.uid)
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25)
                     if(gamemode === 'multi'){
@@ -134,7 +134,7 @@ export class HUD {
                }
                
                if(unit.texture.key==='skull'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01.png",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25);
                     if(gamemode === 'multi'){
@@ -144,7 +144,7 @@ export class HUD {
                     }
                }
                if(unit.texture.key==='demon1'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"demon1","demon1_01.png",player,2,200,0.7,2,200,70,500, player.uid).setScale(1.5);
                     scene.player.mana-=50
                     this.manabar.cutManaBar(50);
                     if(gamemode === 'multi'){
@@ -154,7 +154,7 @@ export class HUD {
                     }
                }
                if(unit.texture.key==='wall'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall_01",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"wall","wall.png",player,null,100,0,0,0,0,0,player.uid).setScale(0.5);
                     scene.newenemy.body.immovable=true;
                     scene.newenemy.body.moves=false;
                     scene.player.mana-=20;

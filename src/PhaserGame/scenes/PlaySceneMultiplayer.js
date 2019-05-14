@@ -114,7 +114,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.score = 0;
 
-        this.startingPlayerHealth = 400;
+        this.startingPlayerHealth = 250;
     }
 
     init(data){
@@ -185,10 +185,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         })
         
         if(this.temp == "bomber"){
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,id);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
@@ -222,11 +222,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
         this.physics.add.collider(this.enemies, this.waterLayer);
         this.physics.add.collider(this.enemies, this.CollisionLayer);
-        this.player1.setCollideWorldBounds(true);
+        this.otherPlayers[id].setCollideWorldBounds(true);
         
 
         
-        this.player1.setCollideWorldBounds(true);
+        //this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
             let dataChanged = snapShot.val();
@@ -288,7 +288,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     createBotAt = (towerNumber)=>{
         let playerPos = this.startingPosFromTowerNum(towerNumber);
-        let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_01.png",0,500,64,"bot" + towerNumber);
+        let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_0.png",0,500,64,"bot" + towerNumber);
         bot.becomeBot();
         this.updateSprite(bot);
     }
@@ -296,21 +296,21 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
-            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
+            this.newenemy =new Enemy(this, x, y, "wolf", "wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
         }
 
         else if(type==='ninjabot'){              
-            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,180,0.8,5,180,60,700,playerid)
+            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_01.png",this.player1,1,180,0.8,5,180,60,700,playerid)
         }
         
         else if(type==='skull'){              
-            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
+            this.newenemy=new Enemy(this, x, y, "skull","skull_01.png",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
-            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
+            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01.png",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
         }
         else if(type==='wall'){              
-            this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
+            this.newenemy=new Enemy(this, x, y, "wall","wall.png",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
             this.newenemy.body.immovable=true;
             this.newenemy.body.moves=false;
         }
@@ -344,11 +344,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_0.png",0
                                     ,this.startingPlayerHealth,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_0.png",1
                                     ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
         this.player1.setSize(29, 29);
@@ -356,6 +356,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         //this.player.setVisible(true);
         this.player1.setVisible(true);
         this.player.setVisible(false);
+        this.player1.setCollideWorldBounds(true);
 
 
 

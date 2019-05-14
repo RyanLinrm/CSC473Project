@@ -19,7 +19,7 @@ export default function HomeNavbar(props){
                 </Nav>
                 
                 <Nav  >
-                <Navbar.Brand onClick={startingpage}>React Phaser Game</Navbar.Brand>
+                <Navbar.Brand onClick={startingpage}>Strategy Arena</Navbar.Brand>
                 </Nav>
                
                 <Nav >

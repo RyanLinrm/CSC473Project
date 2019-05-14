@@ -166,10 +166,10 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,this.startingPlayerHealth,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_0.png",0,this.startingPlayerHealth,150,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -229,38 +229,39 @@ export class PlayScene extends Phaser.Scene{
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid,this.player.uid,"sword_in_the_stone.svg");
             this.sword_in_the_stone.setScale(0.5);
 
             this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,200).setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,200,4,180,200).setScale(1.5);
             this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
             this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
 
+
             //The enemies are in four different towers.
-            this.wolf0=new Enemy(this, 1100,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
-            this.wolf1=new Enemy(this, 1050,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
-            this.wolf2=new Enemy(this, 1000,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
-            this.wolf3=new Enemy(this, 950,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            this.wolf0=new Enemy(this, 1100,1200, "wolf", "wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            this.wolf1=new Enemy(this, 1050,1200, "wolf", "wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            this.wolf2=new Enemy(this, 1000,1200, "wolf", "wolf_01.png",this.player,0,200,0.1,5,50,65,200);
+            this.wolf3=new Enemy(this, 950,1200, "wolf", "wolf_01.png",this.player,0,200,0.1,5,50,65,200);
             //this.wolf4=new Enemy(this, 900,1200, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,65,200);
 
             
-            this.ninjabot0=new Enemy(this, 1000,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
-            this.ninjabot1=new Enemy(this, 950,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
-            this.ninjabot2=new Enemy(this, 900,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
-            this.ninjabot3=new Enemy(this, 850,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
+            this.ninjabot0=new Enemy(this, 1000,200, "ninjabot", "ninjabot_01.png",this.player,1,100,0.8,5,180,55,700);
+            this.ninjabot1=new Enemy(this, 950,200, "ninjabot", "ninjabot_01.png",this.player,1,100,0.8,5,180,55,700);
+            this.ninjabot2=new Enemy(this, 900,200, "ninjabot", "ninjabot_01.png",this.player,1,100,0.8,5,180,55,700);
+            this.ninjabot3=new Enemy(this, 850,200, "ninjabot", "ninjabot_01.png",this.player,1,100,0.8,5,180,55,700);
             //this.ninjabot4=new Enemy(this, 800,200, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,55,700);
 
-            this.skull0=new Enemy(this,50,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
-            this.skull1=new Enemy(this,100,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
-            this.skull2=new Enemy(this,150,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
-            this.skull3=new Enemy(this,200,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            this.skull0=new Enemy(this,50,300,"skull","skull_01.png",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            this.skull1=new Enemy(this,100,300,"skull","skull_01.png",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            this.skull2=new Enemy(this,150,300,"skull","skull_01.png",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
+            this.skull3=new Enemy(this,200,300,"skull","skull_01.png",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
             //this.skull4=new Enemy(this,250,300,"skull","skull_01",this.player,3,200,0.8,5,180,45,650).setScale(0.9);
 
-            this.demon0=new Enemy(this,50,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
-            this.demon1=new Enemy(this,100,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
-            this.demon2=new Enemy(this,150,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
-            this.demon3=new Enemy(this,200,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            this.demon0=new Enemy(this,50,1200,"demon1","demon1_01.png",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            this.demon1=new Enemy(this,100,1200,"demon1","demon1_01.png",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            this.demon2=new Enemy(this,150,1200,"demon1","demon1_01.png",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
+            this.demon3=new Enemy(this,200,1200,"demon1","demon1_01.png",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
             //this.demon4=new Enemy(this,250,1200,"demon1","demon1_01",this.player,2,200,0.7,2,200,50,500).setScale(1.5);
 
             this.enemies.add(this.demon0);
@@ -296,10 +297,10 @@ export class PlayScene extends Phaser.Scene{
             */    
             this.createEnemies = (time) =>{
                 if(this.timecycle < time){
-                    this.wolf=new Enemy(this, 1160,1150, "wolf", "Wolf_01.png",this.player,0,200,0.1,5,50,99,200);
-                    this.ninjabot=new Enemy(this, 1220,120, "ninjabot", "ninjabot_1.png",this.player,1,100,0.8,5,180,60,700);
-                    this.skull=new Enemy(this,130,115,"skull","skull_01",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
-                    this.demon=new Enemy(this,85,1150,"demon1","demon1_01",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
+                    this.wolf=new Enemy(this, 1160,1150, "wolf", "wolf_01.png",this.player,0,200,0.1,5,50,99,200);
+                    this.ninjabot=new Enemy(this, 1220,120, "ninjabot", "ninjabot_01.png",this.player,1,100,0.8,5,180,60,700);
+                    this.skull=new Enemy(this,130,115,"skull","skull_01.png",this.player,3,200,0.8,5,180,60,650).setScale(0.9);
+                    this.demon=new Enemy(this,85,1150,"demon1","demon1_01.png",this.player,2,200,0.7,2,200,70,500).setScale(1.5);
                     this.enemies.add(this.wolf);
                     this.enemies.add(this.ninjabot);
                     this.enemies.add(this.skull);
@@ -311,11 +312,11 @@ export class PlayScene extends Phaser.Scene{
             
         }
         if(this.mode === 'multi'){
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,2000,1,200,100).setScale(1.5);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,2000,1,200,100).setScale(1.5);
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,2000,1,200,100).setScale(0.15);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,2000,1,200,100).setScale(1.5);
-            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,500,1,190,100).setScale(0.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,500,1,200,100,'123','123','pyramid.png').setScale(1.5);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,500,1,200,100,'234','234',"university.png").setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,500,1,200,100,'345','345','sprite0').setScale(0.15);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,500,1,200,100,'456','456','magicstones.png').setScale(1.5);
+            this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,300,1,190,100,'567','567',"sword_in_the_stone.svg").setScale(0.5);
 
             this.physics.add.collider(this.enemies, this.waterLayer);
            
@@ -445,10 +446,10 @@ export class PlayScene extends Phaser.Scene{
                 for (let i = 0; i < this.enemylist.length; i++) {
                     if (this.enemylist[i].uid!=this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 150 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
-                            this.wall1=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y+25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall2=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y-25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall3=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y-25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
-                            this.wall4=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y+25,"wall","wall_01",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall1=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y+25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall2=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y-25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall3=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y-25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
+                            this.wall4=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y+25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
                         
                             this.stoplist.push(this.enemylist[i]);
                             this.wallList.push(this.wall1);
