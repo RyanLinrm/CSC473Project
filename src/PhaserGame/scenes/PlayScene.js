@@ -190,7 +190,7 @@ export class PlayScene extends Phaser.Scene{
                 this.towerDestroyed(tower.uid);
             }
             else{
-                console.log(this.towers.getLength());
+               // console.log(this.towers.getLength());
                 if(this.towers.getLength() === 1 && this.GameIsGoing === true){
                     this.wonGame();
                 }

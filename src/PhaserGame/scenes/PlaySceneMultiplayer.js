@@ -118,7 +118,6 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     init(data){
-
     /**
      * The id of the player
      *

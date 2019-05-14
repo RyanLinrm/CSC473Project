@@ -1,13 +1,7 @@
 import Phaser from "phaser";
 
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
-import { Units } from "../gameObjects/Units";
-import { Player } from "../gameObjects/Player";
-import { Bomber } from "../gameObjects/Bomber";
-import { Enemy } from "../gameObjects/Enemy";
-import { Rider } from "../gameObjects/Rider";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+
 export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
   constructor(sceneKey = CST.SCENES.MULTIPLAYERCHARSELECT) {
     super({ key: sceneKey });
@@ -27,6 +21,14 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
       "Mymap",
       `${process.env.PUBLIC_URL}/assets/map/map.json`
     );
+  }
+
+  init(data){
+    console.log(data)
+    this.playerID = data.playerID;
+    this.username = data.username;
+    this.roomkey = data.roomkey;
+    this.seatNumber = data.seatNumber;
   }
 
   create() {
@@ -58,11 +60,23 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     bomberchar.setInteractive();
 
     Riderchar.on("pointerup", () => {
-      this.scene.start(CST.SCENES.WAIT, "rider");
+      this.scene.start(CST.SCENES.WAIT, {
+        playerID : this.playerID,
+        username: this.username,
+        roomkey : this.roomkey,
+        seatNumber: this.seatNumber,
+        playerType: "rider"
+    });
     });
 
     bomberchar.on("pointerup", () => {
-        this.scene.start(CST.SCENES.WAIT, "bomber");
+        this.scene.start(CST.SCENES.WAIT, {
+          playerID : this.playerID,
+          username: this.username,
+          roomkey : this.roomkey,
+          seatNumber: this.seatNumber,
+          playerType: "bomber"
+      });
       });
   }
 }
