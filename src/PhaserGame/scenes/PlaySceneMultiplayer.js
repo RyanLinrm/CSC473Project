@@ -28,7 +28,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * anything inside updates will be updates in the update function and then deleted
      * Updates to the database 60 times a second
      *
-     * @name Player#updates
+     * @name PlaySceneMultiplayer#updates
      * @type object
      */
         this.updates = {};
@@ -37,7 +37,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * Object that contains all the player objects for the players
      * key is the ID of the player and the value is the actual player sprite in phaser
      * 
-     * @name Player#otherPlayers
+     * @name PlaySceneMultiplayer#otherPlayers
      * @type object
      */
         this.otherPlayers = {};
@@ -45,7 +45,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * Scene type. 
      * 
-     * @name Player#sceneType
+     * @name PlaySceneMultiplayer#sceneType
      * @type string
      */
         this.sceneType = "Multiplayer";
@@ -53,7 +53,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * varible which tells if the current user is the creator of the multiplayer game.
      * 
-     * @name Player#isCreator
+     * @name PlaySceneMultiplayer#isCreator
      * @type boolean
      */
         this.isCreator = false;
@@ -61,7 +61,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * if the game is currently going for the actual player
      * 
-     * @name Player#GameIsGoing
+     * @name PlaySceneMultiplayer#GameIsGoing
      * @type boolean
      */
         this.GameIsGoing = false; 
@@ -69,7 +69,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * the seatnumber which corresponds to the position in the game and id associated with the leaderboard
      * 
-     * @name Player#seatNumber
+     * @name PlaySceneMultiplayer#seatNumber
      * @type number
      */
         this.seatNumber = -1;
@@ -77,7 +77,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     /**
      * the number of bots this current user should create in their game
      * 
-     * @name Player#bots
+     * @name PlaySceneMultiplayer#bots
      * @type number
      */
         this.bots = 0;
@@ -87,18 +87,37 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * any database listener created should also have the path added to this array
      * when the game ends all the listeners in the array are turned off
      * 
-     * @name Player#databaseListners
+     * @name PlaySceneMultiplayer#databaseListners
      * @type array
      */
         this.databaseListners = [];
         //Checking who is the HostID   
 
+    /**
+     * The object that contains all the enemies summons by other players
+     * @name PlaySceneMultiplayer#otherenemies
+     * @type Object
+     */
         this.otherenemies = {};
+    
+    /**
+     * The object that contains all the enemies summons by youself
+     * @name PlaySceneMultiplayer#mybuddies
+     * @type Object
+     */
         this.mybuddies = {};
+    
+    /**
+     * the score in number of the player
+     * @name PlaySceneMultiplayer#score
+     * @type Number
+     */
+        this.score = 0;
+
+        this.startingPlayerHealth = 200;
     }
 
     init(data){
-
     /**
      * The id of the player
      *
@@ -108,10 +127,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.playerID = data.playerID;
 
     /**
-     * The id of the player
+     * The id of the game room
      *
      * @name Player#gameRoom
-     * @type number
+     * @type String
      */
         this.gameRoom = data.roomkey;
 
@@ -127,7 +146,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * The spritekey of the player
      *
      * @name Player#spritekey
-     * @type number
+     * @type String
      */
         this.spritekey = data.chartype;
 
@@ -146,48 +165,68 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @type number
      */
         this.players = data.numOfPlayers;
+
+
+    /**
+     * The current player that is drawn onto the scene
+     *
+     * @name Player#currentplayerCount
+     * @type number
+     */
+        this.currentplayerCount = 1;
    
     }
 
 
     createPlayer = (id,position,velocity) =>{
-      
         console.log("CreatingPlayer");
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
             this.temp = snapShot.val();
         })
-        console.log(this.temp);
+        
         if(this.temp == "bomber"){
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,500,64,id);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,500,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
         }
+        this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
         if(position.x === 300 && position.y === 300){
             this.pyramid.assignID(id);
-         
+            this.otherPlayers[id].towerPosition = 1;
         }
         else if(position.x === 1000 && position.y === 300){
             this.university.assignID(id);
+            this.otherPlayers[id].towerPosition = 2;
    
         }
         else if(position.x === 300 && position.y === 1000){
             this.magicstone.assignID(id);
+            this.otherPlayers[id].towerPosition = 3;
 
         }
-        else this.building.assignID(id);
+        else {
+            this.building.assignID(id);
+            this.otherPlayers[id].towerPosition = 4;
+        };
          
  
         this.enemyPlayers.add(this.otherPlayers[id]);
+   
         //this.otherPlayers[id].immovable=true;
         //assign collider to this new player
         this.physics.add.overlap(this.damageItems, this.otherPlayers[id],this.bothCollisions);
         this.physics.add.collider(this.otherPlayers[id], this.CollisionLayer);
         this.physics.add.collider(this.otherPlayers[id], this.waterLayer);
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
+        this.physics.add.collider(this.enemies, this.waterLayer);
+        this.physics.add.collider(this.enemies, this.CollisionLayer);
         this.player1.setCollideWorldBounds(true);
+        
 
+        
+        this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
             let dataChanged = snapShot.val();
@@ -225,21 +264,17 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
-        /*
-        let playerStatus = `Games/${this.gameRoom}/Players/${id}/status`;
-        firebase.database().ref(playerStatus).on('child_changed', (snapShot) =>{
-            let newStatus = snapShot.val();
-            let type = snapShot.key;
-
-            if(type === 'hp'){
-                if(newStatus <= 0){
-                    this.otherPlayers[id].kill();
-                }
-            }
+        let playerHealthPath = `Games/${this.gameRoom}/Players/${id}/health`;
+        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
+            let health = snapShot.val();
+            let player = this.otherPlayers[id];
+            player.setHealth(health);
+            //console.log(this);
+            this.hUD.setPlayerHealth(player.towerPosition,health);
             
-        })*/
+        });
 
-        this.databaseListners.push(movementDataDB,attackDB,inGameDB);
+        this.databaseListners.push(movementDataDB,attackDB,inGameDB,playerHealthPath);
     }
 
     removePlayer = (id)=>{
@@ -261,18 +296,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
-            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,200,0.1,5,50,99,200,playerid);
+            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
         }
 
         else if(type==='ninjabot'){              
-            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,100,0.8,5,180,60,700,playerid)
+            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,180,0.8,5,180,60,700,playerid)
         }
         
         else if(type==='skull'){              
             this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
-            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,200,0.7,2,200,70,600, playerid).setScale(1.5);
+            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
         }
         else if(type==='wall'){              
             this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
@@ -294,8 +329,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     create() {
         //this.spritekey = "bomber";
         super.create(this.playerID, 'multi');
-   
-      
+        this.pyramid.assignSelfID(1,this.gameRoom);
+        this.university.assignSelfID(2,this.gameRoom);
+        this.magicstone.assignSelfID(3,this.gameRoom);
+        this.building.assignSelfID(4,this.gameRoom);
+        this.sword_in_the_stone.assignSelfID(5,this.gameRoom);
+        this.useUltimate=false;
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
@@ -303,17 +342,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,500,64,this.playerID);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0
+                                    ,this.startingPlayerHealth,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,500,200,this.playerID).setScale(0.6);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1
+                                    ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
         this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
         this.player1.setVisible(true);
         this.player.setVisible(false);
-
 
 
 
@@ -330,8 +370,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
        countDownText.setOrigin(0.5,0.5); 
 
        this.cameras.main.startFollow(this.player1);
-       this.player.kill();
-       this.hUD = new HUD(this, this.player1, this.playerID, this.mode, this.gameRoom);
+       this.player.destroy();
+       this.hUD = new HUD(this, this.player1, this.playerID, "multi", this.gameRoom);
        this.manabar=this.hUD.manabar;
        //this.player1.immovable=true;
         this.physics.add.collider(this.player1, this.CollisionLayer);
@@ -387,6 +427,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         });
         
         let playerIDDB = `Games/${this.gameRoom}/Players/${this.playerID}`;
+        //SETTING the player datatype
         database.ref(playerIDDB).set({
             movementData: {
                 pos: this.startingPosFromTowerNum(this.seatNumber),
@@ -397,18 +438,24 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 pos: this.startingPosFromTowerNum(this.seatNumber),
                 velocity: {x: 0, y:0}
             },
+            health: this.startingPlayerHealth,
             inGame: true,     
-            playerType: this.spritekey,
-            status:{
-                hp: this.player1.healthPoints,
-                mana: this.player1.mana
-            }
+            playerType: this.spritekey
         });
-        
+
         let seatNumberDB = `Games/${this.gameRoom}/Towers/${this.seatNumber}`;
         database.ref(seatNumberDB).set({ //CreateTowerInDatabase
             HP: 100,
-            owner: this.playerID  
+            alive: true,
+            owner: this.playerID ,
+            killerid: ''
+        });
+
+        let sword_in_stoneDB =`Games/${this.gameRoom}/Towers/5`;
+        database.ref(sword_in_stoneDB).set({
+            HP:100,
+            alive: true,
+            killerid: ''
         });
         
         let playerDB = `Games/${this.gameRoom}/Players`;
@@ -442,7 +489,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         });
 
+        let playerHealthPath = `Games/${this.gameRoom}/Players/${this.playerID}/health`;
+        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
+            let health = snapShot.val();
+            this.hUD.setPlayerHealth(this.seatNumber,health);
+            
+        });
 
+        /*let ScoreDB = `Games/${this.gameRoom}/playerScore`;
+        firebase.database().ref(ScoreDB).child(this.playerID).set({
+            score: 0,
+            killid: ''
+        })*/
 
 
         firebase.database().ref(playerDB).on("child_removed", (snapShot) => {
@@ -466,12 +524,16 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
         })
 
-        //check if the enemy dies, if so async to all players
+        //check if the enemy dies, if so async to all players and meanwhile getting score
         let enemyDB = `Games/${this.gameRoom}/enemies`;
         firebase.database().ref(enemyDB).on('child_changed', snapShot=>{
             let enemyinfo = snapShot.val();
             let enemyid = snapShot.key;
-            console.log(enemyid);
+            
+            if( enemyinfo.killerid === this.playerID ){
+                this.score += 50;
+                this.hUD.setScore(this.score);
+            }
 
             if(!enemyinfo.alive){
                 if(this.mybuddies[enemyid]){
@@ -482,16 +544,56 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 }
             }
             
-            //firebase.database().ref(enemyDB).child(enemyid).remove();
+            firebase.database().ref(enemyDB).child(enemyid).remove();
+            
+        });
+        let towerDB = `Games/${this.gameRoom}/Towers`;
+        firebase.database().ref(towerDB).on('child_changed', snapShot=>{
+            let towerinfo = snapShot.val();
+            let towerid = snapShot.key;
+    
+            
+            if( towerinfo.killerid === this.playerID){
+                this.score += 1000;
+            
+            }
+           
+            if(towerid==='5' && towerinfo.killerid === this.playerID){
+                this.score+=500;
+                this.useUltimate=true;
+            }
+            
+
+        
+            
+            
             
         })
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB);
+        //getting score by killing ohter players
+        /*firebase.database().ref(ScoreDB).on('child_changed', snapShot=>{
+            let playerdata = snapShot.val();
+            if(playerdata.killid === this.playerID){
+                this.score += 100;
+            }
+        })*/
+
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,sword_in_stoneDB,playerDB,movementDataDB,
+            timeDB,dragdataDB,enemyDB,playerHealthPath,towerDB);
 
     }
 
-    update(time){
+    update(time,delta){
+      //  console.log(this.player1.mana)
         this.hUD.update(time,this.player1,this);
+        if(this.useUltimate===true){
+            this.add.text(500, 615, "You have won the ultimate ability!", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+            this.add.text(500, 645, "Press E to destroy nearby enemies.", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+
+        }
+        if(this.player1.mana<=1000){
+            this.player1.mana+=delta/1000;
+            this.manabar.regenManaBar((delta/1000)*2);}
         this.changeEnemyColor(this.player1,time);
         let inputVelocity = {x:0,y:0}; //Velocity based on player input
         let speed = 64;
@@ -543,9 +645,20 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/movementData/pos`] = { x: Math.round(this.player1.x), y: Math.round(this.player1.y) };
 
             }
+        
+        if(this.useUltimate===true){
+        if (Phaser.Input.Keyboard.JustDown(this.Ebar) && this.cooldowntime< time)
+        {  
+            this.Ultimate(time);
+        
+        }
+        if(this.destroytime < time){
+            this.demonskill.destroy();
+        }
 
 
         }
+    }
 
 
 
@@ -563,17 +676,47 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let countDownText = this.add.text(this.player1.x, this.player1.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
         countDownText.setOrigin(0.5, 0.5);
     }
-
+    Ultimate = (time) =>{
+        //player ability to destory enemies near the range
+            this.manabar.cutManaBar(200);
+            this.player1.mana-=200;
+            this.demonskill=this.add.sprite(this.player1.x, this.player1.y, 'a2_01').setScale(1.8)
+            this.demonskill.play('ab2');
+            this.enemylist=[];
+            this.destroytime = time + 1000;
+            this.cooldowntime = time + 10000;
+            this.enemies.getChildren().map(child => this.enemylist.push(child));  
+            for (let i = 0; i < this.enemylist.length; i++) {
+                if (this.enemylist[i].uid!=this.player1.uid){
+                    if (Math.abs(this.enemylist[i].x - this.player1.x) < 200 && Math.abs(this.enemylist[i].y - this.player1.y) < 200){ 
+                    this.enemylist[i].kill(true,this.playerUid);       
+                    }
+                }
+            }
+    }
 
 
     towerDestroyed = (TowerID)=>{
         this.GameIsGoing = false;
         this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
-        this.scene.start(CST.SCENES.GAMEOVER);
+        this.scene.start(CST.SCENES.GAMEOVER, {
+            playerID : this.playerID,
+            roomkey : this.gameRoom,
+            chartype: this.spritekey,
+            score: this.score
+        });
         this.databaseListners.forEach((path)=>{
             console.log(path);
             firebase.database().ref(path).off();
         });
     }
+
+    setHealthInDB = (health)=>{
+        this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/health`] = health;
+    }
+
+    /*handlePlayerKill( playerid, killerid ){
+        this.updates[`Games/${this.gameRoom}/playerScore/${playerid}/killid`] = killerid;
+    }*/
 }

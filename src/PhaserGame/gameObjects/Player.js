@@ -1,5 +1,6 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
+import * as firebase from 'firebase';
 
 /**
  * Player Class. The actual player sprite that gets added the the scene which is controlled by the user or bot or player data from the database
@@ -25,6 +26,15 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
+
+        /**
+         * The spawnPosition of the player
+         * This is where the player will respawn 
+         * 
+         * @name Player#spawnPosition
+         * @type object
+         */
+        this.spawnPosition = {'x':x,'y':y};
 
         /**
          * The specific character type of the player
@@ -91,6 +101,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          */
         this.movementSpeed=movementSpeed;
 
+        /**
+         * tells if the player is a user
+         * @name Player#user
+         * @type boolean
+         */
+        this.user = true;
 
         /**
          * value to check if player is a bot and not an actual human
@@ -117,6 +133,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
          * @type string
          */
         this.mode = scene.mode;
+
+        this.scene = scene;
       
     }
 
@@ -216,11 +234,66 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
     }
 
     /**
-     * Removes a player so we can handle other things related to the death such as removing the wepopn    
+     * Sets the players active and visible property to false. Effectively removing them from the game.
+     * If the scene is a multiplayer scene the player respawns after 5 seconds 
+     * Handles the respawing of the player in the multiplayer scene
      */
-    kill(){
-        console.log(this);
-        this.destroy();
+    kill(attackeruid){
+
+      this.setActive(false);
+      this.setVisible(false);
+
+      if(this.scene.mode === 'multi'){
+          this.scene.handlePlayerKill( this.uid, attackeruid );
+          this.handleRespawn();
+      }
+
+    }
+
+    /**
+     * Handles the respawing of the player
+     * Tints the scene and creates a countdown time for the respawn
+     * runs the respawn function 
+     */
+    handleRespawn(){
+        if (this.user && this.scene.GameIsGoing) {
+            var countDownText = this.scene.add.text(this.scene.game.renderer.width / 2, this.scene.game.renderer.height / 2, `Respawning in: 5`, { fontFamily: 'Arial', fontSize: 50, color: '#ffffff' });
+            countDownText.setScrollFactor(0);
+            countDownText.setOrigin(0.5, 0.5);
+
+
+            var tintOverlay = this.scene.add.rectangle(this.scene.game.renderer.width / 2, this.scene.game.renderer.height / 2,
+                this.scene.game.renderer.width, this.scene.game.renderer.height, 0x000000);
+
+            tintOverlay.setScrollFactor(0);
+            tintOverlay.alpha = 0.5;
+            tintOverlay.setDepth(4);
+        }
+
+        let time = 6;
+
+        let updateCountDown = () => {
+
+            if (time === 0) {
+                this.respawn();
+              
+                if (tintOverlay !== undefined && countDownText !== undefined) {
+                    tintOverlay.destroy();
+                    countDownText.destroy();
+                }
+            }
+            else {
+                time--;
+
+                if(countDownText !== undefined){
+                  countDownText.setText(`Respawning in: ${time}`);
+                }
+                
+                setTimeout(updateCountDown, 1000);
+            }
+
+        }
+        updateCountDown();
     }
 
     /**
@@ -229,24 +302,45 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * 
      * @param {number} damage - the amount of damage the player should take
      */
-    takeDamage(damage){
-        if(this.canbeAttacked===true){
-        this.healthPoints = this.healthPoints - damage;
-        
-       }
+    takeDamage(damage, attackeruid){
 
+        if (this.canbeAttacked === true) {
+            this.healthPoints = this.healthPoints - damage;
+        }
+
+        if (this.scene.mode === 'multi') {
+            this.scene.setHealthInDB(this.healthPoints);
+        }
+
+        if (this.healthPoints <= 0) {
+            this.kill(attackeruid);
+        }
+
+
+    }
+
+    /**
+     * function to set the the health of the player
+     */
+    setHealth(health){
+        
+        this.healthPoints = health;
+            
         if( this.healthPoints <= 0 ){
             this.kill();
         }
-
     }
 
     /**
      * collision function that is called when a collision occurs to the player. 
      * calls the takeDamage function and prevents the beingAttacked
      */
-    collision(){
-        this.takeDamage(5);
+    collision(attackeruid){
+
+        if(this.user){
+            this.takeDamage(5, attackeruid);
+        }
+        
         this.beingAttacked=true;
         this.canbeAttacked=false;
     }
@@ -342,6 +436,24 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         this.player_movement();
     }
 
+    respawn = ()=>{
+        this.x = this.spawnPosition.x;
+        this.y = this.spawnPosition.y;
+        this.nonZeroVelocity = {x:0,y:1};
+        this.beingAttacked=false;
+        this.canbeAttacked=true;
+        this.healthPoints = this.scene.startingPlayerHealth;
+
+        if(this.user){
+            this.scene.hUD.hpbar.resetBar();
+        }
+        if (this.scene.mode === 'multi'&& this.scene.GameIsGoing) {
+            this.scene.setHealthInDB(this.scene.startingPlayerHealth);
+        }
+
+        this.setActive(true);
+        this.setVisible(true);
+    }
 
     botUpdate(scene,time){
         let towers = scene.towers;

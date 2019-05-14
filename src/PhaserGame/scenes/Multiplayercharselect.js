@@ -1,13 +1,7 @@
 import Phaser from "phaser";
 
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
-import { Units } from "../gameObjects/Units";
-import { Player } from "../gameObjects/Player";
-import { Bomber } from "../gameObjects/Bomber";
-import { Enemy } from "../gameObjects/Enemy";
-import { Rider } from "../gameObjects/Rider";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+
 export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
   constructor(sceneKey = CST.SCENES.MULTIPLAYERCHARSELECT) {
     super({ key: sceneKey });
@@ -29,6 +23,14 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     );
   }
 
+  init(data){
+    console.log(data)
+    this.playerID = data.playerID;
+    this.username = data.username;
+    this.roomkey = data.roomkey;
+    this.seatNumber = data.seatNumber;
+  }
+
   create() {
     let a = this.add
       .image(0, 0, "key1")
@@ -38,8 +40,7 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     a.x = window.innerWidth / 2;
     a.y = window.innerHeight / 2;
 
-    this.add.text(this.game.renderer.width / 2 - 85, 90, "choose your warrior");
-
+    this.add.text(this.game.renderer.width / 2 - 605, 90, "Choose Your Warrior", { fontSize: 100, color: '#ffffff' });
     let Riderchar = this.add
       .image(
         this.game.renderer.width / 2 - 90,
@@ -59,11 +60,23 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     bomberchar.setInteractive();
 
     Riderchar.on("pointerup", () => {
-      this.scene.start(CST.SCENES.WAIT, "rider");
+      this.scene.start(CST.SCENES.WAIT, {
+        playerID : this.playerID,
+        username: this.username,
+        roomkey : this.roomkey,
+        seatNumber: this.seatNumber,
+        playerType: "rider"
+    });
     });
 
     bomberchar.on("pointerup", () => {
-        this.scene.start(CST.SCENES.WAIT, "bomber");
+        this.scene.start(CST.SCENES.WAIT, {
+          playerID : this.playerID,
+          username: this.username,
+          roomkey : this.roomkey,
+          seatNumber: this.seatNumber,
+          playerType: "bomber"
+      });
       });
   }
 }

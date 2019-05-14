@@ -117,3 +117,23 @@ test('Testing if the regenManaBar method in ManaBar class works', ()=>{
     manabar.regenManaBar(regenamount);
     expect(manabar.currentMana).toBe(correctMana);
 });
+
+test('Testing if the resetBar function in the statusbar works', ()=>{
+    let width = 1023;
+    let height = 2048;
+
+    hpbar.setCrop = jest.fn();
+    hpbar.width = width;
+    hpbar.height = height;
+    hpbar.resetBar();
+
+    expect(hpbar.currentHP).toBe(value);
+    expect(hpbar.cutWith).toBe(1023);
+
+    expect(hpbar.setCrop).toBeCalledTimes(1);
+    expect(hpbar.setCrop.mock.calls[0][0]).toBe(0);
+    expect(hpbar.setCrop.mock.calls[0][1]).toBe(0);
+    expect(hpbar.setCrop.mock.calls[0][2]).toBe(width);
+    expect(hpbar.setCrop.mock.calls[0][3]).toBe(height);
+
+});

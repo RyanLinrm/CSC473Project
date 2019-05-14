@@ -15,7 +15,7 @@ export default function HomeNavbar(props){
             <Container className ="d-flex justify-content-around">
 
                 <Nav >
-                    <Nav.Link onClick={props.leaderBoardOnClick}>Leaderboard</Nav.Link>
+                    <Nav.Link className="leaderboard" onClick={props.leaderBoardOnClick}>Leaderboard</Nav.Link>
                 </Nav>
                 
                 <Nav  >
@@ -23,7 +23,7 @@ export default function HomeNavbar(props){
                 </Nav>
                
                 <Nav >
-                    <Nav.Link onClick={props.signInOnClick}>{signInText}</Nav.Link>
+                    <Nav.Link className="signin" onClick={props.signInOnClick}>{signInText}</Nav.Link>
                 </Nav>
                
             </Container>
