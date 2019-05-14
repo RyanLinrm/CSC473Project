@@ -22,7 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * @param {string} uid - unique id of each player object
      */
     constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid='233'){
-        super(scene,x,y,key,textureName,movementSpeed);
+        super(scene,x,y,key,textureName);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
