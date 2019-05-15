@@ -17,7 +17,7 @@ export default class Leaderboard extends Component{
     }
 
     async getUserinfo() {
-        await API.graphql(graphqlOperation(queries.listGameUsers, {filter:{ bestTime: { ne: 0 } } }))
+        await API.graphql(graphqlOperation(queries.listGameUsers, {filter:{ bestScore: { ne: 0 } } }))
         .then( (data)=>{
             if(data.data.listGameUsers.items.length === 0){
                 console.log('no user!')

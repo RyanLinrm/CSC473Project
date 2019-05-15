@@ -58,6 +58,19 @@ export class LoadScene2 extends Phaser.Scene{
     this.load.image("playermanabar",`${process.env.PUBLIC_URL}/assets/statusbar/manabar.png`);
     this.load.image("enemyhpbar",`${process.env.PUBLIC_URL}/assets/statusbar/hpbar2.png`);
 
+    this.load.image(
+      "tiles1",
+      `${process.env.PUBLIC_URL}/assets/tiles/map_atlas.png`
+    );
+    this.load.image(
+      "tiles2",
+      `${process.env.PUBLIC_URL}/assets/tiles/map_atlas2.png`
+    );
+
+    this.load.tilemapTiledJSON(
+      "Mymap",
+      `${process.env.PUBLIC_URL}/assets/map/map.json`
+    );
     //add loading bar
     let loadingBar = this.add.graphics({
         fillStyle: {
@@ -72,6 +85,10 @@ export class LoadScene2 extends Phaser.Scene{
         loadingBar.fillRect(0, this.game.renderer.height / 2, 
                             this.game.renderer.width * percent, 50);
         
+    })
+
+    this.load.on('complete', ()=>{
+        console.log('end');
     })
    
     }

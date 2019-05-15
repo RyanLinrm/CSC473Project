@@ -142,7 +142,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.setupMovement(scene,this.target);
         this.setVisible = false;
         this.body.immvoable = true;
-
+        this.setCollideWorldBounds(true);
         
 
     }
@@ -262,12 +262,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         let shortestDistance=1000000000;
         this.findneartower = () =>{
             
-            if(this.mode === 'single' &amp;&amp; this.sword_in_the_stone.uid!=enemy.uid){
-                if(this.sword_in_the_stone.active)
-                this.changetarget(this.sword_in_the_stone);
-                else this.changetarget(this.scene.player);}
-
-            for (var i = 0; i &lt; 4; i++) {
+  
+            //this.scene.enemies.getChildren().map(child => this.towers.push(child));  
+          //  this.towers.push(this.scene.player)
+            for (var i = 0; i &lt; this.towers.length; i++) {
                 if(this.towers[i].active &amp;&amp; this.towers[i].uid!=enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
                      if (towerdistance&lt;shortestDistance){
@@ -299,45 +297,50 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         else this.findneartower();
         
         if(this.mode === 'single'){
+            this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) &lt; this.attackRange &amp;&amp; Math.abs(target.y - enemy.y) &lt; this.attackRange){
                 this.movementSpeed=this.movementSpeed+1;}
 
-            if(this.movementSpeed>=player.movementSpeed+10){
-                this.movementSpeed=65;         
-         }
-            if(Math.abs(this.scene.player.x - enemy.x) &lt; this.attackRange+40 &amp;&amp; Math.abs(this.scene.player.y - enemy.y) &lt; this.attackRange+40){
-                if(this.scene.player.active &amp;&amp; this.scene.player.uid!=enemy.uid){
-                this.changetarget(this.scene.player);
-        }
-        else{
-            this.findneartower();}
-        }
-    } 
-}
-        
-    
+            if(this.movementSpeed>=player.movementSpeed-10){
+                this.movementSpeed=65;}
+            if(Math.abs(player.x - enemy.x) &lt; this.attackRange+20 &amp;&amp; Math.abs(player.y - enemy.y) &lt; this.attackRange+20){
+                if(player.active&amp;&amp;player.uid!=enemy.uid)
+                this.changetarget(player);}
+                else{     
+                    this.findneartower();}}}
+           
     /**
-     * Function to remove the enemy so we can handle other things related to the death such as stop the attack    
+     * Function to remove the enemy so we can handle other things related to the death such as stop the attack 
+     * also when in the multiplayer mode it will detect which player kills this enemy
+     * @param {Boolean} firstDeath - determine if this is the first time the method get called so we don't duplicate the database action
+     * @param {String} attackeruid - the uid of the player who attacks the enemy
+     *    
      */
-    kill(firstDeath=true){
+    kill(firstDeath=true, attackeruid){
         if(this.gameroom !== '' &amp;&amp; firstDeath){
-            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
-                alive: false
+            firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).transaction( snapShot =>{
+                firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                    alive: false,
+                    killerid: attackeruid
+                })
             })
+            /*firebase.database().ref(`Games/${this.gameroom}/enemies/${this.selfID}`).update({
+                alive: false
+            })*/
         };
         this.destroy();     
-
         
-    }
+    } 
 
     /**
      * Function to damage the enemy by the the given number supplied to the funciton
      * If the ending healthpoints is less than 0 it calls the kill function
      * 
      * @param {number} damage - the amount of damage the enemy should take
+     * @param {String} attackeruid - the uid of the player who attacks this enemy
      */
-    takeDamage(damage){
+    takeDamage(damage, attackeruid){
         this.healthPoints = this.healthPoints - damage;
        
         if( this.healthPoints &lt;= 0 ){
@@ -358,7 +361,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.scene.hpbar.regenHPBar(10);
                 this.kill();}}*/
                 else{
-                    this.kill();
+                    this.kill(true, attackeruid);
                 }
         }
     }
@@ -366,9 +369,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
     /**
      * collision function that is called when a collision occurs to the enemy. 
      * calls the takeDamage function and change being attacked status to true
+     * 
+     * @param {String} attackeruid - the uid of the player who attacks this enemy
      */
-    collision(){
-        this.takeDamage(20);
+    collision( attackeruid ){
+        this.takeDamage(20,attackeruid);
         this.beingAttacked=true;
   
     }
@@ -402,7 +407,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         //movement for wolf
         if(this.enemyID===0){
             this.bulletTexture="shoot5";
-            if(this.healthPoints>=100){
+            if(this.healthPoints>=110){
                 if(this.body.velocity.x > 0 &amp;&amp; this.body.velocity.y > 0){
                     this.play('wolf_down',true);
                 }else if(this.body.velocity.x > 0 &amp;&amp; this.body.velocity.y &lt; 0){
@@ -465,7 +470,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.play('demon1_up',true);
           
             }
-            if(this.healthPoints&lt;100){
+            if(this.healthPoints&lt;120){
                 this.movementSpeed=120;
                 this.setScale(2);
                 this.bulletscale=0.8;
@@ -568,13 +573,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 09 2019 10:37:54 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

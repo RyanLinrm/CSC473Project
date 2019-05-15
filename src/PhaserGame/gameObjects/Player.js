@@ -1,5 +1,6 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
+import * as firebase from 'firebase';
 
 /**
  * Player Class. The actual player sprite that gets added the the scene which is controlled by the user or bot or player data from the database
@@ -21,7 +22,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * @param {string} uid - unique id of each player object
      */
     constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid='233'){
-        super(scene,x,y,key,textureName,movementSpeed);
+        super(scene,x,y,key,textureName);
         //adds to the scenes update and display list
         scene.sys.updateList.add(this);
         scene.sys.displayList.add(this);
@@ -237,12 +238,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * If the scene is a multiplayer scene the player respawns after 5 seconds 
      * Handles the respawing of the player in the multiplayer scene
      */
-    kill(){
+    kill(attackeruid){
 
       this.setActive(false);
       this.setVisible(false);
 
       if(this.scene.mode === 'multi'){
+          //this.scene.handlePlayerKill( this.uid, attackeruid );
           this.handleRespawn();
       }
 
@@ -300,7 +302,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * 
      * @param {number} damage - the amount of damage the player should take
      */
-    takeDamage(damage){
+    takeDamage(damage, attackeruid){
 
         if (this.canbeAttacked === true) {
             this.healthPoints = this.healthPoints - damage;
@@ -311,7 +313,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
         }
 
         if (this.healthPoints <= 0) {
-            this.kill();
+            this.kill(attackeruid);
         }
 
 
@@ -333,10 +335,10 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * collision function that is called when a collision occurs to the player. 
      * calls the takeDamage function and prevents the beingAttacked
      */
-    collision(){
+    collision(attackeruid){
 
         if(this.user){
-            this.takeDamage(5);
+            this.takeDamage(5, attackeruid);
         }
         
         this.beingAttacked=true;

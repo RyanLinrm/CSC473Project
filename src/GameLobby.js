@@ -18,11 +18,7 @@ export default class GameLobby extends Component{
 
         let name = props.username;
         let uid = props.uid;
-
-        if(name === null || uid === null){
-            uid = generate(10);
-            name = uid;
-        }
+        
         this.state = {
             gamerooms: {},
             noroom: true,
@@ -57,7 +53,7 @@ export default class GameLobby extends Component{
                 let keys = Object.keys(gamerooms);
                 let rooms = {};
                 for( let i = 0; i < keys.length; i++ ){
-                    if(!gamerooms[keys[i]].start){
+                    if(!gamerooms[keys[i]].start && gamerooms[keys[i]].seat ){
                         rooms[keys[i]] = gamerooms[keys[i]]
                     }
                 }

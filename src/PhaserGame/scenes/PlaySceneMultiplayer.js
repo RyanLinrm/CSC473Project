@@ -114,7 +114,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.score = 0;
 
-        this.startingPlayerHealth =250;
+        this.startingPlayerHealth = 250;
     }
 
     init(data){
@@ -130,7 +130,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * The id of the game room
      *
      * @name Player#gameRoom
-     * @type number
+     * @type String
      */
         this.gameRoom = data.roomkey;
 
@@ -185,10 +185,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         })
         
         if(this.temp == "bomber"){
-        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,id);
+        this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
         }
         else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
@@ -222,11 +222,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.physics.add.collider(this.otherPlayers[id], this.enemies);
         this.physics.add.collider(this.enemies, this.waterLayer);
         this.physics.add.collider(this.enemies, this.CollisionLayer);
-        this.player1.setCollideWorldBounds(true);
+        this.otherPlayers[id].setCollideWorldBounds(true);
         
 
         
-        this.player1.setCollideWorldBounds(true);
+        //this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
         firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
             let dataChanged = snapShot.val();
@@ -269,7 +269,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             let health = snapShot.val();
             let player = this.otherPlayers[id];
             player.setHealth(health);
-            console.log(this);
+            //console.log(this);
             this.hUD.setPlayerHealth(player.towerPosition,health);
             
         });
@@ -288,7 +288,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     createBotAt = (towerNumber)=>{
         let playerPos = this.startingPosFromTowerNum(towerNumber);
-        let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_01.png",0,500,64,"bot" + towerNumber);
+        let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_0.png",0,500,64,"bot" + towerNumber);
         bot.becomeBot();
         this.updateSprite(bot);
     }
@@ -296,21 +296,21 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
-            this.newenemy =new Enemy(this, x, y, "wolf", "Wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
+            this.newenemy =new Enemy(this, x, y, "wolf", "wolf_01.png",this.player1,0,220,0.1,5,50,99,200,playerid);
         }
 
         else if(type==='ninjabot'){              
-            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_1.png",this.player1,1,180,0.8,5,180,60,700,playerid)
+            this.newenemy=new Enemy(this, x, y, "ninjabot", "ninjabot_01.png",this.player1,1,180,0.8,5,180,60,700,playerid)
         }
         
         else if(type==='skull'){              
-            this.newenemy=new Enemy(this, x, y, "skull","skull_01",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
+            this.newenemy=new Enemy(this, x, y, "skull","skull_01.png",this.player1,3,200,0.8,5,180,60,650,playerid).setScale(0.9);
         }
         else if(type==='demon1'){              
-            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
+            this.newenemy=new Enemy(this, x, y, "demon1","demon1_01.png",this.player1,2,300,0.7,2,200,70,600, playerid).setScale(1.5);
         }
         else if(type==='wall'){              
-            this.newenemy=new Enemy(this, x, y, "wall","wall_01",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
+            this.newenemy=new Enemy(this, x, y, "wall","wall.png",this.player1,null,100,0,0,0,0,0,playerid).setScale(0.5);
             this.newenemy.body.immovable=true;
             this.newenemy.body.moves=false;
         }
@@ -335,6 +335,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.building.assignSelfID(4,this.gameRoom);
         this.sword_in_the_stone.assignSelfID(5,this.gameRoom);
         this.useUltimate=false;
+        this.showUltText=false;
+        //this.showUltTexttime=0;
         
         this.lastVelocity = {x:0, y:0}; //Save last velocity to keep track of what we sent to the database
         let database = firebase.database();
@@ -342,16 +344,19 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
         if(this.spritekey == "bomber"){
-        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_01.png",0,this.startingPlayerHealth,64,this.playerID);
+        this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_0.png",0
+                                    ,this.startingPlayerHealth,64,this.playerID);
         }
         else if(this.spritekey == "rider"){
-        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_01.png",1,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
+        this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_0.png",1
+                                    ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
         this.player1.setSize(29, 29);
         //this.player1.setVisible(false);
         //this.player.setVisible(true);
         this.player1.setVisible(true);
         this.player.setVisible(false);
+        this.player1.setCollideWorldBounds(true);
 
 
 
@@ -494,6 +499,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
         });
 
+        /*let ScoreDB = `Games/${this.gameRoom}/playerScore`;
+        firebase.database().ref(ScoreDB).child(this.playerID).set({
+            score: 0,
+            killid: ''
+        })*/
+
 
         firebase.database().ref(playerDB).on("child_removed", (snapShot) => {
             this.removePlayer(snapShot.key);
@@ -524,7 +535,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
             if( enemyinfo.killerid === this.playerID ){
                 this.score += 50;
-                console.log(this.score);
+                this.hUD.setScore(this.score);
             }
 
             if(!enemyinfo.alive){
@@ -536,7 +547,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
                 }
             }
             
-            //firebase.database().ref(enemyDB).child(enemyid).remove();
+            firebase.database().ref(enemyDB).child(enemyid).remove();
             
         });
         let towerDB = `Games/${this.gameRoom}/Towers`;
@@ -553,6 +564,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             if(towerid==='5' && towerinfo.killerid === this.playerID){
                 this.score+=500;
                 this.useUltimate=true;
+                this.showUltText = true;
             }
             
 
@@ -562,16 +574,26 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             
         })
 
-        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,sword_in_stoneDB,playerDB,movementDataDB,timeDB,dragdataDB,enemyDB,playerHealthPath,towerDB);
+        //getting score by killing ohter players
+        /*firebase.database().ref(ScoreDB).on('child_changed', snapShot=>{
+            let playerdata = snapShot.val();
+            if(playerdata.killid === this.playerID){
+                this.score += 100;
+            }
+        })*/
+
+        this.databaseListners.push(creatorDB,countDownDB,playerIDDB,seatNumberDB,sword_in_stoneDB,playerDB,movementDataDB,
+            timeDB,dragdataDB,enemyDB,playerHealthPath,towerDB);
 
     }
 
     update(time,delta){
       //  console.log(this.player1.mana)
         this.hUD.update(time,this.player1,this);
-        if(this.useUltimate===true){
+        if(this.showUltText){
             this.add.text(500, 615, "You have won the ultimate ability!", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
             this.add.text(500, 645, "Press E to destroy nearby enemies.", { fontFamily: 'Arial', fontSize: 22, color: '#ffffff' });
+            this.showUltText = false;
 
         }
         if(this.player1.mana<=1000){
@@ -698,4 +720,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     setHealthInDB = (health)=>{
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/health`] = health;
     }
+
+    /*handlePlayerKill( playerid, killerid ){
+        this.updates[`Games/${this.gameRoom}/playerScore/${playerid}/killid`] = killerid;
+    }*/
 }

@@ -8,7 +8,7 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image(
+    /*this.load.image(
       "tiles1",
       `${process.env.PUBLIC_URL}/assets/tiles/map_atlas.png`
     );
@@ -20,15 +20,15 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     this.load.tilemapTiledJSON(
       "Mymap",
       `${process.env.PUBLIC_URL}/assets/map/map.json`
-    );
+    );*/
   }
 
   init(data){
-    console.log(data)
+    /*console.log(data)
     this.playerID = data.playerID;
     this.username = data.username;
     this.roomkey = data.roomkey;
-    this.seatNumber = data.seatNumber;
+    this.seatNumber = data.seatNumber;*/
   }
 
   create() {
@@ -60,23 +60,23 @@ export class MULTIPLAYERCHARSELECT extends Phaser.Scene {
     bomberchar.setInteractive();
 
     Riderchar.on("pointerup", () => {
-      this.scene.start(CST.SCENES.WAIT, {
+      this.scene.start(CST.SCENES.WAIT, "rider"/*{
         playerID : this.playerID,
         username: this.username,
         roomkey : this.roomkey,
         seatNumber: this.seatNumber,
         playerType: "rider"
-    });
+    }*/);
     });
 
     bomberchar.on("pointerup", () => {
-        this.scene.start(CST.SCENES.WAIT, {
+        this.scene.start(CST.SCENES.WAIT, "bomber"/*{
           playerID : this.playerID,
           username: this.username,
           roomkey : this.roomkey,
           seatNumber: this.seatNumber,
           playerType: "bomber"
-      });
+      }*/);
       });
   }
 }

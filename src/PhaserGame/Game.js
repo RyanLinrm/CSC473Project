@@ -7,7 +7,7 @@ import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
 import { LoadScene2 } from "./scenes/LoadScene2";
-import { GameRoom } from "./scenes/GameRoom";
+import { GameLobby } from "./scenes/GameLobby";
 import { GameOverScene } from "./scenes/GameOverScene";
 import { PlaySceneMultiplayer } from "./scenes/PlaySceneMultiplayer";
 import {CharSelectScene} from "./scenes/CharSelectScene"
@@ -19,76 +19,16 @@ import { MULTIPLAYERCHARSELECT } from './scenes/Multiplayercharselect';
  * @alias Game
  */
 export default class Game extends React.Component{
-    constructor(props){
-        super(props);
-        this.s= 'a';
-        this.game = new Phaser.Game({
-            type: Phaser.AUTO,
-            width: window.innerWidth,
-            height:window.innerHeight/1.15,
-            parent: 'phaser-game',
-            physics: {
-                default: 'arcade',
-                
-                arcade: {
-                    debug: false
-                }
-            },
-            scene:[
-               LoadScene,MenuScene,PlayScene,GameRoom,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
-            ],
-            render:{
-                pixelArt: true
-            },
-            assetsLoaded: false
-        });
 
-        if(props.gameType === 'single'){
-            console.log(props.gameType);
-            this.startSinglePlayer();
-        }
-        else if(props.gameType === 'multi'){
-            this.startMultiplayer( props.gamerid, props.username,
-                props.roomid, props.seat);
-            console.log(`${props.gamerid}, ${props.username}, ${props.roomid}, ${props.seat}`);
-        }
-    }
 
-    /**
-          * (function created when react calls componentDidMount)
-          * 
-          * 
-          * this function starts the single player scene in phaser
-          */
-        startSinglePlayer(){
-            this.game.scene.start(CST.SCENES.CHAR);
-    }
-
-     /**
-      * (function created when react calls componentDidMount)
-      * 
-      * 
-      * this function starts the multiplayer player scene in phaser
-      * @param {String} uid - the unique ID of this player
-      * @param {String} username - the login username of this player
-      * @param {String} roomid - the unique ID of this game room
-      * @param {String} seatNumber - the seat number of this player in the room
-      */
-    startMultiplayer(uid, username, roomid, seatNumber){
-            this.game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT, {
-                playerID : uid,
-                username: username,
-                roomkey : roomid,
-                seatNumber: seatNumber,
-            });
-    }
     /**
      * @instance
      * @memberof Game
      * @method componentDidMount
      * @description method that is called by react. The phaser game is created here
      */
-    /*componentDidMount(){
+    componentDidMount(){
+        
         let game = new Phaser.Game({
             type: Phaser.AUTO,
             width: window.innerWidth,
@@ -102,7 +42,7 @@ export default class Game extends React.Component{
                 }
             },
             scene:[
-               LoadScene,MenuScene,PlayScene,GameRoom,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
+               LoadScene,MenuScene,PlayScene,GameLobby,PlaySceneMultiplayer,CharSelectScene,MULTIPLAYERCHARSELECT,GameOverScene
             ],
             render:{
                 pixelArt: true
@@ -116,7 +56,7 @@ export default class Game extends React.Component{
           * 
           * this function starts the single player scene in phaser
           */
-        /*this.startSinglePlayer = function(){
+        this.startSinglePlayer = function(){
                 game.scene.start(CST.SCENES.CHAR);
         }
 
@@ -125,18 +65,9 @@ export default class Game extends React.Component{
           * 
           * 
           * this function starts the multiplayer player scene in phaser
-          * @param {String} uid - the unique ID of this player
-          * @param {String} username - the login username of this player
-          * @param {String} roomid - the unique ID of this game room
-          * @param {String} seatNumber - the seat number of this player in the room
           */
-        /*this.startMultiplayer = function(uid, username, roomid, seatNumber){
-                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT, {
-                    playerID : uid,
-                    username: username,
-                    roomkey : roomid,
-                    seatNumber: seatNumber,
-                });
+        this.startMultiplayer = function(){
+                game.scene.start(CST.SCENES.MULTIPLAYERCHARSELECT);
         }
     }
 
@@ -160,14 +91,13 @@ export default class Game extends React.Component{
      */
     componentWillReceiveProps(newProps){
     
-            if(newProps.gameType === 'single'){
+            if(newProps.gameType === 'single' && newProps.gameShouldStart){
                 console.log(newProps.gameType);
                 this.startSinglePlayer();
             }
-            else if(newProps.gameType === 'multi'){
-                this.startMultiplayer( newProps.gamerid, newProps.username,
-                        newProps.roomid, newProps.seat);
-                console.log(`${newProps.gamerid}, ${newProps.username}, ${newProps.roomid}, ${newProps.seat}`);
+            else if(newProps.gameShouldStart){
+                this.startMultiplayer();
+                console.log(newProps.gameType);
             }
     }
 
