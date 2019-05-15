@@ -10,7 +10,6 @@ import Tutorial from './Tutorial'
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
-
 import * as firebase from 'firebase';
 import { config } from 'aws-sdk/global';
 
@@ -173,6 +172,19 @@ class App extends Component {
       }
     
   }
+  /** 
+   * function to show the readme page of our project
+   */
+  showReadme=()=>{
+    window.open("https://github.com/RyanLinrm/CSC473Project/blob/master/README.md",'_blank');
+  }
+
+  /** 
+   * function to close the page when exit is clicked
+   */
+  closePage=()=>{
+    window.close();
+  }
   
   /**
    * standard react render method where all the aspects of the website can be displayed
@@ -217,7 +229,7 @@ class App extends Component {
 
             <Row className="form-group">
               <Col>
-                <Button className="col-md-2" variant="danger">Store</Button>
+                <Button onClick={this.closePage} className="col-md-2"  variant="danger">Exit</Button>
               </Col>
             </Row>
 
@@ -261,7 +273,7 @@ class App extends Component {
         </div>
       )}
       {this.state.infobutton && this.state.showGame && !this.state.showLeaderboard &&
-      <Button className="infobutton" variant="secondary">Info</Button>
+      <Button className="infobutton" onClick={this.showReadme} variant="secondary">Info</Button>
       }
       </div>
     );

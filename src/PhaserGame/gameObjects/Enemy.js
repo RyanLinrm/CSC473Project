@@ -41,7 +41,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
-        this.singleplayer=scene.player;
+        this.singleplayer=scene.player; 
         this.gameroom = '';
       
         /**
@@ -323,7 +323,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                 this.scene.player.mana+=10;
                 this.sword_in_the_stone.healthPoints+=10;
                 this.scene.hpbar.regenHPBar(10);
-                this.scene.manabar.regenManaBar(15);
+                this.scene.manabar.regenManaBar(10);
                 this.sword_in_the_stone.building_bar.regenHPBar(10);
                 this.kill();}}
             /*

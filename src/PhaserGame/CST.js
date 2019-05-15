@@ -7,6 +7,7 @@ export const CST ={
         WAIT: "WAIT",
         PLAYMULTIPLAYER: "PLAYMULTIPLAYER",
         GAMEOVER: "GAMEOVER",
+        WINNING: "WINNING",
         CHAR: "CHAR",
         MULTIPLAYERCHARSELECT: "MULTIPLAYERCHARSELECT"     
     }
