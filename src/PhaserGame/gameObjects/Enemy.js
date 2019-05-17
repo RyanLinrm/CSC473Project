@@ -272,10 +272,15 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
-                this.movementSpeed=this.movementSpeed+1;}
+                this.movementSpeed+=0.01;}
+          
 
-            if(this.movementSpeed>=player.movementSpeed-10){
-                this.movementSpeed=65;}
+            if(this.movementSpeed>=player.movementSpeed-50){
+                this.movementSpeed-=0.01;}
+
+            if(this.sword_in_the_stone.active===false){
+                    this.changetarget(player);}
+                
             if(Math.abs(player.x - enemy.x) < this.attackRange+20 && Math.abs(player.y - enemy.y) < this.attackRange+20){
                 if(player.active&&player.uid!=enemy.uid)
                 this.changetarget(player);}

@@ -312,6 +312,7 @@ class Tutorial extends Component {
                   <th><h5>attack players and towers</h5></th>
                   <th><h5>Blocks players path and attacks</h5></th>
                 </tr>
+               
               </Table>
             </div>
           </div>
@@ -320,5 +321,13 @@ class Tutorial extends Component {
     );
   }
 }
+ /** 
+                <tr>
+                  <th><h5>Low mana cost</h5></th>
+                  <th><h5>Become werewolf when health is low</h5></th>
+                  <th><h5></h5></th>
+                  <th><h5>Increase size/attack speed in low health</h5></th>
+                  <th><h5></h5></th>
+                </tr>*/
 
 export default Tutorial;

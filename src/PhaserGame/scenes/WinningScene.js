@@ -1,3 +1,4 @@
+
 import Phaser from 'phaser';
 import { CST } from "../CST";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
@@ -25,7 +26,7 @@ export class WinningScene extends Phaser.Scene{
 
     create(){
         let { width, height } = this.sys.game.canvas;
-        let LosingText= this.add.text(width/2, height/2, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+        let LosingText= this.add.text(width/2, height/2, "YOU WON", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
         LosingText.setOrigin(0.5,0.5); 
         let dataText = this.add.text(width/2, height/2+100, `Player ID : ${this.playerID}`);
         this.add.text(width/2, height/2+150, `Your character : ${this.charType}`);

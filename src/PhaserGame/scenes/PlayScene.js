@@ -166,10 +166,10 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_0.png",0,this.startingPlayerHealth,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_0.png",0,this.startingPlayerHealth,75,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,110,'123').setScale(0.8);
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -392,6 +392,13 @@ export class PlayScene extends Phaser.Scene{
             
     }
      
+        /**
+         * function to change the default tint color of the enemy unit, if the player
+         * attack a enemy that does not have the same uid as the player, its color 
+         * will be changed so player can see that it is his/her opposing enemy.
+         * 
+         * @param {object} player - The player's enemies that we want to change color
+         */
         changeEnemyColor=(player,time)=>{
             let enemiestochange=[]
             this.enemies.getChildren().map(child => enemiestochange.push(child)); 
@@ -513,7 +520,7 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
-        // if sword_in_the_stone is destoryed or the player's hp is below 0
+        // if sword_in_the_stone is destoryed and the player's hp is below 0
         // you lsoe the game       
         if(this.mode==="single"){
             this.createEnemies(time);
@@ -533,21 +540,6 @@ export class PlayScene extends Phaser.Scene{
         this.player.mana+=delta/1000;
         this.manabar.regenManaBar(delta/1000);}
         this.changeEnemyColor(this.player,time);
-     
-        //Handler character getting attacked by enemy, cooldown 3s
-
-    /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
-            if(this.canBeAttacked < time){
-               // console.log('got hit!');
-                if (enemy.active && player.active ){
-                    player.takeDamage(enemy.ATK);
-                    console.log(player.healthPoints);
-                    this.hpbar.cutHPBar(enemy.ATK);
-                }
-                this.canBeAttacked = time + 3000;
-            }
-        },null,this);*/
-
 
         //key control
         //movement note: we should only be able to move our character when it is alive

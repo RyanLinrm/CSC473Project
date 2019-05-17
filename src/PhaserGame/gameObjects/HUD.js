@@ -134,7 +134,7 @@ export class HUD {
                }
                
                if(unit.texture.key==='skull'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01.png",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01.png",player,3,200,0.8,5,180,20,650,player.uid).setScale(0.9);
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25);
                     if(gamemode === 'multi'){
