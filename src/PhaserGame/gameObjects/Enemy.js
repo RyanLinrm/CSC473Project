@@ -429,14 +429,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         if(this.enemyID===2){
             this.bulletTexture="shoot7";
-            /*
-            this.container= this.scene.add.container(200, 200);
-            this.container.add(this.demonskill);  
-            this.container.x=this.x;
-            this.container.y=this.y;*/
-           /* if(this.healthPoints<=0){
-                this.container.getChildren().map(child => child.destroy());
-            }*/
+            
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('demon1_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){

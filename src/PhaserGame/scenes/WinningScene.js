@@ -25,12 +25,19 @@ export class WinningScene extends Phaser.Scene{
     }
 
     create(){
+        let a = this.add
+        .image(0, 0, "winning")
+        .setOrigin(0.5, 0.5)
+        .setDepth(0);
+      a.setScale(0.85, 0.65);
+      a.x = window.innerWidth / 2;
+      a.y = window.innerHeight / 2;
         let { width, height } = this.sys.game.canvas;
-        let LosingText= this.add.text(width/2, height/2, "YOU WON", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
+        let LosingText= this.add.text(width/2-70, height/2-80, "VICTORY", { fontFamily: 'Arial', fontSize: 200, color: '#ffffff' });
         LosingText.setOrigin(0.5,0.5); 
-        let dataText = this.add.text(width/2, height/2+100, `Player ID : ${this.playerID}`);
-        this.add.text(width/2, height/2+150, `Your character : ${this.charType}`);
-        this.add.text(width/2, height/2+200, `Your final score : ${this.score}`);
+        let dataText = this.add.text(width/2, height/2+100, `Player ID : ${this.playerID}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
+        this.add.text(width/2, height/2+150, `Your character : ${this.charType}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
+        this.add.text(width/2, height/2+200, `Your final score : ${this.score}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
   
 
         //adding in a restart button
