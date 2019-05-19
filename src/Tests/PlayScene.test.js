@@ -80,7 +80,7 @@ test('testing that the create method in playscene correctly creates and intializ
 
     expect(scene.bothCollisions).toBeDefined();
 
-    expect(scene.physics.add.overlap).toBeCalledTimes(6);
+    expect(scene.physics.add.overlap).toBeCalledTimes(7);
 
     expect(scene.physics.add.overlap.mock.calls[0][0]).toBe(scene.damageItems);
     expect(scene.physics.add.overlap.mock.calls[0][1]).toBe(scene.enemyTowers);

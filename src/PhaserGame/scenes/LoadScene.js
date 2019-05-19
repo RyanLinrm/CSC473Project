@@ -17,6 +17,8 @@ export class LoadScene extends Phaser.Scene{
     //add Loading image, sound and spritesheet
     
     this.load.image('key1', `${process.env.PUBLIC_URL}/assets/title_bg.jpg`);
+    this.load.image('winning', `${process.env.PUBLIC_URL}/assets/winning.png`);
+    this.load.image('room', `${process.env.PUBLIC_URL}/assets/gameroom.png`);
     this.load.image("StartButton", `${process.env.PUBLIC_URL}/assets/StartButton.png`);
     this.load.image("PlayButton", `${process.env.PUBLIC_URL}/assets/PlayButton.png`);
     this.load.image("MultiplayerButton", `${process.env.PUBLIC_URL}/assets/MultiplayerButton.png`);

@@ -135,7 +135,7 @@ test('Testing if enemymovement works when the enemyid is 0', ()=>{
     enemy.body.velocity.y = 10;
     enemy.enemymovement();
     expect(enemy.play).toBeCalledTimes(1);
-    expect(enemy.play.mock.calls[0][0]).toBe("wolf_down");
+    expect(enemy.play.mock.calls[0][0]).toBe("werewolf_down");
     expect(enemy.play.mock.calls[0][1]).toBe(true);
 
    //velocity.x < 0 & velocity.y < 0
@@ -143,7 +143,7 @@ test('Testing if enemymovement works when the enemyid is 0', ()=>{
     enemy.body.velocity.y = -10;
     enemy.enemymovement();
     expect(enemy.play).toBeCalledTimes(2);
-    expect(enemy.play.mock.calls[1][0]).toBe("wolf_up");
+    expect(enemy.play.mock.calls[1][0]).toBe("werewolf_up");
     expect(enemy.play.mock.calls[1][1]).toBe(true);
 
 
@@ -152,7 +152,7 @@ test('Testing if enemymovement works when the enemyid is 0', ()=>{
     enemy.body.velocity.y = 10;
     enemy.enemymovement();
     expect(enemy.play).toBeCalledTimes(3);
-    expect(enemy.play.mock.calls[2][0]).toBe("wolf_left");
+    expect(enemy.play.mock.calls[2][0]).toBe("werewolf_left");
     expect(enemy.play.mock.calls[2][1]).toBe(true);
 
    //velocity.x > 0 & velocity.y < 0
@@ -160,7 +160,7 @@ test('Testing if enemymovement works when the enemyid is 0', ()=>{
    enemy.body.velocity.y = -10;
    enemy.enemymovement();
     expect(enemy.play).toBeCalledTimes(4);
-    expect(enemy.play.mock.calls[3][0]).toBe("wolf_right");
+    expect(enemy.play.mock.calls[3][0]).toBe("werewolf_right");
     expect(enemy.play.mock.calls[3][1]).toBe(true);
 });
 

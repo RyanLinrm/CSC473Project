@@ -16,8 +16,8 @@ test('Testing Rider constructor',()=>{
     expect(rider.movementSpeed).toBe(movementSpeed);
     expect(rider.uid).toBe(id);
     expect(rider.beingAttacked).toBeFalsy();
-  //  expect(bomber.createWeapon).toBeDefined();
-  //  expect(bomber.removeWeapon).toBeDefined();
+    //expect(rider.createWeapon).toBeDefined();
+   // expect(rider.removeWeapon).toBeDefined();
 });
 /*
 test('Testing createWeapon for Rider',()=>{

@@ -64,6 +64,13 @@ export class GameLobby extends Phaser.Scene {
          * @type String
          */
         this.playertype = data;
+        let a = this.add
+        .image(0, 0, "room")
+        .setOrigin(0.5, 0.5)
+        .setDepth(0);
+      a.setScale(1, 1);
+      a.x = window.innerWidth / 2;
+      a.y = window.innerHeight / 2;
     } 
 
     /**
@@ -72,7 +79,7 @@ export class GameLobby extends Phaser.Scene {
      */
     createGame (){
         console.log('creating a game!');
-
+      
         let currentGame = {
             creator: {
                 uid: this.playerID,
@@ -197,9 +204,9 @@ export class GameLobby extends Phaser.Scene {
      */
     create(){
 
-        let info = this.add.text(600, 250, "Game Lobby", {fontSize: '32px'});
-        let info2 = this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
-        this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
+        let info = this.add.text(650, 310, "Game Lobby", { fontFamily: 'Arial',fontSize: '32px'});
+        let info2 = this.add.text(650, 350, "Waiting...", {fontFamily: 'Arial',fontSize: '24px'});
+        this.seatinfo = this.add.text(650, 380, '1 player in the room, waiting...', {fontFamily: 'Arial',fontSize: '24px'});
 
 
         this.ref.once('value', snapShot => {
