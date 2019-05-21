@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
 
 test("Should show the correct game page",async()=>{
     jest.setTimeout(1000000);

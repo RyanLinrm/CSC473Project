@@ -1,13 +1,9 @@
 import Phaser from 'phaser';
-
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
-import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
-import {Melee} from "../gameObjects/Melee";
 import {HUD} from "../gameObjects/HUD";
 import spriteAnimations from '../gameObjects/Animations';
 
@@ -170,6 +166,8 @@ export class PlayScene extends Phaser.Scene{
             break;
             case "rider":
             this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,110,'123').setScale(0.8);
+            break;
+            default:
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -344,11 +342,11 @@ export class PlayScene extends Phaser.Scene{
         let tiles2 = Mymap.addTilesetImage("map_atlas2", "tiles2");
 
        // display layers
-        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
-        let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
+        Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
         this.waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
-        let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
-        let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
         this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
@@ -403,8 +401,8 @@ export class PlayScene extends Phaser.Scene{
             let enemiestochange=[]
             this.enemies.getChildren().map(child => enemiestochange.push(child)); 
             for (let i = 0; i < enemiestochange.length; i++) {
-                if(enemiestochange[i].uid!=player.uid){
-                    if( enemiestochange[i].tint!=0xffb3b3){
+                if(enemiestochange[i].uid!==player.uid){
+                    if( enemiestochange[i].tint!==0xffb3b3){
                         enemiestochange[i].tintcolor=0xffb3b3;              
             }
         }      
@@ -426,7 +424,7 @@ export class PlayScene extends Phaser.Scene{
                 this.cooldowntime = time + 10000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
-                    if (this.enemylist[i].uid!=this.player.uid){
+                    if (this.enemylist[i].uid!==this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 200 && Math.abs(this.enemylist[i].y - this.player.y) < 200){ 
                         this.enemylist[i].kill(true,this.playerUid);       
                         }
@@ -451,7 +449,7 @@ export class PlayScene extends Phaser.Scene{
                 this.stopcooldown = time + 5000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
-                    if (this.enemylist[i].uid!=this.player.uid){
+                    if (this.enemylist[i].uid!==this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 150 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
                             this.wall1=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y+25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
                             this.wall2=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y-25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);

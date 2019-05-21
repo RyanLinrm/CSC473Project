@@ -19,7 +19,7 @@ test('Testing Units class constructer correctly and intializes a new Units tower
  
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     expect(tower).toBeDefined();
-    expect(tower.type).toBe(type);
+    
     expect(tower.healthPoints).toBe(healthPoints);
     expect(tower.speed).toBe(speed);
     expect(tower.range).toBe(range);

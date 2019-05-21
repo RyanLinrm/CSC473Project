@@ -3,13 +3,10 @@ import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
 import {Rider} from "../gameObjects/Rider";
 import { CST } from "../CST";
-import {generate} from 'randomstring';
 import * as firebase from 'firebase';
-import { ConsoleLogger } from '@aws-amplify/core';
 import {HUD} from "../gameObjects/HUD";
 import {Enemy} from "../gameObjects/Enemy";
-import spriteAnimations from '../gameObjects/Animations';
-import { Units } from "../gameObjects/Units";
+
 
 /**
  * PlaySceneMultiplayer - extends Phaser.Scene
@@ -217,13 +214,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
     createPlayer = (id,position,velocity) =>{
-        console.log("CreatingPlayer");
+        
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', this.setTemp)
         
-        if(this.temp == "bomber"){
+        if(this.temp === "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
         }
-        else if (this.temp == "rider"){
+        else if (this.temp === "rider"){
         this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
@@ -344,11 +341,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
-        if(this.spritekey == "bomber"){
+        if(this.spritekey === "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_0.png",0
                                     ,this.startingPlayerHealth,64,this.playerID);
         }
-        else if(this.spritekey == "rider"){
+        else if(this.spritekey === "rider"){
         this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_0.png",1
                                     ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
@@ -417,8 +414,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
             if(countDown === 0){
                 countDownText.setText("Go");
-                let poop = this.countDownText;
-                let tween = this.tweens.add({
+                
+                this.tweens.add({
                     targets: countDownText,
                     alpha: 0,
                     ease: 'Power1',
@@ -488,7 +485,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         let timeDB = `Games/${this.gameRoom}/Players/${this.playerID}/attack/time`;
         database.ref(timeDB).on("value", (snapShot) => { 
-            if (snapShot.val() != 0)       
+            if (snapShot.val() !== 0)       
                 this.player1.attack();
 
         });
@@ -693,7 +690,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.cooldowntime = time + 10000;
             this.enemies.getChildren().map(child => this.enemylist.push(child));  
             for (let i = 0; i < this.enemylist.length; i++) {
-                if (this.enemylist[i].uid!=this.player1.uid){
+                if (this.enemylist[i].uid!==this.player1.uid){
                     if (Math.abs(this.enemylist[i].x - this.player1.x) < 200 && Math.abs(this.enemylist[i].y - this.player1.y) < 200){ 
                     this.enemylist[i].kill(true,this.playerUid);       
                     }

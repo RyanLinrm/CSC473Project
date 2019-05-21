@@ -5,13 +5,12 @@ import HomeNavBar from './HomeNavBar.js';
 import './App.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
-import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
+import { Authenticator } from 'aws-amplify-react';
 import Tutorial from './Tutorial'
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import  { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
-import * as firebase from 'firebase';
-import { config } from 'aws-sdk/global';
+
 
 /**
 * App class

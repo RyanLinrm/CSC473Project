@@ -1,7 +1,4 @@
-import Phaser from 'phaser';
-import { PlayScene } from '../PhaserGame/scenes/PlayScene';
 import { PlaySceneMultiplayer } from '../PhaserGame/scenes/PlaySceneMultiplayer';
-import spriteAnimations from '../PhaserGame/gameObjects/Animations';
 import * as firebase from 'firebase';
 
 jest.mock('../PhaserGame/gameObjects/Animations');

@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+
 import {Enemy} from "../gameObjects/Enemy";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 import * as firebase from 'firebase';
@@ -65,13 +65,13 @@ export class HUD {
 
         this.startingPlayerHealth = scene.startingPlayerHealth;
 
-        let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
+        scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
         let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
         player1Health.setOrigin(0.5); player1Health.setScrollFactor(0);
         this.playerHealthLabels = [player1Health];
 
         for(let i = 1; i < scene.players; i++){
-            let player = scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
+            scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
             let playerHealth = scene.add.text(35, scene.game.renderer.height /5 * (i+1) + 30,  `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
             playerHealth.setScrollFactor(0); playerHealth.setOrigin(0.5);
             this.playerHealthLabels.push(playerHealth);
@@ -179,7 +179,7 @@ export class HUD {
     }
 
     setScore = ( newscore ) => {
-        this.scoreShow.setText('Score: '+ `${newscore}`);
+        this.scoreShow.setText(`Score: ${newscore}`);
     }
 
 
