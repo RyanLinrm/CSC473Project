@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
 
 import spriteAnimations from '../PhaserGame/gameObjects/Animations';

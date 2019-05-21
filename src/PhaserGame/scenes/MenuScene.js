@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { CST } from "../CST";
-import {generate} from 'randomstring';
+
 
 export class MenuScene extends Phaser.Scene{
     constructor(){

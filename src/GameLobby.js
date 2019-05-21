@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import Game from './PhaserGame/Game';
-import Amplify, { API, graphqlOperation } from "aws-amplify";
-import * as queries from './graphql/queries';
-import * as mutations from './graphql/mutations';
 import * as firebase from 'firebase';
-import {generate} from 'randomstring';
+
 
 /**
  * GameLobby - extends react component

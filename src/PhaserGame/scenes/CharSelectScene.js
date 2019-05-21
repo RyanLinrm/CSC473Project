@@ -1,13 +1,7 @@
 import Phaser from "phaser";
 
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
-import { Units } from "../gameObjects/Units";
-import { Player } from "../gameObjects/Player";
-import { Bomber } from "../gameObjects/Bomber";
-import { Enemy } from "../gameObjects/Enemy";
-import { Rider } from "../gameObjects/Rider";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+
 export class CharSelectScene extends Phaser.Scene {
   constructor(sceneKey = CST.SCENES.CHAR) {
     super({ key: sceneKey });

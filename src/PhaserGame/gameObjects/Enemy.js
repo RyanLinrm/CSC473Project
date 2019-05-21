@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
-import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+
 import * as firebase from 'firebase';
     /**
      * The Enemy class.
@@ -160,7 +160,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * sets up the movement funciton that is called by the update method.
          */ 
         this.moveEnemy = () =>{
-            if(this.movementSpeed!=0){
+            if(this.movementSpeed!==0){
             this.EnemyBehavior(this,target);
             
             scene.physics.moveToObject(this,this.target,this.movementSpeed);}
@@ -208,6 +208,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
           case 5:
            enemy.setPosition(target.x,target.y); 
             break;
+          default:
+            break;
         } };    
       /*  //if the enemy collide with other enemy or player, it will move to other direction
         this.scene.physics.world.collide(enemy, target, (enemy,target)=>{
@@ -238,7 +240,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             //this.scene.enemies.getChildren().map(child => this.towers.push(child));  
           //  this.towers.push(this.scene.player)
             for (var i = 0; i < this.towers.length; i++) {
-                if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
+                if(this.towers[i].active && this.towers[i].uid!==enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
                      if (towerdistance<shortestDistance){
                         shortestDistance=towerdistance;      
@@ -254,7 +256,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             for( let i = 0; i < this.enemyplayerid.length; i++ ){
                 let player = this.enemyplayers[this.enemyplayerid[i]];
                 if(Math.abs(player.x - enemy.x) < this.attackRange+30 && Math.abs(player.y - enemy.y) < this.attackRange+30){
-                    if(player.active && player.uid!=enemy.uid){
+                    if(player.active && player.uid!==enemy.uid){
                         this.changetarget(player);
                         break;
                     }
@@ -282,7 +284,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
                     this.changetarget(player);}
                 
             if(Math.abs(player.x - enemy.x) < this.attackRange+20 && Math.abs(player.y - enemy.y) < this.attackRange+20){
-                if(player.active&&player.uid!=enemy.uid)
+                if(player.active&&player.uid!==enemy.uid)
                 this.changetarget(player);}
                 else{     
                     this.findneartower();}}}
@@ -503,7 +505,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     enemyAttack(enemy,target,time){
-        if(target.active&&target.uid!=enemy.uid){
+        if(target.active&&target.uid!==enemy.uid){
          if (Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < enemy.attackRange){
             let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
             let vX = (target.x - enemy.x)/distance;

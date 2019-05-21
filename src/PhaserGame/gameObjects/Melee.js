@@ -1,6 +1,6 @@
 import {Player} from "./Player";
-import { Bullet, sword } from "./Projectiles";
-import { Units } from "./Units";
+import { sword } from "./Projectiles";
+
 export class Melee extends Player{
     constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=64,uid){
         super(scene,x,y,key,textureName,characterId, healthPoints, movementSpeed, uid);

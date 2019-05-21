@@ -1,12 +1,11 @@
 /** @type {import { "../typing/phaser" };} */
 
-import React, { Component } from 'react';
+import React from 'react';
 import Phaser from 'phaser';
 import {CST} from "./CST"; 
 import { LoadScene } from "./scenes/LoadScene";
 import { MenuScene } from "./scenes/MenuScene";
 import { PlayScene } from "./scenes/PlayScene";
-import { LoadScene2 } from "./scenes/LoadScene2";
 import { GameLobby } from "./scenes/GameLobby";
 import { GameOverScene } from "./scenes/GameOverScene";
 import { WinningScene } from "./scenes/WinningScene";

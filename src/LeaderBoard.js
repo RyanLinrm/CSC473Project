@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Container } from 'react-bootstrap';
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import  { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 
 export default class Leaderboard extends Component{
