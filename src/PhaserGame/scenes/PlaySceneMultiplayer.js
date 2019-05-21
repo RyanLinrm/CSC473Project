@@ -175,7 +175,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.temp = snapShot.val();
     }
 
-    playerMovementDataChanged = (id,snapShot)=>{
+    enemyMovementDataChanged = (id,snapShot)=>{
         let dataChanged = snapShot.val();
         let changedKey = snapShot.key;
 
@@ -183,6 +183,27 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
         }else{
             this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+        }
+    }
+
+    enemyAttackDataChanged = (id,snapShot) => {      
+        let dataChanged = snapShot.val();  
+        let changedKey = snapShot.key;
+
+        if(changedKey === 'pos'){
+            this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
+        }else if(changedKey === 'velocity'){
+            this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+        }
+        else{
+            this.otherPlayers[id].attack();
+        }
+
+    }
+
+    enemyCheckIfInGame = (id,snapShot) => { 
+        if(snapShot.val() === false){
+        this.removePlayer(id);
         }
     }
 
@@ -234,31 +255,13 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         //this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
-        firebase.database().ref(movementDataDB).on("child_changed", this.playerMovementDataChanged.bind(this,id));
+        firebase.database().ref(movementDataDB).on("child_changed", this.enemyMovementDataChanged.bind(this,id));
 
         let attackDB = `Games/${this.gameRoom}/Players/${id}/attack`;
-        firebase.database().ref(attackDB).on("child_changed", (snapShot) => {      
-            let dataChanged = snapShot.val();  
-            let changedKey = snapShot.key;
-
-            if(changedKey === 'pos'){
-                this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
-            }else if(changedKey === 'velocity'){
-                this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
-            }
-            else{
-                this.otherPlayers[id].attack();
-            }
-
-        });
+        firebase.database().ref(attackDB).on("child_changed", this.enemyAttackDataChanged.bind(this,id));
 
         let inGameDB = `Games/${this.gameRoom}/Players/${id}/inGame`;
-        firebase.database().ref(inGameDB).on("value", (snapShot) => { 
-            if(snapShot.val() === false){
-            this.removePlayer(id);
-            }
-
-        });
+        firebase.database().ref(inGameDB).on("value", this.enemyCheckIfInGame.bind(this,id));
 
         let playerHealthPath = `Games/${this.gameRoom}/Players/${id}/health`;
         firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
