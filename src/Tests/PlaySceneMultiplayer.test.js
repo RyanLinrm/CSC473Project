@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
 import { PlaySceneMultiplayer } from '../PhaserGame/scenes/PlaySceneMultiplayer';
 import spriteAnimations from '../PhaserGame/gameObjects/Animations';
+import * as firebase from 'firebase';
 
 jest.mock('../PhaserGame/gameObjects/Animations');
 jest.mock('../PhaserGame/scenes/PlayScene');
@@ -206,4 +207,73 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
     expect(snapShot.val).toBeCalledTimes(1);
     expect(scene.removePlayer).toBeCalledTimes(1);
 
+  });
+
+  test('testing the enemeyHealthChanged function',()=>{
+      let id = 'abc';
+
+      scene.otherPlayers = {};
+      scene.otherPlayers[id] = {
+          setHealth: jest.fn(),
+          setCollideWorldBounds:jest.fn(),
+          setVelocity: jest.fn(),
+          towerPosition:'position'
+      };
+
+      scene.hUD = {
+          setPlayerHealth: jest.fn()
+      }
+
+      let snapShot = {
+        val: jest.fn(() => 500)
+    };
+
+    scene.enemeyHealthChanged(id,snapShot);
+
+    expect(snapShot.val).toBeCalledTimes(1);
+    expect(scene.otherPlayers[id].setHealth).toBeCalledTimes(1);
+    expect(scene.otherPlayers[id].setHealth.mock.calls[0][0]).toBe(500);
+
+    expect(scene.hUD.setPlayerHealth).toBeCalledTimes(1);
+    expect(scene.hUD.setPlayerHealth.mock.calls[0][0]).toBe('position');
+    expect(scene.hUD.setPlayerHealth.mock.calls[0][1]).toBe(500);
+
+  });
+
+  
+//Mocking Firebase for the unit tests in the multiplayer scene
+  jest.mock('firebase',()=>{
+      let onceMock = jest.fn();
+      let onMock = jest.fn();
+      return {
+    database: function(){
+        return {
+            ref:jest.fn(()=>({
+                once: onceMock,
+                on:onMock
+            }))
+        }
+    }
+}});
+
+  test('testing the firebase listener creations for the createPlayer funciton',()=>{
+      scene.building = {
+        assignID: jest.fn()
+      };
+
+      scene.enemyPlayers = {
+          add:jest.fn()
+      }
+
+      scene.physics = {
+          add: {
+              overlap:jest.fn(),
+              collider: jest.fn()
+          }
+      }
+
+      scene.createPlayer('abc',{x:1,y:2},{x:3,y:4});
+
+      expect(firebase.database().ref().once).toBeCalledTimes(1);
+      expect(firebase.database().ref().on).toBeCalledTimes(4);
   });

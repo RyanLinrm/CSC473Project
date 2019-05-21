@@ -207,6 +207,15 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         }
     }
 
+    enemeyHealthChanged = (id,snapShot)=>{
+        let health = snapShot.val();
+        let player = this.otherPlayers[id];
+        player.setHealth(health);
+        //console.log(this);
+        this.hUD.setPlayerHealth(player.towerPosition,health);
+        
+    }
+
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', this.setTemp)
@@ -264,14 +273,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(inGameDB).on("value", this.enemyCheckIfInGame.bind(this,id));
 
         let playerHealthPath = `Games/${this.gameRoom}/Players/${id}/health`;
-        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
-            let health = snapShot.val();
-            let player = this.otherPlayers[id];
-            player.setHealth(health);
-            //console.log(this);
-            this.hUD.setPlayerHealth(player.towerPosition,health);
-            
-        });
+        firebase.database().ref(playerHealthPath).on('value',this.enemeyHealthChanged.bind(this,id));
 
         this.databaseListners.push(movementDataDB,attackDB,inGameDB,playerHealthPath);
     }
