@@ -27,7 +27,7 @@ test('testing the constructor of the playscene multiplayer',()=>{
 });
 
 test('testing the init function of playscene multiplayer',()=>{
-    
+
     let data = {
         playerID: '123',
         roomkey: 'ABC',
@@ -43,4 +43,74 @@ test('testing the init function of playscene multiplayer',()=>{
     expect(scene.spritekey).toBe('1');
     expect(scene.players).toBe(4);
     
+    
+});
+
+test('testing the setTemp funciton for playScene Multiplayer',()=>{
+    let snapshot = {
+        val: jest.fn(() => 'a')
+    };
+
+    scene.setTemp(snapshot);
+
+    expect(snapshot.val).toBeCalledTimes(1);
+    expect(scene.temp).toBe('a');
+
+    snapshot.val = jest.fn(()=>'b');
+
+    scene.setTemp(snapshot);
+
+    expect(snapshot.val).toBeCalledTimes(1);
+    expect(scene.temp).toBe('b');
+
+});
+
+test('testing the playerMovementDataChanged function when the snapshot key is "pos"',()=>{
+    //mocking and setting up the default values to when the funciton will be called
+    let id = 'abc';
+    scene.otherPlayers = {};
+    scene.otherPlayers[id] = {
+        setPosition: jest.fn(),
+        setVelocity: jest.fn()
+    };
+    //
+
+    let snapShot = {
+        key: 'pos',
+        val: jest.fn(()=>({x:1,y:2}))
+    };
+
+    scene.playerMovementDataChanged(id,snapShot);
+
+    expect(snapShot.val).toBeCalledTimes(1);
+    expect(scene.otherPlayers[id].setPosition).toBeCalledTimes(1);
+    expect(scene.otherPlayers[id].setPosition.mock.calls[0][0]).toBe(1);
+    expect(scene.otherPlayers[id].setPosition.mock.calls[0][1]).toBe(2);
+    
+ 
+
+
+});
+
+test('testing the playerMovementDataChanged function when the snapshot key is not "pos"', ()=>{
+   //testing when the snapShot key isn't pos
+   let id = 'abc';
+   scene.otherPlayers = {};
+   scene.otherPlayers[id] = {
+       setPosition: jest.fn(),
+       setVelocity: jest.fn()
+   };
+   //
+
+   let snapShot = {
+       key: 'velocity',
+       val: jest.fn(()=>({x:3,y:4}))
+   };
+
+   scene.playerMovementDataChanged(id,snapShot);
+
+   expect(snapShot.val).toBeCalledTimes(1);
+   expect(scene.otherPlayers[id].setVelocity).toBeCalledTimes(1);
+   expect(scene.otherPlayers[id].setVelocity.mock.calls[0][0]).toBe(3);
+   expect(scene.otherPlayers[id].setVelocity.mock.calls[0][1]).toBe(4);
 });

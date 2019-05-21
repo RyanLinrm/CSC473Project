@@ -150,13 +150,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.spritekey = data.chartype;
 
-    /**
-     * The bots in the game
-     *
-     * @name Player#bots
-     * @type number
-     */
-        this.bots = 0;
+
 
     /**
      * The amount of players in the game
@@ -177,12 +171,24 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
    
     }
 
+    setTemp = (snapShot)=>{
+        this.temp = snapShot.val();
+    }
+
+    playerMovementDataChanged = (id,snapShot)=>{
+        let dataChanged = snapShot.val();
+        let changedKey = snapShot.key;
+
+        if(changedKey === 'pos'){
+            this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
+        }else{
+            this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+        }
+    }
 
     createPlayer = (id,position,velocity) =>{
         console.log("CreatingPlayer");
-        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
-            this.temp = snapShot.val();
-        })
+        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', this.setTemp)
         
         if(this.temp == "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
@@ -228,17 +234,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         //this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
-        firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
-            let dataChanged = snapShot.val();
-            let changedKey = snapShot.key;
-
-            if(changedKey === 'pos'){
-                this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
-            }else{
-                this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
-            }
-            
-        });
+        firebase.database().ref(movementDataDB).on("child_changed", this.playerMovementDataChanged.bind(this,id));
 
         let attackDB = `Games/${this.gameRoom}/Players/${id}/attack`;
         firebase.database().ref(attackDB).on("child_changed", (snapShot) => {      
