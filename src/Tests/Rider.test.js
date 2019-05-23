@@ -1,6 +1,6 @@
 import { Rider } from "../PhaserGame/gameObjects/Rider";
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
-import { Posion } from "../PhaserGame/gameObjects/Projectiles";
+
 jest.mock('phaser');
 jest.mock('../PhaserGame/gameObjects/Player');
 jest.mock('../PhaserGame/gameObjects/Projectiles');

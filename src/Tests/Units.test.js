@@ -60,7 +60,7 @@ test('Testing the distance function in Units class', ()=>{
     const player = new Player(new PlayScene(),0,0, "p1", "p1_01.png",1,hP, movementSpeed,id);
     const tower = new Units(new PlayScene(),0,0,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     tower.distance=jest.fn();
-    let shortestpath=tower.distance(tower,player);
+    tower.distance(tower,player);
     expect(tower.distance).toBeCalledTimes(1);
 });
 
