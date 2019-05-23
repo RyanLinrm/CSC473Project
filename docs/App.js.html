@@ -30,18 +30,15 @@
 import Game from './PhaserGame/Game';
 import Leaderboard from './LeaderBoard.js';
 import HomeNavBar from './HomeNavBar.js';
-import GameLobby from './GameLobby.js';
 import './App.css';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import {Auth} from 'aws-amplify';
-import { Authenticator ,withAuthenticator} from 'aws-amplify-react';
+import { Authenticator } from 'aws-amplify-react';
 import Tutorial from './Tutorial'
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import  { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
-import {generate} from 'randomstring';
-import * as firebase from 'firebase';
-import { config } from 'aws-sdk/global';
+
 
 /**
 * App class
@@ -50,7 +47,7 @@ class App extends Component {
       /**
   * @param {Bool} showGame toggle for the sign in feature
   * @param {Bool} showsingle toggle for the single player feature (when true single player should be displayed)
-  * @param {Bool} showGL toggle for the multiplayer feature (when true multiplayer should be displayed)
+  * @param {Bool} showmulti toggle for the multiplayer feature (when true multiplayer should be displayed)
   * @param {Bool} showLeaderboard when true the leaderboard is shown
   * @param {Bool} showbuttons takes the multiplayer, single player, tutorial buttons off the screen when we show game or leaderboards
   * @param {Bool} infobutton toggles the info button at the bottom on and off
@@ -63,23 +60,16 @@ class App extends Component {
     this.state = {
       showGame:false, 
       showsingle:false,
-      showGL:false,
-      showmulti: false,
+      showmulti:false,
       showLeaderboard:false, 
       hideButton:true,
       showbuttons: false,
       infobutton: true,
       signInName: null,
       gameType: "single",
-      showTutorial: false,
-      multiObject:{
-        roomkey: '',
-        seatNumber: -1
-      }
+      showTutorial: false
     };
-    this.username = '';
-    this.uid = '';
-    this.goToMultiHandler = this.goToMultiHandler.bind(this)
+
     
   }
   /**
@@ -128,10 +118,8 @@ class App extends Component {
         });
 
       this.setState({ 
-        signInName:cognitoUser.username,
+        signInName:cognitoUser.username
       });
-      this.username = cognitoUser.username;
-      this.uid = uid;
        
        
      });
@@ -140,9 +128,6 @@ class App extends Component {
       this.setState({ 
         signInName:null
       });
-      let temp = generate(10);
-      this.username = temp;
-      this.uid = temp;
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -156,8 +141,7 @@ class App extends Component {
       this.setState({ 
         signInName:cognitoUser.username
       });
-       this.username = cognitoUser.username;
-       this.uid = cognitoUser.attributes.sub;
+       
        
      });
     }
@@ -165,9 +149,6 @@ class App extends Component {
       this.setState({ 
         signInName:null
       });
-      let temp = generate(10);
-      this.username = temp;
-      this.uid = temp;
     }
     this.setState({ showGame: !this.state.showGame });
   }
@@ -183,13 +164,14 @@ class App extends Component {
       infobutton: !this.state.infobutton});
   }
     /**
-   * called to set bool the GameLobby state to true, remove buttons from page and goes to the game lobby
+   * called to set bool the multiplayer state to true, remove buttons from page and tell phaser that you want to play multiplayer
    */
-  showGameLobbyHandler = () => {
-      this.setState({ 
-        showGL: !this.state.showGL,
-        showbuttons: !this.state.showbuttons,
-        infobutton: !this.state.infobutton})
+  showMultiPlayerHandler = () => {
+    this.setState({ 
+      showmulti: !this.state.showmulti,
+      showbuttons: !this.state.showbuttons,
+      gameType:"multiplayer",
+      infobutton: !this.state.infobutton});
   }
   /** 
    * function to reset all the toggle buttons and page to the original state
@@ -217,17 +199,18 @@ class App extends Component {
       }
     
   }
+  /** 
+   * function to show the readme page of our project
+   */
+  showReadme=()=>{
+    window.open("https://github.com/RyanLinrm/CSC473Project/blob/master/README.md",'_blank');
+  }
 
-  goToMultiHandler = (roomkey, seatNumber) =>{
-    this.setState({
-      showGL: !this.state.showGL,
-      showmulti: !this.state.showmulti,
-      gameType: 'multi',
-      multiObject:{
-        roomkey: roomkey,
-        seatNumber: seatNumber
-      },
-    });
+  /** 
+   * function to close the page when exit is clicked
+   */
+  closePage=()=>{
+    window.close();
   }
   
   /**
@@ -236,21 +219,14 @@ class App extends Component {
   render() {
    
     let gameClass = !this.state.showbuttons ? '' : 'hidden';
-    /*let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
+    let leaderBoardList = [[1,"playerName1",1200,"6:30"],[2,"playerName2",800,"9:30"],[3,"playerName3",765,"10:30"]
     ,[4,"playerName4",1200,"6:30"],[5,"playerName5",800,"9:30"],[6,"playerName6",765,"10:30"]
-  ];*/
-    if(this.state.showsingle || this.state.showmulti){
-      return (
-        &lt;div className={gameClass}>
-        &lt;Game gameType={this.state.gameType} gameShouldStart={true}
-          gamerid={this.uid} username={this.username} 
-          roomid={this.state.multiObject.roomkey} seat={this.state.multiObject.seatNumber} />
-      &lt;/div>)
-    }
-    else 
+  ];
+
+
     return (
       &lt;div className="App ">
-        {!this.state.showsingle &amp;&amp; !this.state.showGL &amp;&amp; !this.state.showTutorial &amp;&amp; 
+        {!this.state.showsingle &amp;&amp; !this.state.showmulti &amp;&amp; !this.state.showTutorial &amp;&amp; 
           &lt;HomeNavBar leaderBoardOnClick={this.showLeaderBoardHandler} signInOnClick={this.signInHandler} signInButtonName={this.state.signInName} />
         }
         &lt;Authenticator hideDefault={this.state.showGame} onStateChange={this.signInHandler} />
@@ -268,7 +244,7 @@ class App extends Component {
 
             &lt;Row className="form-group">
               &lt;Col>
-                &lt;Button className="col-md-2" onClick={this.showGameLobbyHandler} variant="primary">Game Lobby&lt;/Button>
+                &lt;Button className="col-md-2" onClick={this.showMultiPlayerHandler} variant="primary">Multiplayer&lt;/Button>
               &lt;/Col>
             &lt;/Row>
 
@@ -280,7 +256,7 @@ class App extends Component {
 
             &lt;Row className="form-group">
               &lt;Col>
-                &lt;Button className="col-md-2" variant="danger">Store&lt;/Button>
+                &lt;Button onClick={this.closePage} className="col-md-2"  variant="danger">Exit&lt;/Button>
               &lt;/Col>
             &lt;/Row>
 
@@ -291,33 +267,17 @@ class App extends Component {
 
     {this.state.showLeaderboard &amp;&amp; (
         &lt;div>
-        &lt;Leaderboard />
+        &lt;Leaderboard list={leaderBoardList}/>
         &lt;Button onClick={this.startingpage} variant="secondary">Back&lt;/Button>
         &lt;/div>
       )}  
 
-    {this.state.showGL &amp;&amp; (
-        &lt;div>
-          &lt;GameLobby uid={this.uid} username={this.username} 
-            handler={this.goToMultiHandler}/>
-          &lt;Button onClick={this.startingpage} variant="secondary">Back&lt;/Button>
-        &lt;/div>
-      )}
-
-    {/*!this.state.showLeaderboard &amp;&amp; this.state.showGame &amp;&amp; !this.state.showTutorial &amp;&amp; !this.state.showGL &amp;&amp;(
+    {!this.state.showLeaderboard &amp;&amp; this.state.showGame &amp;&amp; !this.state.showTutorial &amp;&amp;(
       &lt;div className={gameClass}>
         &lt;Game gameType={this.state.gameType} gameShouldStart={!this.state.showbuttons} />
       &lt;/div>
-    )*/
+    )
     }
-
-    {/*!this.state.showLeaderboard &amp;&amp; this.state.showGame &amp;&amp; !this.state.showTutorial &amp;&amp; !this.state.showGL &amp;&amp;(
-      &lt;div className={gameClass}>
-        &lt;Game gameType={this.state.gameType} gameShouldStart={true}
-          gamerid={this.state.signInID} username={this.state.signInName} 
-          roomid={this.state.multiObject.roomkey} seat={this.state.multiObject.seatNumber} />
-      &lt;/div>
-    )*/}
 
     {this.state.showTutorial &amp;&amp; (
       &lt;div className='Tutorial' align="center">
@@ -333,16 +293,21 @@ class App extends Component {
         &lt;/div>
       )}
 
+      {this.state.showmulti &amp;&amp; (
+        &lt;div>
+          
+        &lt;Button onClick={this.startingpage} variant="secondary">Back&lt;/Button>
+        &lt;/div>
+      )}
       {this.state.infobutton &amp;&amp; this.state.showGame &amp;&amp; !this.state.showLeaderboard &amp;&amp;
-      &lt;Button className="infobutton" variant="secondary">Info&lt;/Button>
+      &lt;Button className="infobutton" onClick={this.showReadme} variant="secondary">Info&lt;/Button>
       }
       &lt;/div>
     );
   }
 }
 
-export default App;
-</code></pre>
+export default App;</code></pre>
         </article>
     </section>
 
@@ -352,13 +317,13 @@ export default App;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu May 23 2019 13:59:33 GMT-0500 (GMT-05:00)
 </footer>
 
 <script> prettyPrint(); </script>

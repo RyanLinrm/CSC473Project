@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: exports</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,52 +17,136 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: exports</h1>
 
     
 
 
 
 
-    <section>
-        <article><h1>CSC473 Project</h1><h2>Strategy Arena Game</h2><ul>
-<li><p>Team members: Nabhan Maswood, Hongjie Huang, Adam McKoy, Michael Richards, Runmin Lin</p>
-</li>
-<li><p>Scrum master name： Runmin Lin</p>
-</li>
-<li><p>Product owner name：Hongjie Huang</p>
-</li>
-</ul>
-<h1>Documentation</h1><ul>
-<li>https://ryanlinrm.github.io/CSC473Project/</li>
-</ul>
-<h1>Copyright Disclaimer</h1><ul>
-<li>We do NOT own the sprite sheets/assets,sound/music files nor the images we used throughout the development of the project. </li>
-<li>This project and the website that we deployed are only for study purposes for CSC473 class in The City College of New York.</li>
-<li>All rights belong to it's rightful owner/owners. </li>
-<li>No copyright infringement intended. Any files that violated the rights of the owner/owners wll be removed if needed.</li>
-</ul></article>
-    </section>
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>GameLobby - extends react component
+The scene where players create and join game room</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id=".exports"><span class="type-signature"></span>new exports<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="GameLobby.js.html">GameLobby.js</a>, <a href="GameLobby.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

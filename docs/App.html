@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>App<span class="signature">(showGame, showsingle, showGL, showLeaderboard, showbuttons, infobutton, signInName, gameType, showTutorial)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>App<span class="signature">(showGame, showsingle, showmulti, showLeaderboard, showbuttons, infobutton, signInName, gameType, showTutorial)</span><span class="type-signature"></span></h2>
         
             <div class="class-description"><p>App class</p></div>
         
@@ -45,7 +45,7 @@
     
 
     
-    <h4 class="name" id="App"><span class="type-signature"></span>new App<span class="signature">(showGame, showsingle, showGL, showLeaderboard, showbuttons, infobutton, signInName, gameType, showTutorial)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="App"><span class="type-signature"></span>new App<span class="signature">(showGame, showsingle, showmulti, showLeaderboard, showbuttons, infobutton, signInName, gameType, showTutorial)</span><span class="type-signature"></span></h4>
     
 
     
@@ -131,7 +131,7 @@
 
         <tr>
             
-                <td class="name"><code>showGL</code></td>
+                <td class="name"><code>showmulti</code></td>
             
 
             <td class="type">
@@ -326,7 +326,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line33">line 33</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -336,8 +336,6 @@
 
     
 </dl>
-
-
 
 
 
@@ -376,13 +374,13 @@
 
         
             
-<h4 class="name" id="showGameLobbyHandler"><span class="type-signature"></span>showGameLobbyHandler<span class="type-signature"></span></h4>
+<h4 class="name" id="closePage"><span class="type-signature"></span>closePage<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>called to set bool the GameLobby state to true, remove buttons from page and goes to the game lobby</p>
+    <p>function to close the page when exit is clicked</p>
 </div>
 
 
@@ -420,7 +418,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line160">line 160</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -446,6 +444,130 @@
 <div class="description">
     <p>this just sets the state so that the leaderboard is the only state showing on the webpage at the time of click
 or if leaderboard is there resets the page to the starting page</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line159">line 159</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="showMultiPlayerHandler"><span class="type-signature"></span>showMultiPlayerHandler<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>called to set bool the multiplayer state to true, remove buttons from page and tell phaser that you want to play multiplayer</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="showReadme"><span class="type-signature"></span>showReadme<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>function to show the readme page of our project</p>
 </div>
 
 
@@ -545,7 +667,7 @@ or if leaderboard is there resets the page to the starting page</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line150">line 150</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -607,7 +729,7 @@ or if leaderboard is there resets the page to the starting page</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line60">line 60</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -669,7 +791,7 @@ or if leaderboard is there resets the page to the starting page</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line69">line 69</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -731,7 +853,7 @@ or if leaderboard is there resets the page to the starting page</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line169">line 169</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
@@ -811,7 +933,7 @@ or if leaderboard is there resets the page to the starting page</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.js.html">App.js</a>, <a href="App.js.html#line208">line 208</a>
+        <a href="App.js.html">App.js</a>, <a href="App.js.html#line191">line 191</a>
     </li></ul></dd>
     
 
@@ -821,8 +943,6 @@ or if leaderboard is there resets the page to the starting page</p>
 
     
 </dl>
-
-
 
 
 
@@ -857,13 +977,13 @@ or if leaderboard is there resets the page to the starting page</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="module.html#.exports">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu May 23 2019 13:59:33 GMT-0500 (GMT-05:00)
 </footer>
 
 <script> prettyPrint(); </script>

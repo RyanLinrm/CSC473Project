@@ -274,3 +274,20 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
       expect(firebase.database().ref().once).toBeCalledTimes(1);
       expect(firebase.database().ref().on).toBeCalledTimes(4);
   });
+
+  test('testing the physics collider creations for the createPlayer function',()=>{
+    scene.physics.add.overlap = jest.fn();
+    scene.physics.add.collider = jest.fn();
+    scene.damageItems = 'damageItems'; scene.bothCollisions = 'bothCollisions';
+    
+    scene.createPlayer('abc',{x:1,y:2},{x:3,y:4});
+    
+
+    expect(scene.physics.add.overlap).toBeCalledTimes(1);
+
+    expect(scene.physics.add.overlap.mock.calls[0][0]).toBe('damageItems');
+    expect(scene.physics.add.overlap.mock.calls[0][1]).toBe(scene.otherPlayers['abc']);
+    expect(scene.physics.add.overlap.mock.calls[0][2]).toBe('bothCollisions');
+
+    expect(scene.physics.add.collider).toBeCalledTimes(5);
+  });
