@@ -8,6 +8,7 @@ export class Bomber extends Player{
         this.beingAttacked=false;
         this.healthPoints=healthPoints;
         this.uid=uid;
+        this.createWeapon(scene);
     }
 
     createWeapon(scene) {

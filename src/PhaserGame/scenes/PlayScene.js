@@ -223,7 +223,7 @@ export class PlayScene extends Phaser.Scene{
         //adjust player hit box
         this.player.setSize(30, 30);
         if(this.mode === 'single'){
-            this.scene.start(CST.SCENES.WINNING);
+            //this.scene.start(CST.SCENES.WINNING);
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;

@@ -16,10 +16,10 @@ test('Testing Rider constructor',()=>{
     expect(rider.movementSpeed).toBe(movementSpeed);
     expect(rider.uid).toBe(id);
     expect(rider.beingAttacked).toBeFalsy();
-    //expect(rider.createWeapon).toBeDefined();
-   // expect(rider.removeWeapon).toBeDefined();
+    expect(rider.createWeapon).toBeDefined();
+    expect(rider.removeWeapon).toBeDefined();
 });
-/*
+
 test('Testing createWeapon for Rider',()=>{
     scene.physics.add.group = jest.fn();
     const rider = new Rider(new PlayScene(),300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
@@ -46,7 +46,6 @@ test('Testing removeWeapon for Rider', ()=>{
     expect(destroyMock).toBeCalledTimes(1);
     expect(rider.attack).toBe(null);
 });
-*/
 test('Testing the update function for Rider',()=>{
     const rider = new Rider(new PlayScene(),300,300, "p1", "p1_01.png",0,hP, movementSpeed,id);
     rider.isInjured = jest.fn();

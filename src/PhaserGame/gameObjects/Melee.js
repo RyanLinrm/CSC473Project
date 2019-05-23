@@ -9,6 +9,7 @@ export class Melee extends Player{
         this.timeAlive = 0;
         this.healthPoints=healthPoints;
         this.uid=uid;
+        this.createWeapon(scene);
     }
 
     createWeapon(scene) {

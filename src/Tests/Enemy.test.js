@@ -361,3 +361,12 @@ test('Testing the update function of the enemy class',()=>{
     expect(newEnemy.enemymovement).toBeDefined();
     expect(newEnemy.enemyAttack).toBeDefined();
 });
+
+/*
+test("Testing the findneartower in enemy class",()=>{
+    let newEnemy = new Enemy(scene,0,0,key,textureName,target,enemyID,healthPoints,attackRate,ATK,attackRange,movementSpeed,cooldown,uid);
+    let pyramid=scene.pyramid;
+    newEnemy.findneartower=jest.fn();
+    let newtarget=newEnemy.target;
+    expect(newtarget).toBe(pyramid);
+});*/
