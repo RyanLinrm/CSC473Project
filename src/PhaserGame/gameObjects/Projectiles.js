@@ -303,9 +303,6 @@ export class sword extends Phaser.GameObjects.Image {
         if(this.timeAlive > 0){
           this.setVisible(false);
           this.setActive(false);
-          //this.destroy();
-          //this.bullets.clear(true);
-          //this.bullets.getChildren().map(child => child.destroy());
         };
     }
 }

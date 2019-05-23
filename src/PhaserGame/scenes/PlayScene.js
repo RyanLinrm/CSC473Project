@@ -581,11 +581,7 @@ export class PlayScene extends Phaser.Scene{
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
-            //Generate player ability and skills
-            /*if (Phaser.Input.Keyboard.JustDown(this.spacebar))
-            {
-                this.player.attack();
-            }*/
+        
             //speed up the movement 
 
             if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){

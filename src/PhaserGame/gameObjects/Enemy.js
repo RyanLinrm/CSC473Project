@@ -211,15 +211,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
           default:
             break;
         } };    
-      /*  //if the enemy collide with other enemy or player, it will move to other direction
-        this.scene.physics.world.collide(enemy, target, (enemy,target)=>{
-            if (target.uid!=enemy.uid){
-                this.randomMove();}
-            else if (target.uid===enemy.uid){
-                enemy.body.immovable=false;
-               // enemy.body.moves=true;
-            }
-            },null,this);*/
        
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
         this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
