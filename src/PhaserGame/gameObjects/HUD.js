@@ -18,7 +18,7 @@ export class HUD {
      * @param {Player} player - the main player of the scene
      * @param {string} uid - the uid
      * @param {string} gamemode - the type of game "single" or "multi"
-     * @param {*} room - the room id
+     * @param {string} room - the room id
      */
     constructor(scene, player, uid, gamemode, room) {
         this.gamemode=gamemode;
@@ -174,16 +174,31 @@ export class HUD {
         //Bottom HUD
      }
 
-    setPlayerHealth = (playerNumber,health)=>{
+    /**
+     * To update the player health in the HUD and display on the left hand side UI
+     * @param {Number} playerNumber - the number of the player need to update
+     * @param {Number} health - player's current health point
+     */
+    setPlayerHealth(playerNumber,health){
         this.playerHealthLabels[playerNumber - 1].setText(`${health}/${this.startingPlayerHealth}`); //setsThePlayer health label to the given health value
     }
 
-    setScore = ( newscore ) => {
+    /**
+     * To display the score real time in HUD UI
+     * @param {Number} newscore - the newest score
+     */
+    setScore( newscore ) {
         this.scoreShow.setText(`Score: ${newscore}`);
     }
 
-
-    updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) => {
+    /**
+     * To update the dragged out enemy unit's data into database
+     * @param {Number} xval - the x position value
+     * @param {Number} yval - the x position value
+     * @param {String} enemytype - the type of the new enemy
+     * @param {String} playerid - the owner playe id
+     */
+    updateDragToOtherPlayers(xval, yval, enemytype, playerid ) {
         //store enemy into database to keep track
         let key = this.ref.ref(`Games/${this.roomkey}/enemies`).push({
             ownerid: playerid,

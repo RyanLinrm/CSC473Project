@@ -5,10 +5,10 @@ import  { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 
 /**
- * Leaderboard - extends React Component
+ * Leaderboard - extends React.Component
  * The Leaderboard react component for the game
  */
-export default class Leaderboard extends Component{
+class Leaderboard extends Component{
 
     /**
      * constructor of the leaderboard component sets the state and creates entries array
@@ -145,3 +145,5 @@ export default class Leaderboard extends Component{
     }
     
 }
+
+export default Leaderboard;
