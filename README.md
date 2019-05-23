@@ -10,6 +10,9 @@
 # Documentation
 * https://ryanlinrm.github.io/CSC473Project/
 
+# Deployed Site
+* https://dev.d39k5usv8gv0fp.amplifyapp.com/
+
 # Copyright Disclaimer
 * We do NOT own the sprite sheets/assets,sound/music files nor the images we used throughout the development of the project. 
 * This project and the website that we deployed are only for study purposes for CSC473 class in The City College of New York.
