@@ -336,7 +336,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @description removes the player from the scene and destroys the event handler attached to the database
      */
     removePlayer = (id)=>{
-        console.log("REMOVING");
+        
         this.otherPlayers[id].kill();
         delete this.otherPlayers[id];
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/movementData`).off();

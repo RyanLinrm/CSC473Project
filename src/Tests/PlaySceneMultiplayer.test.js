@@ -243,12 +243,14 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
   jest.mock('firebase',()=>{
       let onceMock = jest.fn();
       let onMock = jest.fn();
+      let offMock = jest.fn();
       return {
     database: function(){
         return {
             ref:jest.fn(()=>({
                 once: onceMock,
-                on:onMock
+                on:onMock,
+                off:offMock
             }))
         }
     }
@@ -344,4 +346,22 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
 
       scene.setHealthInDB(34);
       expect(scene.updates[healthPath]).toBe(34);
+  });
+
+  test('testing the removePlayer function for the PlaySceneMultiplayer',()=>{
+      const scene1 = new PlaySceneMultiplayer();
+      let killMock = jest.fn();
+      scene1.otherPlayers = {
+          'abc': {
+              kill: killMock
+          }
+      };
+
+      scene1.removePlayer('abc');
+
+      expect(killMock).toBeCalledTimes(1);
+      expect(scene1.otherPlayers).toEqual({});
+      let firebaseOffMock = firebase.database().ref().off;
+
+      expect(firebaseOffMock).toBeCalledTimes(3);
   });

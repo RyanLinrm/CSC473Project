@@ -365,3 +365,26 @@ test('Testing the kill function when mode is single', ()=>{
     expect(player.handleRespawn).toBeCalledTimes(0);
 
 })
+
+test('Testing the respawn function for the player class for a non user in single player',()=>{
+    const hP = 100; const movementSpeed = 42; const id = "abc";
+    let scene = new PlayScene();
+    scene.startingPlayerHealth = 35; scene.mode = 'single';
+    let player = new Player(scene,300,300, "p1", "p1_01.png",hP, movementSpeed,id);
+    player.spawnPosition = {x:1,y:2};
+    player.x = 244; player.y = 20323;
+    player.setActive = jest.fn(); player.setVisible = jest.fn();
+    player.user = false;
+
+    player.respawn();
+
+    expect(player.x).toBe(1);
+    expect(player.y).toBe(2);
+    expect(player.nonZeroVelocity).toEqual({x:0,y:1});
+    expect(player.beingAttacked).toBe(false);
+    expect(player.canbeAttacked).toBe(true);
+    expect(player.healthPoints).toBe(35);
+    expect(player.setActive).toBeCalledTimes(1);
+    expect(player.setVisible).toBeCalledTimes(1);
+
+});
