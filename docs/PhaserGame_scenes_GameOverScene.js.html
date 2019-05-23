@@ -1,47 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PhaserGame/scenes/GameOverScene.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PhaserGame/scenes/GameOverScene.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
 import Phaser from 'phaser';
 import { CST } from "../CST";
-import  { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 
 /**
- * WinningScene - extends Phaser.Scene
- * The scene where player who wins the game will be led to
+ * GameOverScene - extends Phaser.Scene
+ * The scene where player(s) who lose the game will be led to
  */
-export class WinningScene extends Phaser.Scene{
+export class GameOverScene extends Phaser.Scene{
 
     /**
      * creates the scene and assign a key of this scene to phaser scene
-     * @param {String} sceneKey 
-     */
-    constructor(sceneKey = CST.SCENES.WINNING){
+     *
+    */
+    constructor(sceneKey = CST.SCENES.GAMEOVER){
         super({key:sceneKey});
       
     }
 
     /**
-     * Pass in an object of winer data of player id, character type, and score of the game
+     * Pass in an object of player data of player id, character type, and score of the game
      * from game scene to this class.
      * @param {Object} data - Player data object passes from multiplayer game scene
-    */
+     */
     init(data){
-        
+
         /**
          * The player ID
-         * @name WinningScene#playerID
+         * @name GameOverScene#playerID
          * @type String
-        */
+         */
         this.playerID = data.playerID;
+
         //this.gameRoom = data.roomkey;
 
         if(data.chartype === 'bomber'){
 
             /**
              * Type of the character the player plays in game
-             * @name WinningScene#charType
+             * @name GameOverScene#charType
              * @type String
-            */
+             */
             this.charType = 'shooter';
         }
         else 
@@ -49,32 +78,25 @@ export class WinningScene extends Phaser.Scene{
 
         /**
          * The final score of this player
-         * @name WinningScene#score
+         * @name GameOverScene#score
          * @type Number
-        */
+         */
         this.score = data.score
     }
 
     /**
      * Phaser scene built in function, will be called after init function. In this function, the text
-     * diplays wining will be rendered, and with the data obtained from init function, ID, character,
-     * and final score will be displayed as well. Moreover, user can choose to play agian or
+     * diplays game over will be rendered, and with the data obtained from init function, ID, character,
+     * and score of the losing game will be displayed as well. Moreover, user can choose to play agian or
      * back to main page here.
-    */
+     */
     create(){
-        let a = this.add
-        .image(0, 0, "winning")
-        .setOrigin(0.5, 0.5)
-        .setDepth(0);
-      a.setScale(0.85, 0.65);
-      a.x = window.innerWidth / 2;
-      a.y = window.innerHeight / 2;
         let { width, height } = this.sys.game.canvas;
-        let LosingText= this.add.text(width/2-70, height/2-80, "VICTORY", { fontFamily: 'Arial', fontSize: 200, color: '#ffffff' });
+        let LosingText= this.add.text(width/2, height/2, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
         LosingText.setOrigin(0.5,0.5); 
-        this.add.text(width/2, height/2+100, `Player ID : ${this.playerID}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
-        this.add.text(width/2, height/2+150, `Your character : ${this.charType}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
-        this.add.text(width/2, height/2+200, `Your final score : ${this.score}`,{ fontFamily: 'Arial', fontSize: 20, color: '#ffffff' });
+        this.add.text(width/2, height/2+100, `Player ID : ${this.playerID}`);
+        this.add.text(width/2, height/2+150, `Your character : ${this.charType}`);
+        this.add.text(width/2, height/2+200, `Your final score : ${this.score}`);
   
 
         //adding in a restart button
@@ -125,7 +147,7 @@ export class WinningScene extends Phaser.Scene{
     /**
      * Store the game data into database for further use and record, will also determine if this
      * new score is a better score then update the best score of this player.
-    */
+     */
     async storeIntoDB() {
         await API.graphql(graphqlOperation(queries.listGameUsers, 
             {filter:{ sub: { eq: this.playerID } } })).then( async (data) =>{
@@ -150,4 +172,26 @@ export class WinningScene extends Phaser.Scene{
                 }
             })
     }
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameOverScene.html">GameOverScene</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Rider.html">Rider</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li><li><a href="WinningScene.html">WinningScene</a></li></ul><h3>Global</h3><ul><li><a href="global.html#render">render</a></li><li><a href="global.html#SortedByScore">SortedByScore</a></li><li><a href="global.html#SortedByTime">SortedByTime</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 23 2019 19:13:25 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

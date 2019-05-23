@@ -5,25 +5,63 @@ import { API, graphqlOperation } from "aws-amplify";
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 
-
+/**
+ * GameOverScene - extends Phaser.Scene
+ * The scene where player(s) who lose the game will be led to
+ */
 export class GameOverScene extends Phaser.Scene{
 
+    /**
+     * creates the scene and assign a key of this scene to phaser scene
+     *
+    */
     constructor(sceneKey = CST.SCENES.GAMEOVER){
         super({key:sceneKey});
       
     }
 
+    /**
+     * Pass in an object of player data of player id, character type, and score of the game
+     * from game scene to this class.
+     * @param {Object} data - Player data object passes from multiplayer game scene
+     */
     init(data){
+
+        /**
+         * The player ID
+         * @name GameOverScene#playerID
+         * @type String
+         */
         this.playerID = data.playerID;
+
         //this.gameRoom = data.roomkey;
+
         if(data.chartype === 'bomber'){
+
+            /**
+             * Type of the character the player plays in game
+             * @name GameOverScene#charType
+             * @type String
+             */
             this.charType = 'shooter';
         }
         else 
         this.charType = data.chartype;
+
+        /**
+         * The final score of this player
+         * @name GameOverScene#score
+         * @type Number
+         */
         this.score = data.score
     }
 
+    /**
+     * Phaser scene built in function, will be called after init function. In this function, the text
+     * diplays game over will be rendered, and with the data obtained from init function, ID, character,
+     * and score of the losing game will be displayed as well. Moreover, user can choose to play agian or
+     * back to main page here.
+     */
     create(){
         let { width, height } = this.sys.game.canvas;
         let LosingText= this.add.text(width/2, height/2, "Game Over", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
@@ -78,6 +116,10 @@ export class GameOverScene extends Phaser.Scene{
 
     }
 
+    /**
+     * Store the game data into database for further use and record, will also determine if this
+     * new score is a better score then update the best score of this player.
+     */
     async storeIntoDB() {
         await API.graphql(graphqlOperation(queries.listGameUsers, 
             {filter:{ sub: { eq: this.playerID } } })).then( async (data) =>{

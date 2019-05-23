@@ -463,7 +463,7 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_gameObjects_Units.js.html">PhaserGame/gameObjects/Units.js</a>, <a href="PhaserGame_gameObjects_Units.js.html#line10">line 10</a>
+        <a href="PhaserGame_gameObjects_Units.js.html">PhaserGame/gameObjects/Units.js</a>, <a href="PhaserGame_gameObjects_Units.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -491,6 +491,8 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
 
 
 
+
+
     
     </div>
 
@@ -498,6 +500,13 @@ Create tower attacking function, add tower sprites and their hp bars to scene.</
 
     
 
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Units.html">Units</a></dt>
+            <dd></dd>
+        </dl>
     
 
     
@@ -867,6 +876,8 @@ Mainly used in the multi player scene to assign player uid to the tower</p>
 
 
 
+
+
         
             
 
@@ -1003,6 +1014,8 @@ This Function updates the newtarget object to be the new target.</p>
 
 
 
+
+
         
             
 
@@ -1017,7 +1030,7 @@ This Function updates the newtarget object to be the new target.</p>
 
 
 <div class="description">
-    <p>collision function that is called when a collision occurs to the unit. 
+    <p>collision function that is called when a collision occurs to the unit.
 calls the takeDamage function and change being attacked status to true.</p>
 </div>
 
@@ -1072,6 +1085,8 @@ calls the takeDamage function and change being attacked status to true.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1227,6 +1242,8 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 
+
+
         
             
 
@@ -1314,6 +1331,8 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 
+
+
         
             
 
@@ -1328,9 +1347,9 @@ Including the defend function and removeDefense funciton for the unit.</p>
 
 
 <div class="description">
-    <p>Function that uses Phaser.Math.Distance.Between built-in function to find 
-the distance between tower and target.This function return the distance 
-between these two objects so we can future compare to find the target with 
+    <p>Function that uses Phaser.Math.Distance.Between built-in function to find
+the distance between tower and target.This function return the distance
+between these two objects so we can future compare to find the target with
 the shortest distance</p>
 </div>
 
@@ -1475,6 +1494,8 @@ the shortest distance</p>
 
 
 
+
+
         
             
 
@@ -1489,10 +1510,10 @@ the shortest distance</p>
 
 
 <div class="description">
-    <p>(Function is created by the TowerAttack function) </p>
-<p>Findneartower finds the nearest enemy or player to attack from the targetlist that we 
-generated. The function will call distance function to find the target that is nearest 
-to the tower, and assign it to be new target, which will be future attacked if it is 
+    <p>(Function is created by the TowerAttack function)</p>
+<p>Findneartower finds the nearest enemy or player to attack from the targetlist that we
+generated. The function will call distance function to find the target that is nearest
+to the tower, and assign it to be new target, which will be future attacked if it is
 within the attack range of the tower.</p>
 </div>
 
@@ -1547,6 +1568,8 @@ within the attack range of the tower.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1701,6 +1724,8 @@ if beingAttacked is true it tints the unit red and sets the count ot the current
 
 
 
+
+
         
             
 
@@ -1715,7 +1740,8 @@ if beingAttacked is true it tints the unit red and sets the count ot the current
 
 
 <div class="description">
-    <p>Function to remove the unit so we can handle other things related to the death such as stop the attack.<br>Also, for the towers, if the player's tower is killed, he/she lost the game, if only one tower remains,
+    <p>Function to remove the unit so we can handle other things related to the death such as stop the attack.<br>
+Also, for the towers, if the player's tower is killed, he/she lost the game, if only one tower remains,
 the player who owns the tower wins the game.</p>
 </div>
 
@@ -1770,6 +1796,8 @@ the player who owns the tower wins the game.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1856,6 +1884,8 @@ the player who owns the tower wins the game.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1992,6 +2022,8 @@ If the ending healthpoints is less than 0 it calls the kill function</p>
 
     
 </dl>
+
+
 
 
 
@@ -2195,6 +2227,8 @@ function inside towerAttack.</p>
 
 
 
+
+
         
             
 
@@ -2331,6 +2365,8 @@ Handles isInjured and towerAttack.</p>
 
 
 
+
+
         
     
 
@@ -2347,13 +2383,13 @@ Handles isInjured and towerAttack.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Posion.html">Posion</a></li><li><a href="Rider.html">Rider</a></li><li><a href="sword.html">sword</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#SortedByScore">SortedByScore</a></li><li><a href="global.html#SortedByTime">SortedByTime</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameOverScene.html">GameOverScene</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Rider.html">Rider</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li><li><a href="WinningScene.html">WinningScene</a></li></ul><h3>Global</h3><ul><li><a href="global.html#render">render</a></li><li><a href="global.html#SortedByScore">SortedByScore</a></li><li><a href="global.html#SortedByTime">SortedByTime</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu May 23 2019 17:24:55 GMT-0500 (GMT-05:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 23 2019 19:13:25 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
