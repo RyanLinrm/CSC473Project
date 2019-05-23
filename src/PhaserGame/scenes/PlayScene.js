@@ -1,13 +1,9 @@
 import Phaser from 'phaser';
-
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
 import { Units } from "../gameObjects/Units";
-import {Player} from "../gameObjects/Player";
 import {Bomber} from "../gameObjects/Bomber";
 import {Enemy} from "../gameObjects/Enemy";
 import {Rider} from "../gameObjects/Rider";
-import {Melee} from "../gameObjects/Melee";
 import {HUD} from "../gameObjects/HUD";
 import spriteAnimations from '../gameObjects/Animations';
 
@@ -166,10 +162,12 @@ export class PlayScene extends Phaser.Scene{
       //  this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_01.png",0,500,150);
         switch(this.spritekey){
             case "bomber":
-            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_0.png",0,this.startingPlayerHealth,150,'123');
+            this.player = new Bomber(this,playerStartingPos.x,playerStartingPos.y, "p1", "p1_0.png",0,this.startingPlayerHealth,75,'123');
             break;
             case "rider":
-            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,'123').setScale(0.8);
+            this.player = new Rider(this,playerStartingPos.x,playerStartingPos.y, "rider", "rider_0.png",1,this.startingPlayerHealth,110,'123').setScale(0.8);
+            break;
+            default:
             break;
         }
         this.enemyPlayers.add(this.player);
@@ -225,17 +223,17 @@ export class PlayScene extends Phaser.Scene{
         //adjust player hit box
         this.player.setSize(30, 30);
         if(this.mode === 'single'){
-  
+            //this.scene.start(CST.SCENES.WINNING);
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
             this.sword_in_the_stone=new Units(this,645,645,645,595,"sword_in_the_stone",1,2000,1,200,100,this.player.uid,this.player.uid,"sword_in_the_stone.svg");
             this.sword_in_the_stone.setScale(0.5);
 
-            this.building=new Units(this,1200,1200,1150,1099,"building1",1,200,4,180,200).setScale(0.15);
-            this.university=new Units(this,1200,0,1150,-1,"university",1,200,4,180,200).setScale(1.5);
-            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,200,4,180,200).setScale(1.5);
-            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,200,4,180,200).setScale(1.5);
+            this.building=new Units(this,1200,1200,1150,1099,"building1",1,500,4,180,200).setScale(0.15);
+            this.university=new Units(this,1200,0,1150,-1,"university",1,500,4,180,200).setScale(1.5);
+            this.pyramid=new Units(this,0,0,100,-1,"pyramid",1,500,4,180,200).setScale(1.5);
+            this.magicstone=new Units(this,0,1200,100,1089,"magicstone",1,500,4,180,200).setScale(1.5);
 
 
             //The enemies are in four different towers.
@@ -344,11 +342,11 @@ export class PlayScene extends Phaser.Scene{
         let tiles2 = Mymap.addTilesetImage("map_atlas2", "tiles2");
 
        // display layers
-        let groundLayer = Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
-        let centerLayer = Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("GroundLayer", [tiles1], 0 , 0).setDepth(-3);
+        Mymap.createStaticLayer("Center", [tiles2], 0 , 0).setDepth(-1);
         this.waterLayer = Mymap.createStaticLayer("Water", [tiles1], 0 , 0).setDepth(-2);
-        let objectLayer = Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
-        let addonLayer = Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("Objects", [tiles1], 0 , 0).setDepth(-1);
+        Mymap.createStaticLayer("AddOn", [tiles1], 0 , 0).setDepth(-1);
         this.CollisionLayer = Mymap.createStaticLayer("Collision",[tiles1], 0, 0);
 
         //Collision layer handler
@@ -392,12 +390,19 @@ export class PlayScene extends Phaser.Scene{
             
     }
      
+        /**
+         * function to change the default tint color of the enemy unit, if the player
+         * attack a enemy that does not have the same uid as the player, its color 
+         * will be changed so player can see that it is his/her opposing enemy.
+         * 
+         * @param {object} player - The player's enemies that we want to change color
+         */
         changeEnemyColor=(player,time)=>{
             let enemiestochange=[]
             this.enemies.getChildren().map(child => enemiestochange.push(child)); 
             for (let i = 0; i < enemiestochange.length; i++) {
-                if(enemiestochange[i].uid!=player.uid){
-                    if( enemiestochange[i].tint!=0xffb3b3){
+                if(enemiestochange[i].uid!==player.uid){
+                    if( enemiestochange[i].tint!==0xffb3b3){
                         enemiestochange[i].tintcolor=0xffb3b3;              
             }
         }      
@@ -419,7 +424,7 @@ export class PlayScene extends Phaser.Scene{
                 this.cooldowntime = time + 10000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
-                    if (this.enemylist[i].uid!=this.player.uid){
+                    if (this.enemylist[i].uid!==this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 200 && Math.abs(this.enemylist[i].y - this.player.y) < 200){ 
                         this.enemylist[i].kill(true,this.playerUid);       
                         }
@@ -444,7 +449,7 @@ export class PlayScene extends Phaser.Scene{
                 this.stopcooldown = time + 5000;
                 this.enemies.getChildren().map(child => this.enemylist.push(child));  
                 for (let i = 0; i < this.enemylist.length; i++) {
-                    if (this.enemylist[i].uid!=this.player.uid){
+                    if (this.enemylist[i].uid!==this.player.uid){
                         if (Math.abs(this.enemylist[i].x - this.player.x) < 150 && Math.abs(this.enemylist[i].y - this.player.y) < 100){ 
                             this.wall1=new Enemy(this,this.enemylist[i].x+25,this.enemylist[i].y+25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
                             this.wall2=new Enemy(this,this.enemylist[i].x-25,this.enemylist[i].y-25,"wall","wall.png",this.player,null,100,0,0,0,0,0,this.player.uid).setScale(0.2);
@@ -513,7 +518,7 @@ export class PlayScene extends Phaser.Scene{
         if(this.GameIsGoing === false){
             return;
         }
-        // if sword_in_the_stone is destoryed or the player's hp is below 0
+        // if sword_in_the_stone is destoryed and the player's hp is below 0
         // you lsoe the game       
         if(this.mode==="single"){
             this.createEnemies(time);
@@ -523,7 +528,8 @@ export class PlayScene extends Phaser.Scene{
         }
         // if all the enemy towers are destoryed, you win the game
         if(this.building.healthPoints<=0 && this.pyramid.healthPoints<=0 && this.magicstone.healthPoints<=0 &&this.building.healthPoints<=0){
-            this.wonGame()
+            //this.wonGame()
+            this.scene.start(CST.SCENES.WINNING);
         }
     }
        // console.log(this.player.healthPoints)
@@ -532,21 +538,6 @@ export class PlayScene extends Phaser.Scene{
         this.player.mana+=delta/1000;
         this.manabar.regenManaBar(delta/1000);}
         this.changeEnemyColor(this.player,time);
-     
-        //Handler character getting attacked by enemy, cooldown 3s
-
-    /*    this.physics.world.collide(this.enemies, this.player, (enemy,player)=>{
-            if(this.canBeAttacked < time){
-               // console.log('got hit!');
-                if (enemy.active && player.active ){
-                    player.takeDamage(enemy.ATK);
-                    console.log(player.healthPoints);
-                    this.hpbar.cutHPBar(enemy.ATK);
-                }
-                this.canBeAttacked = time + 3000;
-            }
-        },null,this);*/
-
 
         //key control
         //movement note: we should only be able to move our character when it is alive
@@ -572,8 +563,8 @@ export class PlayScene extends Phaser.Scene{
                 this.player.attack();
 
                 //Testing: everytime we attack, decreases some mana
-                this.player.mana -= 2;
-                this.manabar.cutManaBar(2);
+                this.player.mana -= 10;
+                this.manabar.cutManaBar(10);
             }
 
             if(this.keyboard.W.isUp && this.keyboard.S.isUp){
@@ -590,11 +581,7 @@ export class PlayScene extends Phaser.Scene{
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
-            //Generate player ability and skills
-            /*if (Phaser.Input.Keyboard.JustDown(this.spacebar))
-            {
-                this.player.attack();
-            }*/
+        
             //speed up the movement 
 
             if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
@@ -647,7 +634,7 @@ export class PlayScene extends Phaser.Scene{
                     this.player.movementSpeed=150;
                 }
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
+            if (Phaser.Input.Keyboard.JustDown(this.Ebar) && this.cooldowntime< time)
             {  
                 this.createUltimate(time);
             

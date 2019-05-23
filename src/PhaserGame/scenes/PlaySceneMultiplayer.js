@@ -3,13 +3,10 @@ import {PlayScene} from './PlayScene.js';
 import {Player} from "../gameObjects/Player";
 import {Rider} from "../gameObjects/Rider";
 import { CST } from "../CST";
-import {generate} from 'randomstring';
 import * as firebase from 'firebase';
-import { ConsoleLogger } from '@aws-amplify/core';
 import {HUD} from "../gameObjects/HUD";
 import {Enemy} from "../gameObjects/Enemy";
-import spriteAnimations from '../gameObjects/Animations';
-import { Units } from "../gameObjects/Units";
+
 
 /**
  * PlaySceneMultiplayer - extends Phaser.Scene
@@ -117,6 +114,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.startingPlayerHealth = 250;
     }
 
+    /**
+     * initialization for the scene takes the data object passed and uses it to intialize properties in the scene
+     * @param {string} data 
+     */
     init(data){
     /**
      * The id of the player
@@ -150,13 +151,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      */
         this.spritekey = data.chartype;
 
-    /**
-     * The bots in the game
-     *
-     * @name Player#bots
-     * @type number
-     */
-        this.bots = 0;
+
 
     /**
      * The amount of players in the game
@@ -178,17 +173,108 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
     }
 
 
-    createPlayer = (id,position,velocity) =>{
-        console.log("CreatingPlayer");
-        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', (snapShot)=>{
-            this.temp = snapShot.val();
-        })
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method setTemp
+     * @param {object} snapShot - the snapshot passed by the firebase event handler when called 
+     * @description sets the temp value based upon the val() in the snapshot paramater
+     */
+    setTemp = (snapShot)=>{
+        this.temp = snapShot.val();
+    }
+
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method enemyMovementDataChanged
+     * @param {string} id - the id of the enemy player
+     * @param {object} snapShot - the snapshot passed by the firebase event handler when called 
+     * @description based upon the snapShot suppolied by the firebase event handler sets the position or velocity of the player sprite
+     */
+    enemyMovementDataChanged = (id,snapShot)=>{
+        let dataChanged = snapShot.val();
+        let changedKey = snapShot.key;
+
+        if(changedKey === 'pos'){
+            this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
+        }else{
+            this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+        }
+    }
+
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method enemyAttackDataChanged
+     * @param {string} id - the id of the enemy player
+     * @param {object} snapShot - the snapshot passed by the firebase event handler when called 
+     * @description based upon the snapShot suppolied by the firebase event handler sets the position or velocity or starts an attack in the game
+     */
+    enemyAttackDataChanged = (id,snapShot) => {      
+        let dataChanged = snapShot.val();  
+        let changedKey = snapShot.key;
+
+        if(changedKey === 'pos'){
+            this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
+        }else if(changedKey === 'velocity'){
+            this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
+        }
+        else{
+            this.otherPlayers[id].attack();
+        }
+
+    }
+
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method enemyCheckIfInGame
+     * @param {string} id - the id of the enemy player
+     * @param {object} snapShot - the snapshot passed by the firebase event handler when called 
+     * @description checks if enemey is in game based upon the snapShot supplied by the firebase event handler removes the player from the game if the value of the snapshot is false
+     */
+    enemyCheckIfInGame = (id,snapShot) => { 
+        if(snapShot.val() === false){
+        this.removePlayer(id);
+        }
+    }
+
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method enemeyHealthChanged
+     * @param {string} id - the id of the enemy player
+     * @param {object} snapShot - the snapshot passed by the firebase event handler when called 
+     * @description sets the health of the enemy player based up on the snapshot from the firebase event handler 
+     */
+    enemeyHealthChanged = (id,snapShot)=>{
+        let health = snapShot.val();
+        let player = this.otherPlayers[id];
+        player.setHealth(health);
+        //console.log(this);
+        this.hUD.setPlayerHealth(player.towerPosition,health);
         
-        if(this.temp == "bomber"){
+    }
+
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method createPlayer
+     * @param {string} id - the id of the enemy player
+     * @param {object} position - {x:value, y: value} the position the player should spawn in  
+     * @param {object} velocity - {x:value, y: value} the velocity the player should spawn in
+     * @description creates a player sprite in the game and creates all the event handlers to the firebase database. 
+     */
+    createPlayer = (id,position,velocity) =>{
+        
+        firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/playerType`).once('value', this.setTemp)
+        
+        if(this.temp === "bomber"){
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
         }
-        else if (this.temp == "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
+        else if (this.temp === "rider"){
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,100,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
@@ -228,57 +314,29 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         //this.player1.setCollideWorldBounds(true);
         let movementDataDB = `Games/${this.gameRoom}/Players/${id}/movementData`;
-        firebase.database().ref(movementDataDB).on("child_changed", (snapShot) => {
-            let dataChanged = snapShot.val();
-            let changedKey = snapShot.key;
-
-            if(changedKey === 'pos'){
-                this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
-            }else{
-                this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
-            }
-            
-        });
+        firebase.database().ref(movementDataDB).on("child_changed", this.enemyMovementDataChanged.bind(this,id));
 
         let attackDB = `Games/${this.gameRoom}/Players/${id}/attack`;
-        firebase.database().ref(attackDB).on("child_changed", (snapShot) => {      
-            let dataChanged = snapShot.val();  
-            let changedKey = snapShot.key;
-
-            if(changedKey === 'pos'){
-                this.otherPlayers[id].setPosition(dataChanged.x,dataChanged.y); 
-            }else if(changedKey === 'velocity'){
-                this.otherPlayers[id].setVelocity(dataChanged.x,dataChanged.y); 
-            }
-            else{
-                this.otherPlayers[id].attack();
-            }
-
-        });
+        firebase.database().ref(attackDB).on("child_changed", this.enemyAttackDataChanged.bind(this,id));
 
         let inGameDB = `Games/${this.gameRoom}/Players/${id}/inGame`;
-        firebase.database().ref(inGameDB).on("value", (snapShot) => { 
-            if(snapShot.val() === false){
-            this.removePlayer(id);
-            }
-
-        });
+        firebase.database().ref(inGameDB).on("value", this.enemyCheckIfInGame.bind(this,id));
 
         let playerHealthPath = `Games/${this.gameRoom}/Players/${id}/health`;
-        firebase.database().ref(playerHealthPath).on('value',(snapShot)=>{
-            let health = snapShot.val();
-            let player = this.otherPlayers[id];
-            player.setHealth(health);
-            //console.log(this);
-            this.hUD.setPlayerHealth(player.towerPosition,health);
-            
-        });
+        firebase.database().ref(playerHealthPath).on('value',this.enemeyHealthChanged.bind(this,id));
 
         this.databaseListners.push(movementDataDB,attackDB,inGameDB,playerHealthPath);
     }
 
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method removePlayer
+     * @param {string} id - the id of the enemy player
+     * @description removes the player from the scene and destroys the event handler attached to the database
+     */
     removePlayer = (id)=>{
-        console.log("REMOVING");
+        
         this.otherPlayers[id].kill();
         delete this.otherPlayers[id];
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/movementData`).off();
@@ -286,6 +344,14 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         firebase.database().ref(`Games/${this.gameRoom}/Players/${id}/inGame`).off();
     }
 
+    /**
+     * 
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method createBotAt
+     * @param {string} towerNumber - the towernumber of a tower in the scene 1-4
+     * @description creates a bot player at the specified position
+     */
     createBotAt = (towerNumber)=>{
         let playerPos = this.startingPosFromTowerNum(towerNumber);
         let bot =  new Player(this,playerPos.x,playerPos.y, "p1", "p1_0.png",0,500,64,"bot" + towerNumber);
@@ -293,6 +359,18 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.updateSprite(bot);
     }
 
+    /**
+     * 
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method createBotAt
+     * @param {number} x - the spawn x position of a new enemy
+     * @param {number} y - the spawn y position of a new enemy
+     * @param {type} type - the type of enemy that should be created
+     * @param {type} playerid - the playerID that the enemey should be associated with
+     * @param {type} enemyid - the enemyID that the enemey should be associated with
+     * @description creates an enemy at the specified location using the playerID and enemyID
+     */
     addNewEnemy = (x, y, type, playerid, enemyid) => {
 
         if(type==='wolf'){              
@@ -326,6 +404,10 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     }
 
+    /**
+     * create function that is called by phaser to create the scene and to start it
+     * 
+     */
     create() {
         //this.spritekey = "bomber";
         super.create(this.playerID, 'multi');
@@ -343,11 +425,11 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         let startingPlayerPosition = this.startingPosFromTowerNum(this.seatNumber);
 
         this.player.setPosition(startingPlayerPosition.x,startingPlayerPosition.y);
-        if(this.spritekey == "bomber"){
+        if(this.spritekey === "bomber"){
         this.player1 = new Player(this,startingPlayerPosition.x,startingPlayerPosition.y, "p1", "p1_0.png",0
                                     ,this.startingPlayerHealth,64,this.playerID);
         }
-        else if(this.spritekey == "rider"){
+        else if(this.spritekey === "rider"){
         this.player1 = new Rider(this,startingPlayerPosition.x,startingPlayerPosition.y, "rider", "rider_0.png",1
                                     ,this.startingPlayerHealth,200,this.playerID).setScale(0.6);
         }
@@ -416,8 +498,8 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
             if(countDown === 0){
                 countDownText.setText("Go");
-                let poop = this.countDownText;
-                let tween = this.tweens.add({
+                
+                this.tweens.add({
                     targets: countDownText,
                     alpha: 0,
                     ease: 'Power1',
@@ -487,7 +569,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         
         let timeDB = `Games/${this.gameRoom}/Players/${this.playerID}/attack/time`;
         database.ref(timeDB).on("value", (snapShot) => { 
-            if (snapShot.val() != 0)       
+            if (snapShot.val() !== 0)       
                 this.player1.attack();
 
         });
@@ -587,6 +669,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     }
 
+    /**
+     * the update function of the scene that gets called by phaser 60 times a second
+     * 
+     * @param {number} time 
+     * @param {number} delta 
+     */
     update(time,delta){
       //  console.log(this.player1.mana)
         this.hUD.update(time,this.player1,this);
@@ -676,6 +764,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
 
     }
 
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method wonGame
+     * @description function that gets called when the player wins the game
+     */
     wonGame = () => {
         this.GameIsGoing = false;
         let countDownText = this.add.text(this.player1.x, this.player1.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
@@ -692,7 +786,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             this.cooldowntime = time + 10000;
             this.enemies.getChildren().map(child => this.enemylist.push(child));  
             for (let i = 0; i < this.enemylist.length; i++) {
-                if (this.enemylist[i].uid!=this.player1.uid){
+                if (this.enemylist[i].uid!==this.player1.uid){
                     if (Math.abs(this.enemylist[i].x - this.player1.x) < 200 && Math.abs(this.enemylist[i].y - this.player1.y) < 200){ 
                     this.enemylist[i].kill(true,this.playerUid);       
                     }
@@ -700,7 +794,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
             }
     }
 
-
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method towerDestroyed
+     * @description function that gets called when the players tower gets destroyed
+     */
     towerDestroyed = (TowerID)=>{
         this.GameIsGoing = false;
         this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
@@ -717,6 +816,12 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         });
     }
 
+    /**
+     * @instance
+     * @memberof PlaySceneMultiplayer
+     * @method setHealthInDB
+     * @description function that sets the health in the database by adding a value in this.updates
+     */
     setHealthInDB = (health)=>{
         this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/health`] = health;
     }

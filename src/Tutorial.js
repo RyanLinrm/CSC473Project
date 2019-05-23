@@ -18,6 +18,10 @@ import lowcenter from './tutorialimages/lowhealthbuilding.png'
 import lowhealth from './tutorialimages/lowhealth.png'
 import building from './tutorialimages/building.png'
 import spawn from './tutorialimages/spawn.png'
+import stop  from './tutorialimages/stop.png'
+import destroy  from './tutorialimages/destroy.png'
+import reward  from './tutorialimages/reward.png'
+
 /**
  * Tutorial class
  */
@@ -54,7 +58,7 @@ class Tutorial extends Component {
   render() {
     return (
       <div>
-        {this.state.Counter == 0 && (
+        {this.state.Counter === 0 && (
           <div>
             <h2> The aim of the game is survival</h2>
             <div className="filler"> </div>
@@ -62,14 +66,14 @@ class Tutorial extends Component {
               <Button className="prev" variant="btn btn-light">
                 Previous{" "}
               </Button>
-              <img src={basicsprite} />
+              <img src={basicsprite} alt='Character sprite'/>
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
             </div>
           </div>
         )}
-        {this.state.Counter == 1 && (
+        {this.state.Counter === 1 && (
           <div>
             <h2>Character Selection</h2>
             <div className="filler"> </div>
@@ -81,7 +85,7 @@ class Tutorial extends Component {
               >
                 Previous{" "}
               </Button>
-              <img src={charselect} />
+              <img src={charselect} alt='character selection'/>
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
@@ -102,10 +106,10 @@ class Tutorial extends Component {
                 <tr>
                   <th><h6>attack photo:</h6></th>
                   <th className="rider">
-                    <img src={rider} />
+                    <img src={rider} alt='rider'/>
                   </th>
                   <th className="shooter">
-                    <img src={shooter} />
+                    <img src={shooter} alt='shooter'/>
                   </th>
                 </tr>
                 <tr>
@@ -120,28 +124,28 @@ class Tutorial extends Component {
                 <tr>
                   <th><h6>Starting Health:</h6></th>
                   <th className="rider">
-                    <h3>150</h3>
+                    <h3>250</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>250</h3>
                   </th>
                 </tr>
                 <tr>
                   <th><h6>Starting mana:</h6></th>
                   <th className="rider">
-                    <h3>100</h3>
+                    <h3>1000</h3>
                   </th>
                   <th className="shooter">
-                    <h3>150</h3>
+                    <h3>1000</h3>
                   </th>
                 </tr>
                 <tr>
                   <th><h6>Speed in single player:</h6></th>
                   <th className="rider">
-                    <h3>150</h3>
+                    <h3>110</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>75</h3>
                   </th>
                 </tr>
                 <tr>
@@ -150,14 +154,14 @@ class Tutorial extends Component {
                     <h3>100</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>64</h3>
                   </th>
                 </tr>
               </Table>
             </div>
           </div>
         )}
-        {this.state.Counter == 2 && (
+        {this.state.Counter === 2 && (
           <div>
             <h2> Movement </h2>
             <div className="filler"> </div>
@@ -172,7 +176,7 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
-              <img src={spriteMovement} />
+              <img src={spriteMovement} alt='character movement'/>
               <table>
                 <th>
                   <tr><h3>A key to move left</h3></tr>
@@ -188,7 +192,7 @@ class Tutorial extends Component {
                 </th>
               </table>
               <br />
-              <img src={spriteAttack} />
+              <img src={spriteAttack} alt='character attack'/>
               <table>
                 <th>
                   <tr><h3>Space bar to attack</h3></tr>
@@ -197,7 +201,7 @@ class Tutorial extends Component {
             </div>
           </div>
         )}
-        {this.state.Counter == 3 && (
+        {this.state.Counter === 3 && (
           <div>
             <h2> Single Player Objective</h2>
             <div className="filler"> </div>
@@ -212,25 +216,25 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
-              <img src={singlemainbuilding} />
+              <img src={singlemainbuilding} alt='single building'/>
               <h2>Defend the center building from attacking enemies</h2>
-              <img src={status} />
+              <img src={status} alt='status'/>
               <h2>keep an eye on your health and manabar</h2>
-              <img src={building} />
-              <h2>destroy buildings on the outside for extra points</h2>
+              <img src={building} alt='building'/>
+              <h2>destroy all other buildings to win the game</h2>
               <br />
               <div>
-                <img src={lowcenter} />
-                <img src={lowhealth} />
+                <img src={lowcenter} alt='low center'/>
+                <img src={lowhealth} alt='low health'/>
               </div>
               <br />
               <h2>you lose when you die and your center building dies</h2>
               <br />
-              <img src={gameover} />
+              <img src={gameover} alt='game over'/>
             </div>
           </div>
         )}
-        {this.state.Counter == 4 && (
+        {this.state.Counter === 4 && (
           <div>
             <h2> Multiplayer Objective</h2>
             <div className="filler"> </div>
@@ -245,21 +249,21 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
-              <img src={spawn} />
+              <img src={spawn} alt='spawn'/>
               <h2>defend the building you spawn closest to</h2>
-              <img src={status} />
+              <img src={status} alt='status'/>
               <h2>keep an eye on your health and manabar</h2>
               <br />
-              <img src={lowhealth} />        
+              <img src={lowhealth} alt='low health'/>        
                 <h2>when you die there's a respawn cooldowntime</h2>
               <br />
               <h2>Gameover when building destroyed</h2>
               <br />
-              <img src={gameover} />
+              <img src={gameover} alt='game over'/>
             </div>
           </div>
         )}
-        {this.state.Counter == 5 && (
+        {this.state.Counter === 5 && (
           <div>
             <h2> opposing health </h2>
             <div className="filler"> </div>
@@ -274,14 +278,60 @@ class Tutorial extends Component {
               <Button className="next" onClick={this.inccount}>
                 NEXT{" "}
               </Button>
-              <img src={otherHealth}/>
+              <img src={otherHealth} alt='other players health'/>
               <h2>view opposing players health with the HUD on left</h2>
             </div>
           </div>
         )}
-        {this.state.Counter == 6 && (
+        {this.state.Counter === 6 && (
           <div>
             <h2> Drag and drop from your player HUD members</h2>
+            <div className="box">
+            <Button
+                onClick={this.deccounter}
+                className="prev"
+                variant="btn btn-dark"
+              >
+                Previous{" "}
+              </Button>
+              <Button className="next" onClick={this.inccount}>
+                NEXT{" "}
+              </Button>
+              <img id="Hud" src={useHUD} alt='HUD'/>
+              <h3>Everytime one is placed, it reduced player mana</h3>
+              <h2> Functionality of Units </h2>
+              <img className="directHUD" src={HUD} alt='HUD'/>
+              <Table className="directHUD" align="center">
+                <tr>
+                  <th><h4>robot</h4></th>
+                  <th><h4>wolf</h4></th>
+                  <th><h4>skeletor</h4></th>
+                  <th><h4>demon</h4></th>
+                  <th><h4>wall</h4></th>
+                </tr>
+                <tr>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>Blocks players path and attacks</h5></th>
+                </tr>
+      
+                <tr>
+                  <th><h5>Low mana cost standard unit</h5></th>
+                  <th><h5>Become werewolf and strengthen when health is low</h5></th>
+                  <th><h5>Moderate Health Points, slow movement speed</h5></th>
+                  <th><h5>Increase size and attack speed in low health</h5></th>
+                  <th><h5>Nonmovable blocks that can be passed when destroyed </h5></th>
+                </tr>
+              </Table>
+            </div>
+          </div>
+        )}
+         {this.state.Counter === 7 && (
+          <div>
+            <h2>Ultimate Skills</h2>
+            <div className="filler"> </div>
             <div className="box">
               <Button
                 onClick={this.deccounter}
@@ -290,29 +340,14 @@ class Tutorial extends Component {
               >
                 Previous{" "}
               </Button>
-              <Button className="next" variant="light">
-                NEXT{" "}
-              </Button>
-              <img id="Hud" src={useHUD} />
-              <h3>Everytime one is placed, it reduced player mana</h3>
-              <h2> Functionality of HUD </h2>
-              <img className="directHUD" src={HUD} />
-              <Table className="directHUD" align="center">
-                <tr>
-                  <th><h5>robot</h5></th>
-                  <th><h5>wolf</h5></th>
-                  <th><h5>skeletor</h5></th>
-                  <th><h5>demon</h5></th>
-                  <th><h5>wall</h5></th>
-                </tr>
-                <tr>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>Blocks players path and attacks</h5></th>
-                </tr>
-              </Table>
+              <h2>Press Z key in Single player to petrify nearby enemies</h2>
+              <img src={stop} alt='stop'/>
+              <h2>Press E key to destroy all nearby enemies</h2>
+              <br />
+              <img src={destroy} alt='destory'/>        
+              <h2>Destroy the center sword to earn the ultimate ability in multiplayer</h2>
+              <img src={reward} alt='reward'/>  
+              <br />
             </div>
           </div>
         )}
@@ -320,5 +355,6 @@ class Tutorial extends Component {
     );
   }
 }
+
 
 export default Tutorial;

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: PhaserGame/gameObjects/Rider.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: PhaserGame/gameObjects/Rider.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Player} from "../gameObjects/Player";
+import { Posion } from "./Projectiles";
+/**
+ * Rider Class. One character type of the player.
+ * Holds the same properties as a regular player but have 
+ * the ability to use posion bullet. 
+ */
+export class Rider extends Player{
+    /**
+     * 
+     * sets up the rider object. calls createWeapon and createSpecialWeapon
+     * adds the sprite to the scene
+     * 
+     * @param {Phaser.Scene} scene - The Scene that the rider is going to be in
+     * @param {number} x - The X axis position of the rider in the scene
+     * @param {number} y - The Y axis poistion of the rider in the scene
+     * @param {string} key - The key of the rider object for phaser
+     * @param {string} textureName - The name of the texture that is used for the rider
+     * @param {number} characterId - The specific character type of the rider
+     * @param {number} healthPoints - The health that a rider will have in the game
+     * @param {number} movementSpeed - the speed that the rider moves 
+     * @param {string} uid - unique id of each rider object
+     */
+    constructor(scene,x,y,key,textureName,characterId,healthPoints = 100,movementSpeed=128,uid='233'){
+        super(scene,x,y,key,textureName,characterId,healthPoints,movementSpeed,uid);
+        this.movementSpeed=movementSpeed;
+        this.characterId=characterId;
+        this.beingAttacked=false;
+        this.healthPoints=healthPoints;
+        this.uid=uid;
+        this.createWeapon(scene);
+
+    } 
+   /**
+     * Intializes the weapon of the rider so that the rider can shoot
+     * creates the bullets which is added to the scene
+     * creates the attack function and removeWeapon funciton for the rider
+     * 
+     * @param {Phaser.Scene} scene - The scene that the rider is inside that is used to create the bullet group inside the createWeapon function
+     */
+    createWeapon(scene) {
+        this.bullets = scene.physics.add.group({ classType: Posion, runChildUpdate: true });
+        
+        /**
+         * (Function is created by the createWeapon function)
+         * 
+         * calling attack will shoot three bullets in rider's upper directions. 
+         */
+        this.attack = () => {
+            let bullet = this.bullets.get();
+            scene.children.add(bullet);
+            bullet.place(this,this.uid);
+        };
+       /**
+         * calling removeWeapon destroys the weapon used by the player sets attack back to null
+         */
+        this.removeWeapon = () => { //destroys the weapon used
+            this.bullets.destroy();
+            this.attack = null;
+        };
+
+    }
+    /**
+    * update method that gets called by the playscene 60 times a second
+    * handles isInjured and rider animation
+    * 
+    * @param {number} time - time that gets passed by Phaser when update is called
+    */
+    update(time){
+        this.player_movement();
+        this.isInjured(time);
+        this.beingAttacked=false;
+    }
+ 
+
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="CharSelectScene.html">CharSelectScene</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameOverScene.html">GameOverScene</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="Leaderboard.html">Leaderboard</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Rider.html">Rider</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li><li><a href="WinningScene.html">WinningScene</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 23 2019 19:48:20 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

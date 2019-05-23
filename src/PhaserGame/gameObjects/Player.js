@@ -1,6 +1,6 @@
 import { Bullet } from "./Projectiles";
 import Phaser from 'phaser';
-import * as firebase from 'firebase';
+
 
 /**
  * Player Class. The actual player sprite that gets added the the scene which is controlled by the user or bot or player data from the database
@@ -386,7 +386,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
      * @param {number} y - y velocity
      */
     setNonZeroVelocity(x,y){ 
-        if (x != 0 || y != 0){
+        if (x !== 0 || y !== 0){
             this.nonZeroVelocity = {'x':x, 'y':y};
         }
     }
@@ -457,9 +457,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite{
 
     botUpdate(scene,time){
         let towers = scene.towers;
-        let players = scene.players;
-        let towerDistance = 100;
-
+        
+    
         let maxDistance = 1000000000;
         let distance = 0;
         let closestTower = null;

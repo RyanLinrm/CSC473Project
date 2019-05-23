@@ -1,16 +1,32 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { Container } from 'react-bootstrap';
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import  { API, graphqlOperation } from "aws-amplify";
 import * as queries from './graphql/queries';
 
-export default class Leaderboard extends Component{
+/**
+ * Leaderboard - extends React.Component
+ * The Leaderboard react component for the game
+ */
+class Leaderboard extends Component{
+
+    /**
+     * constructor of the leaderboard component sets the state and creates entries array
+     * @param {object} props - the props passed by another react component
+     */
     constructor(props){
         super(props);
         this.state = {
             userinfo:[],
             sorted: 'time'
         };
+
+    /**
+     * Array that contains all the entries 
+     * 
+     * @name Leaderboard#entries
+     * @type array
+     */
         this.entries = [];
 
         this.getUserinfo();
@@ -28,6 +44,9 @@ export default class Leaderboard extends Component{
         });
     }
 
+    /**
+     * gets userList from state and sorts it and returns it as entries in the leaderboard by time
+     */
     SortedByTime() {
         let userList = this.state.userinfo;
         let leaderBoardList = [];
@@ -55,6 +74,9 @@ export default class Leaderboard extends Component{
         return entries;
     }
 
+    /**
+     * gets userList from state and sorts it and returns it as entries in the leaderboard by Score
+     */
     SortedByScore() {
         let userList = this.state.userinfo;
         let leaderBoardList = [];
@@ -82,6 +104,9 @@ export default class Leaderboard extends Component{
         return entries;
     }
 
+    /**
+     * render funciton which returns the actual leaderboard component
+     */
     render(){
         if(this.state.sorted === 'time'){
             this.entries = this.SortedByTime();
@@ -120,3 +145,5 @@ export default class Leaderboard extends Component{
     }
     
 }
+
+export default Leaderboard;

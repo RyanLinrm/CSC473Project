@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
-import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+
 import * as firebase from 'firebase';
     /**
      * The Enemy class.
@@ -41,7 +41,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
-        this.singleplayer=scene.player;
+        this.singleplayer=scene.player; 
         this.gameroom = '';
       
         /**
@@ -160,7 +160,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * sets up the movement funciton that is called by the update method.
          */ 
         this.moveEnemy = () =>{
-            if(this.movementSpeed!=0){
+            if(this.movementSpeed!==0){
             this.EnemyBehavior(this,target);
             
             scene.physics.moveToObject(this,this.target,this.movementSpeed);}
@@ -208,16 +208,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
           case 5:
            enemy.setPosition(target.x,target.y); 
             break;
+          default:
+            break;
         } };    
-      /*  //if the enemy collide with other enemy or player, it will move to other direction
-        this.scene.physics.world.collide(enemy, target, (enemy,target)=>{
-            if (target.uid!=enemy.uid){
-                this.randomMove();}
-            else if (target.uid===enemy.uid){
-                enemy.body.immovable=false;
-               // enemy.body.moves=true;
-            }
-            },null,this);*/
        
         this.scene.physics.add.overlap(enemy, enemy, this.randomMove, null, this);
         this.scene.physics.add.overlap(enemy, target, this.randomMove, null, this);
@@ -238,7 +231,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             //this.scene.enemies.getChildren().map(child => this.towers.push(child));  
           //  this.towers.push(this.scene.player)
             for (var i = 0; i < this.towers.length; i++) {
-                if(this.towers[i].active && this.towers[i].uid!=enemy.uid){
+                if(this.towers[i].active && this.towers[i].uid!==enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
                      if (towerdistance<shortestDistance){
                         shortestDistance=towerdistance;      
@@ -254,7 +247,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             for( let i = 0; i < this.enemyplayerid.length; i++ ){
                 let player = this.enemyplayers[this.enemyplayerid[i]];
                 if(Math.abs(player.x - enemy.x) < this.attackRange+30 && Math.abs(player.y - enemy.y) < this.attackRange+30){
-                    if(player.active && player.uid!=enemy.uid){
+                    if(player.active && player.uid!==enemy.uid){
                         this.changetarget(player);
                         break;
                     }
@@ -272,12 +265,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < this.attackRange){
-                this.movementSpeed=this.movementSpeed+1;}
+                this.movementSpeed+=0.01;}
+          
 
-            if(this.movementSpeed>=player.movementSpeed-10){
-                this.movementSpeed=65;}
+            if(this.movementSpeed>=player.movementSpeed-50){
+                this.movementSpeed-=0.01;}
+
+            if(this.sword_in_the_stone.active===false){
+                    this.changetarget(player);}
+                
             if(Math.abs(player.x - enemy.x) < this.attackRange+20 && Math.abs(player.y - enemy.y) < this.attackRange+20){
-                if(player.active&&player.uid!=enemy.uid)
+                if(player.active&&player.uid!==enemy.uid)
                 this.changetarget(player);}
                 else{     
                     this.findneartower();}}}
@@ -319,12 +317,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
            
             if(this.scene.mode ==='single'){
                 if(this.scene.player.active&&this.sword_in_the_stone.active){
-                this.scene.player.healthPoints+=20;
-                this.scene.player.mana+=15;
-                this.sword_in_the_stone.healthPoints+=20;
-                this.scene.hpbar.regenHPBar(20);
-                this.scene.manabar.regenManaBar(15);
-                this.sword_in_the_stone.building_bar.regenHPBar(20);
+                this.scene.player.healthPoints+=10;
+                this.scene.player.mana+=10;
+                this.sword_in_the_stone.healthPoints+=10;
+                this.scene.hpbar.regenHPBar(10);
+                this.scene.manabar.regenManaBar(10);
+                this.sword_in_the_stone.building_bar.regenHPBar(10);
                 this.kill();}}
             /*
             else if(this.scene.mode ==='multi'){
@@ -424,14 +422,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         if(this.enemyID===2){
             this.bulletTexture="shoot7";
-            /*
-            this.container= this.scene.add.container(200, 200);
-            this.container.add(this.demonskill);  
-            this.container.x=this.x;
-            this.container.y=this.y;*/
-           /* if(this.healthPoints<=0){
-                this.container.getChildren().map(child => child.destroy());
-            }*/
+            
             if(this.body.velocity.x > 0 && this.body.velocity.y > 0){
                 this.play('demon1_down',true);
             }else if(this.body.velocity.x > 0 && this.body.velocity.y < 0){
@@ -505,7 +496,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     enemyAttack(enemy,target,time){
-        if(target.active&&target.uid!=enemy.uid){
+        if(target.active&&target.uid!==enemy.uid){
          if (Math.abs(target.x - enemy.x) < this.attackRange && Math.abs(target.y - enemy.y) < enemy.attackRange){
             let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
             let vX = (target.x - enemy.x)/distance;

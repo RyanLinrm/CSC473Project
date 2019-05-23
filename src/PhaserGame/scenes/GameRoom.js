@@ -1,8 +1,7 @@
-import Phaser, { Scene } from 'phaser';
+import Phaser from 'phaser';
 import { CST } from "../CST";
-import {generate} from 'randomstring';
 import * as firebase from 'firebase';
-import { ConsoleLogger } from '@aws-amplify/core';
+
 
 /**
  * GameRoom - extends Phaser.Scene
@@ -142,8 +141,8 @@ export class GameRoom extends Phaser.Scene {
      */
     create(){
 
-        let info = this.add.text(600, 250, "Game Lobby", {fontSize: '32px'});
-        let info2 = this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
+        this.add.text(600, 250, "Game Lobby", {fontSize: '32px'});
+        this.add.text(625, 280, "Waiting...", {fontSize: '24px'});
         this.seatinfo = this.add.text(500, 300, '1 player in the room, waiting...', {fontSize: '24px'});
 
         if(this.seatNumber === 1){

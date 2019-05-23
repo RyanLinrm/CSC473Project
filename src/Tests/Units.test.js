@@ -19,7 +19,7 @@ test('Testing Units class constructer correctly and intializes a new Units tower
  
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     expect(tower).toBeDefined();
-    expect(tower.type).toBe(type);
+    
     expect(tower.healthPoints).toBe(healthPoints);
     expect(tower.speed).toBe(speed);
     expect(tower.range).toBe(range);
@@ -60,7 +60,7 @@ test('Testing the distance function in Units class', ()=>{
     const player = new Player(new PlayScene(),0,0, "p1", "p1_01.png",1,hP, movementSpeed,id);
     const tower = new Units(new PlayScene(),0,0,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
     tower.distance=jest.fn();
-    let shortestpath=tower.distance(tower,player);
+    tower.distance(tower,player);
     expect(tower.distance).toBeCalledTimes(1);
 });
 
@@ -154,7 +154,7 @@ test('Testing the removeDefense function in units class', ()=>{
     expect(tower.defend).toBe(null);
 
 })
-/*
+
 test('Testing the defend function in units class', ()=>{
     let scene = new PlayScene();
 
@@ -162,25 +162,25 @@ test('Testing the defend function in units class', ()=>{
         add: jest.fn()
     };
     let shootMock = jest.fn();
-    let setTextureMock =jest.fn();
     let setPositionMock= jest.fn();
-    let setScaleMock= jest.fn();
     scene.physics.add.group = ()=>{
         return {
             get:() => ({shoot:shootMock,
-                        setPosition:setPositionMock,
-                        setScale:setScaleMock,
-                        setTexture:setTextureMock})
-            
-        };
-    }
+                setPosition:setPositionMock,
+                setTexture :() => ({
+                    setScale: () => ({
+                        setSize: jest.fn()
+                    })
+                })})         
+};
+}    
     let tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);
 
     tower.defend();
     expect(scene.towerShooting.add).toBeCalledTimes(1);
     expect(shootMock).toBeCalledTimes(1);
 
-})*/
+})
 
 test('Testing the update function of the Units class',()=>{
     const tower = new Units(scene,x,y,barx,bary,name,type,healthPoints,speed,range,cooldown,uid);

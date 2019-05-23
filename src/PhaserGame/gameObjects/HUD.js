@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+
 import {Enemy} from "../gameObjects/Enemy";
 import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
 import * as firebase from 'firebase';
@@ -18,7 +18,7 @@ export class HUD {
      * @param {Player} player - the main player of the scene
      * @param {string} uid - the uid
      * @param {string} gamemode - the type of game "single" or "multi"
-     * @param {*} room - the room id
+     * @param {string} room - the room id
      */
     constructor(scene, player, uid, gamemode, room) {
         this.gamemode=gamemode;
@@ -65,13 +65,13 @@ export class HUD {
 
         this.startingPlayerHealth = scene.startingPlayerHealth;
 
-        let player1 = scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
+        scene.add.sprite(35, scene.game.renderer.height / 5 , "p1").setScrollFactor(0).setInteractive();
         let player1Health = scene.add.text(35, scene.game.renderer.height / 5 + 30, `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
         player1Health.setOrigin(0.5); player1Health.setScrollFactor(0);
         this.playerHealthLabels = [player1Health];
 
         for(let i = 1; i < scene.players; i++){
-            let player = scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
+            scene.add.sprite(35, scene.game.renderer.height / 5 * (i+1), "p1").setScrollFactor(0).setInteractive();
             let playerHealth = scene.add.text(35, scene.game.renderer.height /5 * (i+1) + 30,  `${this.startingPlayerHealth}/${this.startingPlayerHealth}`, { fontSize: 15, color: '#FF0000' });
             playerHealth.setScrollFactor(0); playerHealth.setOrigin(0.5);
             this.playerHealthLabels.push(playerHealth);
@@ -134,7 +134,7 @@ export class HUD {
                }
                
                if(unit.texture.key==='skull'){              
-                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01.png",player,3,200,0.8,5,180,60,650,player.uid).setScale(0.9);
+                    scene.newenemy=new Enemy(scene,pointer.worldX,pointer.worldY,"skull","skull_01.png",player,3,200,0.8,5,180,20,650,player.uid).setScale(0.9);
                     scene.player.mana-=25;
                     this.manabar.cutManaBar(25);
                     if(gamemode === 'multi'){
@@ -174,16 +174,31 @@ export class HUD {
         //Bottom HUD
      }
 
-    setPlayerHealth = (playerNumber,health)=>{
+    /**
+     * To update the player health in the HUD and display on the left hand side UI
+     * @param {Number} playerNumber - the number of the player need to update
+     * @param {Number} health - player's current health point
+     */
+    setPlayerHealth(playerNumber,health){
         this.playerHealthLabels[playerNumber - 1].setText(`${health}/${this.startingPlayerHealth}`); //setsThePlayer health label to the given health value
     }
 
-    setScore = ( newscore ) => {
-        this.scoreShow.setText('Score: '+ `${newscore}`);
+    /**
+     * To display the score real time in HUD UI
+     * @param {Number} newscore - the newest score
+     */
+    setScore( newscore ) {
+        this.scoreShow.setText(`Score: ${newscore}`);
     }
 
-
-    updateDragToOtherPlayers = (xval, yval, enemytype, playerid ) => {
+    /**
+     * To update the dragged out enemy unit's data into database
+     * @param {Number} xval - the x position value
+     * @param {Number} yval - the x position value
+     * @param {String} enemytype - the type of the new enemy
+     * @param {String} playerid - the owner playe id
+     */
+    updateDragToOtherPlayers(xval, yval, enemytype, playerid ) {
         //store enemy into database to keep track
         let key = this.ref.ref(`Games/${this.roomkey}/enemies`).push({
             ownerid: playerid,

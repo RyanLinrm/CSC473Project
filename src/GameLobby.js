@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
-import Game from './PhaserGame/Game';
-import Amplify, { API, graphqlOperation } from "aws-amplify";
-import * as queries from './graphql/queries';
-import * as mutations from './graphql/mutations';
 import * as firebase from 'firebase';
-import {generate} from 'randomstring';
 
-/**
- * GameLobby - extends react component
- * The scene where players create and join game room
- *
- */
+
+
 export default class GameLobby extends Component{
     constructor(props){
         super(props);
@@ -31,20 +23,12 @@ export default class GameLobby extends Component{
 
         this.gametype = 'multi'
 
-        /**
-         * Numerical representation of the state of game and the number of players in the room
-         * @name GameLobby#GameState
-         * @type Object
-         */
         this.GameState = {OPEN: 1, ONEJOINED: 2, TWOJOINED: 3, FULL: 4};
 
         this.getRooms();
     }
 
-    /**
-     * update the state of all the game room to display on this page
-     *
-     */
+
     getRooms() {
         this.gameref.once('value', snapShot =>{
             let gamerooms = snapShot.val();
@@ -65,10 +49,6 @@ export default class GameLobby extends Component{
         })
     }
 
-    /**
-     * createGame is a function that creates a game room by pushing the creator's player id and the game state or seats
-     * into the firebase
-     */
     createGame (){
         console.log('creating a game!');
 
@@ -96,10 +76,6 @@ export default class GameLobby extends Component{
         this.setRedirect(key.key, 1);
     }
 
-    /**
-     * joinGame method takes in a parameter which is the room key and allow player to join that game
-     * @param {String} roomid- the string key of the game room
-     */
     joinGameHandler(roomid) {
         let childref = this.gameref.child(roomid);
         childref.transaction( (snapShot) =>{

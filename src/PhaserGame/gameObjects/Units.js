@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
-import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+import {  HpBar } from "./StatusBar";
 import * as firebase from 'firebase';
 
 /**
@@ -29,7 +29,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
     
     constructor(scene,x,y,barx,bary,name,type=0,healthPoints=500,speed=1,range=180,cooldown=100,uid='233',selfID='233',frame){
         super(scene,x,y,name,frame);
-        if (this.type=1){
+        if (this.type===1){
             this.tower=true;
         }
         scene.sys.updateList.add(this);
@@ -262,7 +262,7 @@ export class Units extends Phaser.Physics.Arcade.Sprite  {
         if(this.targetlist.length>0){
             this.findnearenemy();
             if (Math.abs(target.x - tower.x) < this.range && Math.abs(target.y - tower.y) < this.range){ 
-                if(target.active && target.uid!=tower.uid){
+                if(target.active && target.uid!==tower.uid){
                     if(this.timeCycle < time){
                         this.defend({x: vX - tower.body.velocity.x ,y: vY - tower.body.velocity.y});
                         this.timeCycle = time + tower.cooldown ;

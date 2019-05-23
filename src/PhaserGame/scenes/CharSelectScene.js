@@ -1,18 +1,25 @@
 import Phaser from "phaser";
 
 import { CST } from "../CST";
-import { Bullet } from "../gameObjects/Projectiles";
-import { Units } from "../gameObjects/Units";
-import { Player } from "../gameObjects/Player";
-import { Bomber } from "../gameObjects/Bomber";
-import { Enemy } from "../gameObjects/Enemy";
-import { Rider } from "../gameObjects/Rider";
-import { emptyBar, HpBar, ManaBar } from "../gameObjects/StatusBar";
+
+/**
+ * CharSelectScene - extendx Phaser.Scene
+ * character selection scene, where player can select his or her character to
+ * player the game
+ */
 export class CharSelectScene extends Phaser.Scene {
+
+  /**
+   * creates the scene and assign a key of this scene to phaser scene
+   * @param {String} sceneKey 
+   */
   constructor(sceneKey = CST.SCENES.CHAR) {
     super({ key: sceneKey });
   }
 
+  /**
+   * Load in the assets of game map
+   */
   preload() {
     this.load.image(
       "tiles1",
@@ -29,6 +36,10 @@ export class CharSelectScene extends Phaser.Scene {
     );
   }
 
+  /**
+   * Display the main character selection scene, show all the available characters,
+   * and click on a character means pick it and will start the game scene
+   */
   create() {
     let a = this.add
       .image(0, 0, "key1")

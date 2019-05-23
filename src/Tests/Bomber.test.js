@@ -1,6 +1,6 @@
 import { Bomber } from "../PhaserGame/gameObjects/Bomber";
 import { PlayScene } from '../PhaserGame/scenes/PlayScene';
-import { Bomb } from "../PhaserGame/gameObjects/Projectiles";
+
 jest.mock('phaser');
 jest.mock('../PhaserGame/gameObjects/Player');
 jest.mock('../PhaserGame/gameObjects/Projectiles');
@@ -13,10 +13,10 @@ test('Testing Bomber constructor',()=>{
     expect(bomber.movementSpeed).toBe(movementSpeed);
     expect(bomber.uid).toBe(id);
     expect(bomber.beingAttacked).toBeFalsy();
-   // expect(bomber.createWeapon).toBeDefined();
-   // expect(bomber.removeWeapon).toBeDefined();
+    expect(bomber.createWeapon).toBeDefined();
+    expect(bomber.removeWeapon).toBeDefined();
 });
-/*
+
 test('Testing createWeapon for Bomber',()=>{
     const hP = 42; const movementSpeed = 30; const id = "483";
     const newScene = new PlayScene();
@@ -48,7 +48,7 @@ test('Testing removeWeapon for Bomber', ()=>{
     expect(destroyMock).toBeCalledTimes(1);
     expect(bomber.attack).toBe(null);
 
-});*/
+});
 
 test('Testing the update function for Bomber',()=>{
     const hP = 42; const movementSpeed = 30; const id = "483";

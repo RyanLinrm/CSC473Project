@@ -1,5 +1,21 @@
 import Phaser from 'phaser';
+    /**
+     * The Bullet class.
+     * The class where the properties of the bullets are generated.
+     * Including player shooting, enemy and tower shooting.
+     */
 export class Bullet extends Phaser.GameObjects.Image {
+     /**
+     * 
+     * sets up the bullets object. In the case of our project, the bullets that players,
+     * enemies and towers shoot out.
+     * Prepare the behavior and properties of bullets that are used.
+     * 
+     * @param {Phaser.Scene} scene - The Scene that the Enemy is going to be in
+     * @param {number} speed- The speed that the bullet is shot
+     * @param {string} parent - The ower of the bullet
+     * @param {number} shootRange - The time that the bullet will last
+     */
     constructor(scene,speed=1,parent='233',shootRange){
         if(speed === 0)
             speed = 1;
@@ -7,18 +23,47 @@ export class Bullet extends Phaser.GameObjects.Image {
         this.setTexture('shoot1').setScale(0.15).setSize(32,30);
         this.speed=speed;
         this.angle = 20;
+        /**
+         * The x-axis shooting speed of the bullet
+         * 
+         * @name Bullet#xSpeed
+         * @type number
+         */
         this.xSpeed = speed;
+        /**
+         * The y-axis shooting speed of the bullet
+         * 
+         * @name Bullet#ySpeed
+         * @type number
+         */
         this.ySpeed = speed;
+        /**
+         * The initial time that the bullet is alive
+         * 
+         * @name Bullet#timeAlive
+         * @type number
+         */
         this.timeAlive = 0;
         this.shootRange=200;
     }
 
-
+    /**
+     * collision function that is called when a collision occurs to the bullet. 
+     * Set the bullet's status to not active and not visible
+     */
     collision(){
         this.setActive(false);
         this.setVisible(false);
     }
-
+    /**
+     * Set up the shooter and target of the shooting progress
+     * Provide who and where to shoot the bullet 
+     * And perform the shooting.
+     * @param {string} uid - the uid of the owner that shoots the bullet
+     * @param {object} shooter - the one who shoots the bullet 
+     * @param {number} velocity - the velocity of the bullets
+     * @param {boolean} exactDirection - the boolean value to detect whether it is a exact direction
+     */
     shoot(uid,shooter,velocity,exactDirection = false){
         this.uid = uid;
         this.timeAlive = 0;
@@ -45,7 +90,12 @@ export class Bullet extends Phaser.GameObjects.Image {
     
     }
     
-
+   /**
+    * update method that gets called by the playscene 60 times a second
+    * keep track of the actions of the bullet until it is not available
+    * 
+    * @param {number} delta - the delta time that gets passed by Phaser when update is called
+    */
     update(time,delta){
         this.timeAlive += delta;
         this.x += this.xSpeed * delta;
@@ -60,7 +110,13 @@ export class Bullet extends Phaser.GameObjects.Image {
     }
 
 }
-
+    /**
+     * The bomb class.
+     * The child class of the bullet class where the properties of the special bullets bombs are generated.
+     * This bomb class provides the bullets that the bomber will use.
+     * First the bomber put the bomb and after 3 seconds the bomb will exploded and become bullets.
+     * The bullets that the bomb shoot out will damage the enemy players and units.
+     */
 export class Bomb extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
@@ -71,18 +127,28 @@ export class Bomb extends Phaser.GameObjects.Image {
         this.scene = scene;
         
     }
-
+   /**
+    * Function to set up the bomb that the bomber put into the scene
+    * Which will later be exploded by the explode function
+    * 
+    * @param {object} shooter - the shooter who put the bomb
+    * @param {string} uid - the uid of the shooter
+    */
     place(shooter,uid){
         this.uid=uid;
         this.timeAlive = 0;
         this.setActive(true);
         this.setVisible(true);
-
         this.setPosition(shooter.x,shooter.y);
         this.setAngle(shooter.body.rotation);
     
     }
-
+  /**
+    * Function to explode bomb that the bomber put into the scene
+    * Which is basically create and shoot bullets in 8 directions of the shooter
+    * 
+    * @param {Phaser.scene} scene - the scene that the shooter and the bomb is in
+    */
     explode(scene){
         let bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
         let velocityArray = [{x:1,y:1},{x:-1,y:1},{x:1,y:-1},{x:-1,y:-1},{x:0,y:1},{x:1,y:0},{x:-1,y:0},{x:0,y:-1}];
@@ -99,7 +165,12 @@ export class Bomb extends Phaser.GameObjects.Image {
             this.setActive(false);
             this.setVisible(false);
     }
-
+   /**
+    * update method that gets called by the playscene 60 times a second
+    * Set up and execute the bomb based on time.
+    * 
+    * @param {number} delta - the delta time that gets passed by Phaser when update is called
+    */
     update(time,delta){
         if(this.timeAlive >= 0)
             this.timeAlive += delta;
@@ -112,14 +183,26 @@ export class Bomb extends Phaser.GameObjects.Image {
     }
 
 }
-
+  /**
+     * The Posion class.
+     * The child class of the bullet class where the properties of the special bullets posion are generated.
+     * This posion class provides the bullets that the rider will use.
+     * The rider can shoots posion bullets in up directions and last for a few seconds and caused damages 
+     * when enemies collide with them.
+     */
 export class Posion extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
         this.timeAlive = -1;
         this.scene = scene;      
     }
-
+   /**
+    * Function to set up the posion that the rider put into the scene
+    * Which will later be exploded by the explode function
+    * 
+    * @param {object} shooter - the shooter who shoot the posion
+    * @param {string} uid - the uid of the shooter
+    */
     place(shooter,uid){
         this.uid=uid;
         this.timeAlive = 0;
@@ -129,7 +212,12 @@ export class Posion extends Phaser.GameObjects.Image {
         this.setAngle(shooter.body.rotation);
         this.explode(this.scene);
     }
-
+   /**
+    * Function to reveal the posion that the rider put into the scene
+    * Which is basically create and shoot bullets in up directions of the rider
+    * 
+    * @param {Phaser.scene} scene - the scene that the shooter and the posion is in
+    */
     explode(scene){
         this.bullets = scene.physics.add.group({classType: Bullet, runChildUpdate: true});
         let velocityArray = [{x:0,y:-1},{x:1,y:-1},{x:-1,y:-1}];
@@ -146,7 +234,12 @@ export class Posion extends Phaser.GameObjects.Image {
 
             this.setVisible(false);
     }
-
+  /**
+    * update method that gets called by the playscene 60 times a second
+    * Set up,execute and remove the posion based on the time. 
+    * 
+    * @param {number} delta - the delta time that gets passed by Phaser when update is called
+    */
     update(time,delta){
         this.timeAlive += delta;
         if(this.timeAlive > 4000){
@@ -157,14 +250,28 @@ export class Posion extends Phaser.GameObjects.Image {
     }
 }
 
-
+  /**
+     * The sword class.
+     * The child class of the bullet class where the properties of the special bullets sowrd are generated.
+     * This sword class provides the bullets that the melee will use.
+     * The melee can only shoot bullet that near his body.
+     */
 export class sword extends Phaser.GameObjects.Image {
     constructor(scene){
         super(scene,0,0);
         this.timeAlive = -1;
         this.scene = scene;      
     }
-        shoot(shooter,velocity){
+    /**
+     * Set up the shooter and target of the shooting progress
+     * Provide who and where to shoot the bullet 
+     * And perform the shooting.
+     * @param {string} uid - the uid of the owner that shoots the bullet
+     * @param {object} shooter - the one who shoots the bullet 
+     * @param {number} velocity - the velocity of the bullets
+     */
+        shoot(uid,shooter,velocity){
+            this.uid=uid;
             this.timeAlive = 0;
             this.setActive(true);
             this.setVisible(true);
@@ -183,7 +290,12 @@ export class sword extends Phaser.GameObjects.Image {
         
         }
 
-
+   /**
+    * update method that gets called by the playscene 60 times a second
+    * For melee, the bullet will set to false right after it is shot.
+    * 
+    * @param {number} delta - the delta time that gets passed by Phaser when update is called
+    */
     update(time,delta){
         this.timeAlive += delta;
         this.x += this.xSpeed * delta;
@@ -191,9 +303,6 @@ export class sword extends Phaser.GameObjects.Image {
         if(this.timeAlive > 0){
           this.setVisible(false);
           this.setActive(false);
-          //this.destroy();
-          //this.bullets.clear(true);
-          //this.bullets.getChildren().map(child => child.destroy());
         };
     }
 }
