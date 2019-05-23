@@ -638,7 +638,7 @@ export class PlayScene extends Phaser.Scene{
                     this.player.movementSpeed=150;
                 }
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
+            if (Phaser.Input.Keyboard.JustDown(this.Ebar) && this.cooldowntime< time)
             {  
                 this.createUltimate(time);
             

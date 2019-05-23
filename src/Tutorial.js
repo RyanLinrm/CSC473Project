@@ -18,6 +18,10 @@ import lowcenter from './tutorialimages/lowhealthbuilding.png'
 import lowhealth from './tutorialimages/lowhealth.png'
 import building from './tutorialimages/building.png'
 import spawn from './tutorialimages/spawn.png'
+import stop  from './tutorialimages/stop.png'
+import destroy  from './tutorialimages/destroy.png'
+import reward  from './tutorialimages/reward.png'
+
 /**
  * Tutorial class
  */
@@ -120,28 +124,28 @@ class Tutorial extends Component {
                 <tr>
                   <th><h6>Starting Health:</h6></th>
                   <th className="rider">
-                    <h3>150</h3>
+                    <h3>250</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>250</h3>
                   </th>
                 </tr>
                 <tr>
                   <th><h6>Starting mana:</h6></th>
                   <th className="rider">
-                    <h3>100</h3>
+                    <h3>1000</h3>
                   </th>
                   <th className="shooter">
-                    <h3>150</h3>
+                    <h3>1000</h3>
                   </th>
                 </tr>
                 <tr>
                   <th><h6>Speed in single player:</h6></th>
                   <th className="rider">
-                    <h3>150</h3>
+                    <h3>110</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>75</h3>
                   </th>
                 </tr>
                 <tr>
@@ -150,7 +154,7 @@ class Tutorial extends Component {
                     <h3>100</h3>
                   </th>
                   <th className="shooter">
-                    <h3>100</h3>
+                    <h3>64</h3>
                   </th>
                 </tr>
               </Table>
@@ -217,7 +221,7 @@ class Tutorial extends Component {
               <img src={status} />
               <h2>keep an eye on your health and manabar</h2>
               <img src={building} />
-              <h2>destroy buildings on the outside for extra points</h2>
+              <h2>destroy all other buildings to win the game</h2>
               <br />
               <div>
                 <img src={lowcenter} />
@@ -283,6 +287,52 @@ class Tutorial extends Component {
           <div>
             <h2> Drag and drop from your player HUD members</h2>
             <div className="box">
+            <Button
+                onClick={this.deccounter}
+                className="prev"
+                variant="btn btn-dark"
+              >
+                Previous{" "}
+              </Button>
+              <Button className="next" onClick={this.inccount}>
+                NEXT{" "}
+              </Button>
+              <img id="Hud" src={useHUD} />
+              <h3>Everytime one is placed, it reduced player mana</h3>
+              <h2> Functionality of Units </h2>
+              <img className="directHUD" src={HUD} />
+              <Table className="directHUD" align="center">
+                <tr>
+                  <th><h4>robot</h4></th>
+                  <th><h4>wolf</h4></th>
+                  <th><h4>skeletor</h4></th>
+                  <th><h4>demon</h4></th>
+                  <th><h4>wall</h4></th>
+                </tr>
+                <tr>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>attack nearby players and towers</h5></th>
+                  <th><h5>Blocks players path and attacks</h5></th>
+                </tr>
+      
+                <tr>
+                  <th><h5>Low mana cost standard unit</h5></th>
+                  <th><h5>Become werewolf and strengthen when health is low</h5></th>
+                  <th><h5>Moderate Health Points, slow movement speed</h5></th>
+                  <th><h5>Increase size and attack speed in low health</h5></th>
+                  <th><h5>Nonmovable blocks that can be passed when destroyed </h5></th>
+                </tr>
+              </Table>
+            </div>
+          </div>
+        )}
+         {this.state.Counter == 7 && (
+          <div>
+            <h2>Ultimate Skills</h2>
+            <div className="filler"> </div>
+            <div className="box">
               <Button
                 onClick={this.deccounter}
                 className="prev"
@@ -290,30 +340,14 @@ class Tutorial extends Component {
               >
                 Previous{" "}
               </Button>
-              <Button className="next" variant="light">
-                NEXT{" "}
-              </Button>
-              <img id="Hud" src={useHUD} />
-              <h3>Everytime one is placed, it reduced player mana</h3>
-              <h2> Functionality of HUD </h2>
-              <img className="directHUD" src={HUD} />
-              <Table className="directHUD" align="center">
-                <tr>
-                  <th><h5>robot</h5></th>
-                  <th><h5>wolf</h5></th>
-                  <th><h5>skeletor</h5></th>
-                  <th><h5>demon</h5></th>
-                  <th><h5>wall</h5></th>
-                </tr>
-                <tr>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>attack players and towers</h5></th>
-                  <th><h5>Blocks players path and attacks</h5></th>
-                </tr>
-               
-              </Table>
+              <h2>Press Z key in Single player to petrify nearby enemies</h2>
+              <img src={stop} />
+              <h2>Press E key to destroy all nearby enemies</h2>
+              <br />
+              <img src={destroy} />        
+              <h2>Destroy the center sword to earn the ultimate ability in multiplayer</h2>
+              <img src={reward} />  
+              <br />
             </div>
           </div>
         )}
@@ -321,13 +355,6 @@ class Tutorial extends Component {
     );
   }
 }
- /** 
-                <tr>
-                  <th><h5>Low mana cost</h5></th>
-                  <th><h5>Become werewolf when health is low</h5></th>
-                  <th><h5></h5></th>
-                  <th><h5>Increase size/attack speed in low health</h5></th>
-                  <th><h5></h5></th>
-                </tr>*/
+
 
 export default Tutorial;
