@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 jest.mock('../PhaserGame/gameObjects/Animations');
 jest.mock('../PhaserGame/scenes/PlayScene');
 jest.mock('../PhaserGame/gameObjects/Player');
+jest.mock('../PhaserGame/gameObjects/Rider');
 
 const scene = new PlaySceneMultiplayer();
 
@@ -242,12 +243,14 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
   jest.mock('firebase',()=>{
       let onceMock = jest.fn();
       let onMock = jest.fn();
+      let offMock = jest.fn();
       return {
     database: function(){
         return {
             ref:jest.fn(()=>({
                 once: onceMock,
-                on:onMock
+                on:onMock,
+                off:offMock
             }))
         }
     }
@@ -273,4 +276,92 @@ test('testing the enemyAttackDataChanged function when the snapshot key is velco
 
       expect(firebase.database().ref().once).toBeCalledTimes(1);
       expect(firebase.database().ref().on).toBeCalledTimes(4);
+  });
+
+  test('testing the physics collider creations for the createPlayer function',()=>{
+    scene.physics.add.overlap = jest.fn();
+    scene.physics.add.collider = jest.fn();
+    scene.damageItems = 'damageItems'; scene.bothCollisions = 'bothCollisions';
+    
+    scene.createPlayer('abc',{x:1,y:2},{x:3,y:4});
+    
+
+    expect(scene.physics.add.overlap).toBeCalledTimes(1);
+
+    expect(scene.physics.add.overlap.mock.calls[0][0]).toBe('damageItems');
+    expect(scene.physics.add.overlap.mock.calls[0][1]).toBe(scene.otherPlayers['abc']);
+    expect(scene.physics.add.overlap.mock.calls[0][2]).toBe('bothCollisions');
+
+    expect(scene.physics.add.collider).toBeCalledTimes(5);
+  });
+
+  test('testing the positioning logic of the createPlayer function',()=>{
+    scene.building.assignID = jest.fn();
+    scene.createPlayer('abc',{x:1,y:2},{x:3,y:4}); 
+
+    expect(scene.otherPlayers['abc'].towerPosition).toBe(4);
+    expect(scene.building.assignID).toBeCalledTimes(1);
+
+    scene.pyramid = {assignID : jest.fn()};
+    scene.createPlayer('abc',{x:300,y:300},{x:3,y:4}); 
+
+    expect(scene.otherPlayers['abc'].towerPosition).toBe(1);
+    expect(scene.pyramid.assignID).toBeCalledTimes(1);
+
+    scene.university = {assignID : jest.fn()};
+    scene.createPlayer('abc',{x:1000,y:300},{x:3,y:4}); 
+
+    expect(scene.otherPlayers['abc'].towerPosition).toBe(2);
+    expect(scene.university.assignID).toBeCalledTimes(1);
+
+    scene.magicstone = {assignID : jest.fn()};
+    scene.createPlayer('abc',{x:300,y:1000},{x:3,y:4}); 
+
+    expect(scene.otherPlayers['abc'].towerPosition).toBe(3);
+    expect(scene.magicstone.assignID).toBeCalledTimes(1);
+  });
+
+  test('testing the creation of scene.otherPlayer for the createPlayer function',()=>{
+    scene.otherPlayers['abc'].setVelocity = jest.fn();
+    scene.createPlayer('abc',{x:300,y:1000},{x:300,y:40}); 
+
+    expect(scene.otherPlayers['abc'].user).toBe(false);
+    expect(scene.otherPlayers['abc'].setVelocity).toBeCalledTimes(1);
+
+    expect(scene.otherPlayers['abc'].setVelocity.mock.calls[0][0]).toBe(300);
+    expect(scene.otherPlayers['abc'].setVelocity.mock.calls[0][1]).toBe(40);
+  });
+
+  test('testing the setHealthInDB function',()=>{
+      scene.updates = {};
+      scene.gameRoom = 'room1';
+      scene.playerID = 'abc';
+      let healthPath = `Games/room1/Players/abc/health`;
+
+      scene.setHealthInDB(400);
+      expect(scene.updates[healthPath]).toBe(400);
+
+      scene.setHealthInDB(0);
+      expect(scene.updates[healthPath]).toBe(0);
+
+      scene.setHealthInDB(34);
+      expect(scene.updates[healthPath]).toBe(34);
+  });
+
+  test('testing the removePlayer function for the PlaySceneMultiplayer',()=>{
+      const scene1 = new PlaySceneMultiplayer();
+      let killMock = jest.fn();
+      scene1.otherPlayers = {
+          'abc': {
+              kill: killMock
+          }
+      };
+
+      scene1.removePlayer('abc');
+
+      expect(killMock).toBeCalledTimes(1);
+      expect(scene1.otherPlayers).toEqual({});
+      let firebaseOffMock = firebase.database().ref().off;
+
+      expect(firebaseOffMock).toBeCalledTimes(3);
   });

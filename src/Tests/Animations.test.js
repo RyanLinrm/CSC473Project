@@ -30,7 +30,7 @@ test('Testing animation generated correctly with animation config object',()=>{
 });
 
 test('Testing animation plays correctly', ()=> {
-    let walkingAnimation = scene.anims.create({
+    scene.anims.create({
         key: key,
         frameRate: framerate,
         frames: scene.anims.generateFrameNames( spritename, frameConfig)

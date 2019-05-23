@@ -46,6 +46,10 @@ import lowcenter from './tutorialimages/lowhealthbuilding.png'
 import lowhealth from './tutorialimages/lowhealth.png'
 import building from './tutorialimages/building.png'
 import spawn from './tutorialimages/spawn.png'
+import stop  from './tutorialimages/stop.png'
+import destroy  from './tutorialimages/destroy.png'
+import reward  from './tutorialimages/reward.png'
+
 /**
  * Tutorial class
  */
@@ -148,28 +152,28 @@ class Tutorial extends Component {
                 &lt;tr>
                   &lt;th>&lt;h6>Starting Health:&lt;/h6>&lt;/th>
                   &lt;th className="rider">
-                    &lt;h3>150&lt;/h3>
+                    &lt;h3>250&lt;/h3>
                   &lt;/th>
                   &lt;th className="shooter">
-                    &lt;h3>100&lt;/h3>
+                    &lt;h3>250&lt;/h3>
                   &lt;/th>
                 &lt;/tr>
                 &lt;tr>
                   &lt;th>&lt;h6>Starting mana:&lt;/h6>&lt;/th>
                   &lt;th className="rider">
-                    &lt;h3>100&lt;/h3>
+                    &lt;h3>1000&lt;/h3>
                   &lt;/th>
                   &lt;th className="shooter">
-                    &lt;h3>150&lt;/h3>
+                    &lt;h3>1000&lt;/h3>
                   &lt;/th>
                 &lt;/tr>
                 &lt;tr>
                   &lt;th>&lt;h6>Speed in single player:&lt;/h6>&lt;/th>
                   &lt;th className="rider">
-                    &lt;h3>150&lt;/h3>
+                    &lt;h3>110&lt;/h3>
                   &lt;/th>
                   &lt;th className="shooter">
-                    &lt;h3>100&lt;/h3>
+                    &lt;h3>75&lt;/h3>
                   &lt;/th>
                 &lt;/tr>
                 &lt;tr>
@@ -178,7 +182,7 @@ class Tutorial extends Component {
                     &lt;h3>100&lt;/h3>
                   &lt;/th>
                   &lt;th className="shooter">
-                    &lt;h3>100&lt;/h3>
+                    &lt;h3>64&lt;/h3>
                   &lt;/th>
                 &lt;/tr>
               &lt;/Table>
@@ -245,7 +249,7 @@ class Tutorial extends Component {
               &lt;img src={status} />
               &lt;h2>keep an eye on your health and manabar&lt;/h2>
               &lt;img src={building} />
-              &lt;h2>destroy buildings on the outside for extra points&lt;/h2>
+              &lt;h2>destroy all other buildings to win the game&lt;/h2>
               &lt;br />
               &lt;div>
                 &lt;img src={lowcenter} />
@@ -311,6 +315,52 @@ class Tutorial extends Component {
           &lt;div>
             &lt;h2> Drag and drop from your player HUD members&lt;/h2>
             &lt;div className="box">
+            &lt;Button
+                onClick={this.deccounter}
+                className="prev"
+                variant="btn btn-dark"
+              >
+                Previous{" "}
+              &lt;/Button>
+              &lt;Button className="next" onClick={this.inccount}>
+                NEXT{" "}
+              &lt;/Button>
+              &lt;img id="Hud" src={useHUD} />
+              &lt;h3>Everytime one is placed, it reduced player mana&lt;/h3>
+              &lt;h2> Functionality of Units &lt;/h2>
+              &lt;img className="directHUD" src={HUD} />
+              &lt;Table className="directHUD" align="center">
+                &lt;tr>
+                  &lt;th>&lt;h4>robot&lt;/h4>&lt;/th>
+                  &lt;th>&lt;h4>wolf&lt;/h4>&lt;/th>
+                  &lt;th>&lt;h4>skeletor&lt;/h4>&lt;/th>
+                  &lt;th>&lt;h4>demon&lt;/h4>&lt;/th>
+                  &lt;th>&lt;h4>wall&lt;/h4>&lt;/th>
+                &lt;/tr>
+                &lt;tr>
+                  &lt;th>&lt;h5>attack nearby players and towers&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>attack nearby players and towers&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>attack nearby players and towers&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>attack nearby players and towers&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>Blocks players path and attacks&lt;/h5>&lt;/th>
+                &lt;/tr>
+      
+                &lt;tr>
+                  &lt;th>&lt;h5>Low mana cost standard unit&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>Become werewolf and strengthen when health is low&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>Moderate Health Points, slow movement speed&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>Increase size and attack speed in low health&lt;/h5>&lt;/th>
+                  &lt;th>&lt;h5>Nonmovable blocks that can be passed when destroyed &lt;/h5>&lt;/th>
+                &lt;/tr>
+              &lt;/Table>
+            &lt;/div>
+          &lt;/div>
+        )}
+         {this.state.Counter == 7 &amp;&amp; (
+          &lt;div>
+            &lt;h2>Ultimate Skills&lt;/h2>
+            &lt;div className="filler"> &lt;/div>
+            &lt;div className="box">
               &lt;Button
                 onClick={this.deccounter}
                 className="prev"
@@ -318,30 +368,14 @@ class Tutorial extends Component {
               >
                 Previous{" "}
               &lt;/Button>
-              &lt;Button className="next" variant="light">
-                NEXT{" "}
-              &lt;/Button>
-              &lt;img id="Hud" src={useHUD} />
-              &lt;h3>Everytime one is placed, it reduced player mana&lt;/h3>
-              &lt;h2> Functionality of HUD &lt;/h2>
-              &lt;img className="directHUD" src={HUD} />
-              &lt;Table className="directHUD" align="center">
-                &lt;tr>
-                  &lt;th>&lt;h5>robot&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>wolf&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>skeletor&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>demon&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>wall&lt;/h5>&lt;/th>
-                &lt;/tr>
-                &lt;tr>
-                  &lt;th>&lt;h5>attack players and towers&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>attack players and towers&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>attack players and towers&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>attack players and towers&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>Blocks players path and attacks&lt;/h5>&lt;/th>
-                &lt;/tr>
-               
-              &lt;/Table>
+              &lt;h2>Press Z key in Single player to petrify nearby enemies&lt;/h2>
+              &lt;img src={stop} />
+              &lt;h2>Press E key to destroy all nearby enemies&lt;/h2>
+              &lt;br />
+              &lt;img src={destroy} />        
+              &lt;h2>Destroy the center sword to earn the ultimate ability in multiplayer&lt;/h2>
+              &lt;img src={reward} />  
+              &lt;br />
             &lt;/div>
           &lt;/div>
         )}
@@ -349,14 +383,7 @@ class Tutorial extends Component {
     );
   }
 }
- /** 
-                &lt;tr>
-                  &lt;th>&lt;h5>Low mana cost&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>Become werewolf when health is low&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>Increase size/attack speed in low health&lt;/h5>&lt;/th>
-                  &lt;th>&lt;h5>&lt;/h5>&lt;/th>
-                &lt;/tr>*/
+
 
 export default Tutorial;</code></pre>
         </article>
@@ -368,13 +395,13 @@ export default Tutorial;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Rider.html">Rider</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Posion.html">Posion</a></li><li><a href="Rider.html">Rider</a></li><li><a href="sword.html">sword</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#SortedByScore">SortedByScore</a></li><li><a href="global.html#SortedByTime">SortedByTime</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 23 2019 01:25:59 GMT-0400 (GMT-04:00)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu May 23 2019 17:24:54 GMT-0500 (GMT-05:00)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Class: sword</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Class: sword</h1>
 
     
 
@@ -28,7 +28,12 @@
 
 <header>
     
-        <h2></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>sword<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>The sword class.
+The child class of the bullet class where the properties of the special bullets sowrd are generated.
+This sword class provides the bullets that the melee will use.
+The melee can only shoot bullet that near his body.</p></div>
         
     
 </header>
@@ -38,7 +43,28 @@
     
         
 
-        
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="sword"><span class="type-signature"></span>new sword<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -68,6 +94,11 @@
     
 
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line259">line 259</a>
+    </li></ul></dd>
+    
 
     
 
@@ -77,7 +108,22 @@
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
@@ -104,7 +150,7 @@
     
 
     
-    <h4 class="name" id="createGame"><span class="type-signature"></span>createGame<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="shoot"><span class="type-signature"></span>shoot<span class="signature">(uid, shooter, velocity)</span><span class="type-signature"></span></h4>
     
 
     
@@ -112,180 +158,9 @@
 
 
 <div class="description">
-    <p>createGame is a function that creates a game room by pushing the creator's player id and the game state or seats
-into the firebase</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameLobby.js.html">GameLobby.js</a>, <a href="GameLobby.js.html#line68">line 68</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getRooms"><span class="type-signature"></span>getRooms<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>update the state of all the game room to display on this page</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameLobby.js.html">GameLobby.js</a>, <a href="GameLobby.js.html#line44">line 44</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="joinGameHandler"><span class="type-signature"></span>joinGameHandler<span class="signature">(roomid-)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>joinGame method takes in a parameter which is the room key and allow player to join that game</p>
+    <p>Set up the shooter and target of the shooting progress
+Provide who and where to shoot the bullet 
+And perform the shooting.</p>
 </div>
 
 
@@ -321,13 +196,13 @@ into the firebase</p>
 
         <tr>
             
-                <td class="name"><code>roomid-</code></td>
+                <td class="name"><code>uid</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string</span>
 
 
             
@@ -337,7 +212,53 @@ into the firebase</p>
 
             
 
-            <td class="description last"><p>the string key of the game room</p></td>
+            <td class="description last"><p>the uid of the owner that shoots the bullet</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>shooter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the one who shoots the bullet</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>velocity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the velocity of the bullets</p></td>
         </tr>
 
     
@@ -378,7 +299,7 @@ into the firebase</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="GameLobby.js.html">GameLobby.js</a>, <a href="GameLobby.js.html#line99">line 99</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -412,7 +333,7 @@ into the firebase</p>
     
 
     
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(delta)</span><span class="type-signature"></span></h4>
     
 
     
@@ -420,7 +341,8 @@ into the firebase</p>
 
 
 <div class="description">
-    <p>render funciton which returns the actual leaderboard component</p>
+    <p>update method that gets called by the playscene 60 times a second
+For melee, the bullet will set to false right after it is shot.</p>
 </div>
 
 
@@ -429,6 +351,55 @@ into the firebase</p>
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the delta time that gets passed by Phaser when update is called</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -464,179 +435,7 @@ into the firebase</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="LeaderBoard.js.html">LeaderBoard.js</a>, <a href="LeaderBoard.js.html#line110">line 110</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="SortedByScore"><span class="type-signature"></span>SortedByScore<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>gets userList from state and sorts it and returns it as entries in the leaderboard by Score</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="LeaderBoard.js.html">LeaderBoard.js</a>, <a href="LeaderBoard.js.html#line80">line 80</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="SortedByTime"><span class="type-signature"></span>SortedByTime<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>gets userList from state and sorts it and returns it as entries in the leaderboard by time</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="LeaderBoard.js.html">LeaderBoard.js</a>, <a href="LeaderBoard.js.html#line50">line 50</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line299">line 299</a>
     </li></ul></dd>
     
 

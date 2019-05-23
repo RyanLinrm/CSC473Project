@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Game</title>
+    <title>JSDoc: Class: Bomb</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Game</h1>
+    <h1 class="page-title">Class: Bomb</h1>
 
     
 
@@ -28,9 +28,13 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Game<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Bomb<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>React Game Component, contains the actual Phaser canvas.</p></div>
+            <div class="class-description"><p>The bomb class.
+The child class of the bullet class where the properties of the special bullets bombs are generated.
+This bomb class provides the bullets that the bomber will use.
+First the bomber put the bomb and after 3 seconds the bomb will exploded and become bullets.
+The bullets that the bomb shoot out will damage the enemy players and units.</p></div>
         
     
 </header>
@@ -45,7 +49,7 @@
     
 
     
-    <h4 class="name" id="Game"><span class="type-signature"></span>new Game<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Bomb"><span class="type-signature"></span>new Bomb<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -93,7 +97,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line21">line 21</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -147,7 +151,7 @@
     
 
     
-    <h4 class="name" id="componentDidMount"><span class="type-signature"></span>componentDidMount<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="explode"><span class="type-signature"></span>explode<span class="signature">(scene)</span><span class="type-signature"></span></h4>
     
 
     
@@ -155,93 +159,8 @@
 
 
 <div class="description">
-    <p>method that is called by react. The phaser game is created here</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line24">line 24</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="componentWillReceiveProps"><span class="type-signature"></span>componentWillReceiveProps<span class="signature">(newProps)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>called when react recieves changed props used to start the actual phaser game</p>
+    <p>Function to explode bomb that the bomber put into the scene
+Which is basically create and shoot bullets in 8 directions of the shooter</p>
 </div>
 
 
@@ -277,13 +196,13 @@
 
         <tr>
             
-                <td class="name"><code>newProps</code></td>
+                <td class="name"><code>scene</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Phaser.scene</span>
 
 
             
@@ -293,7 +212,7 @@
 
             
 
-            <td class="description last"><p>the props passed by react when the state change. it should be {gameType:val, gameShouldStart:val}</p></td>
+            <td class="description last"><p>the scene that the shooter and the bomb is in</p></td>
         </tr>
 
     
@@ -334,7 +253,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line85">line 85</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line152">line 152</a>
     </li></ul></dd>
     
 
@@ -368,7 +287,7 @@
     
 
     
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="place"><span class="type-signature"></span>place<span class="signature">(shooter, uid)</span><span class="type-signature"></span></h4>
     
 
     
@@ -376,7 +295,8 @@
 
 
 <div class="description">
-    <p>The render method which returns a div, The div is of id='phaser-game' and is used by the phaser game to attach the canvas as a child to it</p>
+    <p>Function to set up the bomb that the bomber put into the scene
+Which will later be exploded by the explode function</p>
 </div>
 
 
@@ -385,6 +305,78 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>shooter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the shooter who put the bomb</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the uid of the shooter</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -420,7 +412,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line104">line 104</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line137">line 137</a>
     </li></ul></dd>
     
 
@@ -454,7 +446,7 @@
     
 
     
-    <h4 class="name" id="shouldComponentUpdate"><span class="type-signature"></span>shouldComponentUpdate<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="update"><span class="type-signature"></span>update<span class="signature">(delta)</span><span class="type-signature"></span></h4>
     
 
     
@@ -462,7 +454,8 @@
 
 
 <div class="description">
-    <p>stopping the react component from updating so it doesn't mess with phaser to re render.</p>
+    <p>update method that gets called by the playscene 60 times a second
+Set up and execute the bomb based on time.</p>
 </div>
 
 
@@ -471,6 +464,55 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the delta time that gets passed by Phaser when update is called</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -506,181 +548,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line75">line 75</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="startMultiplayer"><span class="type-signature"></span>startMultiplayer<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>(function created when react calls componentDidMount)</p>
-<p>this function starts the multiplayer player scene in phaser</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="startSinglePlayer"><span class="type-signature"></span>startSinglePlayer<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>(function created when react calls componentDidMount)</p>
-<p>this function starts the single player scene in phaser</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="PhaserGame_Game.js.html">PhaserGame/Game.js</a>, <a href="PhaserGame_Game.js.html#line59">line 59</a>
+        <a href="PhaserGame_gameObjects_Projectiles.js.html">PhaserGame/gameObjects/Projectiles.js</a>, <a href="PhaserGame_gameObjects_Projectiles.js.html#line174">line 174</a>
     </li></ul></dd>
     
 
