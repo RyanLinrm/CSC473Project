@@ -223,7 +223,7 @@ export class PlayScene extends Phaser.Scene{
         //adjust player hit box
         this.player.setSize(30, 30);
         if(this.mode === 'single'){
-            this.scene.start(CST.SCENES.WINNING);
+            //this.scene.start(CST.SCENES.WINNING);
             this.hud = new HUD(this, this.player, this.playerUid, this.mode)
             this.manabar=this.hud.manabar;
             this.hpbar=this.hud.hpbar;
@@ -581,11 +581,7 @@ export class PlayScene extends Phaser.Scene{
                 //velocity unless the actual velocity is zero then it stores previous nonzero velocity
                 //Need this value to keep track of the current direction when player is standing still. Prob will chage this later to direction
             }
-            //Generate player ability and skills
-            /*if (Phaser.Input.Keyboard.JustDown(this.spacebar))
-            {
-                this.player.attack();
-            }*/
+        
             //speed up the movement 
 
             if(this.player.mana>= 10 && Phaser.Input.Keyboard.JustDown(this.Qbar)){
@@ -638,7 +634,7 @@ export class PlayScene extends Phaser.Scene{
                     this.player.movementSpeed=150;
                 }
             }
-            if (Phaser.Input.Keyboard.JustDown(this.Tbar) && this.cooldowntime< time)
+            if (Phaser.Input.Keyboard.JustDown(this.Ebar) && this.cooldowntime< time)
             {  
                 this.createUltimate(time);
             
