@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: exports</title>
+    <title>JSDoc: Class: CharSelectScene</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: exports</h1>
+    <h1 class="page-title">Class: CharSelectScene</h1>
 
     
 
@@ -28,10 +28,11 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>exports<span class="signature">(props)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>CharSelectScene<span class="signature">(sceneKey)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Leaderboard - extends React Component
-The Leaderboard react component for the game</p></div>
+            <div class="class-description"><p>CharSelectScene - extendx Phaser.Scene
+character selection scene, where player can select his or her character to
+player the game</p></div>
         
     
 </header>
@@ -46,7 +47,7 @@ The Leaderboard react component for the game</p></div>
     
 
     
-    <h4 class="name" id="exports"><span class="type-signature"></span>new exports<span class="signature">(props)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CharSelectScene"><span class="type-signature"></span>new CharSelectScene<span class="signature">(sceneKey)</span><span class="type-signature"></span></h4>
     
 
     
@@ -54,7 +55,7 @@ The Leaderboard react component for the game</p></div>
 
 
 <div class="description">
-    <p>constructor of the leaderboard component sets the state and creates entries array</p>
+    <p>creates the scene and assign a key of this scene to phaser scene</p>
 </div>
 
 
@@ -90,13 +91,13 @@ The Leaderboard react component for the game</p></div>
 
         <tr>
             
-                <td class="name"><code>props</code></td>
+                <td class="name"><code>sceneKey</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">String</span>
 
 
             
@@ -106,7 +107,7 @@ The Leaderboard react component for the game</p></div>
 
             
 
-            <td class="description last"><p>the props passed by another react component</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -147,7 +148,7 @@ The Leaderboard react component for the game</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="LeaderBoard.js.html">LeaderBoard.js</a>, <a href="LeaderBoard.js.html#line17">line 17</a>
+        <a href="PhaserGame_scenes_CharSelectScene.js.html">PhaserGame/scenes/CharSelectScene.js</a>, <a href="PhaserGame_scenes_CharSelectScene.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -185,6 +186,56 @@ The Leaderboard react component for the game</p></div>
     
 
     
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="CharSelectScene.html">CharSelectScene</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="create"><span class="type-signature"></span>create<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Display the main character selection scene, show all the available characters,
+and click on a character means pick it and will start the game scene</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
 
     
 
@@ -194,6 +245,144 @@ The Leaderboard react component for the game</p></div>
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="PhaserGame_scenes_CharSelectScene.js.html">PhaserGame/scenes/CharSelectScene.js</a>, <a href="PhaserGame_scenes_CharSelectScene.js.html#line43">line 43</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="preload"><span class="type-signature"></span>preload<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Load in the assets of game map</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="PhaserGame_scenes_CharSelectScene.js.html">PhaserGame/scenes/CharSelectScene.js</a>, <a href="PhaserGame_scenes_CharSelectScene.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

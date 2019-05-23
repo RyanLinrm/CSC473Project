@@ -57,7 +57,7 @@ export class WinningScene extends Phaser.Scene{
 
     /**
      * Phaser scene built in function, will be called after init function. In this function, the text
-     * diplays wining will be rendered, and with the data obtained from init function, ID, character,
+     * diplays VICTORY will be rendered, and with the data obtained from init function, ID, character,
      * and final score will be displayed as well. Moreover, user can choose to play agian or
      * back to main page here.
     */
