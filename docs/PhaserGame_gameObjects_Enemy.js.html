@@ -28,7 +28,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>import Phaser from 'phaser';
 import { Bullet } from "./Projectiles";
-import { emptyBar, HpBar, ManaBar } from "./StatusBar";
+
 import * as firebase from 'firebase';
     /**
      * The Enemy class.
@@ -69,7 +69,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         this.magicstone=scene.magicstone;
         this.sword_in_the_stone=scene.sword_in_the_stone;
         this.selfID = selfID;
-        this.singleplayer=scene.player;
+        this.singleplayer=scene.player; 
         this.gameroom = '';
       
         /**
@@ -188,7 +188,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
          * sets up the movement funciton that is called by the update method.
          */ 
         this.moveEnemy = () =>{
-            if(this.movementSpeed!=0){
+            if(this.movementSpeed!==0){
             this.EnemyBehavior(this,target);
             
             scene.physics.moveToObject(this,this.target,this.movementSpeed);}
@@ -236,6 +236,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
           case 5:
            enemy.setPosition(target.x,target.y); 
             break;
+          default:
+            break;
         } };    
       /*  //if the enemy collide with other enemy or player, it will move to other direction
         this.scene.physics.world.collide(enemy, target, (enemy,target)=>{
@@ -266,7 +268,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             //this.scene.enemies.getChildren().map(child => this.towers.push(child));  
           //  this.towers.push(this.scene.player)
             for (var i = 0; i &lt; this.towers.length; i++) {
-                if(this.towers[i].active &amp;&amp; this.towers[i].uid!=enemy.uid){
+                if(this.towers[i].active &amp;&amp; this.towers[i].uid!==enemy.uid){
                     let towerdistance=this.distance(enemy,this.towers[i]);
                      if (towerdistance&lt;shortestDistance){
                         shortestDistance=towerdistance;      
@@ -282,7 +284,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             for( let i = 0; i &lt; this.enemyplayerid.length; i++ ){
                 let player = this.enemyplayers[this.enemyplayerid[i]];
                 if(Math.abs(player.x - enemy.x) &lt; this.attackRange+30 &amp;&amp; Math.abs(player.y - enemy.y) &lt; this.attackRange+30){
-                    if(player.active &amp;&amp; player.uid!=enemy.uid){
+                    if(player.active &amp;&amp; player.uid!==enemy.uid){
                         this.changetarget(player);
                         break;
                     }
@@ -300,12 +302,17 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
             this.towers.push(this.sword_in_the_stone);
             let player=this.scene.player;
             if(Math.abs(target.x - enemy.x) &lt; this.attackRange &amp;&amp; Math.abs(target.y - enemy.y) &lt; this.attackRange){
-                this.movementSpeed=this.movementSpeed+1;}
+                this.movementSpeed+=0.01;}
+          
 
-            if(this.movementSpeed>=player.movementSpeed-10){
-                this.movementSpeed=65;}
+            if(this.movementSpeed>=player.movementSpeed-50){
+                this.movementSpeed-=0.01;}
+
+            if(this.sword_in_the_stone.active===false){
+                    this.changetarget(player);}
+                
             if(Math.abs(player.x - enemy.x) &lt; this.attackRange+20 &amp;&amp; Math.abs(player.y - enemy.y) &lt; this.attackRange+20){
-                if(player.active&amp;&amp;player.uid!=enemy.uid)
+                if(player.active&amp;&amp;player.uid!==enemy.uid)
                 this.changetarget(player);}
                 else{     
                     this.findneartower();}}}
@@ -347,12 +354,12 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
            
             if(this.scene.mode ==='single'){
                 if(this.scene.player.active&amp;&amp;this.sword_in_the_stone.active){
-                this.scene.player.healthPoints+=20;
-                this.scene.player.mana+=15;
-                this.sword_in_the_stone.healthPoints+=20;
-                this.scene.hpbar.regenHPBar(20);
-                this.scene.manabar.regenManaBar(15);
-                this.sword_in_the_stone.building_bar.regenHPBar(20);
+                this.scene.player.healthPoints+=10;
+                this.scene.player.mana+=10;
+                this.sword_in_the_stone.healthPoints+=10;
+                this.scene.hpbar.regenHPBar(10);
+                this.scene.manabar.regenManaBar(10);
+                this.sword_in_the_stone.building_bar.regenHPBar(10);
                 this.kill();}}
             /*
             else if(this.scene.mode ==='multi'){
@@ -452,14 +459,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
         }
         if(this.enemyID===2){
             this.bulletTexture="shoot7";
-            /*
-            this.container= this.scene.add.container(200, 200);
-            this.container.add(this.demonskill);  
-            this.container.x=this.x;
-            this.container.y=this.y;*/
-           /* if(this.healthPoints&lt;=0){
-                this.container.getChildren().map(child => child.destroy());
-            }*/
+            
             if(this.body.velocity.x > 0 &amp;&amp; this.body.velocity.y > 0){
                 this.play('demon1_down',true);
             }else if(this.body.velocity.x > 0 &amp;&amp; this.body.velocity.y &lt; 0){
@@ -533,7 +533,7 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
      * @param {number} time - The time passes to keep track of whether the cooldown is fine.
      */
     enemyAttack(enemy,target,time){
-        if(target.active&amp;&amp;target.uid!=enemy.uid){
+        if(target.active&amp;&amp;target.uid!==enemy.uid){
          if (Math.abs(target.x - enemy.x) &lt; this.attackRange &amp;&amp; Math.abs(target.y - enemy.y) &lt; enemy.attackRange){
             let distance=Phaser.Math.Distance.Between(enemy.x, enemy.y, target.x, target.y);
             let vX = (target.x - enemy.x)/distance;
@@ -573,13 +573,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite{
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li><li><a href="global.html#startMultiplayer">startMultiplayer</a></li><li><a href="global.html#startSinglePlayer">startSinglePlayer</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Bomber.html">Bomber</a></li><li><a href="Bullet.html">Bullet</a></li><li><a href="emptyBar.html">emptyBar</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Game.html">Game</a></li><li><a href="GameLobby.html">GameLobby</a></li><li><a href="GameRoom.html">GameRoom</a></li><li><a href="HpBar.html">HpBar</a></li><li><a href="HUD.html">HUD</a></li><li><a href="ManaBar.html">ManaBar</a></li><li><a href="Melee.html">Melee</a></li><li><a href="Player.html">Player</a></li><li><a href="PlayScene.html">PlayScene</a></li><li><a href="PlaySceneMultiplayer.html">PlaySceneMultiplayer</a></li><li><a href="Rider.html">Rider</a></li><li><a href="Tutorial.html">Tutorial</a></li><li><a href="Units.html">Units</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createGame">createGame</a></li><li><a href="global.html#getRooms">getRooms</a></li><li><a href="global.html#joinGameHandler">joinGameHandler</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Tue May 14 2019 12:08:12 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.1</a> on Thu May 23 2019 01:25:59 GMT-0400 (GMT-04:00)
 </footer>
 
 <script> prettyPrint(); </script>

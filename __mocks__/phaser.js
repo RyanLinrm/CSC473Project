@@ -18,7 +18,7 @@ const phaserMock = {
             this.setPosition = () => { };
             this.setAngle = () => { };
             this.setCrop = () => { };
-
+    
         }
     },
 

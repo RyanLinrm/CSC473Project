@@ -221,7 +221,7 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
         this.otherPlayers[id] = new Player(this,position.x,position.y, "p1", "p1_0.png",0,this.startingPlayerHealth,64,id);
         }
         else if (this.temp === "rider"){
-        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,200,id).setScale(0.6);
+        this.otherPlayers[id] = new Rider(this,position.x,position.y, "rider", "rider_0.png",1,this.startingPlayerHealth,100,id).setScale(0.6);
         }
         this.otherPlayers[id].user = false;
         this.otherPlayers[id].setVelocity(velocity.x,velocity.y);
