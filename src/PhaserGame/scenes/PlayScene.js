@@ -527,7 +527,7 @@ export class PlayScene extends Phaser.Scene{
                 this.scene.start(CST.SCENES.GAMEOVER);
         }
         // if all the enemy towers are destoryed, you win the game
-        if(this.building.healthPoints<=0 && this.pyramid.healthPoints<=0 && this.magicstone.healthPoints<=0 &&this.building.healthPoints<=0){
+        if(this.building.healthPoints<=0 && this.pyramid.healthPoints<=0 && this.magicstone.healthPoints<=0 &&this.university.healthPoints<=0){
             //this.wonGame()
             this.scene.start(CST.SCENES.WINNING);
         }
@@ -655,7 +655,7 @@ export class PlayScene extends Phaser.Scene{
 }
 
        
-  
+ 
     
     /**
      * @instance
