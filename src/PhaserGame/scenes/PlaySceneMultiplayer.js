@@ -771,9 +771,21 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @description function that gets called when the player wins the game
      */
     wonGame = () => {
+
         this.GameIsGoing = false;
-        let countDownText = this.add.text(this.player1.x, this.player1.y, "You Won", { fontFamily: 'Arial', fontSize: 150, color: '#ffffff' });
-        countDownText.setOrigin(0.5, 0.5);
+        this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
+        this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
+        this.scene.start(CST.SCENES.WINNING, {
+            playerID : this.playerID,
+            roomkey : this.gameRoom,
+            chartype: this.spritekey,
+            score: this.score
+        });
+        this.databaseListners.forEach((path)=>{
+            console.log(path);
+            firebase.database().ref(path).off();
+        });
+
     }
     Ultimate = (time) =>{
         //player ability to destory enemies near the range
@@ -801,19 +813,21 @@ export class PlaySceneMultiplayer extends PlayScene{ //The difference here is th
      * @description function that gets called when the players tower gets destroyed
      */
     towerDestroyed = (TowerID)=>{
-        this.GameIsGoing = false;
-        this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
-        this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
-        this.scene.start(CST.SCENES.GAMEOVER, {
-            playerID : this.playerID,
-            roomkey : this.gameRoom,
-            chartype: this.spritekey,
-            score: this.score
-        });
-        this.databaseListners.forEach((path)=>{
-            console.log(path);
-            firebase.database().ref(path).off();
-        });
+        if(this.GameIsGoing){
+            this.GameIsGoing = false;
+            this.scene.remove(CST.SCENES.PLAYMULTIPLAYER);
+            this.updates[`Games/${this.gameRoom}/Players/${this.playerID}/inGame/`] = false;
+            this.scene.start(CST.SCENES.GAMEOVER, {
+                playerID : this.playerID,
+                roomkey : this.gameRoom,
+                chartype: this.spritekey,
+                score: this.score
+            });
+            this.databaseListners.forEach((path)=>{
+                console.log(path);
+                firebase.database().ref(path).off();
+            });
+    }
     }
 
     /**
